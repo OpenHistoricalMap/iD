@@ -5641,6 +5641,14 @@ div.full-screen > button:hover {
     color: #7092ff;
 }
 
+.layer-date-range label input {
+  margin-left: 60px;
+}
+
+.layer-date-range label span {
+  margin-top: -20px;
+}
+
 .layer-list:empty {
     display: none;
 }
