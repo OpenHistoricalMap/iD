@@ -3,6 +3,7 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "building_area",
         "internet_access",
@@ -10,14 +11,20 @@
         "internet_access/ssid"
     ],
     "moreFields": [
-        "opening_hours",
-        "smoking",
-        "outdoor_seating",
-        "payment_multi",
-        "website",
-        "phone",
+        "air_conditioning",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "min_age",
+        "opening_hours",
+        "opening_hours/covid19",
+        "outdoor_seating",
+        "payment_multi",
+        "phone",
+        "ref/vatin",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -32,7 +39,7 @@
         "cafe",
         "net",
         "lanhouse"
-     ],
+    ],
     "tags": {
         "amenity": "internet_cafe"
     },

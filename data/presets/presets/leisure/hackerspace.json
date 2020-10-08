@@ -1,21 +1,28 @@
 {
-    "icon": "maki-commercial",
+    "icon": "fas-code",
     "fields": [
         "name",
         "address",
         "building_area",
         "opening_hours",
-        "website"
-    ],
-    "moreFields": [
-        "payment_multi",
+        "opening_hours/covid19",
+        "website",
+        "fee",
+        "payment_multi_fee",
+        "charge_fee",
         "internet_access",
         "internet_access/fee",
-        "internet_access/ssid",
-        "smoking",
-        "phone",
+        "internet_access/ssid"
+    ],
+    "moreFields": [
+        "air_conditioning",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "level",
+        "phone",
+        "smoking",
+        "wheelchair"
     ],
     "geometry": [
         "point",

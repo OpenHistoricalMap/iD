@@ -1,5 +1,5 @@
-import { t } from '../util/locale';
-import { svgIcon } from '../svg';
+import { t } from '../core/localizer';
+import { svgIcon } from '../svg/icon';
 
 
 export function uiNoteHeader() {
@@ -35,7 +35,7 @@ export function uiNoteHeader() {
             iconEnter
                 .append('div')
                 .attr('class', 'note-icon-annotation')
-                .call(svgIcon(statusIcon, 'note-annotation'));
+                .call(svgIcon(statusIcon, 'icon-annotation'));
         });
 
         headerEnter

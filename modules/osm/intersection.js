@@ -1,30 +1,17 @@
-import _clone from 'lodash-es/clone';
-import _difference from 'lodash-es/difference';
-import _extend from 'lodash-es/extend';
-import _uniq from 'lodash-es/uniq';
-
-import {
-    actionDeleteRelation,
-    actionReverse,
-    actionSplit
-} from '../actions';
-
-import { coreGraph } from '../core';
-
-import {
-    geoAngle,
-    geoSphericalDistance
-} from '../geo';
-
+import { actionDeleteRelation } from '../actions/delete_relation';
+import { actionReverse } from '../actions/reverse';
+import { actionSplit } from '../actions/split';
+import { coreGraph } from '../core/graph';
+import { geoAngle, geoSphericalDistance } from '../geo';
 import { osmEntity } from './entity';
-
+import { utilArrayDifference, utilArrayUniq } from '../util';
 
 
 export function osmTurn(turn) {
     if (!(this instanceof osmTurn)) {
         return new osmTurn(turn);
     }
-    _extend(this, turn);
+    Object.assign(this, turn);
 }
 
 
@@ -102,13 +89,12 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
             hasWays = true;
 
             // check the way's children for more key vertices
-            nodes = _uniq(graph.childNodes(way));
+            nodes = utilArrayUniq(graph.childNodes(way));
             for (j = 0; j < nodes.length; j++) {
                 node = nodes[j];
                 if (node === vertex) continue;                                           // same thing
                 if (vertices.indexOf(node) !== -1) continue;                             // seen it already
-                if (node.loc && startNode.loc &&
-                    geoSphericalDistance(node.loc, startNode.loc) > maxDistance) continue;   // too far from start
+                if (geoSphericalDistance(node.loc, startNode.loc) > maxDistance) continue;   // too far from start
 
                 // a key vertex will have parents that are also roads
                 var hasParents = false;
@@ -133,8 +119,8 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
         }
     }
 
-    vertices = _uniq(vertices);
-    ways = _uniq(ways);
+    vertices = utilArrayUniq(vertices);
+    ways = utilArrayUniq(ways);
 
 
     // STEP 2:  Build a virtual graph containing only the entities in the intersection..
@@ -213,8 +199,8 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
         ways = ways.concat(parents);
     });
 
-    vertices = _uniq(vertices);
-    ways = _uniq(ways);
+    vertices = utilArrayUniq(vertices);
+    ways = utilArrayUniq(ways);
 
     vertexIds = vertices.map(function(v) { return v.id; });
     wayIds = ways.map(function(w) { return w.id; });
@@ -373,10 +359,10 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
 
         // traverse the intersection graph and find all the valid paths
         function step(entity, currPath, currRestrictions, matchedRestriction) {
-            currPath = _clone(currPath || []);
+            currPath = (currPath || []).slice();  // shallow copy
             if (currPath.length >= maxPathLength) return;
             currPath.push(entity.id);
-            currRestrictions = _clone(currRestrictions || []);
+            currRestrictions = (currRestrictions || []).slice();  // shallow copy
             var i, j;
 
             if (entity.type === 'node') {
@@ -426,7 +412,7 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
                                         restrictionVias.push(v[k].id);
                                     }
                                 }
-                                var diff = _difference(pathVias, restrictionVias);
+                                var diff = utilArrayDifference(pathVias, restrictionVias);
                                 matchesViaTo = !diff.length;
                             }
 
@@ -469,7 +455,7 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
 
             } else {  // entity.type === 'way'
                 if (currPath.length >= 3) {     // this is a "complete" path..
-                    var turnPath = _clone(currPath);
+                    var turnPath = currPath.slice();   // shallow copy
 
                     // an indirect restriction - only include the partial path (starting at FROM)
                     if (matchedRestriction && matchedRestriction.direct === false) {
@@ -500,7 +486,7 @@ export function osmIntersection(graph, startVertexId, maxDistance) {
                 // which nodes can we step into?
                 var n1 = vgraph.entity(entity.first());
                 var n2 = vgraph.entity(entity.last());
-                var dist = n1.loc && n2.loc && geoSphericalDistance(n1.loc, n2.loc);
+                var dist = geoSphericalDistance(n1.loc, n2.loc);
                 var nextNodes = [];
 
                 if (currPath.length > 1) {

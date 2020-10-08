@@ -5,20 +5,21 @@
         "shelter",
         "bin",
         "bench",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
+        "covered",
+        "level",
         "lit",
-        "wheelchair",
-        "covered"
+        "wheelchair"
     ],
     "geometry": [
         "point",
         "vertex",
         "area"
     ],
-    "terms": [
-    ],
+    "terms": [],
     "tags": {
         "amenity": "smoking_area"
     },

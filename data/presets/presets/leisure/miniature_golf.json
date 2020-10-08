@@ -1,22 +1,25 @@
 {
-    "icon": "maki-golf",
+    "icon": "temaki-golf_green",
     "fields": [
         "name",
         "operator",
         "address",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19",
+        "fee",
+        "payment_multi_fee",
+        "charge_fee"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "crazy golf",

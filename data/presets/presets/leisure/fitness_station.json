@@ -2,10 +2,14 @@
     "icon": "maki-pitch",
     "fields": [
         "fitness_station",
-        "ref"
+        "ref",
+        "wheelchair",
+        "blind"
     ],
     "moreFields": [
-        "opening_hours"
+        "access_simple",
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "geometry": [
         "point",
@@ -15,10 +19,6 @@
         "leisure": "fitness_station"
     },
     "addTags": {
-        "leisure": "fitness_station",
-        "sport": "fitness"
-    },
-    "removeTags": {
         "leisure": "fitness_station",
         "sport": "fitness"
     },

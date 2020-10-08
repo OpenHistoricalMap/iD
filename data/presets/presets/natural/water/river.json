@@ -1,5 +1,9 @@
 {
-    "icon": "maki-water",
+    "icon": "iD-waterway-river",
+    "fields": [
+        "{natural/water}",
+        "tidal"
+    ],
     "geometry": [
         "area"
     ],
@@ -27,5 +31,5 @@
         "tributary",
         "watercourse"
     ],
-    "name": "River"
+    "name": "River Area"
 }

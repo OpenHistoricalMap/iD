@@ -1,8 +1,17 @@
 {
-    "icon": "maki-waste-basket",
+    "icon": "fas-dumpster",
     "fields": [
         "operator",
-        "collection_times"
+        "waste",
+        "collection_times",
+        "access_simple"
+    ],
+    "moreFields": [
+        "brand",
+        "colour",
+        "height",
+        "manufacturer",
+        "material"
     ],
     "geometry": [
         "point",

@@ -1,9 +1,8 @@
 language: node_js
 node_js:
-  - "6"
-  - "8"
   - "10"
-sudo: required
+  - "12"
+  - "14"
 before_script:
   - npm run all
 after_success:

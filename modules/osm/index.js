@@ -1,10 +1,10 @@
 export { osmChangeset } from './changeset';
 export { osmEntity } from './entity';
-export { krError } from './keepRight';
 export { osmNode } from './node';
 export { osmNote } from './note';
 export { osmRelation } from './relation';
 export { osmWay } from './way';
+export { QAItem } from './qa_item';
 
 export {
     osmIntersection,
@@ -17,13 +17,25 @@ export {
 } from './lanes';
 
 export {
-    osmIsSimpleMultipolygonOuterMember,
-    osmSimpleMultipolygonOuterMember,
+    osmOldMultipolygonOuterMemberOfRelation,
+    osmIsOldMultipolygonOuterMember,
+    osmOldMultipolygonOuterMember,
     osmJoinWays
 } from './multipolygon';
 
 export {
+    osmAreaKeys,
+    osmSetAreaKeys,
+    osmTagSuggestingArea,
+    osmPointTags,
+    osmSetPointTags,
+    osmVertexTags,
+    osmSetVertexTags,
+    osmNodeGeometriesForTags,
     osmOneWayTags,
     osmPavedTags,
-    osmIsInterestingTag
+    osmIsInterestingTag,
+    osmRoutableHighwayTagValues,
+    osmFlowingWaterwayTagValues,
+    osmRailwayTrackTagValues
 } from './tags';

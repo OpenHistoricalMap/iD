@@ -1,19 +1,21 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-sign_and_car",
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "capacity",
         "address",
         "payment_multi",
         "supervised"
     ],
     "moreFields": [
-        "lit",
-        "website",
-        "phone",
+        "brand",
         "email",
         "fax",
+        "lit",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -23,5 +25,5 @@
     "tags": {
         "amenity": "car_sharing"
     },
-    "name": "Car Sharing"
+    "name": "Car Sharing Station"
 }

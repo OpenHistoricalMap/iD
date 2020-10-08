@@ -1,5 +1,5 @@
 {
-    "icon": "fas-warehouse",
+    "icon": "temaki-storage_rental",
     "geometry": [
         "point",
         "area"
@@ -7,5 +7,14 @@
     "tags": {
         "shop": "storage_rental"
     },
+    "terms": [
+        "device storage",
+        "garages",
+        "self storage",
+        "self-service storage",
+        "storage lockers",
+        "storage rental",
+        "storage units"
+    ],
     "name": "Storage Rental"
 }

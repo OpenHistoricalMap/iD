@@ -1,17 +1,16 @@
 {
-    "fields": [
-        "name",
-        "operator",
-        "voltage",
-        "ref",
-        "layer"
-    ],
+    "icon": "temaki-cable",
     "geometry": [
         "line"
     ],
     "tags": {
         "power": "cable",
         "location": "underground"
+    },
+    "addTags": {
+        "power": "cable",
+        "location": "underground",
+        "layer": "-1"
     },
     "name": "Underground Power Cable"
 }

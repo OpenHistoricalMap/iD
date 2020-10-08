@@ -2,24 +2,34 @@
     "icon": "maki-garden",
     "fields": [
         "name",
+        "garden/type",
         "operator",
-        "access_simple"
+        "operator/type",
+        "access_simple",
+        "fee",
+        "payment_multi_fee",
+        "charge_fee"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",
-        "vertex",
         "area"
     ],
     "tags": {
         "leisure": "garden"
     },
+    "terms": [
+        "flowers",
+        "fruits",
+        "herbs",
+        "plants",
+        "vegetables"
+    ],
     "name": "Garden"
 }

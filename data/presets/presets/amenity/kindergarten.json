@@ -1,22 +1,33 @@
 {
-    "icon": "maki-school",
+    "icon": "temaki-school",
     "fields": [
         "name",
         "operator",
-        "address"
+        "operator/type",
+        "address",
+        "phone",
+        "preschool"
     ],
     "moreFields": [
-        "opening_hours",
-        "payment_multi",
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "level",
+        "max_age",
+        "min_age",
+        "not/name",
+        "opening_hours",
+        "opening_hours/covid19",
+        "payment_multi",
+        "website",
         "wheelchair"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "kindergarden",
@@ -25,5 +36,5 @@
     "tags": {
         "amenity": "kindergarten"
     },
-    "name": "Preschool/Kindergarten Grounds"
+    "name": "Preschool / Kindergarten Grounds"
 }

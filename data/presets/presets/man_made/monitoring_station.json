@@ -2,11 +2,13 @@
     "icon": "temaki-antenna",
     "geometry": [
         "point",
+        "vertex",
         "area"
     ],
     "fields": [
         "monitoring_multi",
-        "operator"
+        "operator",
+        "manufacturer"
     ],
     "terms": [
         "weather",

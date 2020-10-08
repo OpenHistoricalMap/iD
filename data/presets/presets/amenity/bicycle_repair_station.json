@@ -1,25 +1,34 @@
 {
-    "icon": "maki-bicycle",
+    "icon": "temaki-bicycle_repair",
     "fields": [
         "operator",
         "brand",
         "opening_hours",
+        "opening_hours/covid19",
         "fee",
+        "payment_multi_fee",
+        "charge_fee",
         "service/bicycle"
     ],
     "moreFields": [
-        "payment_multi",
-        "covered"
+        "colour",
+        "covered",
+        "indoor",
+        "level",
+        "manufacturer"
     ],
     "geometry": [
         "point",
         "vertex"
     ],
     "terms": [
-        "bike",
-        "repair",
-        "chain",
-        "pump"
+        "bike chain",
+        "bike multitool",
+        "bike repair",
+        "bike tools",
+        "cycle pump",
+        "cycle repair",
+        "cycling"
     ],
     "tags": {
         "amenity": "bicycle_repair_station"

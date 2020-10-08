@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-tram",
+    "icon": "temaki-tram",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network",
-        "to", 
-        "from"
+        "{type/route/train}"
+    ],
+    "moreFields": [
+        "{type/route/train}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "tram"
+    },
+    "reference": {
+        "key": "route",
+        "value": "tram"
     },
     "name": "Tram Route"
 }

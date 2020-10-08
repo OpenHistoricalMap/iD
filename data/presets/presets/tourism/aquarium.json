@@ -5,16 +5,23 @@
         "operator",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "smoking",
-        "website",
-        "phone",
+        "charge_fee",
         "email",
         "fax",
+        "fee",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "payment_multi_fee",
+        "phone",
+        "ref/vatin",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [

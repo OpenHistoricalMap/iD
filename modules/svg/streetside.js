@@ -1,6 +1,6 @@
 import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
-import { svgPath, svgPointTransform } from './index';
+import { svgPath, svgPointTransform } from './helpers';
 import { services } from '../services';
 
 
@@ -12,7 +12,6 @@ export function svgStreetside(projection, context, dispatch) {
     var layer = d3_select(null);
     var _viewerYaw = 0;
     var _selectedSequence = null;
-    var _hoveredBubble = null;
     var _streetside;
 
     /**
@@ -31,8 +30,8 @@ export function svgStreetside(projection, context, dispatch) {
         if (services.streetside && !_streetside) {
             _streetside = services.streetside;
             _streetside.event
-                .on('viewerChanged', viewerChanged)
-                .on('loadedBubbles', throttledRedraw);
+                .on('viewerChanged.svgStreetside', viewerChanged)
+                .on('loadedBubbles.svgStreetside', throttledRedraw);
         } else if (!services.streetside && _streetside) {
             _streetside = null;
         }
@@ -47,7 +46,6 @@ export function svgStreetside(projection, context, dispatch) {
         var service = getService();
         if (!service) return;
 
-        service.loadViewer(context);
         editOn();
 
         layer
@@ -62,11 +60,6 @@ export function svgStreetside(projection, context, dispatch) {
      * hideLayer().
      */
     function hideLayer() {
-        var service = getService();
-        if (service) {
-            service.hideViewer();
-        }
-
         throttledRedraw.cancel();
 
         layer
@@ -105,10 +98,10 @@ export function svgStreetside(projection, context, dispatch) {
         _selectedSequence = d.sequenceKey;
 
         service
-            .selectImage(d)
-            .then(function(r) {
-                if (r.status === 'ok'){
-                    service.showViewer(_viewerYaw);
+            .selectImage(context, d)
+            .then(response => {
+                if (response.status === 'ok'){
+                    service.showViewer(context, _viewerYaw);
                 }
             });
 
@@ -121,8 +114,7 @@ export function svgStreetside(projection, context, dispatch) {
      */
     function mouseover(d) {
         var service = getService();
-        _hoveredBubble = d;
-        if (service) service.setStyles(d, true);
+        if (service) service.setStyles(context, d);
     }
 
     /**
@@ -130,8 +122,7 @@ export function svgStreetside(projection, context, dispatch) {
      */
     function mouseout() {
         var service = getService();
-        _hoveredBubble = null;
-        if (service) service.setStyles(null, true);
+        if (service) service.setStyles(context, null);
     }
 
     /**
@@ -161,24 +152,31 @@ export function svgStreetside(projection, context, dispatch) {
         // e.g. during drags or easing.
         if (context.map().isTransformed()) return;
 
-        layer.selectAll('.viewfield-group.selected')
+        layer.selectAll('.viewfield-group.currentView')
             .attr('transform', transform);
     }
 
+
+    context.photos().on('change.streetside', update);
 
     /**
      * update().
      */
     function update() {
-        var viewer = d3_select('#photoviewer');
+        var viewer = context.container().select('.photoviewer');
         var selected = viewer.empty() ? undefined : viewer.datum();
         var z = ~~context.map().zoom();
         var showMarkers = (z >= minMarkerZoom);
         var showViewfields = (z >= minViewfieldZoom);
         var service = getService();
 
-        var sequences = (service ? service.sequences(projection) : []);
-        var bubbles = (service && showMarkers ? service.bubbles(projection) : []);
+        var sequences = [];
+        var bubbles = [];
+
+        if (context.photos().showsPanoramic()) {
+            sequences = (service ? service.sequences(projection) : []);
+            bubbles = (service && showMarkers ? service.bubbles(projection) : []);
+        }
 
         var traces = layer.selectAll('.sequences').selectAll('.sequence')
             .data(sequences, function(d) { return d.properties.key; });
@@ -209,8 +207,8 @@ export function svgStreetside(projection, context, dispatch) {
         var groupsEnter = groups.enter()
             .append('g')
             .attr('class', 'viewfield-group')
-            .on('mouseover', mouseover)
-            .on('mouseout', mouseout)
+            .on('mouseenter', mouseover)
+            .on('mouseleave', mouseout)
             .on('click', click);
 
         groupsEnter
@@ -251,12 +249,6 @@ export function svgStreetside(projection, context, dispatch) {
             .attr('transform', 'scale(1.5,1.5),translate(-8, -13)')
             .attr('d', viewfieldPath);
 
-
-        if (service) {
-            service.setStyles(_hoveredBubble, true);
-        }
-
-
         function viewfieldPath() {
             var d = this.parentNode.__data__;
             if (d.pano) {
@@ -270,7 +262,7 @@ export function svgStreetside(projection, context, dispatch) {
 
     /**
      * drawImages()
-     * drawImages is the method that is returned (and that runs) everytime 'svgStreetside()' is called.
+     * drawImages is the method that is returned (and that runs) every time 'svgStreetside()' is called.
      * 'svgStreetside()' is called from index.js
      */
     function drawImages(selection) {

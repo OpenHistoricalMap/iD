@@ -1,18 +1,30 @@
 {
-    "icon": "maki-airport",
-    "geometry": [
-        "point",
-        "area"
-    ],
+    "icon": "temaki-airport",
     "fields": [
         "name",
         "iata",
         "icao",
+        "address",
         "operator",
+        "operator/type",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid"
     ],
+    "moreFields": [
+        "email",
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
+    ],
+    "geometry": [
+        "area",
+        "point"
+    ],
+    "tags": {
+        "aeroway": "aerodrome"
+    },
     "terms": [
         "aerodrome",
         "aeroway",
@@ -21,9 +33,6 @@
         "jet",
         "plane"
     ],
-    "tags": {
-        "aeroway": "aerodrome"
-    },
     "matchScore": 0.9,
     "name": "Airport"
 }

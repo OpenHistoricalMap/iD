@@ -1,13 +1,15 @@
 {
-    "icon": "maki-communications-tower",
+    "icon": "temaki-mast",
     "fields": [
         "tower/type",
         "tower/construction",
         "height"
     ],
     "moreFields": [
-        "material",
-        "communication_multi"
+        "communication_multi",
+        "gnis/feature_id",
+        "manufacturer",
+        "material"
     ],
     "geometry": [
         "point"

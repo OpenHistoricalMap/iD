@@ -4,8 +4,16 @@
         "name",
         "operator",
         "capacity",
+        "access_simple",
         "fee",
-        "payment_multi"
+        "payment_multi_fee",
+        "charge_fee"
+    ],
+    "moreFields": [
+        "brand",
+        "covered",
+        "level",
+        "manufacturer"
     ],
     "geometry": [
         "point"

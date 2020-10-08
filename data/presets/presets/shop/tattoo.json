@@ -1,5 +1,9 @@
 {
-    "icon": "maki-shop",
+    "icon": "temaki-tattoo_machine",
+    "moreFields": [
+        "{shop}",
+        "min_age"
+    ],
     "geometry": [
         "point",
         "area"
@@ -7,5 +11,8 @@
     "tags": {
         "shop": "tattoo"
     },
+    "terms": [
+        "ink"
+    ],
     "name": "Tattoo Parlor"
 }

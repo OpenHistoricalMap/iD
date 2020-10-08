@@ -1,13 +1,13 @@
 {
-    "icon": "maki-tennis",
+    "icon": "fas-table-tennis",
     "fields": [
         "name",
         "lit",
         "access_simple"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "tags": {
         "leisure": "pitch",

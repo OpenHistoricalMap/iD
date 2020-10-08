@@ -1,7 +1,10 @@
 {
-    "icon": "temaki-silo",
+    "icon": "temaki-bunker_silo",
     "fields": [
         "content"
+    ],
+    "moreFields": [
+        "gnis/feature_id"
     ],
     "geometry": [
         "point",

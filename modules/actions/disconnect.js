@@ -1,7 +1,7 @@
 import { osmNode } from '../osm/node';
 
 
-// Disconect the ways at the given node.
+// Disconnect the ways at the given node.
 //
 // Optionally, disconnect only the given ways.
 //
@@ -48,22 +48,31 @@ export function actionDisconnect(nodeId, newNodeId) {
         var candidates = [];
         var keeping = false;
         var parentWays = graph.parentWays(graph.entity(nodeId));
-
-        parentWays.forEach(function(way) {
+        var way, waynode;
+        for (var i = 0; i < parentWays.length; i++) {
+            way = parentWays[i];
             if (wayIds && wayIds.indexOf(way.id) === -1) {
                 keeping = true;
-                return;
+                continue;
             }
             if (way.isArea() && (way.nodes[0] === nodeId)) {
                 candidates.push({ wayID: way.id, index: 0 });
             } else {
-                way.nodes.forEach(function(waynode, index) {
+                for (var j = 0; j < way.nodes.length; j++) {
+                    waynode = way.nodes[j];
                     if (waynode === nodeId) {
-                        candidates.push({ wayID: way.id, index: index });
+                        if (way.isClosed() &&
+                            parentWays.length > 1 &&
+                            wayIds &&
+                            wayIds.indexOf(way.id) !== -1 &&
+                            j === way.nodes.length - 1) {
+                            continue;
+                        }
+                        candidates.push({ wayID: way.id, index: j });
                     }
-                });
+                }
             }
-        });
+        }
 
         return keeping ? candidates : candidates.slice(1);
     };
@@ -71,7 +80,7 @@ export function actionDisconnect(nodeId, newNodeId) {
 
     action.disabled = function(graph) {
         var connections = action.connections(graph);
-        if (connections.length === 0 || (wayIds && wayIds.length !== connections.length))
+        if (connections.length === 0)
             return 'not_connected';
 
         var parentWays = graph.parentWays(graph.entity(nodeId));
@@ -79,15 +88,19 @@ export function actionDisconnect(nodeId, newNodeId) {
         var sharedRelation;
 
         parentWays.forEach(function(way) {
-            if (wayIds && wayIds.indexOf(way.id) === -1)
-                return;
-
             var relations = graph.parentRelations(way);
             relations.forEach(function(relation) {
                 if (relation.id in seenRelationIds) {
-                    sharedRelation = relation;
+                    if (wayIds) {
+                        if (wayIds.indexOf(way.id) !== -1 ||
+                            wayIds.indexOf(seenRelationIds[relation.id]) !== -1) {
+                            sharedRelation = relation;
+                        }
+                    } else {
+                        sharedRelation = relation;
+                    }
                 } else {
-                    seenRelationIds[relation.id] = true;
+                    seenRelationIds[relation.id] = way.id;
                 }
             });
         });
@@ -97,9 +110,9 @@ export function actionDisconnect(nodeId, newNodeId) {
     };
 
 
-    action.limitWays = function(_) {
+    action.limitWays = function(val) {
         if (!arguments.length) return wayIds;
-        wayIds = _;
+        wayIds = val;
         return action;
     };
 

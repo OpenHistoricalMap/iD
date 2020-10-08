@@ -4,13 +4,18 @@
         "bicycle_parking",
         "capacity",
         "operator",
+        "operator/type",
         "covered",
         "access_simple",
-        "fee"
+        "fee",
+        "payment_multi_fee",
+        "charge_fee"
     ],
     "moreFields": [
-        "payment_multi",
-        "covered"
+        "colour",
+        "indoor",
+        "level",
+        "lit"
     ],
     "geometry": [
         "point",
@@ -18,7 +23,9 @@
         "area"
     ],
     "terms": [
-        "bike"
+        "bike",
+        "cycle parking",
+        "cycling"
     ],
     "tags": {
         "amenity": "bicycle_parking"

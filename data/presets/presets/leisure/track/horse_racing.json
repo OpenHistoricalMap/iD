@@ -1,6 +1,7 @@
 {
     "icon": "maki-horse-riding",
     "fields": [
+        "name",
         "surface",
         "sport_racing_nonmotor",
         "lit",
@@ -16,10 +17,16 @@
         "leisure": "track",
         "sport": "horse_racing"
     },
+    "reference": {
+        "key": "sport",
+        "value": "horse_racing"
+    },
     "terms": [
-        "race*",
-        "horse",
-        "track"
+        "equestrian race track",
+        "horse race betting",
+        "horseracing",
+        "horsetrack",
+        "horse racetrack"
     ],
-    "name": "Racetrack (Horse Racing)"
+    "name": "Horse Racing Track"
 }

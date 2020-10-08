@@ -1,11 +1,12 @@
 {
-    "icon": "maki-car",
+    "icon": "fas-car-battery",
     "geometry": [
         "point",
         "area"
     ],
     "terms": [
-        "auto"
+        "automobile",
+        "automotive"
     ],
     "tags": {
         "shop": "car_parts"

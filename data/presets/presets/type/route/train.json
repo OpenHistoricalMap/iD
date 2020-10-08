@@ -1,12 +1,22 @@
 {
-    "icon": "iD-route-train",
+    "icon": "temaki-train",
     "fields": [
         "name",
         "ref_route",
         "operator",
         "network",
-        "to", 
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "colour",
+        "distance",
+        "duration",
+        "interval",
+        "opening_hours",
+        "opening_hours/covid19",
+        "roundtrip",
+        "wheelchair"
     ],
     "geometry": [
         "relation"
@@ -14,6 +24,10 @@
     "tags": {
         "type": "route",
         "route": "train"
+    },
+    "reference": {
+        "key": "route",
+        "value": "train"
     },
     "name": "Train Route"
 }

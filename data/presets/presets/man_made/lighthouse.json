@@ -8,11 +8,12 @@
     ],
     "moreFields": [
         "address",
-        "website",
-        "phone",
         "email",
         "fax",
-        "seamark/type"
+        "gnis/feature_id",
+        "phone",
+        "seamark/type",
+        "website"
     ],
     "geometry": [
         "point",

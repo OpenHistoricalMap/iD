@@ -1,10 +1,11 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-junk_car",
     "fields": [
         "name",
         "operator",
         "address",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "geometry": [
         "point",
@@ -14,10 +15,6 @@
         "industrial": "scrap_yard"
     },
     "addTags": {
-        "landuse": "industrial",
-        "industrial": "scrap_yard"
-    },
-    "removeTags": {
         "landuse": "industrial",
         "industrial": "scrap_yard"
     },

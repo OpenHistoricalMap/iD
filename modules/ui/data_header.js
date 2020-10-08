@@ -1,5 +1,5 @@
-import { t } from '../util/locale';
-import { svgIcon } from '../svg';
+import { t } from '../core/localizer';
+import { svgIcon } from '../svg/icon';
 
 
 export function uiDataHeader() {

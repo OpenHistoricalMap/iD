@@ -8,9 +8,17 @@
         "capacity"
     ],
     "moreFields": [
-        "smoking",
+        "charge_fee",
         "fee",
-        "payment_multi",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "level",
+        "payment_multi_fee",
+        "phone",
+        "reservation",
+        "smoking",
         "website",
         "wheelchair"
     ],

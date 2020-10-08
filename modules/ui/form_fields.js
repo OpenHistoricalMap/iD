@@ -1,13 +1,14 @@
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
-import { uiCombobox } from './index';
+import { t } from '../core/localizer';
+import { uiCombobox } from './combobox';
 import { utilGetSetValue, utilNoAuto } from '../util';
 
 
 export function uiFormFields(context) {
     var moreCombo = uiCombobox(context, 'more-fields').minItems(1);
     var _fieldsArr = [];
+    var _lastPlaceholder = '';
     var _state = '';
     var _klass = '';
 
@@ -27,7 +28,7 @@ export function uiFormFields(context) {
 
 
         var fields = container.selectAll('.wrap-form-field')
-            .data(shown, function(d) { return d.id + (d.entityID || ''); });
+            .data(shown, function(d) { return d.id + (d.entityIDs ? d.entityIDs.join() : ''); });
 
         fields.exit()
             .remove();
@@ -49,26 +50,42 @@ export function uiFormFields(context) {
             });
 
 
-        notShown = notShown.map(function(field) {
+        var titles = [];
+        var moreFields = notShown.map(function(field) {
+            var label = field.label();
+            titles.push(label);
+
+            var terms = field.terms();
+            if (field.key) terms.push(field.key);
+            if (field.keys) terms = terms.concat(field.keys);
+
             return {
-                title: field.label(),
-                value: field.label(),
-                field: field
+                title: label,
+                value: label,
+                field: field,
+                terms: terms
             };
         });
 
+        var placeholder = titles.slice(0,3).join(', ') + ((titles.length > 3) ? '…' : '');
+
 
         var more = selection.selectAll('.more-fields')
-            .data((_state === 'hover' || notShown.length === 0) ? [] : [0]);
+            .data((_state === 'hover' || moreFields.length === 0) ? [] : [0]);
 
         more.exit()
             .remove();
 
-        more = more.enter()
+        var moreEnter = more.enter()
             .append('div')
             .attr('class', 'more-fields')
-            .append('label')
-            .text(t('inspector.add_fields'))
+            .append('label');
+
+        moreEnter
+            .append('span')
+            .text(t('inspector.add_fields'));
+
+        more = moreEnter
             .merge(more);
 
 
@@ -82,20 +99,14 @@ export function uiFormFields(context) {
             .append('input')
             .attr('class', 'value')
             .attr('type', 'text')
+            .attr('placeholder', placeholder)
             .call(utilNoAuto)
             .merge(input);
 
         input
             .call(utilGetSetValue, '')
-            .attr('placeholder', function() {
-                var placeholder = [];
-                for (var field in notShown) {
-                    placeholder.push(notShown[field].title);
-                }
-                return placeholder.slice(0,3).join(', ') + ((placeholder.length > 3) ? '…' : '');
-            })
             .call(moreCombo
-                .data(notShown)
+                .data(moreFields)
                 .on('accept', function (d) {
                     if (!d) return;  // user entered something that was not matched
                     var field = d.field;
@@ -106,6 +117,12 @@ export function uiFormFields(context) {
                     }
                 })
             );
+
+        // avoid updating placeholder excessively (triggers style recalc)
+        if (_lastPlaceholder !== placeholder) {
+            input.attr('placeholder', placeholder);
+            _lastPlaceholder = placeholder;
+        }
     }
 
 

@@ -1,13 +1,19 @@
 {
-    "icon": "iD-route-piste",
+    "icon": "fas-skiing",
     "fields": [
         "name",
         "piste/type",
-        "colour",
         "ref_route",
         "operator",
-        "to", 
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
+        "distance",
+        "roundtrip"
     ],
     "geometry": [
         "relation"
@@ -15,6 +21,10 @@
     "tags": {
         "type": "route",
         "route": "piste"
+    },
+    "reference": {
+        "key": "route",
+        "value": "piste"
     },
     "name": "Piste/Ski Route"
 }

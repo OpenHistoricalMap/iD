@@ -1,5 +1,5 @@
 {
-    "icon": "maki-bus",
+    "icon": "temaki-bus",
     "fields": [
         "name",
         "building_area",
@@ -16,5 +16,6 @@
         "amenity": "bus_station"
     },
     "name": "Bus Station / Terminal",
-    "searchable": false
+    "searchable": false,
+    "replacement": "public_transport/station_bus"
 }

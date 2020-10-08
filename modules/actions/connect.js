@@ -1,6 +1,6 @@
-import _uniq from 'lodash-es/uniq';
-
 import { actionDeleteNode } from './delete_node';
+import { actionDeleteWay } from './delete_way';
+import { utilArrayUniq } from '../util';
 
 
 // Connect the ways at the given nodes.
@@ -37,9 +37,7 @@ export function actionConnect(nodeIDs) {
 
             parents = graph.parentWays(node);
             for (j = 0; j < parents.length; j++) {
-                if (!parents[j].areAdjacent(node.id, survivor.id)) {
-                    graph = graph.replace(parents[j].replaceNode(node.id, survivor.id));
-                }
+                graph = graph.replace(parents[j].replaceNode(node.id, survivor.id));
             }
 
             parents = graph.parentRelations(node);
@@ -52,6 +50,14 @@ export function actionConnect(nodeIDs) {
         }
 
         graph = graph.replace(survivor);
+
+        // find and delete any degenerate ways created by connecting adjacent vertices
+        parents = graph.parentWays(survivor);
+        for (i = 0; i < parents.length; i++) {
+            if (parents[i].isDegenerate()) {
+                graph = actionDeleteWay(parents[i].id)(graph);
+            }
+        }
 
         return graph;
     };
@@ -81,7 +87,7 @@ export function actionConnect(nodeIDs) {
                 role = relation.memberById(node.id).role || '';
 
                 // if this node is a via node in a restriction, remember for later
-                if (relation.isValidRestriction()) {
+                if (relation.hasFromViaTo()) {
                     restrictionIDs.push(relation.id);
                 }
 
@@ -104,7 +110,7 @@ export function actionConnect(nodeIDs) {
 
                 for (k = 0; k < relations.length; k++) {
                     relation = relations[k];
-                    if (relation.isValidRestriction()) {
+                    if (relation.hasFromViaTo()) {
                         restrictionIDs.push(relation.id);
                     }
                 }
@@ -113,7 +119,7 @@ export function actionConnect(nodeIDs) {
 
 
         // test restrictions
-        restrictionIDs = _uniq(restrictionIDs);
+        restrictionIDs = utilArrayUniq(restrictionIDs);
         for (i = 0; i < restrictionIDs.length; i++) {
             relation = graph.entity(restrictionIDs[i]);
             if (!relation.isComplete(graph)) continue;
@@ -122,7 +128,7 @@ export function actionConnect(nodeIDs) {
                 .filter(function(m) { return m.type === 'way'; })
                 .map(function(m) { return graph.entity(m.id); });
 
-            memberWays = _uniq(memberWays);
+            memberWays = utilArrayUniq(memberWays);
             var f = relation.memberByRole('from');
             var t = relation.memberByRole('to');
             var isUturn = (f.id === t.id);
@@ -134,8 +140,8 @@ export function actionConnect(nodeIDs) {
                 collectNodes(relation.members[j], nodes);
             }
 
-            nodes.keyfrom = _uniq(nodes.keyfrom.filter(hasDuplicates));
-            nodes.keyto = _uniq(nodes.keyto.filter(hasDuplicates));
+            nodes.keyfrom = utilArrayUniq(nodes.keyfrom.filter(hasDuplicates));
+            nodes.keyto = utilArrayUniq(nodes.keyto.filter(hasDuplicates));
 
             var filter = keyNodeFilter(nodes.keyfrom, nodes.keyto);
             nodes.from = nodes.from.filter(filter);

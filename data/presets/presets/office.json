@@ -5,15 +5,28 @@
         "office",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19",
+        "phone",
+        "website"
     ],
     "moreFields": [
-        "operator",
-        "smoking",
-        "website",
-        "phone",
+        "air_conditioning",
+        "baby_feeding",
+        "building/levels_building",
+        "ele",
         "email",
         "fax",
+        "gnis/feature_id",
+        "height_building",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "level",
+        "not/name",
+        "operator",
+        "ref/vatin",
+        "smoking",
         "wheelchair"
     ],
     "geometry": [
