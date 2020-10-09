@@ -11,7 +11,7 @@ const shell = require('shelljs');
 const YAML = require('js-yaml');
 
 const fieldSchema = require('../data/presets/schema/field.json');
-const presetSchema = require('../data/presets/schema/preset.json');
+let presetSchema = require('../data/presets/schema/preset.json');
 const deprecated = require('../data/deprecated.json');
 
 // fontawesome icons
@@ -370,6 +370,27 @@ function stripLeadingUnderscores(str) {
     .join('/');
 }
 
+function addDateRange(preset) {
+  // Add the date range to every preset
+
+  // Define the start and end date fields
+  var dateRangeFields = [
+    'start_date',
+    'end_date'
+  ];
+
+  // Make sure the preset can support fields
+  preset = preset || {};
+  preset.fields = preset.fields || [];
+
+  dateRangeFields.forEach(function(field) {
+    if (preset.fields.indexOf(field) === -1) {
+      preset.fields.unshift(field);
+    }
+  });
+
+  return preset;
+}
 
 function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
   let presets = {};
@@ -379,6 +400,7 @@ function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     let id = stripLeadingUnderscores(file.match(/presets\/presets\/([^.]*)\.json/)[1]);
 
     validate(file, preset, presetSchema);
+    presetSchema = addDateRange(preset);
 
     tstrings.presets[id] = {
       name: preset.name,

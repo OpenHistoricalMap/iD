@@ -129,7 +129,7 @@ export function uiFieldText(field, context) {
                 })
                 .merge(outlinkButton);
         } else if (field.type === 'date') {
-            wrap.selectAll('#' + fieldID)
+            wrap.selectAll('#' + field.id)
                   .attr('placeholder', 'YYYY-MM-DD');
         }
     }
