@@ -11,7 +11,7 @@ const shell = require('shelljs');
 const YAML = require('js-yaml');
 
 const fieldSchema = require('../data/presets/schema/field.json');
-let presetSchema = require('../data/presets/schema/preset.json');
+const presetSchema = require('../data/presets/schema/preset.json');
 const deprecated = require('../data/deprecated.json');
 
 // fontawesome icons
@@ -375,8 +375,8 @@ function addDateRange(preset) {
 
   // Define the start and end date fields
   var dateRangeFields = [
+    'end_date',
     'start_date',
-    'end_date'
   ];
 
   // Make sure the preset can support fields
@@ -400,7 +400,7 @@ function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
     let id = stripLeadingUnderscores(file.match(/presets\/presets\/([^.]*)\.json/)[1]);
 
     validate(file, preset, presetSchema);
-    presetSchema = addDateRange(preset);
+    preset = addDateRange(preset);
 
     tstrings.presets[id] = {
       name: preset.name,

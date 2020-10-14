@@ -100,8 +100,7 @@ export function rendererFeatures(context) {
         };
     }
 
-    defineRule('date_range', function isWithinRange(entity) {
-
+    defineRule('date_range', function isWithinRange(tags) {
       // Function to parse time (YYYY-MM-DD) to an INT
       var valueToInt = function(value) {
         return (typeof value === 'string') ?
@@ -110,10 +109,9 @@ export function rendererFeatures(context) {
       };
 
       // Convert the date range from the entity to a number
-      entity.tags = entity.tags || {};
       var entityRange = {
-        'start_date': valueToInt(entity.tags['start_date']),
-        'end_date': valueToInt(entity.tags['end_date'])
+        'start_date': valueToInt(tags.start_date),
+        'end_date': valueToInt(tags.end_date)
       };
 
       // These will be pulled from the on-screen controls
@@ -127,17 +125,17 @@ export function rendererFeatures(context) {
         selectedRange.end_date = context.features().dateRange[1];
       }
 
-      // console.log('v---------------------------------------------v');
-      // console.log('selectedRange', selectedRange);
-      // console.log('entityRange', entityRange);
-      // console.log('Return', !((selectedRange['start_date'] <= entityRange['end_date']) && (entityRange['start_date'] <= selectedRange['end_date'])));
-      // console.log('^---------------------------------------------^');
+    //   // console.log('v---------------------------------------------v');
+    //   // console.log('selectedRange', selectedRange);
+    //   // console.log('entityRange', entityRange);
+    //   // console.log('Return', !((selectedRange['start_date'] <= entityRange['end_date']) && (entityRange['start_date'] <= selectedRange['end_date'])));
+    //   // console.log('^---------------------------------------------^');
 
-      // Within range if:
-      //    the entity started before the selected range started 
-      //    and also ended after the selected range started
-      return !((selectedRange['start_date'] <= entityRange['end_date']) &&
-        (entityRange['start_date'] <= selectedRange['end_date']));
+    //   // Within range if:
+    //   //    the entity started before the selected range started
+    //   //    and also ended after the selected range started
+      return !((selectedRange.start_date <= entityRange.end_date) &&
+        (entityRange.start_date <= selectedRange.end_date));
 
     });
 
