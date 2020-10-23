@@ -615,7 +615,7 @@ export default {
         } else {
             var url = urlroot + path;
             var controller = new AbortController();
-            d3_json(url, { signal: controller.signal })
+            d3_xml(url, { signal: controller.signal })
                 .then(function(data) {
                     done(null, data);
                 })
@@ -645,7 +645,7 @@ export default {
         var options = { skipSeen: false };
 
         this.loadFromAPI(
-            '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : '') + '.json',
+            '/api/0.6/' + type + '/' + osmID + (type !== 'node' ? '/full' : ''),
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
             },
@@ -662,7 +662,7 @@ export default {
         var options = { skipSeen: false };
 
         this.loadFromAPI(
-            '/api/0.6/' + type + '/' + osmID + '/' + version + '.json',
+            '/api/0.6/' + type + '/' + osmID + '/' + version,
             function(err, entities) {
                 if (callback) callback(err, { data: entities });
             },
@@ -686,7 +686,7 @@ export default {
 
             utilArrayChunk(osmIDs, 150).forEach(function(arr) {
                 that.loadFromAPI(
-                    '/api/0.6/' + type + '.json?' + type + '=' + arr.join(),
+                    '/api/0.6/' + type + type + '=' + arr.join(),
                     function(err, entities) {
                         if (callback) callback(err, { data: entities });
                     },
@@ -1008,7 +1008,7 @@ export default {
             dispatch.call('loading');   // start the spinner
         }
 
-        var path = '/api/0.6/map.json?bbox=';
+        var path = '/api/0.6/map?bbox=';
         var options = { skipSeen: true };
 
         _tileCache.inflight[tile.id] = this.loadFromAPI(
