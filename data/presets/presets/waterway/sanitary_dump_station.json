@@ -1,15 +1,17 @@
 {
-    "icon": "temaki-storage_tank",
+    "icon": "temaki-waste",
     "fields": [
         "name",
         "operator",
         "access_simple",
         "fee",
+        "payment_multi_fee",
+        "charge_fee",
         "water_point"
     ],
     "moreFields": [
         "opening_hours",
-        "payment_multi",
+        "opening_hours/covid19",
         "seamark/type"
     ],
     "geometry": [

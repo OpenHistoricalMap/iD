@@ -1,7 +1,6 @@
 # iD - friendly JavaScript editor for [OpenStreetMap](https://www.openstreetmap.org/)
 
-[![Build Status](https://travis-ci.org/openstreetmap/iD.svg?branch=master)](https://travis-ci.org/openstreetmap/iD)
-[![Greenkeeper badge](https://badges.greenkeeper.io/openstreetmap/iD.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/openstreetmap/iD.svg?branch=develop)](https://travis-ci.org/openstreetmap/iD)
 
 ## Basics
 
@@ -19,21 +18,22 @@
 * Read up on [Contributing and the code style of iD](CONTRIBUTING.md).
 * See [open issues in the issue tracker](https://github.com/openstreetmap/iD/issues?state=open)
 if you're looking for something to do.
-* [Translate!](https://github.com/openstreetmap/iD/blob/master/CONTRIBUTING.md#translating)
+* [Translate!](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating)
 * Test a prerelease version of iD:
-  * Stable mirror of `release` branch:  http://preview.ideditor.com/release
-  * Development mirror of `master` branch + latest translations:  http://preview.ideditor.com/master
+  * Stable mirror of `release` branch:  https://preview.ideditor.com/release
+  * Development mirror of `develop` branch + latest translations: https://ideditor.netlify.com
+  * Development mirror of `v3-prototype` branch:  https://preview.ideditor.com/master
 
-Come on in, the water's lovely. More help? Ping `bhousel` on:
-* [OpenStreetMap US Slack](https://osmus-slack.herokuapp.com/)
-(`#dev` or `#general` channels)
+Come on in, the water's lovely. More help? Ping `quincylvania` or `bhousel` on:
+* [OpenStreetMap US Slack](https://slack.openstreetmap.us/)
+(`#id` or `#general` channels)
 * [OpenStreetMap IRC](https://wiki.openstreetmap.org/wiki/IRC)
 (`irc.oftc.net`, in `#osm-dev` or `#osm`)
 * [OpenStreetMap `dev` mailing list](https://wiki.openstreetmap.org/wiki/Mailing_lists)
 
 ## Prerequisites
 
-* [Node.js](https://nodejs.org/) version 6 or newer
+* [Node.js](https://nodejs.org/) version 10 or newer
 * [`git`](https://www.atlassian.com/git/tutorials/install-git/) for your platform
   * Note for Windows users:
     * Edit `$HOME\.gitconfig`:<br/>
@@ -82,7 +82,9 @@ iD is available under the [ISC License](https://opensource.org/licenses/ISC).
 See the [LICENSE.md](LICENSE.md) file for more details.
 
 iD also bundles portions of the following open source software.
+
 * [D3.js (BSD-3-Clause)](https://github.com/d3/d3)
+* [CLDR (Unicode Consortium Terms of Use)](https://github.com/unicode-cldr/cldr-json)
 * [editor-layer-index (CC-BY-SA 3.0)](https://github.com/osmlab/editor-layer-index)
 * [Font Awesome (CC-BY 4.0)](https://fontawesome.com/license)
 * [Maki (CC0 1.0)](https://github.com/mapbox/maki)

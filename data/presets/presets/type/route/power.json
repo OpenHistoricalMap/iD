@@ -1,11 +1,14 @@
 {
-    "icon": "iD-route-power",
+    "icon": "iD-power-line",
     "fields": [
         "name",
         "ref_route",
         "operator",
-        "to", 
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "distance"
     ],
     "geometry": [
         "relation"
@@ -13,6 +16,10 @@
     "tags": {
         "type": "route",
         "route": "power"
+    },
+    "reference": {
+        "key": "route",
+        "value": "power"
     },
     "name": "Power Route"
 }

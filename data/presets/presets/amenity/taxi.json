@@ -3,11 +3,14 @@
     "fields": [
         "name",
         "operator",
-        "capacity"
+        "capacity",
+        "address"
     ],
     "moreFields": [
-        "address",
+        "access_simple",
+        "brand",
         "opening_hours",
+        "opening_hours/covid19",
         "wheelchair"
     ],
     "geometry": [

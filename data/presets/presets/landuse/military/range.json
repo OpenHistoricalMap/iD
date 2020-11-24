@@ -1,5 +1,5 @@
 {
-    "icon": "temaki-military",
+    "icon": "fas-bullseye",
     "fields": [
         "name"
     ],
@@ -11,10 +11,6 @@
         "military": "range"
     },
     "addTags": {
-        "landuse": "military",
-        "military": "range"
-    },
-    "removeTags": {
         "landuse": "military",
         "military": "range"
     },

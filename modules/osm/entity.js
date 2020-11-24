@@ -1,12 +1,7 @@
-import _clone from 'lodash-es/clone';
-import _keys from 'lodash-es/keys';
-import _toPairs from 'lodash-es/toPairs';
-import _union from 'lodash-es/union';
-import _without from 'lodash-es/without';
-
 import { debug } from '../index';
 import { osmIsInterestingTag } from './tags';
-import { dataDeprecated } from '../../data/index';
+import { utilArrayUnion } from '../util/array';
+import { utilUnicodeCharsTruncated } from '../util/util';
 
 
 export function osmEntity(attrs) {
@@ -55,6 +50,29 @@ osmEntity.key = function(entity) {
     return entity.id + 'v' + (entity.v || 0);
 };
 
+var _deprecatedTagValuesByKey;
+
+osmEntity.deprecatedTagValuesByKey = function(dataDeprecated) {
+    if (!_deprecatedTagValuesByKey) {
+        _deprecatedTagValuesByKey = {};
+        dataDeprecated.forEach(function(d) {
+            var oldKeys = Object.keys(d.old);
+            if (oldKeys.length === 1) {
+                var oldKey = oldKeys[0];
+                var oldValue = d.old[oldKey];
+                if (oldValue !== '*') {
+                    if (!_deprecatedTagValuesByKey[oldKey]) {
+                        _deprecatedTagValuesByKey[oldKey] = [oldValue];
+                    } else {
+                        _deprecatedTagValuesByKey[oldKey].push(oldValue);
+                    }
+                }
+            }
+        });
+    }
+    return _deprecatedTagValuesByKey;
+};
+
 
 osmEntity.prototype = {
 
@@ -99,7 +117,7 @@ osmEntity.prototype = {
         if (copies[this.id])
             return copies[this.id];
 
-        var copy = osmEntity(this, {id: undefined, user: undefined, version: undefined});
+        var copy = osmEntity(this, { id: undefined, user: undefined, version: undefined });
         copies[this.id] = copy;
 
         return copy;
@@ -117,24 +135,28 @@ osmEntity.prototype = {
 
 
     update: function(attrs) {
-        return osmEntity(this, attrs, {v: 1 + (this.v || 0)});
+        return osmEntity(this, attrs, { v: 1 + (this.v || 0) });
     },
 
 
     mergeTags: function(tags) {
-        var merged = _clone(this.tags), changed = false;
+        var merged = Object.assign({}, this.tags);   // shallow copy
+        var changed = false;
         for (var k in tags) {
-            var t1 = merged[k],
-                t2 = tags[k];
+            var t1 = merged[k];
+            var t2 = tags[k];
             if (!t1) {
                 changed = true;
                 merged[k] = t2;
             } else if (t1 !== t2) {
                 changed = true;
-                merged[k] = _union(t1.split(/;\s*/), t2.split(/;\s*/)).join(';');
+                merged[k] = utilUnicodeCharsTruncated(
+                    utilArrayUnion(t1.split(/;\s*/), t2.split(/;\s*/)).join(';'),
+                    255 // avoid exceeding character limit; see also services/osm.js -> maxCharsForTagValue()
+                );
             }
         }
-        return changed ? this.update({tags: merged}) : this;
+        return changed ? this.update({ tags: merged }) : this;
     },
 
 
@@ -144,7 +166,7 @@ osmEntity.prototype = {
 
 
     hasNonGeometryTags: function() {
-        return _without(Object.keys(this.tags), 'area').length > 0;
+        return Object.keys(this.tags).some(function(k) { return k !== 'area'; });
     },
 
     hasParentRelations: function(resolver) {
@@ -152,9 +174,12 @@ osmEntity.prototype = {
     },
 
     hasInterestingTags: function() {
-        return _keys(this.tags).some(osmIsInterestingTag);
+        return Object.keys(this.tags).some(osmIsInterestingTag);
     },
 
+    hasWikidata: function() {
+        return !!this.tags.wikidata || !!this.tags['brand:wikidata'];
+    },
 
     isHighwayIntersection: function() {
         return false;
@@ -164,18 +189,41 @@ osmEntity.prototype = {
         return true;
     },
 
-    deprecatedTags: function() {
-        var tags = _toPairs(this.tags);
-        var deprecated = {};
+    deprecatedTags: function(dataDeprecated) {
+        var tags = this.tags;
 
+        // if there are no tags, none can be deprecated
+        if (Object.keys(tags).length === 0) return [];
+
+        var deprecated = [];
         dataDeprecated.forEach(function(d) {
-            var match = _toPairs(d.old)[0];
-            tags.forEach(function(t) {
-                if (t[0] === match[0] &&
-                    (t[1] === match[1] || match[1] === '*')) {
-                    deprecated[t[0]] = t[1];
+            var oldKeys = Object.keys(d.old);
+            var matchesDeprecatedTags = oldKeys.every(function(oldKey) {
+                if (!tags[oldKey]) return false;
+                if (d.old[oldKey] === '*') return true;
+
+                var vals = tags[oldKey].split(';').filter(Boolean);
+                if (vals.length === 0) {
+                    return false;
+                } else if (vals.length > 1) {
+                    return vals.indexOf(d.old[oldKey]) !== -1;
+                } else {
+                    if (tags[oldKey] === d.old[oldKey]) {
+                        if (d.replace && d.old[oldKey] === d.replace[oldKey]) {
+                            var replaceKeys = Object.keys(d.replace);
+                            return !replaceKeys.every(function(replaceKey) {
+                                return tags[replaceKey] === d.replace[replaceKey];
+                            });
+                        } else {
+                            return true;
+                        }
+                    }
                 }
+                return false;
             });
+            if (matchesDeprecatedTags) {
+                deprecated.push(d);
+            }
         });
 
         return deprecated;

@@ -1,7 +1,7 @@
 {
-    "icon": "fas-warehouse",
+    "icon": "temaki-carport",
     "fields": [
-        "height",
+        "{building}",
         "capacity"
     ],
     "geometry": [

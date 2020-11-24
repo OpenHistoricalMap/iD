@@ -1,5 +1,5 @@
 {
-    "icon": "iD-ferry-line",
+    "icon": "temaki-ferry",
     "geometry": [
         "line"
     ],
@@ -7,12 +7,41 @@
         "name",
         "operator",
         "duration",
-        "access", 
-        "to", 
-        "from"
+        "access",
+        "toll",
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "charge_toll",
+        "distance",
+        "dog",
+        "email",
+        "interval",
+        "maxheight",
+        "maxweight",
+        "network",
+        "oneway",
+        "opening_hours",
+        "opening_hours/covid19",
+        "phone",
+        "ref_route",
+        "reservation",
+        "roundtrip",
+        "vhf",
+        "website",
+        "wheelchair"
     ],
     "tags": {
         "route": "ferry"
     },
+    "terms": [
+        "boat",
+        "merchant vessel",
+        "ship",
+        "water bus",
+        "water shuttle",
+        "water taxi"
+    ],
     "name": "Ferry Route"
 }

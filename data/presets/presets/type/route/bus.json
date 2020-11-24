@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-bus",
+    "icon": "temaki-bus",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network",
-        "to", 
-        "from"
+        "{type/route/train}"
+    ],
+    "moreFields": [
+        "{type/route/train}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "bus"
+    },
+    "reference": {
+        "key": "route",
+        "value": "bus"
     },
     "name": "Bus Route"
 }

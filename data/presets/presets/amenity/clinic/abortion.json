@@ -1,19 +1,10 @@
 {
     "icon": "maki-hospital",
-    "fields": [
-        "name",
-        "operator",
-        "healthcare/speciality",
-        "address",
-        "building_area",
-        "opening_hours"
-    ],
     "geometry": [
         "point",
         "area"
     ],
-    "terms": [
-    ],
+    "terms": [],
     "tags": {
         "amenity": "clinic",
         "healthcare": "clinic",

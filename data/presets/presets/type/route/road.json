@@ -1,11 +1,16 @@
 {
-    "icon": "iD-route-road",
+    "icon": "iD-highway-unclassified",
     "fields": [
         "name",
         "ref_route",
         "network_road",
-        "to", 
-        "from"
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "colour",
+        "distance",
+        "roundtrip"
     ],
     "geometry": [
         "relation"
@@ -13,6 +18,10 @@
     "tags": {
         "type": "route",
         "route": "road"
+    },
+    "reference": {
+        "key": "route",
+        "value": "road"
     },
     "name": "Road Route"
 }

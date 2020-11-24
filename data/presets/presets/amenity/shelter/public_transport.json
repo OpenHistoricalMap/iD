@@ -1,11 +1,12 @@
 {
-    "icon": "maki-shelter",
+    "icon": "temaki-transit_shelter",
     "fields": [
         "name",
-        "shelter_type",
+        "operator",
         "building_area",
         "bench",
-        "lit"
+        "lit",
+        "bin"
     ],
     "geometry": [
         "point",
@@ -14,6 +15,9 @@
     "terms": [
         "bus stop",
         "metro stop",
+        "public transit shelter",
+        "public transport shelter",
+        "tram stop shelter",
         "waiting"
     ],
     "tags": {

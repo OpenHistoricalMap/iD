@@ -1,7 +1,7 @@
 {
-    "icon": "maki-shop",
+    "icon": "fas-cut",
     "geometry": [
-        "point",
+        "point", 
         "area"
     ],
     "tags": {
@@ -10,7 +10,8 @@
     "terms": [
         "art*",
         "paint*",
-        "frame"
-    ],
-    "name": "Arts and Crafts Store"
+        "frame",
+        "hobby"
+        ],
+    "name": "Arts & Crafts Store"
 }

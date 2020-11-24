@@ -1,6 +1,6 @@
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { osmEntity, osmNote } from '../osm';
-import { svgIcon } from '../svg';
+import { svgIcon } from '../svg/icon';
 
 
 export function uiViewOnOSM(context) {

@@ -3,15 +3,22 @@
     "fields": [
         "name",
         "operator",
+        "resort",
         "address",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "payment_multi",
-        "website",
-        "phone",
+        "access_simple",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "payment_multi",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",
@@ -20,5 +27,12 @@
     "tags": {
         "leisure": "resort"
     },
+    "terms": [
+        "recreation center",
+        "sanatorium",
+        "ski and snowboard resort",
+        "vacation resort",
+        "winter sports resort"
+    ],
     "name": "Resort"
 }

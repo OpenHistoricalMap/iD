@@ -1,6 +1,6 @@
 describe('iD.serviceStreetside', function() {
-    var dimensions = [64, 64],
-        context, server, streetside;
+    var dimensions = [64, 64];
+    var context, server, streetside;
 
     before(function() {
         iD.services.streetside = iD.serviceStreetside;
@@ -11,13 +11,13 @@ describe('iD.serviceStreetside', function() {
     });
 
     beforeEach(function() {
-        context = iD.Context().assetPath('../dist/');
+        context = iD.coreContext().assetPath('../dist/').init();
         context.projection
-            .scale(667544.214430109)  // z14
+            .scale(iD.geoZoomToScale(14))
             .translate([-116508, 0])  // 10,0
             .clipExtent([[0,0], dimensions]);
 
-        server = sinon.fakeServer.create();
+        server = window.fakeFetch().create();
         streetside = iD.services.streetside;
         streetside.reset();
     });
@@ -49,11 +49,11 @@ describe('iD.serviceStreetside', function() {
     });
 
     describe('#loadBubbles', function() {
-        it('fires loadedBubbles when bubbles are loaded', function() {
+        it('fires loadedBubbles when bubbles are loaded', function(done) {
             // adjust projection so that only one tile is fetched
             // (JSONP hack will return the same data for every fetch)
             context.projection
-                .scale(10680707.430881744)  // z18
+                .scale(iD.geoZoomToScale(18))
                 .translate([-1863988.9381333336, 762.8270222954452])  // 10.002,0.002
                 .clipExtent([[0,0], dimensions]);
 
@@ -79,12 +79,16 @@ describe('iD.serviceStreetside', function() {
             ];
 
             streetside.loadBubbles(context.projection, 0);  // 0 = don't fetch margin tiles
-            expect(spy).to.have.been.calledOnce;
+
+            window.setTimeout(function() {
+                expect(spy).to.have.been.calledOnce;
+                done();
+            }, 200);
         });
 
-        it('does not load bubbles around null island', function() {
+        it('does not load bubbles around null island', function(done) {
             context.projection
-                .scale(10680707.430881744)  // z18
+                .scale(iD.geoZoomToScale(18))
                 .translate([0, 0])
                 .clipExtent([[0,0], dimensions]);
 
@@ -110,7 +114,11 @@ describe('iD.serviceStreetside', function() {
             ];
 
             streetside.loadBubbles(context.projection, 0);  // 0 = don't fetch margin tiles
-            expect(spy).to.have.been.not.called;
+
+            window.setTimeout(function() {
+                expect(spy).to.have.been.not.called;
+                done();
+            }, 200);
         });
     });
 

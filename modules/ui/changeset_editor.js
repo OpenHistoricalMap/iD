@@ -1,11 +1,12 @@
-import _uniqBy from 'lodash-es/uniqBy';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 
-import { t } from '../util/locale';
-import { svgIcon } from '../svg';
-import { uiCombobox, uiField, uiFormFields } from './index';
-import { utilRebind, utilTriggerEvent } from '../util';
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
+import { svgIcon } from '../svg/icon';
+import { uiCombobox} from './combobox';
+import { uiField } from './field';
+import { uiFormFields } from './form_fields';
+import { utilArrayUniqBy, utilRebind, utilTriggerEvent } from '../util';
 
 
 export function uiChangesetEditor(context) {
@@ -27,7 +28,7 @@ export function uiChangesetEditor(context) {
 
         if (!_fieldsArr) {
             initial = true;
-            var presets = context.presets();
+            var presets = presetManager;
 
             _fieldsArr = [
                 uiField(context, presets.field('comment'), null, { show: true, revert: false }),
@@ -38,7 +39,7 @@ export function uiChangesetEditor(context) {
             _fieldsArr.forEach(function(field) {
                 field
                     .on('change', function(t, onInput) {
-                        dispatch.call('change', field, t, onInput);
+                        dispatch.call('change', field, undefined, t, onInput);
                     });
             });
         }
@@ -54,7 +55,7 @@ export function uiChangesetEditor(context) {
 
 
         if (initial) {
-            var commentField = selection.select('#preset-input-comment');
+            var commentField = selection.select('.form-field-comment textarea');
             var commentNode = commentField.node();
 
             if (commentNode) {
@@ -72,15 +73,13 @@ export function uiChangesetEditor(context) {
                     if (err) return;
 
                     var comments = changesets.map(function(changeset) {
-                        return {
-                            title: changeset.tags.comment,
-                            value: changeset.tags.comment
-                        };
-                    });
+                        var comment = changeset.tags.comment;
+                        return comment ? { title: comment, value: comment } : null;
+                    }).filter(Boolean);
 
                     commentField
                         .call(commentCombo
-                            .data(_uniqBy(comments, 'title'))
+                            .data(utilArrayUniqBy(comments, 'title'))
                         );
                 });
             }

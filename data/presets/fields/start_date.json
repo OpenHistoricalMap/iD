@@ -3,5 +3,8 @@
     "type": "date",
     "universal": true,
     "label": "Start Date",
-    "placeholder": "YYYY-MM-DD"
+    "placeholder": "YYYY-MM-DD",
+    "terms": [
+        "inception"
+    ]
 }

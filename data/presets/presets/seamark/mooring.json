@@ -1,4 +1,5 @@
 {
+    "icon": "temaki-buoy",
     "fields": [
         "ref",
         "operator",
@@ -9,11 +10,11 @@
         "point"
     ],
     "terms": [
-    	"dolphin",
-    	"pile",
-    	"bollard",
-    	"buoy",
-    	"post"
+        "dolphin",
+        "pile",
+        "bollard",
+        "buoy",
+        "post"
     ],
     "tags": {
         "seamark:type": "mooring"

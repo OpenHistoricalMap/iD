@@ -1,6 +1,7 @@
 {
     "icon": "maki-stadium",
     "fields": [
+        "{playground}",
         "bench"
     ],
     "geometry": [
@@ -10,8 +11,8 @@
     "tags": {
         "playground": "roundabout"
     },
-    "name": "Play Roundabout",
     "terms": [
         "merry-go-round"
-    ]
+    ],
+    "name": "Play Roundabout"
 }

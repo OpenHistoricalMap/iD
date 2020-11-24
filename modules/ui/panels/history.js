@@ -1,8 +1,5 @@
-import _filter from 'lodash-es/filter';
-
-import { t } from '../../util/locale';
+import { t, localizer } from '../../core/localizer';
 import { svgIcon } from '../../svg';
-import { utilDetect } from '../../util/detect';
 
 
 export function uiPanelHistory(context) {
@@ -10,14 +7,13 @@ export function uiPanelHistory(context) {
 
     function displayTimestamp(timestamp) {
         if (!timestamp) return t('info_panels.history.unknown');
-        var detected = utilDetect();
         var options = {
             day: 'numeric', month: 'short', year: 'numeric',
             hour: 'numeric', minute: 'numeric', second: 'numeric'
         };
         var d = new Date(timestamp);
         if (isNaN(d.getTime())) return t('info_panels.history.unknown');
-        return d.toLocaleString(detected.locale, options);
+        return d.toLocaleString(localizer.localeCode(), options);
     }
 
 
@@ -88,10 +84,18 @@ export function uiPanelHistory(context) {
         links
             .append('a')
             .attr('class', 'changeset-osmcha-link')
-            .attr('href', 'https://osmcha.mapbox.com/changesets/' + changeset)
+            .attr('href', 'https://osmcha.org/changesets/' + changeset)
             .attr('target', '_blank')
             .attr('tabindex', -1)
             .text('OSMCha');
+
+        links
+            .append('a')
+            .attr('class', 'changeset-achavi-link')
+            .attr('href', 'https://overpass-api.de/achavi/?changeset=' + changeset)
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .text('Achavi');
     }
 
 
@@ -104,7 +108,8 @@ export function uiPanelHistory(context) {
             selected = [ t('note.note') + ' ' + selectedNoteID ];
             note = osm.getNote(selectedNoteID);
         } else {                           // selected 1..n entities
-            selected = _filter(context.selectedIDs(), function(e) { return context.hasEntity(e); });
+            selected = context.selectedIDs()
+                .filter(function(e) { return context.hasEntity(e); });
             if (selected.length) {
                 entity = context.entity(selected[0]);
             }
@@ -181,6 +186,28 @@ export function uiPanelHistory(context) {
             return;
         }
 
+        var links = selection
+            .append('div')
+            .attr('class', 'links');
+
+        if (osm) {
+            links
+                .append('a')
+                .attr('class', 'view-history-on-osm')
+                .attr('href', osm.historyURL(entity))
+                .attr('target', '_blank')
+                .attr('tabindex', -1)
+                .attr('title', t('info_panels.history.link_text'))
+                .text('OSM');
+        }
+        links
+            .append('a')
+            .attr('class', 'pewu-history-viewer-link')
+            .attr('href', 'https://pewu.github.io/osm-history/#/' + entity.type + '/' + entity.osmId())
+            .attr('target', '_blank')
+            .attr('tabindex', -1)
+            .text('PeWu');
+
         var list = selection
             .append('ul');
 
@@ -205,18 +232,6 @@ export function uiPanelHistory(context) {
             .append('li')
             .text(t('info_panels.history.changeset') + ':')
             .call(displayChangeset, entity.changeset);
-
-        if (osm) {
-            selection
-                .append('a')
-                .attr('class', 'view-history-on-osm')
-                .attr('target', '_blank')
-                .attr('tabindex', -1)
-                .attr('href', osm.historyURL(entity))
-                .call(svgIcon('#iD-icon-out-link', 'inline'))
-                .append('span')
-                .text(t('info_panels.history.link_text'));
-        }
     }
 
 

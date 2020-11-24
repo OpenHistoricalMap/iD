@@ -1,5 +1,6 @@
 {
     "fields": [
+        "emergency_combo"
     ],
     "geometry": [
         "line"
@@ -7,7 +8,6 @@
     "tags": {
         "emergency": "destination"
     },
-    "terms": [],
     "name": "Emergency Access Destination",
     "searchable": false,
     "matchScore": 0.01

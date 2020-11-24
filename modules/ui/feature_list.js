@@ -2,22 +2,24 @@ import {
     event as d3_event,
     select as d3_select
 } from 'd3-selection';
-
 import * as sexagesimal from '@mapbox/sexagesimal';
-import { t } from '../util/locale';
+
+import { presetManager } from '../presets';
+import { t } from '../core/localizer';
 import { dmsCoordinatePair } from '../util/units';
-import { coreGraph } from '../core';
-import { geoExtent, geoChooseEdge } from '../geo';
-import { modeSelect } from '../modes';
-import { osmEntity } from '../osm';
+import { coreGraph } from '../core/graph';
+import { geoSphericalDistance } from '../geo/geo';
+import { geoExtent } from '../geo';
+import { modeSelect } from '../modes/select';
+import { osmEntity } from '../osm/entity';
 import { services } from '../services';
-import { svgIcon } from '../svg';
+import { svgIcon } from '../svg/icon';
 import { uiCmd } from './cmd';
 
 import {
     utilDisplayName,
     utilDisplayType,
-    utilEntityOrMemberSelector,
+    utilHighlightEntities,
     utilNoAuto
 } from '../util';
 
@@ -113,21 +115,23 @@ export function uiFeatureList(context) {
 
 
         function features() {
-            var entities = {};
             var result = [];
             var graph = context.graph();
+            var visibleCenter = context.map().extent().center();
             var q = search.property('value').toLowerCase();
 
             if (!q) return result;
 
-            var idMatch = q.match(/^([nwr])([0-9]+)$/);
+            var idMatch = q.match(/(?:^|\W)(node|way|relation|[nwr])\W?0*([1-9]\d*)(?:\W|$)/i);
 
             if (idMatch) {
+                var elemType = idMatch[1].charAt(0);
+                var elemId = idMatch[2];
                 result.push({
-                    id: idMatch[0],
-                    geometry: idMatch[1] === 'n' ? 'point' : idMatch[1] === 'w' ? 'line' : 'relation',
-                    type: idMatch[1] === 'n' ? t('inspector.node') : idMatch[1] === 'w' ? t('inspector.way') : t('inspector.relation'),
-                    name: idMatch[2]
+                    id: elemType + elemId,
+                    geometry: elemType === 'n' ? 'point' : elemType === 'w' ? 'line' : 'relation',
+                    type: elemType === 'n' ? t('inspector.node') : elemType === 'w' ? t('inspector.way') : t('inspector.relation'),
+                    name: elemId
                 });
             }
 
@@ -144,37 +148,35 @@ export function uiFeatureList(context) {
                 });
             }
 
-            function addEntity(entity) {
-                if (entity.id in entities || result.length > 200)
-                    return;
-
-                entities[entity.id] = true;
+            var allEntities = graph.entities;
+            var localResults = [];
+            for (var id in allEntities) {
+                var entity = allEntities[id];
+                if (!entity) continue;
 
                 var name = utilDisplayName(entity) || '';
-                if (name.toLowerCase().indexOf(q) >= 0) {
-                    var matched = context.presets().match(entity, graph);
-                    var type = (matched && matched.name()) || utilDisplayType(entity.id);
+                if (name.toLowerCase().indexOf(q) < 0) continue;
 
-                    result.push({
-                        id: entity.id,
-                        entity: entity,
-                        geometry: context.geometry(entity.id),
-                        type: type,
-                        name: name
-                    });
-                }
+                var matched = presetManager.match(entity, graph);
+                var type = (matched && matched.name()) || utilDisplayType(entity.id);
+                var extent = entity.extent(graph);
+                var distance = extent ? geoSphericalDistance(visibleCenter, extent.center()) : 0;
 
-                graph.parentRelations(entity).forEach(function(parent) {
-                    addEntity(parent);
+                localResults.push({
+                    id: entity.id,
+                    entity: entity,
+                    geometry: entity.geometry(graph),
+                    type: type,
+                    name: name,
+                    distance: distance
                 });
-            }
 
-            var visible = context.surface().selectAll('.point, .line, .area').nodes();
-            for (var i = 0; i < visible.length && result.length <= 200; i++) {
-                var datum = visible[i].__data__;
-                var entity = datum && datum.properties && datum.properties.entity;
-                if (entity) { addEntity(entity); }
+                if (localResults.length > 100) break;
             }
+            localResults = localResults.sort(function byDistance(a, b) {
+                return a.distance - b.distance;
+            });
+            result = result.concat(localResults);
 
             (_geocodeResults || []).forEach(function(d) {
                 if (d.osm_type && d.osm_id) {    // some results may be missing these - #1890
@@ -192,7 +194,7 @@ export function uiFeatureList(context) {
 
                     var tempEntity = osmEntity(attrs);
                     var tempGraph = coreGraph([tempEntity]);
-                    var matched = context.presets().match(tempEntity, tempGraph);
+                    var matched = presetManager.match(tempEntity, tempGraph);
                     var type = (matched && matched.name()) || utilDisplayType(id);
 
                     result.push({
@@ -207,6 +209,28 @@ export function uiFeatureList(context) {
                 }
             });
 
+            if (q.match(/^[0-9]+$/)) {
+                // if query is just a number, possibly an OSM ID without a prefix
+                result.push({
+                    id: 'n' + q,
+                    geometry: 'point',
+                    type: t('inspector.node'),
+                    name: q
+                });
+                result.push({
+                    id: 'w' + q,
+                    geometry: 'line',
+                    type: t('inspector.way'),
+                    name: q
+                });
+                result.push({
+                    id: 'r' + q,
+                    geometry: 'relation',
+                    type: t('inspector.relation'),
+                    name: q
+                });
+            }
+
             return result;
         }
 
@@ -216,8 +240,6 @@ export function uiFeatureList(context) {
             var results = features();
 
             list.classed('filtered', value.length);
-
-            var noResultsWorldwide = _geocodeResults && _geocodeResults.length === 0;
 
             var resultsIndicator = list.selectAll('.no-results-item')
                 .data([0])
@@ -231,7 +253,7 @@ export function uiFeatureList(context) {
                 .attr('class', 'entity-name');
 
             list.selectAll('.no-results-item .entity-name')
-                .text(noResultsWorldwide ? t('geocoder.no_results_worldwide') : t('geocoder.no_results_visible'));
+                .text(t('geocoder.no_results_worldwide'));
 
             if (services.geocoder) {
               list.selectAll('.geocode-item')
@@ -302,32 +324,31 @@ export function uiFeatureList(context) {
         function mouseover(d) {
             if (d.id === -1) return;
 
-            context.surface().selectAll(utilEntityOrMemberSelector([d.id], context.graph()))
-                .classed('hover', true);
+            utilHighlightEntities([d.id], true, context);
         }
 
 
-        function mouseout() {
-            context.surface().selectAll('.hover')
-                .classed('hover', false);
+        function mouseout(d) {
+            if (d.id === -1) return;
+
+            utilHighlightEntities([d.id], false, context);
         }
 
 
         function click(d) {
             d3_event.preventDefault();
+
             if (d.location) {
                 context.map().centerZoomEase([d.location[1], d.location[0]], 19);
-            }
-            else if (d.entity) {
-                if (d.entity.type === 'node') {
-                    context.map().center(d.entity.loc);
-                } else if (d.entity.type === 'way') {
-                    var center = context.projection(context.map().center());
-                    var edge = geoChooseEdge(context.childNodes(d.entity), center, context.projection);
-                    context.map().center(edge.loc);
-                }
+
+            } else if (d.entity) {
+                utilHighlightEntities([d.id], false, context);
+
                 context.enter(modeSelect(context, [d.entity.id]));
+                context.map().zoomToEase(d.entity);
+
             } else {
+                // download, zoom to, and select the entity with the given ID
                 context.zoomToEntity(d.id);
             }
         }

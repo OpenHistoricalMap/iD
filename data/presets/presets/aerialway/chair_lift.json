@@ -5,6 +5,7 @@
     ],
     "fields": [
         "name",
+        "oneway_yes",
         "aerialway/occupancy",
         "aerialway/capacity",
         "aerialway/duration",
@@ -14,5 +15,10 @@
     "tags": {
         "aerialway": "chair_lift"
     },
+    "terms": [
+        "aerial cable",
+        "skiing",
+        "snowboarding"
+    ],
     "name": "Chair Lift"
 }

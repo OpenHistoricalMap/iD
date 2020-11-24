@@ -4,14 +4,20 @@
         "name",
         "operator",
         "address",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19",
+        "website"
     ],
     "moreFields": [
-        "payment_multi",
-        "website",
-        "phone",
+        "brand",
         "email",
         "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "payment_multi",
+        "phone",
         "wheelchair"
     ],
     "geometry": [

@@ -1,11 +1,8 @@
 {
-    "icon": "maki-mountain",
+    "icon": "temaki-island_trees_building",
     "geometry": [
         "point",
         "area"
-    ],
-    "fields": [
-        "name"
     ],
     "terms": [
         "archipelago",

@@ -3,21 +3,26 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "building_area",
         "social_facility",
         "social_facility_for"
     ],
     "moreFields": [
-        "opening_hours",
-        "wheelchair",
+        "baby_feeding",
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "website",
+        "level",
+        "opening_hours",
+        "opening_hours/covid19",
         "phone",
-        "email",
-        "fax"
+        "website",
+        "wheelchair"
     ],
     "geometry": [
         "point",

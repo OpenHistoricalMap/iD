@@ -1,10 +1,11 @@
 {
-    "icon": "maki-dog-park",
+    "icon": "temaki-pet_grooming",
     "geometry": [
         "point",
         "area"
     ],
     "terms": [
+        "cat",
         "dog"
     ],
     "tags": {

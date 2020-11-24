@@ -1,14 +1,20 @@
 {
-    "icon": "iD-route-foot",
+    "icon": "fas-hiking",
     "fields": [
         "name",
         "ref_route",
         "operator",
         "network_foot",
-        "description",
+        "network/type",
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
         "distance",
-        "to", 
-        "from"
+        "roundtrip"
     ],
     "geometry": [
         "relation"
@@ -16,6 +22,10 @@
     "tags": {
         "type": "route",
         "route": "hiking"
+    },
+    "reference": {
+        "key": "route",
+        "value": "hiking"
     },
     "name": "Hiking Route"
 }

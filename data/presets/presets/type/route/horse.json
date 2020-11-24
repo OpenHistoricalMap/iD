@@ -1,14 +1,19 @@
 {
-    "icon": "iD-route-horse",
+    "icon": "maki-horse-riding",
     "fields": [
         "name",
         "ref_route",
         "operator",
         "network_horse",
-        "description",
-        "distance",
-        "to", 
-        "from"
+        "network/type",
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
+        "distance"
     ],
     "geometry": [
         "relation"
@@ -16,6 +21,10 @@
     "tags": {
         "type": "route",
         "route": "horse"
+    },
+    "reference": {
+        "key": "route",
+        "value": "horse"
     },
     "name": "Riding Route"
 }

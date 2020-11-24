@@ -1,14 +1,17 @@
 {
-    "icon": "maki-beer",
+    "icon": "fas-beer",
     "fields": [
         "name",
         "address",
-        "building",
+        "opening_hours",
+        "opening_hours/covid19",
         "outdoor_seating",
         "brewery"
     ],
     "moreFields": [
-        "{amenity/bar}"
+        "{amenity/bar}",
+        "building_area",
+        "cuisine"
     ],
     "geometry": [
         "point",

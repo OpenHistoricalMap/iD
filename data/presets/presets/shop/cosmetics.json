@@ -1,5 +1,5 @@
 {
-    "icon": "maki-shop",
+    "icon": "temaki-lipstick",
     "geometry": [
         "point",
         "area"
@@ -7,5 +7,9 @@
     "tags": {
         "shop": "cosmetics"
     },
+    "terms": [
+        "make-up",
+        "makeup"
+    ],
     "name": "Cosmetics Store"
 }

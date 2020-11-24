@@ -1,5 +1,5 @@
 {
-    "icon": "maki-shelter",
+    "icon": "temaki-sleep_shelter",
     "fields": [
         "name",
         "operator",
@@ -13,5 +13,14 @@
         "amenity": "shelter",
         "shelter_type": "lean_to"
     },
+    "terms": [
+        "alpine hut",
+        "cabin",
+        "leanto",
+        "lodging",
+        "overnight accommodations",
+        "sleeping shelter",
+        "wilderness hut"
+    ],
     "name": "Lean-To"
 }

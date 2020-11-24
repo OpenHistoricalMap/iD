@@ -18,15 +18,2417 @@ _Breaking changes, which may affect downstream projects or sites that embed iD, 
 #### :boom: Breaking Changes
 #### :tada: New Features
 #### :sparkles: Usability
+#### :white_check_mark: Validation
 #### :bug: Bugfixes
 #### :earth_asia: Localization
 #### :hourglass: Performance
 #### :mortar_board: Walkthrough / Help
 #### :rocket: Presets
+#### :hammer: Development
 
 [#xxxx]: https://github.com/openstreetmap/iD/issues/xxxx
 [@xxxx]: https://github.com/xxxx
 -->
+
+# 2.18.5
+##### 2020-Sep-08
+
+#### :newspaper: News
+* The OpenStreetMap Foundation is now [directly supporting](https://wiki.osmfoundation.org/wiki/Board/Minutes/2020-09#2020.2FRes42_Accept_contract_with_Quincy_Morgan) Quincy Morgan ([@quincylvania](https://github.com/quincylvania)) as a full-time maintainer of iD
+
+#### :sparkles: Usability
+* Open links from OpenStreetMap Notes in new tabs ([#7883], [#7893], thanks [@JeeZeh])
+* Don't say lines and areas aren't visible enough to disconnect when all their connected points are onscreen ([#7944])
+* Leave behind the area tags when extracting a point from a building part or indoor room ([#7862])
+* Hide background imagery sources that are blocked by the OpenStreetMap API ([#7871], [#7905])
+
+[#7883]: https://github.com/openstreetmap/iD/issues/7883
+[#7893]: https://github.com/openstreetmap/iD/issues/7893
+[#7944]: https://github.com/openstreetmap/iD/issues/7944
+[#7862]: https://github.com/openstreetmap/iD/issues/7862
+[#7871]: https://github.com/openstreetmap/iD/issues/7871
+[#7905]: https://github.com/openstreetmap/iD/issues/7905
+
+[@JeeZeh]: https://github.com/JeeZeh
+
+#### :white_check_mark: Validation
+* Properly let tags on multipolygons fix crossing issues ([#7935])
+* Use tram crossings instead of railway crossings when connecting paths and roads to tram tracks ([#7902])
+* Deprecate `fast_food=pizza` and `fast_food=shawarma` tags
+
+[#7935]: https://github.com/openstreetmap/iD/issues/7935
+[#7902]: https://github.com/openstreetmap/iD/issues/7902
+
+#### :bug: Bugfixes
+* Fix problem where nodes could not be dragged after long-clicking if something was previously selected ([#7826])
+* Fix bug where undoing to the second-to-first node of a way would delete the whole way and exit drawing ([#7772])
+* Correct problem where selected text could not be copied via the keyboard shortcut while features were selected ([#7908])
+* Fix issue where adjusting a selected line or area could hide the quick fixes ([#7386])
+* Fix issue where the Wikipedia field would not default to the user's preferred language ([#7890])
+* Properly show scroll bars for overflowing text area inputs ([#7869])
+
+[#7826]: https://github.com/openstreetmap/iD/issues/7826
+[#7772]: https://github.com/openstreetmap/iD/issues/7772
+[#7908]: https://github.com/openstreetmap/iD/issues/7908
+[#7386]: https://github.com/openstreetmap/iD/issues/7386
+[#7890]: https://github.com/openstreetmap/iD/issues/7890
+[#7869]: https://github.com/openstreetmap/iD/issues/7869
+
+#### :mortar_board: Walkthrough / Help
+* Use a consistent term for photo overlays in the Help pane ([#7859], thanks [@mikini])
+
+[#7859]: https://github.com/openstreetmap/iD/issues/7859
+
+[@mikini]: https://github.com/mikini
+
+#### :rocket: Presets
+
+###### New Presets
+* Add Wig Shop preset ([#7878], [#7912], thanks [@fakeharahman])
+* Add Irish Pub preset ([#7852], thanks [@rory])
+* Add Portable Toilet preset ([#7832], [#7783], thanks [@Nimisha94])
+* Add Tram-Road Crossing and Tram-Path Crossing presets ([#7902])
+* Add Open Road Toll preset ([#7408])
+* Add Juice Fast Food preset ([#7904])
+* Add Dovecote preset ([#7916])
+* Add generic Telecom Feature preset ([#7934])
+* Add Gymnasium preset ([#7818])
+* Add Railway-Railway Crossing preset
+
+###### Changed Presets
+* Add "snorkel" as search term of Scuba Shop ([#7857], [#7874], thanks [@fakeharahman])
+* Rename Tourist Information Office preset to Visitor Center and add search terms ([#7764])
+* Add search terms to the Quarry preset ([#7730])
+* Support Cave Entrance features as nodes that are part of ways ([#7945])
+* Support Emergency Water Tank features as areas and add more fields ([#7915])
+* Update icon for Viewpoint ([#7851])
+* Rename Railway Crossing (Road) preset to Railway-Road Crossing
+* Rename Railway Crossing (Path) preset to Railway-Path Crossing
+
+###### New and Changed Fields
+* Add Units field to Apartment Building ([#7856], [#7896], thanks [@ogbeche77])
+* Add additional fields to Defibrillator ([#7925], thanks [@nlehuby])
+* Add Type field to Parking Garage Entrance / Exit ([#7900], [#7909], thanks [@brokemyspoke])
+* Show Website and Telephone fields by default on office presets ([#7865], [#7875], thanks [@thibaultmol])
+* Add more fields to Ferry Route
+* Show Diet Types field by default on Restaurant ([#7918])
+
+[#7832]: https://github.com/openstreetmap/iD/issues/7832
+[#7783]: https://github.com/openstreetmap/iD/issues/7783
+[#7851]: https://github.com/openstreetmap/iD/issues/7851
+[#7878]: https://github.com/openstreetmap/iD/issues/7878
+[#7912]: https://github.com/openstreetmap/iD/issues/7912
+[#7852]: https://github.com/openstreetmap/iD/issues/7852
+[#7902]: https://github.com/openstreetmap/iD/issues/7902
+[#7408]: https://github.com/openstreetmap/iD/issues/7408
+[#7904]: https://github.com/openstreetmap/iD/issues/7904
+[#7916]: https://github.com/openstreetmap/iD/issues/7916
+[#7934]: https://github.com/openstreetmap/iD/issues/7934
+[#7818]: https://github.com/openstreetmap/iD/issues/7818
+[#7764]: https://github.com/openstreetmap/iD/issues/7764
+[#7857]: https://github.com/openstreetmap/iD/issues/7857
+[#7874]: https://github.com/openstreetmap/iD/issues/7874
+[#7730]: https://github.com/openstreetmap/iD/issues/7730
+[#7945]: https://github.com/openstreetmap/iD/issues/7945
+[#7915]: https://github.com/openstreetmap/iD/issues/7915
+[#7856]: https://github.com/openstreetmap/iD/issues/7856
+[#7896]: https://github.com/openstreetmap/iD/issues/7896
+[#7925]: https://github.com/openstreetmap/iD/issues/7925
+[#7900]: https://github.com/openstreetmap/iD/issues/7900
+[#7909]: https://github.com/openstreetmap/iD/issues/7909
+[#7865]: https://github.com/openstreetmap/iD/issues/7865
+[#7875]: https://github.com/openstreetmap/iD/issues/7875
+[#7918]: https://github.com/openstreetmap/iD/issues/7918
+
+[@fakeharahman]: https://github.com/fakeharahman
+[@Nimisha94]: https://github.com/Nimisha94
+[@rory]: https://github.com/rory
+[@ogbeche77]: https://github.com/ogbeche77
+[@nlehuby]: https://github.com/nlehuby
+[@brokemyspoke]: https://github.com/brokemyspoke
+[@thibaultmol]: https://github.com/thibaultmol
+
+#### :hammer: Development
+* Replace unnecessary logic in the raw tag editor ([#7932], thanks [@til-schneider])
+* Fix export of `geoVecLengthSquare` ([#7894], thanks [@til-schneider])
+* Fix spelling mistakes in markdown files and code comments ([#7892], [#7897] thanks [@peternewman])
+* :warning: `serviceOsm.imageryBlacklists` has been renamed to `serviceOsm.imageryBlocklists` and now returns an array of `RegExp` objects rather than strings
+* Remove redundant `coreContext()` call ([#7926])
+
+[#7932]: https://github.com/openstreetmap/iD/issues/7932
+[#7894]: https://github.com/openstreetmap/iD/issues/7894
+[#7892]: https://github.com/openstreetmap/iD/issues/7892
+[#7926]: https://github.com/openstreetmap/iD/issues/7926
+[#7897]: https://github.com/openstreetmap/iD/issues/7897
+
+[@til-schneider]: https://github.com/til-schneider
+[@peternewman]: https://github.com/peternewman
+
+# 2.18.4
+##### 2020-Jul-31
+
+#### :white_check_mark: Validation
+* Offer to upgrade `access=customer` tag to `access=customers` ([#7831], [#7836], thanks [@sun-geo])
+
+[#7831]: https://github.com/openstreetmap/iD/issues/7831
+[#7836]: https://github.com/openstreetmap/iD/issues/7836
+
+[@sun-geo]: https://github.com/sun-geo
+
+#### :bug: Bugfixes
+* Fix critical bug where iD would be unusable in some places ([#7858])
+* Fix issue with background layers using `CRS=EPSG:4326` on WMS version 1.3.0 ([#7557])
+* Fix typo in message for multiple features that are too bendy to straighten ([#7845], thanks [@manfredbrandl])
+* Make sure the Add Note label in the Help pane matches the toolbar label ([#7841])
+
+[#7858]: https://github.com/openstreetmap/iD/issues/7858
+[#7557]: https://github.com/openstreetmap/iD/issues/7557
+[#7845]: https://github.com/openstreetmap/iD/issues/7845
+[#7841]: https://github.com/openstreetmap/iD/issues/7841
+
+[@manfredbrandl]: https://github.com/manfredbrandl
+
+# 2.18.3
+##### 2020-Jul-22
+
+#### :bug: Bugfixes
+* Fix issue where selected features would auto-center after deleting or navigating nodes in ways ([#7820])
+* Fix some non-loading background imagery layers ([#7823])
+* Properly update the inspector when switching between features with generic presets ([#7827])
+* Fix broken Browse button for custom map data files ([#7828])
+
+[#7820]: https://github.com/openstreetmap/iD/issues/7820
+[#7823]: https://github.com/openstreetmap/iD/issues/7823
+[#7827]: https://github.com/openstreetmap/iD/issues/7827
+[#7828]: https://github.com/openstreetmap/iD/issues/7828
+
+# 2.18.2
+##### 2020-Jul-21
+
+#### :hammer: Development
+* Fix `coreContext.preauth` endpoint
+
+# 2.18.1
+##### 2020-Jul-20
+
+#### :rocket: Presets
+* Add search term to Arts & Crafts Store ([#7811], thanks [@nisargshh])
+
+[#7811]: https://github.com/openstreetmap/iD/issues/7811
+[@nisargshh]: https://github.com/nisargshh
+
+#### :hammer: Development
+* Re-add `coreContext.locale` endpoint
+
+# 2.18.0
+##### 2020-Jul-20
+
+#### :mega: Release Highlights
+* :raised_hand_with_fingers_splayed: **Touchscreen support!** We've finally optimized iD for multi-touch mapping on tablets and 2-in-1 devices.<br/>
+_Long-press on features to open the edit menu. Review the Help pane to see what else you can do._
+* :card_index_dividers: **Multiselection editing** has been supercharged, so you can update many features together instead of one at a time.<br/>
+_<kbd>⇧ Shift</kbd> + click to select multiple features. On touchscreens, tap-and-hold one feature, then tap others to select them too._
+* :ballot_box_with_check: **[Osmose](http://osmose.openstreetmap.fr)** data quality issues can now be browsed and resolved within iD. Thanks, [@SilentSpike], for this integration!<br/>
+_Press <kbd>F</kbd> to open the Map Data pane and toggle on Osmose Issues under Data Layers._
+
+[@SilentSpike]: https://github.com/SilentSpike
+
+#### :tada: New Features
+You can now:
+
+* Open the edit menu on touchscreens by long-pressing on features ([#7577])
+* Create multiselections on touchscreens by holding one feature while tapping additional features ([#7590])
+* Add nodes to ways on touchscreens by double-tapping and dragging midpoints ([#2677])
+* Drag nodes to reposition them on touchscreens ([#7415])
+* Map with a stylus, including when navigating, selecting, drawing, and dragging ([#1981], [#7396])
+* Navigate the map with multi-touch in Edge and Internet Explorer 11 ([#6598])
+* Use <kbd>Space</kbd> as an alternative to left-click for selecting and deselecting features ([#3843])
+* Open the edit menu by long-clicking or holding down <kbd>Space</kbd> while hovering over features
+* Nudge selected features with the arrow keys when holding <kbd>⇧ Shift</kbd> ([#7186])
+* Copy and paste features via the edit menu, including on touchscreens ([#2508])
+* Edit the fields and tags of multiple selected features all at once ([#1761], [#7262], [#7306])
+* View the issues shared by multiple selected features ([#7324])
+* Browse and resolve Osmose quality assurance issues ([#5682], [#7095], thanks [@SilentSpike])
+* Add basic WMS endpoints as custom background layers ([#4977], [#7510], thanks [@1ec5])
+
+[@SilentSpike]: https://github.com/SilentSpike
+[@1ec5]: https://github.com/1ec5
+
+[#7577]: https://github.com/openstreetmap/iD/issues/7577
+[#7590]: https://github.com/openstreetmap/iD/issues/7590
+[#2677]: https://github.com/openstreetmap/iD/issues/2677
+[#7415]: https://github.com/openstreetmap/iD/issues/7415
+[#1981]: https://github.com/openstreetmap/iD/issues/1981
+[#7396]: https://github.com/openstreetmap/iD/issues/7396
+[#6598]: https://github.com/openstreetmap/iD/issues/6598
+[#3843]: https://github.com/openstreetmap/iD/issues/3843
+[#7186]: https://github.com/openstreetmap/iD/issues/7186
+[#7186]: https://github.com/openstreetmap/iD/issues/7186
+[#2508]: https://github.com/openstreetmap/iD/issues/2508
+[#1761]: https://github.com/openstreetmap/iD/issues/1761
+[#7262]: https://github.com/openstreetmap/iD/issues/7262
+[#7306]: https://github.com/openstreetmap/iD/issues/7306
+[#7324]: https://github.com/openstreetmap/iD/issues/7324
+[#5682]: https://github.com/openstreetmap/iD/issues/5682
+[#7095]: https://github.com/openstreetmap/iD/issues/7095
+[#4977]: https://github.com/openstreetmap/iD/issues/4977
+[#7510]: https://github.com/openstreetmap/iD/issues/7510
+
+#### :boom: Breaking Changes
+* Pressing <kbd>Space</kbd> with features selected no longer opens the edit menu, since the spacebar can now be used to select and deselect things. You can use the [menu key](https://en.wikipedia.org/wiki/Menu_key) instead, or hold down <kbd>Space</kbd> with the cursor hovering over a feature
+* :warning: There are numerous under-the-hood code changes. See the **Development** section below for details
+
+#### :sparkles: Usability
+
+###### Interactions
+* Don't show tooltips for non-mouse interactions ([#6035])
+* Flash feedback when tapping some buttons on touchscreens ([#7699])
+* Use larger targets for touch and stylus input to make interactions easier ([#7643])
+* Prevent browser page navigation when swiping with a multi-touch trackpad or mouse in the map ([#5552], [#7659])
+* Don't zoom the entire interface via double-tap or pinch-to-zoom on touchscreens ([#6049])
+* Disable elastic page bouncing on standalone iD ([#7576])
+* Make it easier to select features via clicking with a multi-touch mouse
+
+[#6035]: https://github.com/openstreetmap/iD/issues/6035
+[#7699]: https://github.com/openstreetmap/iD/issues/7699
+[#7643]: https://github.com/openstreetmap/iD/issues/7643
+[#5552]: https://github.com/openstreetmap/iD/issues/5552
+[#7659]: https://github.com/openstreetmap/iD/issues/7659
+[#6049]: https://github.com/openstreetmap/iD/issues/6049
+[#7576]: https://github.com/openstreetmap/iD/issues/7576
+
+###### Operations
+* Support disconnecting multiple selected features from each other and from all connected features ([#7652])
+* Support circularizing multiple selected areas and closed lines at once ([#7326])
+* Make the Extract operation work immediately without an extra step to place the point ([#6674])
+* Support the Extract operation on lines that could be mapped as points ([#7598])
+* Support extracting points from multiple selected features at once ([#7600])
+* Disable the Straighten operation for ways that are already straight ([#7658])
+
+[#7652]: https://github.com/openstreetmap/iD/issues/7652
+[#7326]: https://github.com/openstreetmap/iD/issues/7326
+[#6674]: https://github.com/openstreetmap/iD/issues/6674
+[#7598]: https://github.com/openstreetmap/iD/issues/7598
+[#7600]: https://github.com/openstreetmap/iD/issues/7600
+[#7658]: https://github.com/openstreetmap/iD/issues/7658
+
+###### Sidebar
+* Accept more formats when searching for nodes, ways, and relations by ID ([#7627], [#7282], [#7775], thanks [@blackboxlogic])
+* Highlight the corresponding feature in the selection list when hovering on a feature in the map ([#2949], [#7628], thanks [@jgscherber])
+* Don't discard tags with empty values when toggling from the text to table tag editor ([#7297], [#7363], thanks [@zengchu2])
+* Improve sorting of lassoed points in the selected features list ([#7729])
+* Make the selected features list a labeled, collapsible section of the inspector ([#7273])
+* Add a label to the "change feature type" button ([#6811])
+* Wrap long feature type labels to multiple lines ([#7722])
+* Move the "Zoom to this" button to be with the other zoom buttons on the side of the map ([#6601], [#7391])
+* Change misleading "Translate" tooltip to "Add multilingual name" ([#7486])
+* Add "key=value" placeholder to the text tag editor
+* Focus the relation role input when clicking its label ([#7690])
+* Autofocus Description field when adding a new OSM note ([#7680])
+* Prevent browsers from showing their own lists of autocomplete values for fields ([#6444])
+
+[@blackboxlogic]: https://github.com/blackboxlogic
+[@jgscherber]: https://github.com/jgscherber
+[@zengchu2]: https://github.com/zengchu2
+
+[#7627]: https://github.com/openstreetmap/iD/issues/7627
+[#7282]: https://github.com/openstreetmap/iD/issues/7282
+[#7775]: https://github.com/openstreetmap/iD/issues/7775
+[#2949]: https://github.com/openstreetmap/iD/issues/2949
+[#7628]: https://github.com/openstreetmap/iD/issues/7628
+[#7297]: https://github.com/openstreetmap/iD/issues/7297
+[#7363]: https://github.com/openstreetmap/iD/issues/7363
+[#7729]: https://github.com/openstreetmap/iD/issues/7729
+[#7273]: https://github.com/openstreetmap/iD/issues/7273
+[#6811]: https://github.com/openstreetmap/iD/issues/6811
+[#7722]: https://github.com/openstreetmap/iD/issues/7722
+[#6601]: https://github.com/openstreetmap/iD/issues/6601
+[#7391]: https://github.com/openstreetmap/iD/issues/7391
+[#7486]: https://github.com/openstreetmap/iD/issues/7486
+[#7690]: https://github.com/openstreetmap/iD/issues/7690
+[#7680]: https://github.com/openstreetmap/iD/issues/7680
+[#6444]: https://github.com/openstreetmap/iD/issues/6444
+
+###### Map
+* Update the Locator Overlay ([#7025], thanks [@mikelmaron])
+* Enable the Mapillary detected Map Features layer everywhere ([#7762], thanks [@nickplesha])
+* Make way midpoint positions account for the taller toolbar ([#7640], [#7642], thanks [@jgscherber])
+* Move corridors from the paths layer to the indoor features layer ([#7478], [#7548], thanks [@JamesKingdom])
+* Render the focused feature at any zoom level during conflict resolution ([#7330])
+* Support the `{@2x}` and `{r}` parameters for dynamic retina tiles in custom backgrounds ([#7712])
+
+[@mikelmaron]: https://github.com/mikelmaron
+[@nickplesha]: https://github.com/nickplesha
+[@jgscherber]: https://github.com/jgscherber
+[@JamesKingdom]: https://github.com/JamesKingdom
+
+[#7025]: https://github.com/openstreetmap/iD/issues/7025
+[#7762]: https://github.com/openstreetmap/iD/issues/7762
+[#7640]: https://github.com/openstreetmap/iD/issues/7640
+[#7642]: https://github.com/openstreetmap/iD/issues/7642
+[#7478]: https://github.com/openstreetmap/iD/issues/7478
+[#7548]: https://github.com/openstreetmap/iD/issues/7548
+[#7330]: https://github.com/openstreetmap/iD/issues/7330
+[#7712]: https://github.com/openstreetmap/iD/issues/7712
+
+###### Tools
+* Include contextual information in the page title ([#6209], [#7444], thanks [@CarycaKatarzyna])
+* Point OSMCha links to the new site ([#7555], thanks [@willemarcel])
+* Add toggle buttons for the History, Measurement, and Location panels ([#6397])
+* Add <kbd>L</kbd> shortcut to toggle the display of the device's current location ([#7395])
+* Style the "Show My Location" button as enabled while the location is being shown ([#7390])
+* Flash error feedback when locating the device if the location is unavailable
+* Show descriptive tooltips when Zoom In / Out buttons are disabled
+* Show more calculations in the Measurement panel when multiple features are selected ([#7329])
+* Flash error feedback when attempting to draw self-intersecting lines or areas
+* Redact API tokens detected in custom background imagery sources ([#6801])
+
+[@CarycaKatarzyna]: https://github.com/CarycaKatarzyna
+[@willemarcel]: https://github.com/willemarcel
+
+[#6209]: https://github.com/openstreetmap/iD/issues/6209
+[#7444]: https://github.com/openstreetmap/iD/issues/7444
+[#7555]: https://github.com/openstreetmap/iD/issues/7555
+[#6397]: https://github.com/openstreetmap/iD/issues/6397
+[#7395]: https://github.com/openstreetmap/iD/issues/7395
+[#7390]: https://github.com/openstreetmap/iD/issues/7390
+[#7329]: https://github.com/openstreetmap/iD/issues/7329
+[#6801]: https://github.com/openstreetmap/iD/issues/6801
+
+#### :white_check_mark: Validation
+* Improve connection of "Almost Junctions" when the lines are nearly co-linear ([#7201], [#7309], thanks [@SilentSpike])
+* Deprecate various `type` tag values related to utilities ([#7514], thanks [@guylamar2006])
+* Deprecate `building=pavillion` misspelling ([#7749], thanks [@peternewman])
+* Disable copy and paste of features that aren't mostly visible ([#7603])
+* Disable straightening features that aren't mostly visible ([#7675])
+* Disable merging lines when it would result in a line exceeding the maximum nodes-per-way of the API ([#6030])
+* Enforce the maximum Unicode character length for tag keys and values, as well as relation roles ([#6817])
+* Prevent self-intersection when drawing lines and areas on touch devices ([#7423])
+* Fix tolerance when flagging very close nodes that are members of multiple ways ([#7379])
+* Don't flag empty tag values as outdated
+* Don't flag Google Drive as an incompatible data source ([#7545])
+* Deprecate various `parking` tag values ([#7578])
+* Deprecate various `tower:type` values for newly-approved `line_management` tag ([#7726])
+
+[@SilentSpike]: https://github.com/SilentSpike
+[@guylamar2006]: https://github.com/guylamar2006
+[@peternewman]: https://github.com/peternewman
+
+[#7201]: https://github.com/openstreetmap/iD/issues/7201
+[#7309]: https://github.com/openstreetmap/iD/issues/7309
+[#7514]: https://github.com/openstreetmap/iD/issues/7514
+[#7749]: https://github.com/openstreetmap/iD/issues/7749
+[#7603]: https://github.com/openstreetmap/iD/issues/7603
+[#7675]: https://github.com/openstreetmap/iD/issues/7675
+[#6030]: https://github.com/openstreetmap/iD/issues/6030
+[#6817]: https://github.com/openstreetmap/iD/issues/6817
+[#7423]: https://github.com/openstreetmap/iD/issues/7423
+[#7379]: https://github.com/openstreetmap/iD/issues/7379
+[#7545]: https://github.com/openstreetmap/iD/issues/7545
+[#7578]: https://github.com/openstreetmap/iD/issues/7578
+[#7726]: https://github.com/openstreetmap/iD/issues/7726
+
+#### :bug: Bugfixes
+* Fix issue where panning without zooming could become impossible on touchscreens ([#6745])
+* Don't persist the hover styling after tapping buttons on touchscreens ([#7432])
+* Fix issue where vertices may not disappear when deselecting lines and areas ([#7419])
+* Fix issue where drawing features too quickly on touchscreens could zoom the map ([#2128])
+* Fix issue where map data may not be selectable with a single tap on touchscreens ([#7380])
+* Don't grey out the map during conflict resolution ([#6547])
+* Fix issue with the feature type label not updating properly when combining features ([#7349])
+* Fix issue where merging a point matching a fallback preset into an area could discard tag values ([#7446])
+* Fix issue where the edit menu could persist even after deselecting the feature ([#7143])
+* Fix cases where the Mapillary Image ID link button might appear disabled unexpectedly ([#7570])
+* Fix cases where merging the endpoint of a looped way with an adjacent point could break the loop ([#7553])
+* Don't add a value when focusing the Memorial Type field when it's empty ([#7569])
+* Don't add default field values when upgrading to a replacement preset ([#7613])
+* Don't autocapitalize custom multilingual name languages ([#7156])
+* Properly show the delete button for filled multilingual names even if no `name` tag is present ([#7572])
+* Fix issue where iD may overflow its container and cause scrollbars to appear while drawing ([#7560])
+* Fix infinite recursion error when creating cyclical relations ([#7691])
+* Prevent lasso from selecting hidden points ([#7728])
+
+[#6745]: https://github.com/openstreetmap/iD/issues/6745
+[#7432]: https://github.com/openstreetmap/iD/issues/7432
+[#7419]: https://github.com/openstreetmap/iD/issues/7419
+[#2128]: https://github.com/openstreetmap/iD/issues/2128
+[#7380]: https://github.com/openstreetmap/iD/issues/7380
+[#6547]: https://github.com/openstreetmap/iD/issues/6547
+[#7349]: https://github.com/openstreetmap/iD/issues/7349
+[#7446]: https://github.com/openstreetmap/iD/issues/7446
+[#7143]: https://github.com/openstreetmap/iD/issues/7143
+[#7570]: https://github.com/openstreetmap/iD/issues/7570
+[#7553]: https://github.com/openstreetmap/iD/issues/7553
+[#7569]: https://github.com/openstreetmap/iD/issues/7569
+[#7613]: https://github.com/openstreetmap/iD/issues/7613
+[#7156]: https://github.com/openstreetmap/iD/issues/7156
+[#7572]: https://github.com/openstreetmap/iD/issues/7572
+[#7560]: https://github.com/openstreetmap/iD/issues/7560
+[#7691]: https://github.com/openstreetmap/iD/issues/7691
+[#7728]: https://github.com/openstreetmap/iD/issues/7728
+
+#### :hourglass: Performance
+* Request JSON responses from the OpenStreetMap API for supported endpoints ([#7188], thanks [@mmd-osm])
+* Improve performance considerably when editing some types of long lines ([#7656])
+
+[@mmd-osm]: https://github.com/mmd-osm
+
+[#7188]: https://github.com/openstreetmap/iD/issues/7188
+[#7656]: https://github.com/openstreetmap/iD/issues/7656
+
+#### :mortar_board: Walkthrough / Help
+* Show touch-specific instructions in the walkthrough when the mapper is using a touchscreen ([#7692], [#7745])
+* Include information about touch interactions in the help docs
+* Use mouse/touch icons in the walkthrough and style shortcuts as keyboard keys
+* Reference interface labels directly in the help docs to ensure they always correspond to what's onscreen
+
+[#7692]: https://github.com/openstreetmap/iD/issues/7692
+[#7745]: https://github.com/openstreetmap/iD/issues/7745
+
+#### :rocket: Presets
+
+###### New Presets
+* Add Model Shop preset ([#7776], [#7779], thanks [@nisargshh])
+* Add Office Building, Pigsty, and Cowshed presets ([#7539])
+* Add Covered Reservoir preset ([#7534])
+* Add Shoe Repair Shop preset ([#7562])
+* Add Orthodontist preset ([#7575])
+* Add Bubble Tea Cafe preset ([#7632])
+* Add Collectibles Shop preset ([#7588])
+* Add Free Box preset ([#7574])
+* Add Goods Conveyor preset ([#7637])
+* Add Trophy Shop preset ([#7641])
+* Add Vacuum Cleaning Station preset ([#7483])
+* Add Emergency Room Entrance preset ([#7725])
+* Add Destination Sign relation preset ([#6970])
+* Add Coffeehouse and Courtyard presets
+
+[@nisargshh]: https://github.com/nisargshh
+
+[#7776]: https://github.com/openstreetmap/iD/issues/7776
+[#7779]: https://github.com/openstreetmap/iD/issues/7779
+[#7539]: https://github.com/openstreetmap/iD/issues/7539
+[#7534]: https://github.com/openstreetmap/iD/issues/7534
+[#7562]: https://github.com/openstreetmap/iD/issues/7562
+[#7575]: https://github.com/openstreetmap/iD/issues/7575
+[#7632]: https://github.com/openstreetmap/iD/issues/7632
+[#7588]: https://github.com/openstreetmap/iD/issues/7588
+[#7574]: https://github.com/openstreetmap/iD/issues/7574
+[#7637]: https://github.com/openstreetmap/iD/issues/7637
+[#7641]: https://github.com/openstreetmap/iD/issues/7641
+[#7483]: https://github.com/openstreetmap/iD/issues/7483
+[#7725]: https://github.com/openstreetmap/iD/issues/7725
+[#6970]: https://github.com/openstreetmap/iD/issues/6970
+
+###### Changed Presets
+* Rename Metal Construction preset to Metalworker ([#7549], [#7568], thanks [@animesh-007])
+* Don't add `seamark:type=light_major` to lighthouses by default ([#7621], thanks [@Eric-Sparks])
+* Don't support using the Foot & Cycle Path preset in Germany ([#7703], thanks [@henry4442])
+* Limit the Bail Bond Agent preset to the United States and the Philippines
+* Rename Summit Cross preset to Cross ([#7678])
+* Rename Road Closed preset to Closed Road
+* Rename Organic Goods Store preset to Organic Supermarket and add Organic Products field ([#7714])
+* Add "Play" to the names of several playground equipment presets ([#7730])
+* Support Quarry features as points ([#7515])
+* Support Marine Fuel Station features as vertices
+* Add search terms to Lift Gate, Height Restrictor, and Storage Rental ([#7537], [#7538], [#7681])
+
+[@animesh-007]: https://github.com/animesh-007
+[@Eric-Sparks]: https://github.com/Eric-Sparks
+[@henry4442]: https://github.com/henry4442
+
+[#7549]: https://github.com/openstreetmap/iD/issues/7549
+[#7568]: https://github.com/openstreetmap/iD/issues/7568
+[#7621]: https://github.com/openstreetmap/iD/issues/7621
+[#7703]: https://github.com/openstreetmap/iD/issues/7703
+[#7678]: https://github.com/openstreetmap/iD/issues/7678
+[#7714]: https://github.com/openstreetmap/iD/issues/7714
+[#7730]: https://github.com/openstreetmap/iD/issues/7730
+[#7515]: https://github.com/openstreetmap/iD/issues/7515
+[#7537]: https://github.com/openstreetmap/iD/issues/7537
+[#7538]: https://github.com/openstreetmap/iD/issues/7538
+[#7681]: https://github.com/openstreetmap/iD/issues/7681
+
+###### New Fields
+* Add Support, Color, and Material fields to Post Box ([#7738], [#7777], thanks [@yyazdi13])
+* Add Type field to Ruins ([#7507], thanks [@hikemaniac])
+* Add Automated field to Car Wash ([#7580], [#7584], thanks [@animesh-007])
+* Add Fee field to Nightclub ([#7579], [#7585], thanks [@animesh-007])
+* Add Real Fire field to pub presets in Ireland and the United Kingdom ([#7630], thanks [@rory])
+* Add Image field ([#7531])
+* Add VHF Channel field to Marina ([#7622])
+* Add Grades field to school presets ([#7571])
+* Add Type field to Closed Road ([#7519])
+* Add Line Management field to High-Voltage Tower and Power Pole ([#7726])
+* Add Destination field to Waterway relation preset ([#7532])
+* Add Total Ascent, Total Descent, and Forms Loop fields to route presets ([#7671])
+* Add Phone and Website fields to commercial building presets ([#7541])
+* Add Mount and Type fields to Street Lamp
+
+[@yyazdi13]: https://github.com/yyazdi13
+[@hikemaniac]: https://github.com/hikemaniac
+[@animesh-007]: https://github.com/animesh-007
+[@rory]: https://github.com/rory
+
+[#7738]: https://github.com/openstreetmap/iD/issues/7738
+[#7777]: https://github.com/openstreetmap/iD/issues/7777
+[#7507]: https://github.com/openstreetmap/iD/issues/7507
+[#7580]: https://github.com/openstreetmap/iD/issues/7580
+[#7584]: https://github.com/openstreetmap/iD/issues/7584
+[#7579]: https://github.com/openstreetmap/iD/issues/7579
+[#7585]: https://github.com/openstreetmap/iD/issues/7585
+[#7630]: https://github.com/openstreetmap/iD/issues/7630
+[#7531]: https://github.com/openstreetmap/iD/issues/7531
+[#7622]: https://github.com/openstreetmap/iD/issues/7622
+[#7571]: https://github.com/openstreetmap/iD/issues/7571
+[#7519]: https://github.com/openstreetmap/iD/issues/7519
+[#7726]: https://github.com/openstreetmap/iD/issues/7726
+[#7532]: https://github.com/openstreetmap/iD/issues/7532
+[#7671]: https://github.com/openstreetmap/iD/issues/7671
+[#7541]: https://github.com/openstreetmap/iD/issues/7541
+
+###### Changed Fields
+* Allow custom values in the Public Bath Specialty field ([#7481])
+* Remove Both/All option from Yield Sign Direction field ([#7581])
+
+[#7481]: https://github.com/openstreetmap/iD/issues/7481
+[#7581]: https://github.com/openstreetmap/iD/issues/7581
+
+#### :hammer: Development
+* :warning: Add dedicated initialization step to `coreContext` ([#7304])
+* :warning: Remove various convenience functions of `coreContext`
+* :warning: Fetch JSON resources asynchronously at runtime using `coreFileFetcher` instead of bundling them ([#4994])
+* :warning: Add `coreUploader` to manage programmatic uploading of edits ([#7247], [#7333])
+* :warning: Wrap localization functionality into global `localizer` singleton of `coreLocalizer`
+* :warning: Replace `context.storage()` with global `prefs` singleton of `corePreferences`
+* Add optimized `coreTree.waySegments` endpoint to return edges overlapping an area
+* Resolve browser cookie warning by using `samesite=strict` ([#7596])
+* :warning: Remove deprecated radial menu and "tail" behavior
+* Add endpoints for setting the changeset parameters programmatically ([#7614])
+* Add endpoints for customizing the page title behavior ([#7503])
+* :warning: Switch to pointer events on supported browsers, with fallback to mouse events ([#5505])
+* :warning: Namespace iD's `id` HTML attributes under `ideditor-` to avoid collisions
+* Fix cases where iD might miscalculate element positions when embedded ([#7551])
+* Replace Greenkeeper with Dependabot for keeping dependencies up-to-date ([#7430])
+
+[#7304]: https://github.com/openstreetmap/iD/issues/7304
+[#4994]: https://github.com/openstreetmap/iD/issues/4994
+[#7247]: https://github.com/openstreetmap/iD/issues/7247
+[#7333]: https://github.com/openstreetmap/iD/issues/7333
+[#7596]: https://github.com/openstreetmap/iD/issues/7596
+[#7614]: https://github.com/openstreetmap/iD/issues/7614
+[#7503]: https://github.com/openstreetmap/iD/issues/7503
+[#5505]: https://github.com/openstreetmap/iD/issues/5505
+[#7551]: https://github.com/openstreetmap/iD/issues/7551
+[#7430]: https://github.com/openstreetmap/iD/issues/7430
+
+# 2.17.3
+##### 2020-Apr-24
+
+#### :mega: Release Highlights
+* :mask: You can now specify when places are open during coronavirus lockdowns with the COVID-19 Pandemic Hours field
+
+#### :boom: Breaking Changes
+* Rename the default branch, previously `2.x`, to `develop`
+* Rename the v3 beta branch, previously `master`, to `v3-prototype`
+* Update links to iD's documentation on GitHub for the changed branch names ([#7453])
+* Update iD's privacy policy to reflect the changed branch names
+
+[#7453]: https://github.com/openstreetmap/iD/issues/7453
+
+#### :sparkles: Usability
+* Use custom line styling for non-asphalt, non-unpaved surfaces like cobblestone, sett, and metal ([#7466])
+* Style pedestrian streets as wider and distinct from corridors ([#7058])
+* Style `planned` but not `disused` features with a dashed stroke
+
+[#7058]: https://github.com/openstreetmap/iD/issues/7058
+[#7466]: https://github.com/openstreetmap/iD/issues/7466
+
+#### :white_check_mark: Validation
+* Upgrade `car` to `motorcar` on vehicle charging stations ([#7339], thanks [@nlehuby])
+* Warn about ways crossing highway areas ([#7455])
+* Don't suggest adding bridges or tunnels to ways crossing highway multipolygons ([#7472])
+* Don't suggest adding tunnels to highways crossing waterways ([#7447])
+* Deprecate `bicycle:oneway` key ([#7281])
+* Deprecate `building:height` and `building:min_height` keys ([#7285])
+* Deprecate tags: `bridge=1`, `building:material=Brick`, `disabled_spaces`, `man_made=telephone_exchange`, `tunnel=1`
+
+[#7455]: https://github.com/openstreetmap/iD/issues/7455
+[#7472]: https://github.com/openstreetmap/iD/issues/7472
+[#7447]: https://github.com/openstreetmap/iD/issues/7447
+[#7339]: https://github.com/openstreetmap/iD/issues/7339
+[#7281]: https://github.com/openstreetmap/iD/issues/7281
+[#7285]: https://github.com/openstreetmap/iD/issues/7285
+
+[@nlehuby]: https://github.com/nlehuby
+
+#### :bug: Bugfixes
+* Fix issue where some labels could not be translated ([#7358])
+* Don't insert generic values when focusing the Information Board, Bridge Area, or Tunnel Area Type fields ([#7265], [#7509])
+
+[#7358]: https://github.com/openstreetmap/iD/issues/7358
+[#7265]: https://github.com/openstreetmap/iD/issues/7265
+[#7509]: https://github.com/openstreetmap/iD/issues/7509
+
+#### :rocket: Presets
+* Add Exhibition Center preset ([#7268], thanks [@hikemaniac])
+* Add Spike Strip preset ([#7347], [#7354], thanks [@animesh-007])
+* Add Mountain Rescue preset ([#7296], [#7323], thanks [@animesh-007])
+* Add Kneipp Water Cure preset ([#7313], [#7332], thanks [@animesh-007])
+* Add Historic Pillory preset ([#7274], [#7310], thanks [@animesh-007])
+* Correct tags of Community Garden preset and add Garden Allotments preset ([#7501], thanks [@stragu])
+* Add Garden Type field to Garden ([#7501], thanks [@stragu])
+* Add more fields to advertising presets ([#7289], thanks [@ToastHawaii])
+* Add Depth field to Ford ([#7400], thanks [@hikemaniac])
+* Support `internet_access:fee=customers` tag ([#7442], thanks [@Lukas458])
+* Add more fields to Wayside Cross ([#7521], thanks [@morray])
+* Add more search terms for Research Office ([#7284], thanks [@ferdinand0101])
+* Add a preset and field for accessible parking spaces ([#7465])
+* Add Disused Shop preset ([#7407])
+* Add Cycle & Foot Path preset ([#7321])
+* Add Telecom Exchange preset ([#6780])
+* Add Shrub preset ([#7482])
+* Add Boardwalk preset and styling ([#7518])
+* Add presets: Botanical Garden, Hanging Monorail, Heritage Railway Track, Household Linen Shop, Power Cable, Trampoline Park, Trolleybus Route
+* Rename railway track presets to be more precise, e.g. "Subway" to "Subway Track" ([#7440])
+* Add COVID-19 Pandemic Hours field to points of interest ([#7529])
+* Add Mimics field to Mobile Phone Mast ([#7452])
+* Add Tactile Paving field to Bus Stop presets ([#7307])
+* Add Circumference field to Tree ([#7371])
+* Add additional fields to Water Park ([#7488])
+* Add Smoothness field to service road presets ([#7477])
+* Add Operator Type field to the Kindergarten preset ([#7494])
+* Add Stop Number field to transit stop presets ([#7492])
+* Support multiple values in the `beauty` field ([#7215])
+* Show Hours field by default on Recycling Container ([#7259])
+* Improve placeholders for date fields ([#7270])
+* Remove Level field from transit stopping location presets ([#7499])
+* Remove Network Type field from transport route presets ([#7493])
+* Remove Collection Times field from Letter Box ([#7487])
+* Remove the Elevation field from arbitrary line, area, and relation features ([#7479])
+* Don't add `building` tag to the Monastery Grounds preset by default ([#7287])
+* Add search terms to Retail Building and Farm Building ([#7392], [#7394])
+* Update icons for railway track presets ([#7255])
+* Update icons for public transit presets
+* Update Nail Salon icon ([#7476])
+* Update Kebab Fast Food icon ([#7475])
+* Update Power Pole icon ([#7516])
+* Update icons for presets: Community Garden Plot, Bicycle Lockers, Parking Space, Quaker Meeting House, Police, RV Toilet Disposal, Town Hall, City Hall, Government Office, Bollard, Bollard Row, Border Control, Cycle Barrier, Trench, Hedge, Stile, Carport, Static Mobile Home, Caterer, Floorer, Parquet Layer, Plasterer, Scaffolder, Stonemason, Tiler, Disused Railway Feature, Golf Course, Golf Hole, Miniature Golf, Access Aisle, Motorsport Racetrack, Karting Racetrack, Racetrack (Non-Motorsport), Barracks, Naval Base, Military Obstacle Course, Military Range, Plant Nursery, Quarry, Field Hockey Pitch, Adit, Bunker Silo, Mineshaft, Observatory, Pumping Station, Survey Point, Water Works, Military Checkpoint, Military Trench, Cliff, Heath, Ridge, Saddle, Scrub, Valley, Rail Yard, Curtain Store, Deli, Fireplace Store, Pet Grooming Store, Spice Shop, Tattoo Parlor, Tile Shop, Weapon Shop, Speed Bump, Chicane, Speed Cushion, Speed Dip, Speed Hump, Rumble Strip, Speed Table, Power Feature, Railway Feature, Notice Board, Poster Box, Information Board, Information Terminal, Goods Aerialway, Airport, Apron, Airport Gate, Hangar, Aircraft Holding Position, Aircraft Parking Position, Taxiway, Windsock
+
+[#7518]: https://github.com/openstreetmap/iD/issues/7518
+[#7529]: https://github.com/openstreetmap/iD/issues/7529
+[#7521]: https://github.com/openstreetmap/iD/issues/7521
+[#7516]: https://github.com/openstreetmap/iD/issues/7516
+[#7268]: https://github.com/openstreetmap/iD/issues/7268
+[#7347]: https://github.com/openstreetmap/iD/issues/7347
+[#7354]: https://github.com/openstreetmap/iD/issues/7354
+[#7296]: https://github.com/openstreetmap/iD/issues/7296
+[#7323]: https://github.com/openstreetmap/iD/issues/7323
+[#7313]: https://github.com/openstreetmap/iD/issues/7313
+[#7332]: https://github.com/openstreetmap/iD/issues/7332
+[#7274]: https://github.com/openstreetmap/iD/issues/7274
+[#7310]: https://github.com/openstreetmap/iD/issues/7310
+[#7501]: https://github.com/openstreetmap/iD/issues/7501
+[#7289]: https://github.com/openstreetmap/iD/issues/7289
+[#7400]: https://github.com/openstreetmap/iD/issues/7400
+[#7442]: https://github.com/openstreetmap/iD/issues/7442
+[#7284]: https://github.com/openstreetmap/iD/issues/7284
+[#7465]: https://github.com/openstreetmap/iD/issues/7465
+[#7407]: https://github.com/openstreetmap/iD/issues/7407
+[#7321]: https://github.com/openstreetmap/iD/issues/7321
+[#6780]: https://github.com/openstreetmap/iD/issues/6780
+[#7482]: https://github.com/openstreetmap/iD/issues/7482
+[#7440]: https://github.com/openstreetmap/iD/issues/7440
+[#7452]: https://github.com/openstreetmap/iD/issues/7452
+[#7307]: https://github.com/openstreetmap/iD/issues/7307
+[#7371]: https://github.com/openstreetmap/iD/issues/7371
+[#7488]: https://github.com/openstreetmap/iD/issues/7488
+[#7477]: https://github.com/openstreetmap/iD/issues/7477
+[#7494]: https://github.com/openstreetmap/iD/issues/7494
+[#7492]: https://github.com/openstreetmap/iD/issues/7492
+[#7215]: https://github.com/openstreetmap/iD/issues/7215
+[#7259]: https://github.com/openstreetmap/iD/issues/7259
+[#7270]: https://github.com/openstreetmap/iD/issues/7270
+[#7499]: https://github.com/openstreetmap/iD/issues/7499
+[#7493]: https://github.com/openstreetmap/iD/issues/7493
+[#7487]: https://github.com/openstreetmap/iD/issues/7487
+[#7479]: https://github.com/openstreetmap/iD/issues/7479
+[#7287]: https://github.com/openstreetmap/iD/issues/7287
+[#7392]: https://github.com/openstreetmap/iD/issues/7392
+[#7394]: https://github.com/openstreetmap/iD/issues/7394
+[#7255]: https://github.com/openstreetmap/iD/issues/7255
+[#7476]: https://github.com/openstreetmap/iD/issues/7476
+[#7475]: https://github.com/openstreetmap/iD/issues/7475
+
+[@morray]: https://github.com/morray
+[@hikemaniac]: https://github.com/hikemaniac
+[@animesh-007]: https://github.com/animesh-007
+[@stragu]: https://github.com/stragu
+[@ToastHawaii]: https://github.com/ToastHawaii
+[@Lukas458]: https://github.com/Lukas458
+[@ferdinand0101]: https://github.com/ferdinand0101
+
+#### :hammer: Development
+* Define the main package file as `dist/iD.min.js` ([#7449], thanks [@willemarcel])
+* Scope iD's CSS to its container under the `ideditor` class ([#7437])
+* Make embedded iD's container a local stacking context ([#7457])
+* Fix combobox suggestion list placement when embedding iD ([#7458])
+* Persist the changeset comment, hashtags, and sources from the URL through UI reloads ([#7504])
+
+[#7449]: https://github.com/openstreetmap/iD/issues/7449
+[#7437]: https://github.com/openstreetmap/iD/issues/7437
+[#7457]: https://github.com/openstreetmap/iD/issues/7457
+[#7458]: https://github.com/openstreetmap/iD/issues/7458
+[#7504]: https://github.com/openstreetmap/iD/issues/7504
+
+[@willemarcel]: https://github.com/willemarcel
+
+# 2.17.2
+##### 2020-Feb-14
+
+#### :tada: New Features
+* Restore Maxar Imagery layers, using masked iD-specific connection keys ([#7355])
+
+[#7355]: https://github.com/openstreetmap/iD/issues/7355
+
+
+# 2.17.1
+##### 2020-Jan-16
+
+#### :boom: Breaking Changes
+* Remove support for Node 8 (Node 10 or higher is now required)
+  * :warning: If you are building the iD project, you may need to upgrade your node version.
+
+#### :tada: New Features
+* Enable drag-and-drop reordering in fields that allow multiple values ([#5728], [#7024], thanks [@TAQ2])
+
+[#5728]: https://github.com/openstreetmap/iD/issues/5728
+[#7024]: https://github.com/openstreetmap/iD/issues/7024
+
+[@TAQ2]: https://github.com/TAQ2
+
+#### :sparkles: Usability
+* Don't show very low-usage tag values as field suggestions ([#7203])
+* Use a lighter font weight for brand subtitles
+* Don't autofocus the tag text editor when selecting a feature with the "Add fields" section closed ([#6685])
+
+[#7203]: https://github.com/openstreetmap/iD/issues/7203
+[#6685]: https://github.com/openstreetmap/iD/issues/6685
+
+#### :white_check_mark: Validation
+* Account for the type and angle of crossings when setting the length of bridge and tunnel fixes
+* Don't join intersection nodes to bridge and tunnel fixes, where possible ([#7202])
+* Don't flag blank names as mistaken ([#7153])
+* Flag crossing and one-way issues for features with `waterway=tidal_channel`
+* Deprecate various `building:levels` mistags ([#7212])
+* Deprecate `clothes=second_hand`
+* Deprecate various entrance, gambling, museum type, gender, operator type, and pump mistags
+* Fix upgrade path of `railway=*` + `disused=yes` or `abandoned=yes` ([#7236])
+* Don't offer to add `train=yes` to generic `railway=platform` features ([#7231])
+* Offer to add `public_transport=stop_position` and `tram=yes` to `railway=tram_stop` features
+* Make Churchyard preset unsearchable
+
+[#7153]: https://github.com/openstreetmap/iD/issues/7153
+[#7202]: https://github.com/openstreetmap/iD/issues/7202
+[#7212]: https://github.com/openstreetmap/iD/issues/7212
+[#7236]: https://github.com/openstreetmap/iD/issues/7236
+[#7231]: https://github.com/openstreetmap/iD/issues/7231
+
+#### :bug: Bugfixes
+* Fix issue where validation warnings could appear unexpectedly ([#7166])
+
+[#7166]: https://github.com/openstreetmap/iD/issues/7166
+
+#### :earth_asia: Localization
+* Add Peruvian address and phone number formats ([#7159], thanks [@sguinetti])
+* Add Australian phone number format ([#7160], thanks [@tastrax])
+* Correctly display labels with mixed Arabic and Latin characters ([#7104], [#7182], thanks [@mapmeld])
+* Make privacy policy link text translatable ([#7171])
+* Differentiate the "toggle issues pane" and "toggle preferences pane" hotkeys in the German localization ([#7181])
+
+[#7159]: https://github.com/openstreetmap/iD/issues/7159
+[#7160]: https://github.com/openstreetmap/iD/issues/7160
+[#7104]: https://github.com/openstreetmap/iD/issues/7104
+[#7182]: https://github.com/openstreetmap/iD/issues/7182
+[#7171]: https://github.com/openstreetmap/iD/issues/7171
+[#7181]: https://github.com/openstreetmap/iD/issues/7181
+
+[@sguinetti]: https://github.com/sguinetti
+[@tastrax]: https://github.com/tastrax
+[@mapmeld]: https://github.com/mapmeld
+
+#### :rocket: Presets
+* Add Door Shop preset ([#7192], thanks [@hikemaniac])
+* Add Emergency Landing Site preset ([#7237], thanks [@andrewharvey])
+* Add Historic Building preset ([#7219])
+* Add Swing Gate preset ([#7208])
+* Add Tidal Channel preset ([#7232])
+* Add Gambling Hall preset ([#7198])
+* Add Secondhand Clothing Store preset ([#7164])
+* Add Public Prosecutor's Office preset ([#7225])
+* Add Speed Limit Enforcement preset ([#7234])
+* Add presets: Emergency Exit, Geyser, Used Car Dealership, Wedding Clothes Store, Backcountry Camping Area, Group Camping Area, History Museum, Wind Farm, Solar Farm, Nuclear Power Plant, Hydroelectric Power Station, Coal-Fired Power Plant, Gas-Fired Power Plant
+* Rename "Anime Shop" to "Anime / Manga Shop" ([#7223])
+* Simplify the names of various Piste presets
+* Update Arts & Crafts Store icon ([#7228])
+* Update Dressmaker icon ([#7229])
+* Update Water Well icon ([#7170])
+* Update Butcher icon ([#7216])
+* Update preset icons: Cathedral Building, Church Building, College Building, Hospital Building, Hotel Building, Preschool / Kindergarten Building, Mosque Building, School Building, University Building, Recently Demolished Building, Residential Area, Apartment Complex, Water Tap, Island, Islet, Kiosk, Fireworks Store, Row Houses, Houseboat, Tailor, Sewing Supply Shop, Aerialway Pylon, Mixed Lift, Drag Lift, Platter Lift, J-Bar Lift, T-Bar Lift
+* Add Baby Nursing Area field ([#7152])
+* Add Bicycle-Pedestrian Separation field to Cycle & Foot Path ([#7204], thanks [@hikemaniac])
+* Add Wheelchair Access field to Entrance / Exit ([#7214])
+* Add Bottle Filling field to Drinking Water
+* Add Games field to gambling presets
+* Add Hot Water field to Shower
+* Add Type field to Museum
+* Add Backcountry, Dogs, Groups Only, Hours, Showers, Stars, and Toilets fields to Campground ([#7169])
+* Add Adjacent Walking Nodes and Adjacent Cycling Nodes fields to Recreational Network Node ([#7176])
+* Add descriptive options for the Pump field
+* Show the Website field by default on Restaurants ([#7226])
+* Show the Hours field by default on Pharmacy Counters ([#7220])
+
+[#7237]: https://github.com/openstreetmap/iD/issues/7237
+[#7234]: https://github.com/openstreetmap/iD/issues/7234
+[#7192]: https://github.com/openstreetmap/iD/issues/7192
+[#7219]: https://github.com/openstreetmap/iD/issues/7219
+[#7208]: https://github.com/openstreetmap/iD/issues/7208
+[#7232]: https://github.com/openstreetmap/iD/issues/7232
+[#7198]: https://github.com/openstreetmap/iD/issues/7198
+[#7164]: https://github.com/openstreetmap/iD/issues/7164
+[#7225]: https://github.com/openstreetmap/iD/issues/7225
+[#7223]: https://github.com/openstreetmap/iD/issues/7223
+[#7228]: https://github.com/openstreetmap/iD/issues/7228
+[#7229]: https://github.com/openstreetmap/iD/issues/7229
+[#7170]: https://github.com/openstreetmap/iD/issues/7170
+[#7216]: https://github.com/openstreetmap/iD/issues/7216
+[#7152]: https://github.com/openstreetmap/iD/issues/7152
+[#7204]: https://github.com/openstreetmap/iD/issues/7204
+[#7214]: https://github.com/openstreetmap/iD/issues/7214
+[#7169]: https://github.com/openstreetmap/iD/issues/7169
+[#7176]: https://github.com/openstreetmap/iD/issues/7176
+[#7226]: https://github.com/openstreetmap/iD/issues/7226
+[#7220]: https://github.com/openstreetmap/iD/issues/7220
+
+[@hikemaniac]: https://github.com/hikemaniac
+[@andrewharvey]: https://github.com/andrewharvey
+
+# 2.17.0
+##### 2019-Dec-23
+
+#### :newspaper: News
+* We've launched the [iD Blog](https://ideditor.blog) providing news and insights into the project from its maintainers and contributors ([#7045])
+
+[#7045]: https://github.com/openstreetmap/iD/issues/7045
+
+#### :mega: Release Highlights
+* :metro: You can now add bridges and tunnels with a single click to fix crossing roads, rails, and waterways. Thanks to [@CarycaKatarzyna] for working on this!<br/>
+_Find the "Add a bridge" and "Add a tunnel" fixes for each crossing in the Issues inspector._
+* :earth_africa: Selected features now stay visible while zoomed out, plus you can zoom to multiple features together.<br/>
+_Select a few large features and press <kbd>Z</kbd> to view their full extent, no matter how vast._
+* :handshake: iD now has its own [Privacy Policy](https://github.com/openstreetmap/iD/blob/develop/PRIVACY.md).<br/>
+_Press <kbd>P</kbd> to view privacy preferences._
+
+#### :boom: Breaking Changes
+* Remove Maxar imagery layers due to [announced suspension of service](https://www.openstreetmap.org/user/@kevin_bullock/diary/391652)
+
+#### :tada: New Features
+* Display selected features at any zoom level ([#2962], [#5001])
+* Add Privacy Policy and ability to opt-out of icons loaded from third-party sites ([#7040])
+
+[#2962]: https://github.com/openstreetmap/iD/issues/2962
+[#5001]: https://github.com/openstreetmap/iD/issues/5001
+[#7040]: https://github.com/openstreetmap/iD/issues/7040
+
+#### :sparkles: Usability
+* Support squaring multiple selected features at the same time ([#6565])
+* Support zooming to multiple selected features together with the <kbd>Z</kbd> shortcut ([#6696])
+* Highlight the members of selected relations in yellow ([#5766])
+* Return feature search results from all downloaded data, not just the visible area ([#6515])
+* Show results for all three OpenStreetMap entity types when searching an ID without a prefix ([#7112])
+* Style hotkeys in tooltips as keyboard keys ([#6574])
+* Make the top toolbar horizontally-scrollable at narrow sizes ([#6755])
+* Always show the Layer subfield of the Structure field when a value is present ([#6911])
+* Disable the Circularize operation if the selected way is already circular ([#6816], [#6993], thanks [@CarycaKatarzyna])
+* Fallback to a preset's vector icon if its image fails to load, e.g. due to content blockers ([#7028])
+* Convert single-member multipolygons to basic areas when merging member lines ([#5085])
+* Always show the currently selected background in the sources list ([#7061])
+* Only show background sources with global coverage at low zooms ([#7062])
+* Render features with a status-prefix tags with a dashed style, e.g. `demolished:building=yes`
+* Add tooltips to Mapillary Map Features overlay icons ([#7079])
+* Add button to manually retry connecting to the OpenStreetMap API upon a failure ([#6650])
+* Clarify the OpenStreetMap API connection failure message ([#7021])
+* Improve styling of points linked to Wikidata
+* Render `landuse=village_green` areas in green ([#7011])
+* Render Putting Greens and similar features in light green ([#7101])
+
+[#6565]: https://github.com/openstreetmap/iD/issues/6565
+[#6696]: https://github.com/openstreetmap/iD/issues/6696
+[#5766]: https://github.com/openstreetmap/iD/issues/5766
+[#6515]: https://github.com/openstreetmap/iD/issues/6515
+[#7112]: https://github.com/openstreetmap/iD/issues/7112
+[#6574]: https://github.com/openstreetmap/iD/issues/6574
+[#6755]: https://github.com/openstreetmap/iD/issues/6755
+[#6911]: https://github.com/openstreetmap/iD/issues/6911
+[#6816]: https://github.com/openstreetmap/iD/issues/6816
+[#6993]: https://github.com/openstreetmap/iD/issues/6993
+[#7028]: https://github.com/openstreetmap/iD/issues/7028
+[#5085]: https://github.com/openstreetmap/iD/issues/5085
+[#7061]: https://github.com/openstreetmap/iD/issues/7061
+[#7062]: https://github.com/openstreetmap/iD/issues/7062
+[#7079]: https://github.com/openstreetmap/iD/issues/7079
+[#6650]: https://github.com/openstreetmap/iD/issues/6650
+[#7021]: https://github.com/openstreetmap/iD/issues/7021
+[#7011]: https://github.com/openstreetmap/iD/issues/7011
+[#7101]: https://github.com/openstreetmap/iD/issues/7101
+
+[@CarycaKatarzyna]: https://github.com/CarycaKatarzyna
+
+#### :white_check_mark: Validation
+* For crossing ways issues, offer one-click "Add a bridge" and "Add a tunnel" fixes ([#6617], [#7055], thanks [@CarycaKatarzyna])
+* For crossing way-building issues, offer one-click fixes that set higher or lower layers ([#5924], [#6911])
+* Flag unclosed multipolgon parts ([#2223])
+* Flag crossing and one-way issues for features with `waterway=fish_pass`
+* Don't suggest upgrading to brands that don't exist in the feature's country ([#6513], [#6479])
+* Don't flag very close points with differing house or unit numbers ([#6998])
+* Allow the `not:brand:wikidata` tag to silence nonstandard brand warnings ([#6577])
+* Include default field values when upgrading to a preset with a specific replacement ([#7033])
+* Add tooltips to some disabled fix buttons
+* Don't flag `natural=cape` or `amenity=vending_machine` on vertices as mismatched geometry ([#6982], [#6515])
+* Don't add `oneway=yes` to `highway=motorway_link` by default ([#7013])
+* Don't expect an arbitrary `junction` tag to imply a feature should be an area ([#6933])
+* Prefer `aerialway=station` instead of `aerialway=yes` for aerialway stations ([#6994])
+* Remove deprecation of `crossing=zebra` ([#6962])
+* Remove deprecation of `amenity=social_club` and `leisure=social_club` ([#6252])
+* Deprecate `agrarian=agrcultural_machinry` misspelling ([#7053])
+* Deprecate `company=consulting`, `office=consultancy`, `office=consultant`, `shop=consulting`
+* Deprecate `type=audio`, `type=video`, `type=caldera`, `type=extinct`, `type=scoria`, `type=shield`, `type=strato`, `type=extinct`
+* Deprecate `amenity=research_institution`, `barrier=railing`, `craft=glass`, `man_made=gas_well`, `man_made=oil_well`, `man_made=village_pump`, `power=marker`
+
+[#6617]: https://github.com/openstreetmap/iD/issues/6617
+[#7055]: https://github.com/openstreetmap/iD/issues/7055
+[#5924]: https://github.com/openstreetmap/iD/issues/5924
+[#6911]: https://github.com/openstreetmap/iD/issues/6911
+[#2223]: https://github.com/openstreetmap/iD/issues/2223
+[#6513]: https://github.com/openstreetmap/iD/issues/6513
+[#6479]: https://github.com/openstreetmap/iD/issues/6479
+[#6998]: https://github.com/openstreetmap/iD/issues/6998
+[#6577]: https://github.com/openstreetmap/iD/issues/6577
+[#7033]: https://github.com/openstreetmap/iD/issues/7033
+[#6982]: https://github.com/openstreetmap/iD/issues/6982
+[#6515]: https://github.com/openstreetmap/iD/issues/6515
+[#7013]: https://github.com/openstreetmap/iD/issues/7013
+[#6933]: https://github.com/openstreetmap/iD/issues/6933
+[#6994]: https://github.com/openstreetmap/iD/issues/6994
+[#6962]: https://github.com/openstreetmap/iD/issues/6962
+[#6252]: https://github.com/openstreetmap/iD/issues/6252
+[#7053]: https://github.com/openstreetmap/iD/issues/7053
+
+[@CarycaKatarzyna]: https://github.com/CarycaKatarzyna
+
+#### :bug: Bugfixes
+* Fix issue with rotating multiple points together ([#6977], [#6979], thanks [@hackily])
+* Fix various instances where issue fixes might not get properly updated ([#6588], [#7037])
+* Fix unexpected label offsets in Firefox 70 ([#7044])
+* Don't move `area=yes` to nodes when using the Extract operation on areas ([#7057])
+* Fix issue where the fills of unclosed multipolygon parts would not render entirely ([#2945])
+* Prevent background tiles from appearing larger than expected ([#7070])
+* Fix issue where additional fields would disappear immediately upon clearing their value ([#6580])
+* Fix issue where adding a raw tag after deleting several would insert the blank row at the wrong index ([#7087])
+* Fix issue where OpenStreetMap API error message would persist despite the download of new data ([#6650])
+* Replace use of unsupported CSS property flagged by the OpenStreetMap website ([#7091])
+* Fix issue where the selected Mapillary detection outline would not render in some browsers ([#6804])
+* Fix issue where boundary relation members would not render correctly if they were also multipolygons members ([#6787])
+* Fix issue where the Administrative Boundary preset was not properly overriding the Boundary preset ([#7118])
+* Fix regression where the relation suggestion list could overflow the inspector ([#7115])
+* Fix issue where the Unsquare Corners degree input could be too narrow in some browsers ([#7126], thanks [@iriman])
+* Correct vertical centering of checkmark fields
+
+[#6977]: https://github.com/openstreetmap/iD/issues/6977
+[#6979]: https://github.com/openstreetmap/iD/issues/6979
+[#6588]: https://github.com/openstreetmap/iD/issues/6588
+[#7037]: https://github.com/openstreetmap/iD/issues/7037
+[#7044]: https://github.com/openstreetmap/iD/issues/7044
+[#7057]: https://github.com/openstreetmap/iD/issues/7057
+[#2945]: https://github.com/openstreetmap/iD/issues/2945
+[#7070]: https://github.com/openstreetmap/iD/issues/7070
+[#6580]: https://github.com/openstreetmap/iD/issues/6580
+[#7087]: https://github.com/openstreetmap/iD/issues/7087
+[#6650]: https://github.com/openstreetmap/iD/issues/6650
+[#7091]: https://github.com/openstreetmap/iD/issues/7091
+[#6804]: https://github.com/openstreetmap/iD/issues/6804
+[#6787]: https://github.com/openstreetmap/iD/issues/6787
+[#7118]: https://github.com/openstreetmap/iD/issues/7118
+[#7115]: https://github.com/openstreetmap/iD/issues/7115
+[#7126]: https://github.com/openstreetmap/iD/issues/7126
+
+[@hackily]: https://github.com/hackily
+[@iriman]: https://github.com/iriman
+
+#### :earth_asia: Localization
+* Differentiate the "wireframe mode" and "highlight changes" hotkeys in the German localization ([#6972], thanks [@manfredbrandl])
+* Improve Chinese address field ([#7075], thanks [@koaber])
+* Add Bolivia-specific address and phone number formats ([#7147], thanks [@51114u9])
+* Add the Occitan language to the Multilingual Name field ([#7156])
+
+[#6972]: https://github.com/openstreetmap/iD/issues/6972
+[#7075]: https://github.com/openstreetmap/iD/issues/7075
+[#7147]: https://github.com/openstreetmap/iD/issues/7147
+[#7156]: https://github.com/openstreetmap/iD/issues/7156
+
+[@manfredbrandl]: https://github.com/manfredbrandl
+[@koaber]: https://github.com/koaber
+[@51114u9]: https://github.com/51114u9
+
+#### :hourglass: Performance
+* Determine locations' country codes without calling out to a geocoding server ([#6941])
+* Reduce rendering lag considerably when many features are selected at once ([#3571])
+
+[#6941]: https://github.com/openstreetmap/iD/issues/6941
+[#3571]: https://github.com/openstreetmap/iD/issues/3571
+
+#### :mortar_board: Walkthrough / Help
+* Update links in the README to avoid http-to-https redirects ([#6984], thanks [@mbrickn])
+* Add the <kbd>I</kbd> hotkey to the Keyboard Shortcuts list ([#6997])
+
+[#6984]: https://github.com/openstreetmap/iD/issues/6984
+[#6997]: https://github.com/openstreetmap/iD/issues/6997
+
+[@mbrickn]: https://github.com/mbrickn
+
+#### :rocket: Presets
+* Add Notice Board, Poster Box, and Advertising Totem presets ([#6965], thanks [@hikemaniac])
+* Add Kiddie Ride, Log Flume, and Swing Carousel presets ([#7039], thanks [@hikemaniac])
+* Add Spice Shop preset ([#7031], thanks [@scaidermern])
+* Add Giant Chess Board preset ([#7059], thanks [@ToastHawaii])
+* Add Marker, Utility Marker, and Power Marker presets ([#6978])
+* Add Access Aisle preset and style ([#7083])
+* Add Research Institute preset and style ([#7078])
+* Add Advanced Stop Line preset ([#7014])
+* Add Lane Connectivity relation preset ([#7105])
+* Add Water Tap preset ([#7066])
+* Add Rail Yard preset ([#7119])
+* Add unsearchable Disused Railway Feature preset ([#7119])
+* Add Recently Demolished Building preset and render them as areas ([#7098])
+* Add Recreational Network Node preset for Belgium, Germany, Luxembourg, and The Netherlands ([#6992])
+* Add presets for new brands: Consultancy Office, Cleaning Service, Camera Equipment Store, Flooring Supply Shop, Pottery Store, Tool Rental
+* Add Fish Pass preset
+* Append "Area" to the names of linear area presets: Bridge, Tunnel, Road, River, Stream, Canal ([#7015])
+* Append "Feature" to the names of various generic presets, e.g. "Tourism Feature"
+* Append "Ride" to the names of some attraction presets, e.g "Pirate Ship Ride"
+* Rename "Wood" preset to "Natural Wood"
+* Rename "Car Pooling" and "Car Sharing" presets to "Car Pooling Station" and "Car Sharing Station"
+* Rename "Pottery" craft preset to "Pottery Maker"
+* Correct "Firepit" preset name to "Fire Pit"
+* Correct capitalization of "J-Bar Lift" and "T-Bar Lift" preset names
+* Update icons for Mast, Communication Mast, and Communication Tower ([#6985])
+* Update icons for Gate, Kissing Gate, and Cattle Grid ([#6814], [#6489])
+* Update icon for Park to be different from Tree ([#6633])
+* Update icons for Bunker and Military Bunker ([#7139])
+* Update icons for presets: diplomatic offices, marked crossings, transit platforms, buoys, Billboard, Jet Bridge, Scrap Yard, Bicycle Parking Garage, Bicycle Lockers, Bicycle Rental, Bicycle Repair Tool Stand, Boat Rental, Car Pooling Station, Car Sharing Station, Parking Lot, Multilevel Parking Garage, Underground Parking, Park & Ride Lot, Lean-To, Picnic Shelter, Transit Shelter, Block, Chain, Height Restrictor, Turnstile, Barn, Stable, Basket Maker, Boar Builder, Handicraft, Pottery, Indoor Corridor, Cycle & Foot Path, Street Lamp, Commemorative Plaque, Fire Pit, Pier, Floating Pier, Minaret, Tunnel Area, Water Tower, Grassland, Grass, Tree Row, Energy Supplier Office, Insurance Office, Slide, Water Slide, Play Structure, Underground Power Cable, Chocolate Store, Lighting Store, Motorcycle Repair Shop, Storage Rental, Art Installation, Sculpture, Statue, Coastline, Boat Store, Boatyard, Cabin, Holiday Cottage, Alpine Hut, Wilderness Hut, Hostel, Blacksmith
+* Add "tree" as a search term for Natural Wood and Managed Forest ([#7097])
+* Add "packstation" as a search term for package pickup and dropoff lockers ([#7052])
+* Add "pilates" as a search term for Gym / Fitness Center ([#7137])
+* Support limiting fields to specific countries ([#7085])
+* Add GNIS Feature ID field to various preset for the United States ([#7086])
+* Add VAT ID Number field to business presets for countries where VAT numbers are issued ([#6880])
+* Add Wikimedia Commons Page field with link to view the page
+* Add Mapillary ID field with link to view the image on the Mapillary website ([#7064])
+* Add Internet Access, SMS, and Video Calls fields to the Telephone preset ([#7010])
+* Add Tactile Paving field to the Steps preset ([#7082], thanks [@stragu])
+* Add Reference Code field to Vending Machine presets ([#7002])
+* Add Drinks field to the Drink Vending Machine preset
+* Add Drinkable field to various water source presets
+* Add Type field to Fountain preset
+* Add Pump field to Water Well preset
+* Add Utilities field to Utility Pole and Street Cabinet presets
+* Add Brand field to more presets that could have brand tags
+* Rename "Network Type" field for `network` to "Network Class"
+* Add Network Type field for `network:type` to Route presets with a `network` value
+* Rename "Suggested Hashtags" changeset field to just "Hashtags"
+* Only show the Country field on Flagpole features with `flag:type=national` ([#7099])
+* Don't show the Denomination field on features with `religion=none` ([#7135])
+
+[#7139]: https://github.com/openstreetmap/iD/issues/7139
+[#6965]: https://github.com/openstreetmap/iD/issues/6965
+[#7039]: https://github.com/openstreetmap/iD/issues/7039
+[#7031]: https://github.com/openstreetmap/iD/issues/7031
+[#7059]: https://github.com/openstreetmap/iD/issues/7059
+[#6978]: https://github.com/openstreetmap/iD/issues/6978
+[#7083]: https://github.com/openstreetmap/iD/issues/7083
+[#7078]: https://github.com/openstreetmap/iD/issues/7078
+[#7014]: https://github.com/openstreetmap/iD/issues/7014
+[#7105]: https://github.com/openstreetmap/iD/issues/7105
+[#7066]: https://github.com/openstreetmap/iD/issues/7066
+[#7119]: https://github.com/openstreetmap/iD/issues/7119
+[#7098]: https://github.com/openstreetmap/iD/issues/7098
+[#6992]: https://github.com/openstreetmap/iD/issues/6992
+[#7015]: https://github.com/openstreetmap/iD/issues/7015
+[#6985]: https://github.com/openstreetmap/iD/issues/6985
+[#6814]: https://github.com/openstreetmap/iD/issues/6814
+[#6489]: https://github.com/openstreetmap/iD/issues/6489
+[#6633]: https://github.com/openstreetmap/iD/issues/6633
+[#7097]: https://github.com/openstreetmap/iD/issues/7097
+[#7052]: https://github.com/openstreetmap/iD/issues/7052
+[#7137]: https://github.com/openstreetmap/iD/issues/7137
+[#7085]: https://github.com/openstreetmap/iD/issues/7085
+[#7086]: https://github.com/openstreetmap/iD/issues/7086
+[#6880]: https://github.com/openstreetmap/iD/issues/6880
+[#7064]: https://github.com/openstreetmap/iD/issues/7064
+[#7010]: https://github.com/openstreetmap/iD/issues/7010
+[#7082]: https://github.com/openstreetmap/iD/issues/7082
+[#7002]: https://github.com/openstreetmap/iD/issues/7002
+[#7099]: https://github.com/openstreetmap/iD/issues/7099
+[#7135]: https://github.com/openstreetmap/iD/issues/7135
+
+[@hikemaniac]: https://github.com/hikemaniac
+[@scaidermern]: https://github.com/scaidermern
+[@ToastHawaii]: https://github.com/ToastHawaii
+[@stragu]: https://github.com/stragu
+
+# 2.16.0
+##### 2019-Oct-23
+
+#### :mega: Release Highlights
+* :vertical_traffic_light: We've added support for showing objects detected in Mapillary images. Detections include traffic signals, storm drains, trash cans, street lamps, crosswalks, fire hydrants, power poles, and more. Shout out to [@kratico] for adding this feature!<br/>
+_Open the Map Data pane and enable the Map Features layer to see what has been detected. (shortcut <kbd>F</kbd>)_
+* :bookmark_tabs: You can now track changes that you've made while editing. Changed features will be highlighted green for additions, yellow for tag changes, and orange for geometry changes. Thanks [@Bonkles] for your work on this!<br/>
+_Press <kbd>G</kbd> to toggle change highlighting._
+
+#### :tada: New Features
+* Add Map Features layer showing objects detected in Mapillary images ([#5845], [#6792], thanks [@kratico])
+* Add the option to highlight edited features directly on the map ([#6843], thanks [@Bonkles])
+* Show the number of resolved and remaining issues in the bottom bar when validating everything ([#6935], [#6940])
+* Allow reversing directional nodes via the Reverse menu item and keyboard shortcut ([#6850])
+* Add link to the Achavi changeset viewer to the History panel ([#6855])
+
+[#5845]: https://github.com/openstreetmap/iD/issues/5845
+[#6792]: https://github.com/openstreetmap/iD/issues/6792
+[#6843]: https://github.com/openstreetmap/iD/issues/6843
+[#6935]: https://github.com/openstreetmap/iD/issues/6935
+[#6940]: https://github.com/openstreetmap/iD/issues/6940
+[#6850]: https://github.com/openstreetmap/iD/issues/6850
+[#6855]: https://github.com/openstreetmap/iD/issues/6855
+
+[@kratico]: https://github.com/kratico
+[@Bonkles]: https://github.com/Bonkles
+
+#### :sparkles: Usability
+* Flash the feature type button when a feature's preset changes during editing ([#6764])
+* Add button to toggle the Background info panel ([#6839])
+* Support reversing multiple selected features at the same time ([#6810])
+* Match the cliff directional arrow color to the line color ([#6918], [#6919], thanks [@huonw])
+* Render walls as blockier than fences and other barriers ([#6865])
+* Don't render barriers tagged on waterways ([#6887])
+* Improve Mapillary traffic sign quality by only showing signs detected in two or more photos ([#6921], thanks [@cbeddow])
+* Prevent zooming past the allowed zoom level range via scrolling or trackpad gestures ([#6851])
+* Disable the zoom in/out buttons at the maximum/minimum zoom levels ([#6847])
+* Allow tabbing past the last row in the All Tags table ([#4233])
+* Replace hardcoded ranking of OpenStreetMap communities with granular upstream ordering ([#6752])
+* Make the "Report an Imagery Problem" text clearer ([#6820])
+* Open the Map Data pane when clicking the "hidden features" badge
+
+[#6764]: https://github.com/openstreetmap/iD/issues/6764
+[#6839]: https://github.com/openstreetmap/iD/issues/6839
+[#6810]: https://github.com/openstreetmap/iD/issues/6810
+[#6918]: https://github.com/openstreetmap/iD/issues/6918
+[#6919]: https://github.com/openstreetmap/iD/issues/6919
+[#6865]: https://github.com/openstreetmap/iD/issues/6865
+[#6887]: https://github.com/openstreetmap/iD/issues/6887
+[#6921]: https://github.com/openstreetmap/iD/issues/6921
+[#6851]: https://github.com/openstreetmap/iD/issues/6851
+[#6847]: https://github.com/openstreetmap/iD/issues/6847
+[#4233]: https://github.com/openstreetmap/iD/issues/4233
+[#6752]: https://github.com/openstreetmap/iD/issues/6752
+[#6820]: https://github.com/openstreetmap/iD/issues/6820
+
+[@huonw]: https://github.com/huonw
+[@cbeddow]: https://github.com/cbeddow
+
+#### :white_check_mark: Validation
+* Only show the user issues their edits created, not preexisting issues with features they modified ([#6459])
+* No longer flag websites missing `http://` or `https://` ([#6831])
+* Flag disconnected `highway=elevator` as routing islands ([#6812])
+* Flag points that should be attached or detached from ways ([#6319])
+* Flag features with names matching a value in their `not:name` tag ([#6411])
+* Flag generic multilingual feature names ([#6876])
+* Rename '"Fix Me" Requests' validation rule to 'Help Requests'
+* Issue clearer warning when brand tags are simply incomplete, not strictly "nonstandard" ([#6909])
+* Add changeset tags for the number and type of issues resolved by the user's edits ([#6459])
+* Always show the Reset Ignored button when there are ignored issues
+* Deprecate `cycleway=track` on `highway=cycleway` ([#6705])
+* Deprecate various `direction`, `embankment`, `golf`, and `weighbridge` tags
+* Upgrade outdated golf and jet bridge presets in one step rather than two ([#6901], [#6912], thanks [@guylamar2006])
+* Add documentation of all validation issue types, severities, and changeset tags ([#6100])
+
+[#6459]: https://github.com/openstreetmap/iD/issues/6459
+[#6831]: https://github.com/openstreetmap/iD/issues/6831
+[#6812]: https://github.com/openstreetmap/iD/issues/6812
+[#6319]: https://github.com/openstreetmap/iD/issues/6319
+[#6411]: https://github.com/openstreetmap/iD/issues/6411
+[#6876]: https://github.com/openstreetmap/iD/issues/6876
+[#6909]: https://github.com/openstreetmap/iD/issues/6909
+[#6705]: https://github.com/openstreetmap/iD/issues/6705
+[#6901]: https://github.com/openstreetmap/iD/issues/6901
+[#6912]: https://github.com/openstreetmap/iD/issues/6912
+[#6100]: https://github.com/openstreetmap/iD/issues/6100
+
+[@guylamar2006]: https://github.com/guylamar2006
+
+#### :bug: Bugfixes
+* Fix an issue where some Mapillary traffic signs would not appear ([#6510], [#6921], thanks [@cbeddow])
+* Don't treat closed `highway=corridor` ways as areas ([#6800])
+* Fix an issue where operations might not be correctly enabled or disabled while editing a feature
+* Properly show uppercase suggestions in the Country, Target, and Draft Beers fields
+
+[#6510]: https://github.com/openstreetmap/iD/issues/6510
+[#6921]: https://github.com/openstreetmap/iD/issues/6921
+[#6800]: https://github.com/openstreetmap/iD/issues/6800
+
+[@cbeddow]: https://github.com/cbeddow
+
+#### :earth_asia: Localization
+* Add Seychelles and Pitcairn Islands to the list of places that drive on the left ([#6827], thanks [@leighghunt])
+* Show Traditional Chinese language names in the Taiwan localization instead of Simplified Chinese ([#6815])
+* Sort the "Add field" options in a locale-aware order ([#6937])
+* Make the Wheelchair Access and Stroller Access field options translatable ([#6878])
+* Let the <kbd>@</kbd> key on French/AZERTY keyboards also toggle the sidebar ([#6864])
+* Update language data with Unicode CLDR 36
+
+[#6827]: https://github.com/openstreetmap/iD/issues/6827
+[#6937]: https://github.com/openstreetmap/iD/issues/6937
+[#6815]: https://github.com/openstreetmap/iD/issues/6815
+[#6878]: https://github.com/openstreetmap/iD/issues/6878
+[#6864]: https://github.com/openstreetmap/iD/issues/6864
+
+[@leighghunt]: https://github.com/leighghunt
+
+#### :mortar_board: Walkthrough / Help
+* Update the link to the Mapbox Imagery Request site ([#6874], thanks [@1ec5])
+* Fix issue where walkthrough could not be completed if certain data layers were disabled ([#6634])
+
+[#6874]: https://github.com/openstreetmap/iD/issues/6874
+[#6634]: https://github.com/openstreetmap/iD/issues/6634
+
+[@1ec5]: https://github.com/1ec5
+
+#### :rocket: Presets
+* Add Electrical Equipment Store and Telecom Retail Store presets
+* Add Indoor Stairwell and Indoor Elevator Shaft presets ([#6863], thanks [@danielsjf])
+* Add Loading Dock preset ([#6849])
+* Add Utility Pole preset ([#6848])
+* Add Karting Racetrack and Motocross Racetrack presets ([#6826])
+* Add Noise Barrier preset ([#6949])
+* Add Brewing Supply Store preset ([#6866], [#6955], thanks [@simonbilskyrollins])
+* Add presets: Spaceport, Hot Dog Fast Food, Recording Studio, Film Studio, Radio Station, Television Station, Truck Scale, City Hall
+* Update icons for presets including money-related presets, construction presets, utility presets, schools, vending machines, parcel pickups and drop-offs, manholes, Sushi Restaurant, Compressed Air, Psychic, Shower, Bumper Cars, Roller Coaster, Bollard, Lift Gate, Street Lamp, Bleachers, Oil Well, and Wastewater Plant
+* Add Type and Material fields to the Stile preset ([#6857], thanks [@ewnh])
+* Add Waste field to relevant presets ([#6821])
+* Add Hours field to the Recycling Container preset ([#6861])
+* Add Blind Person Access and Lockable fields
+* Add Bollard Row preset and a bollard Type field
+* Add Informal field and Informal Path preset
+* No longer show Level field for every feature, just those that might be indoors
+* Add Levels field for features that might cross multiple building floors
+* Add Maximum Age field to features like schools and rides
+* Add Minimum Age field to features like kindergartens, bars, and clubs
+* Add Theme field for Playground and Playground Equipment presets
+* Add Type field to the Residential Area preset
+* Add Limited option to the Stroller Access field ([#6833])
+* Add `notCountryCodes` preset property for blacklisting presets from being addable in certain places
+* Don't show the Cycle & Foot Path preset in France, Lithuania, or Poland ([#6836], [#6882])
+* Require only the primary tag for a feature to match a golf preset
+* Rename Construction to Construction Area and render it with a yellow icon
+* Improve searchability of cycle presets in English ([#6825])
+
+[#6949]: https://github.com/openstreetmap/iD/issues/6949
+[#6863]: https://github.com/openstreetmap/iD/issues/6863
+[#6849]: https://github.com/openstreetmap/iD/issues/6849
+[#6848]: https://github.com/openstreetmap/iD/issues/6848
+[#6826]: https://github.com/openstreetmap/iD/issues/6826
+[#6857]: https://github.com/openstreetmap/iD/issues/6857
+[#6821]: https://github.com/openstreetmap/iD/issues/6821
+[#6861]: https://github.com/openstreetmap/iD/issues/6861
+[#6833]: https://github.com/openstreetmap/iD/issues/6833
+[#6836]: https://github.com/openstreetmap/iD/issues/6836
+[#6882]: https://github.com/openstreetmap/iD/issues/6882
+[#6825]: https://github.com/openstreetmap/iD/issues/6825
+
+[@simonbilskyrollins]: https://github.com/simonbilskyrollins
+[@danielsjf]: https://github.com/danielsjf
+[@ewnh]: https://github.com/ewnh
+
+# 2.15.5
+##### 2019-Aug-26
+
+#### :boom: Breaking Changes
+* Remove support for Node 6 (Node 8 or higher is now required)
+  * :warning: If you are building the iD project, you will need to upgrade your node version.
+
+#### :sparkles: Usability
+* Make the UI more navigable by tabbing ([#6701], thanks [@Abbe98])
+* Render Sidewalks in a different color than Foot Paths ([#6522])
+* List the user's language and common nearby languages first in the Multilingual Name language list ([#6712])
+* Add more language options to the Multilingual Name list
+* Enable searching fields by tag and keyword ([#5763])
+* Accept relation IDs in the "Choose a parent relation" dropdown ([#3487])
+* Highlight relations in the map when hovering over them in the "Choose a parent relation" dropdown ([#2946])
+* Show addable presets specified by the `presets` URL parameter in the default preset list ([#6703])
+* Interpret the `º` and `˚` characters as degrees when searching coordinates
+* Make the post-upload changeset number clickable ([#6644])
+* Allow selecting and copying tags from Custom Map Data ([#6710])
+* Select points after dragging them ([#5747])
+
+[#2946]: https://github.com/openstreetmap/iD/issues/2946
+[#3487]: https://github.com/openstreetmap/iD/issues/3487
+[#5747]: https://github.com/openstreetmap/iD/issues/5747
+[#5763]: https://github.com/openstreetmap/iD/issues/5763
+[#6522]: https://github.com/openstreetmap/iD/issues/6522
+[#6644]: https://github.com/openstreetmap/iD/issues/6644
+[#6701]: https://github.com/openstreetmap/iD/issues/6701
+[#6703]: https://github.com/openstreetmap/iD/issues/6703
+[#6710]: https://github.com/openstreetmap/iD/issues/6710
+[#6712]: https://github.com/openstreetmap/iD/issues/6712
+
+[@Abbe98]: https://github.com/Abbe98
+
+#### :white_check_mark: Validation
+* Don't flag known brands for having generic names ([#6761], [#6754], thanks [@SilentSpike])
+* Clarify that connecting a waterway crossing a highway will add a ford ([#6734])
+* Lock the Name field of features with a `name:etymology:wikidata` tag ([#6683])
+* Don't offer to add `highway=service` to demolished roads with `service` tags ([#6775])
+* Upgrade `crossing=island` to `crossing:island=yes` ([#6748])
+* Upgrade `diaper` to `changing_table` ([#6529])
+* Upgrade `access=public` to `access=yes` ([#6716])
+* Deprecate `tower:type=anchor` and `tower:type=suspension` ([#6762])
+* Deprecate `landuse=garden` ([#6758])
+* Deprecate `roof:shape=half_hipped` ([#6704])
+
+[#6529]: https://github.com/openstreetmap/iD/issues/6529
+[#6683]: https://github.com/openstreetmap/iD/issues/6683
+[#6704]: https://github.com/openstreetmap/iD/issues/6704
+[#6716]: https://github.com/openstreetmap/iD/issues/6716
+[#6734]: https://github.com/openstreetmap/iD/issues/6734
+[#6748]: https://github.com/openstreetmap/iD/issues/6748
+[#6754]: https://github.com/openstreetmap/iD/issues/6754
+[#6758]: https://github.com/openstreetmap/iD/issues/6758
+[#6761]: https://github.com/openstreetmap/iD/issues/6761
+[#6762]: https://github.com/openstreetmap/iD/issues/6762
+[#6775]: https://github.com/openstreetmap/iD/issues/6775
+
+[@SilentSpike]: https://github.com/SilentSpike
+
+#### :bug: Bugfixes
+* Boost preset matching score if match occurs in addTags ([#6802])
+* Fix error upon changing the Unsquare Building threshold ([#6690])
+* Don't hide all multilingual names upon deleting one ([#6491])
+* Correctly populate the Bike Lanes field with existing values ([#6141])
+* Show the correct location for coordinates in the `N DD° MM.MMM' W DD° MM.MMM'` format without a comma separator ([#6582])
+* Don't treat platforms with a `kerb` tag as primarily curbs ([#6742])
+* Remove deleted features from the map immediately when undoing or redoing ([#6480])
+* Properly resize Mapillary and Bing Streetside photos when resizing the viewer ([#6286])
+* Fix issue where the Background Offset field could not be focused ([#6698])
+
+[#6141]: https://github.com/openstreetmap/iD/issues/6141
+[#6286]: https://github.com/openstreetmap/iD/issues/6286
+[#6480]: https://github.com/openstreetmap/iD/issues/6480
+[#6491]: https://github.com/openstreetmap/iD/issues/6491
+[#6582]: https://github.com/openstreetmap/iD/issues/6582
+[#6690]: https://github.com/openstreetmap/iD/issues/6690
+[#6698]: https://github.com/openstreetmap/iD/issues/6698
+[#6742]: https://github.com/openstreetmap/iD/issues/6742
+[#6802]: https://github.com/openstreetmap/iD/issues/6802
+
+#### :earth_asia: Localization
+* Display the languages for the Multilingual Name field in the user's language, if available ([#2457], [#6702])
+* Translate language names in the post-upload community list ([#4990])
+
+[#2457]: https://github.com/openstreetmap/iD/issues/2457
+[#4990]: https://github.com/openstreetmap/iD/issues/4990
+[#6702]: https://github.com/openstreetmap/iD/issues/6702
+
+#### :rocket: Presets
+* Add Rental Shop preset
+* Remove standalone Tactile Paving preset ([#6490], [#6791])
+* Add Bottle Return Machine preset ([#6725], thanks [@ENT8R])
+* Add Letter Box preset with Delivery Address field ([#6718])
+* Add Post Sorting Office preset ([#6773])
+* Add E-Waste Container preset ([#6777])
+* Add Obelisk preset ([#6790])
+* Add Flowerbed and Green Waste Container presets
+* Add Line Attachment field to Power Pole and Power Tower ([#6762])
+* Add Species Wikidata field to Animal Enclosure and Tree ([#6652])
+* Add Fee Amount an Toll Amount fields ([#6722])
+* Add Stroller Access field ([#6739])
+* Add Refuge Island field to crossings ([#6748])
+* Add Incorrect Names field for common naming mistakes ([#6411])
+* Update icons for Power Pole, Power Tower, and Power Line ([#6786])
+* Update icon for cycle paths, crossings, and tracks
+* Only allow `power=transformer` on nodes ([#6779])
+
+[#6411]: https://github.com/openstreetmap/iD/issues/6411
+[#6490]: https://github.com/openstreetmap/iD/issues/6490
+[#6652]: https://github.com/openstreetmap/iD/issues/6652
+[#6718]: https://github.com/openstreetmap/iD/issues/6718
+[#6722]: https://github.com/openstreetmap/iD/issues/6722
+[#6725]: https://github.com/openstreetmap/iD/issues/6725
+[#6739]: https://github.com/openstreetmap/iD/issues/6739
+[#6748]: https://github.com/openstreetmap/iD/issues/6748
+[#6762]: https://github.com/openstreetmap/iD/issues/6762
+[#6773]: https://github.com/openstreetmap/iD/issues/6773
+[#6777]: https://github.com/openstreetmap/iD/issues/6777
+[#6779]: https://github.com/openstreetmap/iD/issues/6779
+[#6786]: https://github.com/openstreetmap/iD/issues/6786
+[#6790]: https://github.com/openstreetmap/iD/issues/6790
+[#6791]: https://github.com/openstreetmap/iD/issues/6791
+
+[@ENT8R]: https://github.com/ENT8R
+
+# 2.15.4
+##### 2019-Jul-26
+
+#### :tada: New Features
+* Render side direction arrows on weirs ([#6615])
+
+[#6615]: https://github.com/openstreetmap/iD/issues/6615
+
+#### :sparkles: Usability
+* Don't reuse the changeset comment, sources, and hashtags by default after uploading or discarding edits ([#6642])
+
+[#6642]: https://github.com/openstreetmap/iD/issues/6642
+
+#### :white_check_mark: Validation
+* Don't flag very close points on different layers or levels ([#6612])
+* Don't flag Google Books as a source ([#6556])
+* Add `preschool=yes` when upgrading `amenity=preschool` ([#6636])
+
+[#6612]: https://github.com/openstreetmap/iD/issues/6612
+[#6556]: https://github.com/openstreetmap/iD/issues/6556
+[#6636]: https://github.com/openstreetmap/iD/issues/6636
+
+#### :bug: Bugfixes
+* Fix issue where the info in the Background panel wouldn't update when switching backgrounds ([#6627])
+* Fix issue where side direction arrows might not update when switching presets ([#6032])
+
+[#6627]: https://github.com/openstreetmap/iD/issues/6627
+[#6032]: https://github.com/openstreetmap/iD/issues/6032
+
+#### :earth_asia: Localization
+* Default speed limit units to miles per hour in Puerto Rico ([#6626])
+* Fix issue where Arabic numerals would not render correctly on the map ([#6679], [#6682], thanks [@mapmeld])
+
+[#6626]: https://github.com/openstreetmap/iD/issues/6626
+[#6679]: https://github.com/openstreetmap/iD/issues/6679
+[#6682]: https://github.com/openstreetmap/iD/issues/6682
+
+#### :rocket: Presets
+* Add Dressing Room preset ([#6643])
+* Add Pool Supply Store preset ([#6599])
+* Add Address Interpolation line preset ([#4220])
+* Add Printer Ink Store, Park & Ride Lot, Aircraft Holding Position, and Aircraft Parking Position presets
+* Add Type and Address fields to Public Bookcase preset ([#6564], thanks [@ToastHawaii])
+* Add Underground Levels field to building presets ([#6628])
+* Add more fields to the Kindergarten, Ferry Route, Ford, Dam, Weir, and Bridge Support presets
+* Fix tag misspelling for the Camp Pitch preset ([#6608])
+* Update icons for the Cairn, Sandwich Fast Food, Hifi Store, and Party Store presets
+
+[#6643]: https://github.com/openstreetmap/iD/issues/6643
+[#6564]: https://github.com/openstreetmap/iD/issues/6564
+[#6628]: https://github.com/openstreetmap/iD/issues/6628
+[#4220]: https://github.com/openstreetmap/iD/issues/4220
+[#6599]: https://github.com/openstreetmap/iD/issues/6599
+[#6608]: https://github.com/openstreetmap/iD/issues/6608
+
+# 2.15.3
+##### 2019-Jun-30
+
+#### :tada: New Features
+* Deprecate unsupported DigitalGlobe imagery sources ([editor-layer-index/#680])
+* Limit addable presets via comma-separated IDs in the `presets` URL parameter ([#6553])
+
+[editor-layer-index/#680]: https://github.com/osmlab/editor-layer-index/pull/680
+[#6553]: https://github.com/openstreetmap/iD/issues/6553
+
+#### :sparkles: Usability
+* Add support for fords drawn as lines ([#6576])
+
+[#6576]: https://github.com/openstreetmap/iD/issues/6576
+
+#### :white_check_mark: Validation
+* Allow for some tags (`takeaway`) to be kept when upgrading tags ([#6530], [#6581])
+* Remove existing match keys before upgrading to a name-suggestion-index preset ([#6575])
+* Deprecate `camp_site=camp_pitch`, prefer `tourism=camp_pitch` ([#6591])
+
+[#6591]: https://github.com/openstreetmap/iD/issues/6591
+[#6581]: https://github.com/openstreetmap/iD/issues/6581
+[#6575]: https://github.com/openstreetmap/iD/issues/6575
+[#6530]: https://github.com/openstreetmap/iD/issues/6530
+
+#### :bug: Bugfixes
+* Fix issue displaying preset name for suggestions with a '/' in name ([#6594])
+* Fix crash when disabling the OSM layer while drawing ([#6584])
+
+[#6594]: https://github.com/openstreetmap/iD/issues/6594
+[#6584]: https://github.com/openstreetmap/iD/issues/6584
+
+#### :rocket: Presets
+* Update camera icon on surveillance presets
+* Add preset for `shop=hobby`
+* Add Cairn preset ([#6587], thanks [@SilentSpike])
+* Add field for `operator:type` to various presets ([#6566])
+* Render `waterway=dam` as lines as grey ([#6555])
+* Add Karaoke Box preset ([#6538])
+* Add Torii preset ([#6537])
+* Add more fields to the Helipad preset
+* Add Structure field to the Canal preset ([#6548])
+* Add polling place presets and field ([#6542])
+
+[#6587]: https://github.com/openstreetmap/iD/issues/6587
+[#6566]: https://github.com/openstreetmap/iD/issues/6566
+[#6555]: https://github.com/openstreetmap/iD/issues/6555
+[#6548]: https://github.com/openstreetmap/iD/issues/6548
+[#6542]: https://github.com/openstreetmap/iD/issues/6542
+[#6538]: https://github.com/openstreetmap/iD/issues/6538
+[#6537]: https://github.com/openstreetmap/iD/issues/6537
+[@SilentSpike]: https://github.com/SilentSpike
+
+
+# 2.15.2
+##### 2019-Jun-17
+
+#### :sparkles: Usability
+* Prefer a Wikipedia commons logo over social media logo in some situations ([#6361])
+
+[#6361]: https://github.com/openstreetmap/iD/issues/6361
+
+#### :white_check_mark: Validation
+* Remove issue "autofix" buttons
+* Don't suggest adding `nonsquare=yes` to physically unsquare buildings ([#6332])
+* Stop suggesting adding highway=footway to piers, platforms, and tracks ([#6229], [#6409], [#6042])
+* Fix some situations where iD should not suggest adding `highway=crossing` ([#6508])
+* Avoid stale "connect endpoints" fix for "tags imply area" that could cause invalid areas ([#6525])
+* Remove `barrier=entrance` deprecation ([#6506])
+* Improve warning message when updating brand tags ([#6443])
+* Improve checks for valid email and website values ([#6494], thanks [@SilentSpike])
+* Fix issue where crossings with kerb tags were treated primarily as kerbs ([#6440])
+* Fix issue where upgrading `office=administrative` could also remove `building=yes` ([#6466])
+* Fix issue where cuisine -> diet upgrades could overwrite existing values ([#6462])
+
+[#6525]: https://github.com/openstreetmap/iD/issues/6525
+[#6508]: https://github.com/openstreetmap/iD/issues/6508
+[#6506]: https://github.com/openstreetmap/iD/issues/6506
+[#6494]: https://github.com/openstreetmap/iD/issues/6494
+[#6466]: https://github.com/openstreetmap/iD/issues/6466
+[#6462]: https://github.com/openstreetmap/iD/issues/6462
+[#6443]: https://github.com/openstreetmap/iD/issues/6443
+[#6440]: https://github.com/openstreetmap/iD/issues/6440
+[#6409]: https://github.com/openstreetmap/iD/issues/6409
+[#6332]: https://github.com/openstreetmap/iD/issues/6332
+[#6229]: https://github.com/openstreetmap/iD/issues/6229
+[#6042]: https://github.com/openstreetmap/iD/issues/6042
+[@SilentSpike]: https://github.com/SilentSpike
+
+
+#### :bug: Bugfixes
+* Fix issue with deleting a member from a relation with a duplicate entity but different roles ([#6504])
+* Fix issue where iD could crash upon save if user had edits stored before iD 2.15 ([#6496])
+
+[#6504]: https://github.com/openstreetmap/iD/issues/6504
+[#6496]: https://github.com/openstreetmap/iD/issues/6496
+
+#### :rocket: Presets
+* Add presets for `craft=signmaker`, `healthcare=counselling`, `shop=fashion_accessories`
+* Remove unnecessary `landuse=military` added on `military=bunker` ([#6509], [#6518], thanks [@matkoniecz])
+* Add Pipeline Valve preset ([#6393])
+* Add Diameter field to Pipeline and Tree presets
+* Add additional terms for Mailbox preset ([#6535])
+* Improve public bookcase preset ([#6503], thanks [@ToastHawaii])
+* Deprecate `wifi=yes` and `wifi=free` ([#6524])
+* Lower match score for man_made/bridge preset
+* Add presets for Christian places of worship that do not use a cross icon or are not called churches ([#6512])
+* Add preset for `shop=military_surplus` ([#6470])
+* Deprecate various maxspeed mistags ([#6478])
+* Add preset for `office=bail_bond_agent` and deprecate various mistags ([#6472])
+* Deprecate "FIXME" -> "fixme", "NOTE" -> "note" ([#6477])
+* Deprecate some "sustenance" tags
+* Change the label "Direction" to "Direction Affected" for vertex fields ([#6469], thanks [@BjornRasmussen])
+* Remove the search term "garage" from parking preset ([#6455], thanks [@BjornRasmussen])
+* Add preset for `military=trench` ([#6474])
+* Add preset for `leisure=escape_game` ([#6447])
+* Update Hackerspace fields
+
+[#6535]: https://github.com/openstreetmap/iD/issues/6535
+[#6524]: https://github.com/openstreetmap/iD/issues/6524
+[#6518]: https://github.com/openstreetmap/iD/issues/6518
+[#6512]: https://github.com/openstreetmap/iD/issues/6512
+[#6509]: https://github.com/openstreetmap/iD/issues/6509
+[#6503]: https://github.com/openstreetmap/iD/issues/6503
+[#6478]: https://github.com/openstreetmap/iD/issues/6478
+[#6477]: https://github.com/openstreetmap/iD/issues/6477
+[#6474]: https://github.com/openstreetmap/iD/issues/6474
+[#6472]: https://github.com/openstreetmap/iD/issues/6472
+[#6470]: https://github.com/openstreetmap/iD/issues/6470
+[#6469]: https://github.com/openstreetmap/iD/issues/6469
+[#6455]: https://github.com/openstreetmap/iD/issues/6455
+[#6447]: https://github.com/openstreetmap/iD/issues/6447
+[#6393]: https://github.com/openstreetmap/iD/issues/6393
+[@matkoniecz]: https://github.com/matkoniecz
+[@ToastHawaii]: https://github.com/ToastHawaii
+[@BjornRasmussen]: https://github.com/BjornRasmussen
+
+
+# 2.15.1
+##### 2019-May-24
+
+#### :tada: New Features
+* Add Maxar-Standard and Maxar-Premium Imagery Layers ([editor-layer-index#668])
+* Add feature filters for pistes and aerialways
+* Add ability to hide indoor areas and building part areas ([#6352])
+
+[#6352]: https://github.com/openstreetmap/iD/issues/6352
+[editor-layer-index#668]: https://github.com/osmlab/editor-layer-index/pull/668
+
+#### :sparkles: Usability
+* Prevent Chrome autofill of recent values in the Allowed Access inputs ([#6414])
+* Improve visual padding of multiselect fields
+* Make unsquare threshold field wider to account for stepper control in Firefox ([#6418])
+* Add "Disable All" and "Enable All" buttons for the Map Features list ([#5234])
+
+[#6418]: https://github.com/openstreetmap/iD/issues/6418
+[#6414]: https://github.com/openstreetmap/iD/issues/6414
+[#5234]: https://github.com/openstreetmap/iD/issues/5234
+
+#### :white_check_mark: Validation
+* Swap `wikidata`/`wikipedia` for `brand:` tags if possible ([#6416])
+* Suggest adding `indoor=yes` to `highway=corridor` to explicitly specify these as indoor features
+* Flag detached points that are very close together ([#6394])
+* Flag almost junctions between highways and themselves ([#6373])
+* Deprecate various old storage tank tags
+* Show better warning message if tags and incomplete rather than deprecated ([#6410])
+* Don't flag private data only buildings that are also offices ([#6404])
+* Flag private data on `building=houseboat`
+* Add ability to upgrade a tag value within a semicolon-delimited list
+
+[#6373]: https://github.com/openstreetmap/iD/issues/6373
+[#6394]: https://github.com/openstreetmap/iD/issues/6394
+[#6404]: https://github.com/openstreetmap/iD/issues/6404
+[#6410]: https://github.com/openstreetmap/iD/issues/6410
+[#6416]: https://github.com/openstreetmap/iD/issues/6416
+
+#### :bug: Bugfixes
+* Fix raw tag editor styling for custom data editor ([#6427])
+* Fix bug centering map when clicking on an issue in the Issues pane ([#6384])
+* Fix vector tile layers ([#6426])
+* Fix bug causing new data to be discarded when running fixes to upgrade tags or remove private data ([#6407])
+* Fix issue causing duplicate expanded community entries to appear ([#6422])
+* Fix bug where iD could add empty source tag to changesets ([#6405])
+
+[#6384]: https://github.com/openstreetmap/iD/issues/6384
+[#6405]: https://github.com/openstreetmap/iD/issues/6405
+[#6407]: https://github.com/openstreetmap/iD/issues/6407
+[#6422]: https://github.com/openstreetmap/iD/issues/6422
+[#6426]: https://github.com/openstreetmap/iD/issues/6426
+[#6427]: https://github.com/openstreetmap/iD/issues/6427
+
+#### :hourglass: Performance
+* Prevent iD from loading too many off screen tiles ([#6417])
+* Switch Bing Imagery Key to avoid overages ([#5833])
+
+[#6417]: https://github.com/openstreetmap/iD/issues/6417
+[#5833]: https://github.com/openstreetmap/iD/issues/5833
+
+#### :rocket: Presets
+* Update several preset icons (dry cleaning, disc golf, shuffleboard, horseshoes pit)
+* Add Disc Golf Course preset
+* For ice rinks, prefer the `sport` values `ice_hockey`/`ice_skating` over `hockey`/`skating`
+* Add Field Hockey Pitch preset
+* Add Indoor and Covered fields to more presets
+* Add Allowed Access field to piers, platforms, and tracks
+* Add Covered field to Subway preset
+* Add Water Tank preset
+* Add preset for `landuse=winter_sports` ([#6403])
+* Add Type field to Resort preset Add more terms and fields to the Resort preset
+* Add layer field to aerialway presets
+* Improve search terms to Cycle & Foot Path preset ([#6406])
+
+[#6406]: https://github.com/openstreetmap/iD/issues/6406
+[#6403]: https://github.com/openstreetmap/iD/issues/6403
+
+
+# 2.15.0
+##### 2019-May-21
+
+#### :mega: Release Highlights
+* :wrench: We've made a lot of improvements to iD's validator!  It's a lot faster than before,
+and can now optionally validate everything downloaded OpenStreetMap.  We have added rules for validating highway
+connectivity, outdated tags, very close nodes, and nonsquare buildings.<br/>
+_Open the Issues pane to see what the new validator can do! (shortcut <kbd>I</kbd>)_
+* :triangular_ruler: Squaring used to be just for closed lines, but now the squaring
+tool can be used to square unclosed lines and individual corners.  **Importantly, we've changed the keyboard shortcut from
+<kbd>S</kbd> to <kbd>Q</kbd>.**  This is because lines can be both straightened or squared now,
+and <kbd>Q</kbd> matches the shortcut used by the JOSM editor.<br/>
+_Try squaring some lines, or corner nodes (but remember, the shortcut is now <kbd>Q</kbd>:exclamation:)_
+* :straight_ruler: Straightening used to be just for unclosed lines, but now the straightening
+tool can be used on sub-sections of lines, on multiple connected lines, and on individual points.<br/>
+_Try straightening points to make them line up perfectly (keyboard shortcut <kbd>S</kbd>)_
+* :ok_hand: The extraction tool got an upgrade as well.  Before you could detach points from lines, now
+the tool is named "extract" and you can extract points from areas too.<br/>
+_Try extracting features from areas when they are better mapped as points (keyboard shortcut <kbd>E</kbd>)_
+* :memo: We've made the raw tag editor even _raw-er_.  You can now toggle between list and text views when editing
+tags.  The text view is especially useful for copying and pasting tags!<br/>
+_Click the icons above the "All tags" section to toggle between list and text views._
+* :fries: The [name-suggestion-index](http://osmlab.github.io/name-suggestion-index/brands/) project that powers iD's brand search got a big upgrade too!  You can now find more brands than before, and brand logos will appear in the preset search results and in the feature editor.<br/>
+_Map all the branded businesses in your town!_
+
+
+#### :boom: Breaking Changes
+- Change the Square shortcut from <kbd>S</kbd> to <kbd>Q</kbd> since lines can now be both straightened and squared
+- Merge the generic presets for the `point` and `vertex` geometries
+- Removed `utilIdleWorker` and `utilCallWhenIdle` ([#6299])
+  -  :warning: Code refactor: use `window.requestIdleCallback` instead
+
+#### :tada: New Features
+- Add raw text tag editor with copy-and-paste support ([#839], [#6185], [#6302])
+- Add drag-and-drop reordering of relation members ([#2283])
+- Add controls to filter between panoramic vs. flat photos ([#5433])
+- Include street-level photo sources used during editing in the `source` changeset tag ([#6279])
+- Add Downgrade operation that removes all tags except for addresses and building info ([#6103])
+- Allow extracting points of interest from buildings and other areas ([#6203])
+- Allow squaring unclosed lines ([#5093], [#5999])
+- Allow squaring individual corners ([#2205], [#5999])
+- Allow straightening multiple connected lines together ([#5740], thanks [@jguthrie100])
+- Allow straightening just selected points within a line ([#2058], [#5740], thanks [@jguthrie100])
+- Allow straightening multiple selected points that are independent of lines ([#6217])
+- Allow disconnecting entire lines or areas at once ([#4245])
+- Allow disconnecting multiple selected points at once ([#6164])
+- Allow disconnecting closed lines at their endpoint node ([#6149], [#6161], thanks [@jguthrie100])
+- Add YouthMappers chapters to the community entries that appear after saving
+
+[#6279]: https://github.com/openstreetmap/iD/issues/6279
+[#6302]: https://github.com/openstreetmap/iD/issues/6302
+[#6299]: https://github.com/openstreetmap/iD/issues/6299
+[#6279]: https://github.com/openstreetmap/iD/issues/6279
+[#6217]: https://github.com/openstreetmap/iD/issues/6217
+[#6203]: https://github.com/openstreetmap/iD/issues/6203
+[#6185]: https://github.com/openstreetmap/iD/issues/6185
+[#6164]: https://github.com/openstreetmap/iD/issues/6164
+[#6161]: https://github.com/openstreetmap/iD/issues/6161
+[#6149]: https://github.com/openstreetmap/iD/issues/6149
+[#5999]: https://github.com/openstreetmap/iD/issues/5999
+[#5740]: https://github.com/openstreetmap/iD/issues/5740
+[#5433]: https://github.com/openstreetmap/iD/issues/5433
+[#5093]: https://github.com/openstreetmap/iD/issues/5093
+[#4245]: https://github.com/openstreetmap/iD/issues/4245
+[#2283]: https://github.com/openstreetmap/iD/issues/2283
+[#2205]: https://github.com/openstreetmap/iD/issues/2205
+[#2058]: https://github.com/openstreetmap/iD/issues/2058
+[#839]: https://github.com/openstreetmap/iD/issues/839
+
+[@jguthrie100]: https://github.com/jguthrie100
+
+#### :sparkles: Usability
+- Improved marker styling and lock icon for protected fields on Wikidata-tagged features ([#6389])
+- Trim the user's string when preset searching ([#6383])
+- Don't render deprecated tagged features the same as their modern counterparts
+- Add "Reset All" button for Display Options in the Background pane ([#5503], [#5994], thanks [@alphagamer7])
+- Add link to the PeWu entity history viewer to the History panel ([#6202])
+- Persist recent presets across sessions ([#6022])
+- Add labels beneath buttons in the top toolbar
+- Move the loading indicator from the top toolbar to the bottom corner of the map ([#5889])
+- Move photo overlay controls to their own section within the Map Data pane ([#5913])
+- Rename "Detach" operation to "Extract"
+- Improve results when squaring ([#2472], [#5999])
+- Show better feedback when trying to square something that is already square ([#5967], [#5999])
+- Convert comma-separated values to semicolon-separated when entering a value in a multicombo field ([#6013])
+- Autocomplete labels when typing in the Wikidata field ([#5544])
+- Update the Wikipedia field when changing the Wikidata field ([#5543])
+- Don't remove the `wikidata` tag when removing the Wikipedia field value ([#4322])
+- Add a tooltip to the button for adding a feature to a relation ([#3812])
+- Discard `osmarender` tags when saving features ([#6091])
+- Add a keyboard shortcut to toggle the OpenStreetMap data layer ([#6104])
+- Avoid damaging any relation with `from`, `via`, or `to` members, not just turn restrictions ([#6221])
+- Don't reorder tag rows when editing keys in the raw tag editor ([#5927])
+- Allow scrolling in textarea fields ([#6306])
+- Prevent deleting features with `wikidata` tags ([#5853])
+- Add `photo_overlay` API parameter to show default photo overlays and persist them between sessions ([#5813])
+
+[#6389]: https://github.com/openstreetmap/iD/issues/6389
+[#6383]: https://github.com/openstreetmap/iD/issues/6383
+[#6306]: https://github.com/openstreetmap/iD/issues/6306
+[#6221]: https://github.com/openstreetmap/iD/issues/6221
+[#6202]: https://github.com/openstreetmap/iD/issues/6202
+[#6104]: https://github.com/openstreetmap/iD/issues/6104
+[#6103]: https://github.com/openstreetmap/iD/issues/6103
+[#6091]: https://github.com/openstreetmap/iD/issues/6091
+[#6022]: https://github.com/openstreetmap/iD/issues/6022
+[#6013]: https://github.com/openstreetmap/iD/issues/6013
+[#5994]: https://github.com/openstreetmap/iD/issues/5994
+[#5967]: https://github.com/openstreetmap/iD/issues/5967
+[#5927]: https://github.com/openstreetmap/iD/issues/5927
+[#5913]: https://github.com/openstreetmap/iD/issues/5913
+[#5889]: https://github.com/openstreetmap/iD/issues/5889
+[#5853]: https://github.com/openstreetmap/iD/issues/5853
+[#5813]: https://github.com/openstreetmap/iD/issues/5813
+[#5544]: https://github.com/openstreetmap/iD/issues/5544
+[#5543]: https://github.com/openstreetmap/iD/issues/5543
+[#5503]: https://github.com/openstreetmap/iD/issues/5503
+[#4322]: https://github.com/openstreetmap/iD/issues/4322
+[#3812]: https://github.com/openstreetmap/iD/issues/3812
+[#2472]: https://github.com/openstreetmap/iD/issues/2472
+
+[@alphagamer7]: https://github.com/alphagamer7
+
+
+#### :white_check_mark: Validation
+- Allow user to change the threshold for nonsquare building detection ([#6386])
+- Don't consider `highway=raceway` as routable ([#6385])
+- Offer tag upgrades to branded features from name-suggestion-index
+- Improve validation of disconnected ways to detect routing islands ([#6376])
+- Add fix to tag real nonsquare buildings with `nonsquare=yes` tag ([#6332])
+- Remove the "many deletions" validation issue ([#6140])
+- Add "quick fix" option to several issue fix types ([#6140])
+- Add option to browse issues with all loaded data, not just edited features ([#5906], [#6140])
+- Add option to filter issues to just the ones nearby ([#6140])
+- Show info about any hidden issues when all filtered issues are resolved ([#6224])
+- Add option to manually ignore and hide specific issues ([#6242])
+- Flag redundant points in lines and areas ([#6241], [#6326], [#6267], thanks [@gaoxm])
+- Flag features with `fixme` tags ([#6214])
+- Flag simple buildings that aren't quite square ([#6215], [#6234])
+- Flag lines with `highway=road` as unclassified ([#5998])
+- Flag phone numbers on residential buildings as potential privacy violations ([#5850])
+- Flag suspicious data sources like "Google" given in features' `source` tags ([#6135])
+- Flag unreachable one-way highways and waterways flowing against each other ([#6216])
+- Flag disconnected area and multipolygon highways ([#6075])
+- Flag new highways disconnected from the larger road network ([#6284], thanks [@Bonkles], [@gaoxm])
+- Don't flag highways connected to ferry routes as disconnected ([#6287])
+- Flag disconnected ferry routes
+- Flag deprecated values among semicolon-delimited tags ([#6038])
+- Add quick fixes for setting the `layer` to resolve certain Crossing Ways issues ([#5943])
+- Rename "Generic Names" validation rule to "Suspicious Names"
+- Be more lenient when flagging generic names ([#5930])
+- Recommend converting combinations like `highway=footway` and `foot=no` to `highway=path` ([#6070])
+- Deprecate `cuisine` values like `vegan` in favor of `diet:*` tags like `diet:vegan` ([#5993])
+- Deprecate `todo` in favor of `fixme` ([#6214])
+- Deprecate `barrier=embankment` in favor of `man_made=embankment` ([#6236])
+- Apply more checks before letting users delete features via quick-fixes ([#6062])
+- Don't suggest deprecated tag values when editing fields ([#6084])
+- Don't flag disconnected highways that overlap unloaded regions ([#5938], [#6140])
+- Don't flag almost junctions between features on different layers or levels ([#6355])
+- Discard untagged relations that appear to have been created accidentally ([#3812])
+- Include the number and type of warnings ignored by the user in the changset tags ([#6123])
+- Recommend adding `highway` tags to piers, racetracks, and transit platforms for routing purposes ([#6042])
+- Indicate iD's tag deprecations on Taginfo ([#5995])
+- When connecting crossing paths and roads, don't automatically set the `crossing` tag of the connection node if it is ambiguous ([#6244])
+
+[#6386]: https://github.com/openstreetmap/iD/issues/6386
+[#6385]: https://github.com/openstreetmap/iD/issues/6385
+[#6376]: https://github.com/openstreetmap/iD/issues/6376
+[#6355]: https://github.com/openstreetmap/iD/issues/6355
+[#6332]: https://github.com/openstreetmap/iD/issues/6332
+[#6326]: https://github.com/openstreetmap/iD/issues/6326
+[#6287]: https://github.com/openstreetmap/iD/issues/6287
+[#6284]: https://github.com/openstreetmap/iD/issues/6284
+[#6267]: https://github.com/openstreetmap/iD/issues/6267
+[#6244]: https://github.com/openstreetmap/iD/issues/6244
+[#6242]: https://github.com/openstreetmap/iD/issues/6242
+[#6241]: https://github.com/openstreetmap/iD/issues/6241
+[#6236]: https://github.com/openstreetmap/iD/issues/6236
+[#6234]: https://github.com/openstreetmap/iD/issues/6234
+[#6224]: https://github.com/openstreetmap/iD/issues/6224
+[#6216]: https://github.com/openstreetmap/iD/issues/6216
+[#6215]: https://github.com/openstreetmap/iD/issues/6215
+[#6214]: https://github.com/openstreetmap/iD/issues/6214
+[#6140]: https://github.com/openstreetmap/iD/issues/6140
+[#6135]: https://github.com/openstreetmap/iD/issues/6135
+[#6123]: https://github.com/openstreetmap/iD/issues/6123
+[#6084]: https://github.com/openstreetmap/iD/issues/6084
+[#6075]: https://github.com/openstreetmap/iD/issues/6075
+[#6070]: https://github.com/openstreetmap/iD/issues/6070
+[#6062]: https://github.com/openstreetmap/iD/issues/6062
+[#6042]: https://github.com/openstreetmap/iD/issues/6042
+[#6038]: https://github.com/openstreetmap/iD/issues/6038
+[#5998]: https://github.com/openstreetmap/iD/issues/5998
+[#5995]: https://github.com/openstreetmap/iD/issues/5995
+[#5993]: https://github.com/openstreetmap/iD/issues/5993
+[#5943]: https://github.com/openstreetmap/iD/issues/5943
+[#5938]: https://github.com/openstreetmap/iD/issues/5938
+[#5930]: https://github.com/openstreetmap/iD/issues/5930
+[#5906]: https://github.com/openstreetmap/iD/issues/5906
+[#5850]: https://github.com/openstreetmap/iD/issues/5850
+
+[@gaoxm]: https://github.com/gaoxm
+[@Bonkles]: https://github.com/Bonkles
+
+#### :bug: Bugfixes
+- Don't move connected ways when squaring ([#1979], [#5999])
+- Ensure that relation members and child nodes of selected features are displayed even when features of those types are disabled ([#6220], [#6328])
+- Maintain directionality when merging a directional line with a non-directional line ([#6033])
+- Fix crash when drawing an area in a particular manner ([#5996])
+- Fix bug where straightening long ways could disconnect junctions ([#2248])
+- Fix bug where editing a tag in the "All tags" section and then selecting another feature could apply the change to the second features ([#6028])
+- Unhighlight relations and relation members when removing them ([#5612])
+- Display the undo and redo buttons as disabled when zoomed out beyond the editable zoom level ([#6105])
+- Don't overlap the information panels, slideout panes, and photo viewer ([#4733], [#5212])
+- Don't let mobile Safari force rounded corners on all search fields ([#6034])
+- Pan to location of the undone edit when undoing, not the edit prior to that ([#5831])
+- Prevent long multicombo field values from overflowing their container ([#6201])
+- Correctly reverse complex tags with `left` and `right` when reversing highways ([#6235])
+- Prevent upload error when setting the Wikipedia field to a page with special characters ([#6232])
+- Remove unused Google Analytics code ([#6295])
+- Fix issue where some operations could be unexpectedly disallowed ([#6296])
+- Don't show gaps in the stroke where multipolygon member lines connect ([#6336])
+- Fix layout issue with the Label field ([#6344])
+- Fix issue where lines could have unexpected styling when first added to multipolygons ([#3613])
+
+[#6344]: https://github.com/openstreetmap/iD/issues/6344
+[#6336]: https://github.com/openstreetmap/iD/issues/6336
+[#6328]: https://github.com/openstreetmap/iD/issues/6328
+[#6296]: https://github.com/openstreetmap/iD/issues/6296
+[#6295]: https://github.com/openstreetmap/iD/issues/6295
+[#6235]: https://github.com/openstreetmap/iD/issues/6235
+[#6232]: https://github.com/openstreetmap/iD/issues/6232
+[#6220]: https://github.com/openstreetmap/iD/issues/6220
+[#6201]: https://github.com/openstreetmap/iD/issues/6201
+[#6105]: https://github.com/openstreetmap/iD/issues/6105
+[#6034]: https://github.com/openstreetmap/iD/issues/6034
+[#6033]: https://github.com/openstreetmap/iD/issues/6033
+[#6028]: https://github.com/openstreetmap/iD/issues/6028
+[#5996]: https://github.com/openstreetmap/iD/issues/5996
+[#5831]: https://github.com/openstreetmap/iD/issues/5831
+[#5612]: https://github.com/openstreetmap/iD/issues/5612
+[#5212]: https://github.com/openstreetmap/iD/issues/5212
+[#4733]: https://github.com/openstreetmap/iD/issues/4733
+[#3613]: https://github.com/openstreetmap/iD/issues/3613
+[#2248]: https://github.com/openstreetmap/iD/issues/2248
+[#1979]: https://github.com/openstreetmap/iD/issues/1979
+
+#### :earth_asia: Localization
+- Make the place format in the contribution thank-you message localizable ([#6269])
+- Add Papiamento localization ([#6222])
+
+[#6269]: https://github.com/openstreetmap/iD/issues/6269
+[#6222]: https://github.com/openstreetmap/iD/issues/6222
+
+#### :hourglass: Performance
+- Significantly improve validation performance ([#6054], [#5901], [#6140])
+- Improve performance when typing changeset comments ([#6249])
+- Avoid reloading the inspector sidebar for geometry-only changes ([#6086], [#6140])
+- Reduce circular file dependencies ([#6237])
+- Update to D3 v5 ([#6245])
+- Replace the `ecstastic` development dependency with `static-server` ([#6342])
+
+[#6342]: https://github.com/openstreetmap/iD/issues/6342
+[#6249]: https://github.com/openstreetmap/iD/issues/6249
+[#6245]: https://github.com/openstreetmap/iD/issues/6245
+[#6237]: https://github.com/openstreetmap/iD/issues/6237
+[#6086]: https://github.com/openstreetmap/iD/issues/6086
+[#6054]: https://github.com/openstreetmap/iD/issues/6054
+[#5901]: https://github.com/openstreetmap/iD/issues/5901
+
+#### :mortar_board: Walkthrough / Help
+- Make the keyboard shortcuts viewable on narrow window sizes ([#6174])
+
+[#6174]: https://github.com/openstreetmap/iD/issues/6174
+
+#### :rocket: Presets
+- Add presets for Test Prep School, Financial Advisor
+- Add more terms to Transit Shelter preset ([#6381])
+- Add preset for Online Retailer Outpost `shop=outpost`
+- Support `natural=bay` on lines ([#6379])
+- Show the wheelchair and curb fields for all curb presets, improve icons ([#6360])
+- Add preset for Chain barrier ([#6340], thanks [@westnordost])
+- Add preset for Height Restrictor ([#6339], thanks [@westnordost])
+- Add preset for Emergency Stopping Place ([#6337], thanks [@westnordost])
+- Add presets for common castle types ([#6321], thanks [@westnordost])
+- Add Petting Zoo, Wildlife Park, and Safari Park presets ([#6317], thanks [@westnordost])
+- Add Agricultural Engines Mechanic, Floorer, Joiner, and Parquet Layer presets ([#6316], thanks [@westnordost])
+- Add Ambulatory Care preset ([#6315], thanks [@westnordost])
+- Add Fire Hose preset ([#6314], thanks [@westnordost])
+- Add Wastewater Basin ([#6313], thanks [@westnordost])
+- Add presets for `natural=rock`, `natural=stone`, with boulder icons ([#6311], thanks [@westnordost])
+- Display logos of brand presets ([#5167])
+- Only show brand presets in their relevant countries ([#6124])
+- Add presets for indoor mapping ([#6082])
+- Add Building Part preset ([#6114])
+- Add LGBTQ+ venue presets ([#5940], thanks [@rory])
+- Add more fields to public transport route presets ([#6036], thanks [@nlehuby])
+- Add Self-Service field and Self-Service Laundry preset ([#6260], thanks [@westnordost])
+- Add Bicycle Parking Garage, Bicycle Lockers, and Bicycle Shed presets ([#6259], thanks [@westnordost])
+- Add Bust, Graffiti, and Art Installation presets ([#6275], thanks [@westnordost])
+- Add cycleway crossing presets ([#6065])
+- Add standalone Tactile Paving presets ([#6015])
+- Add Toy Library preset ([#5390])
+- Add Social Center preset ([#6077])
+- Add Raised Curb and Rolled Curb ([#6080])
+- Add Cycle & Foot Path preset ([#6070])
+- Add Railway Under Construction preset ([#6151])
+- Add Underwear Store preset ([#6152])
+- Add Cannabis Shop preset ([#6301])
+- Add Turnstile, Monorail Route, and Stop Area Group presets ([#5757])
+- Add Shingle preset ([#6155])
+- Add presets: Zip Line, Jet Bridge, Windsock, Convention Center, Events Venue, Underground Parking, Ambulatory Care, Chain, Height Restrictor, Houseboat, Hangar Building, Fire Hose, Emergency Stopping Bay, Trailhead, Commemorative Plaque, Horseshoes Pit, Shuffleboard Court, Natural Swimming Area, Cycling Track, Beacon, Beehive, Summit Cross, Levee, Mineshaft, Underground Pipeline, Street Cabinet, Tunnel, Cape, Valley, Wastewater Basin, Water Turbine, Boat Store, Tabletop Game Store, General Store, Lighting Store, Data Center, Trail Marker, Information Terminal, Canal Lock, Lock Gate
+- Update Embassy and add Consulate, Liaison Office, and Diplomatic Office presets ([#6144])
+- Update golf path presets to use highway tags ([#6165])
+- Add Flood Prone field to minor roads ([#6117])
+- Add Operator field to Car Wash preset ([#6233])
+- Add Building Height and Building Levels fields to some presets when they are buildings ([#6238])
+- Display Internet Access Fee field directly after setting Internet Access in more cases ([#6265])
+- Add Floating field to piers and Floating Pier preset
+- Add Fishing field to water presets
+- Add Air Conditioning field to some points of interest
+- Add Type field to Guest House preset
+- Add High-Speed Rail field and preset
+- Add Manufacturer field to some infrastructure presets
+- Add Max Weight field to roads and paths that are bridges
+- Add Microbrewery field and Brewpub preset
+- Add Payment Types field to some presets when a fee is specified
+- Add generic Playground Equipment and Emergency Feature presets with Type fields
+- Add Reservations field to some amenities
+- Add Screens field to cinemas
+- Add Pit Latrine and Flush Toilet presets
+- Add Handwashing and Positions fields to toilet presets
+- Add Oneway field to some Aerialway presets
+- Add Overhead Trolley Wires field to some highway presets
+- Remove Curb field from crossings to encourage mapping curbs as nodes ([#6078])
+- Use a less-confusing placeholder for the Hours field ([#6207])
+- Add support for public domain icons from The Noun Project ([#5691])
+- Improve the icon for Unmaintained Track Road ([#6088])
+- Return missing icon to the old Train Platform preset ([#6020])
+- Update icons for various presets such as Childcare, Photo Booth, Shower, Studio, and Garbage Dumpster
+- Render route preset icons dynamically, indicating what line types are common members ([#5926])
+- Change the swimmer icon so its head will not be missing when the icon is displayed on point markers ([#6307])
+- Add more search terms to the Road Surface preset ([#6309])
+
+[#6381]: https://github.com/openstreetmap/iD/issues/6381
+[#6379]: https://github.com/openstreetmap/iD/issues/6379
+[#6360]: https://github.com/openstreetmap/iD/issues/6360
+[#6340]: https://github.com/openstreetmap/iD/issues/6340
+[#6339]: https://github.com/openstreetmap/iD/issues/6339
+[#6337]: https://github.com/openstreetmap/iD/issues/6337
+[#6321]: https://github.com/openstreetmap/iD/issues/6321
+[#6317]: https://github.com/openstreetmap/iD/issues/6317
+[#6316]: https://github.com/openstreetmap/iD/issues/6316
+[#6315]: https://github.com/openstreetmap/iD/issues/6315
+[#6314]: https://github.com/openstreetmap/iD/issues/6314
+[#6313]: https://github.com/openstreetmap/iD/issues/6313
+[#6311]: https://github.com/openstreetmap/iD/issues/6311
+[#6309]: https://github.com/openstreetmap/iD/issues/6309
+[#6307]: https://github.com/openstreetmap/iD/issues/6307
+[#6301]: https://github.com/openstreetmap/iD/issues/6301
+[#6275]: https://github.com/openstreetmap/iD/issues/6275
+[#6265]: https://github.com/openstreetmap/iD/issues/6265
+[#6260]: https://github.com/openstreetmap/iD/issues/6260
+[#6259]: https://github.com/openstreetmap/iD/issues/6259
+[#6238]: https://github.com/openstreetmap/iD/issues/6238
+[#6233]: https://github.com/openstreetmap/iD/issues/6233
+[#6207]: https://github.com/openstreetmap/iD/issues/6207
+[#6165]: https://github.com/openstreetmap/iD/issues/6165
+[#6155]: https://github.com/openstreetmap/iD/issues/6155
+[#6152]: https://github.com/openstreetmap/iD/issues/6152
+[#6151]: https://github.com/openstreetmap/iD/issues/6151
+[#6144]: https://github.com/openstreetmap/iD/issues/6144
+[#6124]: https://github.com/openstreetmap/iD/issues/6124
+[#6117]: https://github.com/openstreetmap/iD/issues/6117
+[#6114]: https://github.com/openstreetmap/iD/issues/6114
+[#6088]: https://github.com/openstreetmap/iD/issues/6088
+[#6082]: https://github.com/openstreetmap/iD/issues/6082
+[#6080]: https://github.com/openstreetmap/iD/issues/6080
+[#6078]: https://github.com/openstreetmap/iD/issues/6078
+[#6077]: https://github.com/openstreetmap/iD/issues/6077
+[#6065]: https://github.com/openstreetmap/iD/issues/6065
+[#6036]: https://github.com/openstreetmap/iD/issues/6036
+[#6020]: https://github.com/openstreetmap/iD/issues/6020
+[#6015]: https://github.com/openstreetmap/iD/issues/6015
+[#5940]: https://github.com/openstreetmap/iD/issues/5940
+[#5926]: https://github.com/openstreetmap/iD/issues/5926
+[#5757]: https://github.com/openstreetmap/iD/issues/5757
+[#5691]: https://github.com/openstreetmap/iD/issues/5691
+[#5390]: https://github.com/openstreetmap/iD/issues/5390
+[#5167]: https://github.com/openstreetmap/iD/issues/5167
+
+[@rory]: https://github.com/rory
+[@nlehuby]: https://github.com/nlehuby
+[@westnordost]: https://github.com/westnordost
+
+# 2.14.3
+##### 2019-Feb-26
+
+#### :tada: New Features
+* Add a Rules section to the Issues pane where all validation types are listed and can be toggled on or off ([#5979])
+
+[#5979]: https://github.com/openstreetmap/iD/issues/5979
+
+#### :white_check_mark: Validation
+* Flag multipolygon members without roles ([#5851])
+* Don't flag lines tagged as areas if the tag is also allowed on lines ([#5933])
+* Don't automatically add "highway=crossing" tag when connecting paths to Unmaintained Track Roads
+* Deprecate "amenity=toilet" ([#5953]), "landuse=conservation" ([#5957]) and "building:color" ([#5956], thanks [@matkoniecz])
+* Deprecate various "footway" ([#5935]) and "wood" ([#5958]) values
+* Deprecate "highway=abandoned" ([#5968]), "natural=waterfall" ([#5972]), and "postcode" ([#5959])
+
+[#5972]: https://github.com/openstreetmap/iD/issues/5972
+[#5968]: https://github.com/openstreetmap/iD/issues/5968
+[#5959]: https://github.com/openstreetmap/iD/issues/5959
+[#5958]: https://github.com/openstreetmap/iD/issues/5958
+[#5957]: https://github.com/openstreetmap/iD/issues/5957
+[#5956]: https://github.com/openstreetmap/iD/issues/5956
+[#5953]: https://github.com/openstreetmap/iD/issues/5953
+[#5935]: https://github.com/openstreetmap/iD/issues/5935
+[#5933]: https://github.com/openstreetmap/iD/issues/5933
+[#5851]: https://github.com/openstreetmap/iD/issues/5851
+
+[@matkoniecz]: https://github.com/matkoniecz
+
+#### :bug: Bugfixes
+* Fix error upon pressing escape when drawing an area  with only one point ([#5941], [#5950], thanks [@jguthrie100])
+* Fix an issue where vertices would not snap to some nodes that could be vertices ([#5942])
+* Fix an issue where pressing enter during feature type search would not select the first item ([#5921])
+* Fix an issue where all feature types would be disabled if Other Features were hidden ([#5934])
+* Fix an issue where the sidebar UI would flash when adding a node while drawing an area
+
+[#5950]: https://github.com/openstreetmap/iD/issues/5950
+[#5942]: https://github.com/openstreetmap/iD/issues/5942
+[#5941]: https://github.com/openstreetmap/iD/issues/5941
+[#5934]: https://github.com/openstreetmap/iD/issues/5934
+[#5921]: https://github.com/openstreetmap/iD/issues/5921
+
+[@jguthrie100]: https://github.com/jguthrie100
+
+#### :hourglass: Performance
+* Add option to turn off specific validation rules if they are slowing down iD ([#5979])
+
+[#5979]: https://github.com/openstreetmap/iD/issues/5979
+
+#### :rocket: Presets
+* Add Bar field to Restaurant, Cafe, and Hotel ([#5947], [#5970], thanks [@alphagamer7])
+* Rename Jeweler to Jewelry Store ([#5948])
+* Add unsearchable generic Boundary preset ([#5975])
+* Don't render roads with a "footway" tag too thin ([#5936])
+* Allow Traffic Islands to be drawn as lines ([#5945])
+
+[#5975]: https://github.com/openstreetmap/iD/issues/5975
+[#5970]: https://github.com/openstreetmap/iD/issues/5970
+[#5948]: https://github.com/openstreetmap/iD/issues/5948
+[#5947]: https://github.com/openstreetmap/iD/issues/5947
+[#5945]: https://github.com/openstreetmap/iD/issues/5945
+[#5936]: https://github.com/openstreetmap/iD/issues/5936
+
+[@alphagamer7]: https://github.com/alphagamer7
+
+
+# 2.14.2
+##### 2019-Feb-21
+
+#### :white_check_mark: Validation
+* Don't flag crossing way issues for proposed, razed, or abandoned features ([#5922])
+* Don't flag lines or areas as untagged while they are being drawn
+* Deprecate "amenity=public_building" tag ([#5916])
+
+[#5922]: https://github.com/openstreetmap/iD/issues/5922
+[#5916]: https://github.com/openstreetmap/iD/issues/5916
+
+#### :bug: Bugfixes
+* Fix an issue where all map data would be removed upon switching modes while drawing a line or area ([#5917])
+* Fix an issue where cancelling line or area drawing could leave an extra error ([#5918])
+* Show all warnings and errors in the save sidebar
+
+[#5917]: https://github.com/openstreetmap/iD/issues/5917
+[#5918]: https://github.com/openstreetmap/iD/issues/5918
+
+#### :hourglass: Performance
+* Speed up validation, particularly the crossing ways check ([#5923])
+
+[#5923]: https://github.com/openstreetmap/iD/issues/5923
+
+#### :rocket: Presets
+* Rename Excrement Bag Vending Machine to Excrement Bag Dispenser ([#5920], thanks [@SelfishSeahorse])
+* Add Covered field to waterway presets
+
+[#5920]: https://github.com/openstreetmap/iD/issues/5920
+
+[@SelfishSeahorse]: https://github.com/SelfishSeahorse
+
+
+# 2.14.1
+##### 2019-Feb-20
+
+#### :bug: Bugfixes
+* Fix an issue where ImproveOSM would not load due to non-HTTPS endpoints
+
+# 2.14.0
+##### 2019-Feb-20
+
+#### :mega: Release Highlights
+* :exclamation: iD now validates features while you edit! Select a feature to see its issues and access quick fixes.<br/>
+_Open the new Issues pane (shortcut <kbd>I</kbd>) to browse all errors and warnings._
+* :detective: You can now browse missing road data detected by [ImproveOSM](https://improveosm.org) from Telenav. Shoutout to [@SilentSpike] for working on this!<br/>
+_Open the Map Data pane (shortcut <kbd>F</kbd>) and select "ImproveOSM Issues" to view detected data._
+
+#### :tada: New Features
+* Upgrade the validation system ([#5830], a group effort by [@quincylvania], [@bhousel], [@gaoxm], [@wonga00], [@chrisklaiber], [@abalosc1], [@maxgrossman], [@brianhatchl])
+    * Update and show issues live during editing
+    * Add an Issues pane
+    * List issues in the feature sidebar
+    * Recommend fixes
+    * View more details below in the new :white_check_mark: **Validation** section of this changelog
+* Integrate ImproveOSM data detection tools ([#5683], [#5739], thanks [@SilentSpike])
+
+[#5830]: https://github.com/openstreetmap/iD/issues/5830
+[#5683]: https://github.com/openstreetmap/iD/issues/5683
+[#5739]: https://github.com/openstreetmap/iD/issues/5739
+
+[@quincylvania]: https://github.com/quincylvania
+[@bhousel]: https://github.com/bhousel
+[@gaoxm]: https://github.com/gaoxm
+[@wonga00]: https://github.com/wonga00
+[@chrisklaiber]: https://github.com/chrisklaiber
+[@abalosc1]: https://github.com/abalosc1
+[@maxgrossman]: https://github.com/maxgrossman
+[@brianhatchl]: https://github.com/brianhatchl
+[@SilentSpike]: https://github.com/SilentSpike
+
+#### :sparkles: Usability
+* Don't close the open photo when toggling the photo overlay ([#5829], [#5836], thanks [@maxgrossman])
+* Allow the up and down buttons to work on empty number fields ([#5844], [#5852], thanks [@AndreasHae])
+* Render stroke previews for all line icons and don't show previews when line icons are used for areas ([#5839], [#5888])
+* Open the area feature browser immediately after selecting the multipolygon relation type ([#5765])
+* Render selected features on the map even if their layer is hidden ([#5880])
+* When adding a duplicate tag, focus the existing key instead of adding a "_1" suffix ([#2896])
+* Exclude tags already on object from auto-completion in the All tags list ([#3625])
+* Allow tag values to be entered before keys ([#5872])
+* Allow deletetion of tags while one is focused ([#5878])
+* Make address field suggestions case sensitive ([#5887])
+* Replace the "Edit or translate documentation" link text with a pencil icon ([#5753])
+* When upload is disabled, show a tooltip on the button explaining the reason ([#5830])
+* Don't squish the panes at narrow window widths ([#5890])
+
+[#5829]: https://github.com/openstreetmap/iD/issues/5829
+[#5836]: https://github.com/openstreetmap/iD/issues/5836
+[#5844]: https://github.com/openstreetmap/iD/issues/5844
+[#5852]: https://github.com/openstreetmap/iD/issues/5852
+[#5839]: https://github.com/openstreetmap/iD/issues/5839
+[#5888]: https://github.com/openstreetmap/iD/issues/5888
+[#5765]: https://github.com/openstreetmap/iD/issues/5765
+[#5880]: https://github.com/openstreetmap/iD/issues/5880
+[#2896]: https://github.com/openstreetmap/iD/issues/2896
+[#3625]: https://github.com/openstreetmap/iD/issues/3625
+[#5872]: https://github.com/openstreetmap/iD/issues/5872
+[#5878]: https://github.com/openstreetmap/iD/issues/5878
+[#5887]: https://github.com/openstreetmap/iD/issues/5887
+[#5753]: https://github.com/openstreetmap/iD/issues/5753
+[#5830]: https://github.com/openstreetmap/iD/issues/5830
+[#5890]: https://github.com/openstreetmap/iD/issues/5890
+
+[@AndreasHae]: https://github.com/AndreasHae
+
+#### :white_check_mark: Validation
+* Flag crossing highways, railways, waterways, and buildings ([#1669], [#5217], [#5830], thanks [@gaoxm])
+* Connect crossing lines with one click ([#5830])
+* Flag highways that are very close but not connected to other highways ([#5830], thanks [@gaoxm])
+* Connect very close highways with one click ([#5830])
+* Prevent merging ways if it would cause self-intersection ([#5745], thanks [@jguthrie100])
+* When drawing a way or dragging a vertex, don't snap to points that cannot be vertices ([#5811], [#5875], thanks [@maxgrossman])
+* Flag more instances of lines tagged as areas ([#5830])
+* Connect the endpoints of open areas with one click ([#5830])
+* Flag more instances of deprecated tags ([#5830])
+* Upgrade deprecated tags with one click ([#4591])
+* Flag more instances of generic names ([#5830])
+* Remove generic names with a single click ([#5830])
+* Continue disconnected highways from the feature inspector ([#5830])
+* Move a multipolygon's tags from its outer way to its relation with one click ([#5830])
+* Flag relations without a "type" tag ([#5870], [#5830])
+* Flag features with only meta tags like "source" or "created_by" ([#5830])
+* Block the upload of untagged features ([#5830])
+* Disable adding features of a hidden feature type to avoid redundant mapping ([#5876], [#5884])
+* Don't count vertices when warning about many deletions ([#5830])
+
+[#1669]: https://github.com/openstreetmap/iD/issues/1669
+[#5217]: https://github.com/openstreetmap/iD/issues/5217
+[#5745]: https://github.com/openstreetmap/iD/issues/5745
+[#5811]: https://github.com/openstreetmap/iD/issues/5811
+[#5875]: https://github.com/openstreetmap/iD/issues/5875
+[#5870]: https://github.com/openstreetmap/iD/issues/5870
+[#5876]: https://github.com/openstreetmap/iD/issues/5876
+[#5884]: https://github.com/openstreetmap/iD/issues/5884
+[#4591]: https://github.com/openstreetmap/iD/issues/4591
+[#5830]: https://github.com/openstreetmap/iD/issues/5830
+
+[@gaoxm]: https://github.com/gaoxm
+
+#### :bug: Bugfixes
+* Fix reversal of turn lanes when reversing a way ([#5674], [#5826], thanks [@SilentSpike])
+* Fix photo overlay selection styling behavior ([#5494], [#5816], thanks [@SilentSpike])
+* Add Junction field to highway presets ([#1264])
+* Fix transit platforms drawn as areas turning into lines upon completion ([#5837])
+* Don't replace spaces with underscores in Destinations and Destination Road Numbers fields ([#5842])
+* Fix error upon deleting all tags and then adding one ([#5840])
+* Fix issue where relation documentation could not be found ([#5860])
+* Hide lines that are part of boundary relations when boundaries are hidden ([#5601])
+* Fix mangling of the undo history when undoing while drawing a way  ([#5830])
+
+[#5674]: https://github.com/openstreetmap/iD/issues/5674
+[#5826]: https://github.com/openstreetmap/iD/issues/5826
+[#5494]: https://github.com/openstreetmap/iD/issues/5494
+[#5816]: https://github.com/openstreetmap/iD/issues/5816
+[#1264]: https://github.com/openstreetmap/iD/issues/1264
+[#5837]: https://github.com/openstreetmap/iD/issues/5837
+[#5842]: https://github.com/openstreetmap/iD/issues/5842
+[#5840]: https://github.com/openstreetmap/iD/issues/5840
+[#5860]: https://github.com/openstreetmap/iD/issues/5860
+[#5601]: https://github.com/openstreetmap/iD/issues/5601
+[#5830]: https://github.com/openstreetmap/iD/issues/5830
+
+[@SilentSpike]: https://github.com/SilentSpike
+
+#### :earth_asia: Localization
+* Update the Museum and Planetarium preset icons to not include the letter "M" ([#5751])
+* Don't capitalize feature names in KeepRight messages in right-to-left layouts ([#5877])
+* Keep the map still when resizing the sidebar in right-to-left layouts ([#5881])
+
+[#5751]: https://github.com/openstreetmap/iD/issues/5751
+[#5877]: https://github.com/openstreetmap/iD/issues/5877
+[#5881]: https://github.com/openstreetmap/iD/issues/5881
+
+#### :hourglass: Performance
+* Optimize code tests by not reloading all presets for every test ([#5832])
+
+[#5832]: https://github.com/openstreetmap/iD/issues/5832
+
+#### :rocket: Presets
+* Add Golf Cartpath, Golf Walking Path, and Driving Range presets ([#5859], [#5862], thanks [@chadrockey])
+* Add Photo Booth preset ([#5892], [#5894], thanks [@danielwu830])
+* Add Mexican Fast Food and Chess Table presets
+* Add Climbing Gym, Bell Tower, Minaret, Sundial presets ([#5749], [#5772], [#5817], [#5771])
+* Add Salt and Tidal fields to water presets ([#5822])
+* Replace Passenger Information Display field with Departures Board field
+* Add specialized rendering of Aerialways and Pistes ([#5843])
+* Render Dam areas, Groynes, and Breakwaters as grey ([#5759])
+* Render the borders of Construction areas as yellow
+* Render barriers on area features again ([#5761])
+* Improve Club icons ([#5854])
+* Rename building=train_station preset to Train Station Building ([#5903])
+* Make generic Land Use, Leisure, Amenity, Man Made, Natural, and Tourism presets unsearchable
+* Add "box office" as a search term for Ticket Shop ([#5849])
+* Add more search terms to various other Shops
+
+[#5859]: https://github.com/openstreetmap/iD/issues/5859
+[#5862]: https://github.com/openstreetmap/iD/issues/5862
+[#5892]: https://github.com/openstreetmap/iD/issues/5892
+[#5894]: https://github.com/openstreetmap/iD/issues/5894
+[#5749]: https://github.com/openstreetmap/iD/issues/5749
+[#5772]: https://github.com/openstreetmap/iD/issues/5772
+[#5817]: https://github.com/openstreetmap/iD/issues/5817
+[#5771]: https://github.com/openstreetmap/iD/issues/5771
+[#5822]: https://github.com/openstreetmap/iD/issues/5822
+[#5843]: https://github.com/openstreetmap/iD/issues/5843
+[#5759]: https://github.com/openstreetmap/iD/issues/5759
+[#5761]: https://github.com/openstreetmap/iD/issues/5761
+[#5854]: https://github.com/openstreetmap/iD/issues/5854
+[#5903]: https://github.com/openstreetmap/iD/issues/5903
+[#5849]: https://github.com/openstreetmap/iD/issues/5849
+
+[@chadrockey]: https://github.com/chadrockey
+[@danielwu830]: https://github.com/danielwu830
 
 # 2.13.1
 ##### 2019-Jan-28
@@ -123,7 +2525,7 @@ _Click the new "zoom to" link on the sidebar under the preset icon, or press <kb
 #### :sparkles: Usability
 
 * Open the combobox when clicking anywhere in the text field ([#5596], [#5636], thanks [@maxgrossman])
-* Add close buttom to the save sidebar ([#5614], [#5622], thanks [@maxgrossman])
+* Add close button to the save sidebar ([#5614], [#5622], thanks [@maxgrossman])
 * Render reservoirs and fountains with the water fill pattern ([#5606], thanks [@RudyTheDev])
 * Render marine barriers with a blue stroke ([#5606], thanks [@RudyTheDev])
 * Press enter to submit values in combo fields without deselecting the feature ([#5725])
@@ -973,7 +3375,7 @@ _Activate the Bing Streetside layer by opening the Map Data pane (shortcut <kbd>
   * Added support for more icon sets (such as [FontAwesome](https://fontawesome.com/icons?d=gallery)) for presets or other iD icons ([#3025])
   * Extracted many preset icons from the iD sprite into a separate project: [bhousel/temaki](https://github.com/bhousel/temaki)
   * Many presets that previously did not have a suitable icon now have one.
-  * :warning: All icons in iD now use prefixed names. (e.g. `iD-`, `maki-`, etc). See the [preset README](https://github.com/openstreetmap/iD/blob/master/data/presets/README.md#icons) for more details.
+  * :warning: All icons in iD now use prefixed names. (e.g. `iD-`, `maki-`, etc). See the [preset README](https://github.com/openstreetmap/iD/blob/develop/data/presets/README.md#icons) for more details.
 
 [#5050]: https://github.com/openstreetmap/iD/issues/5050
 [#3924]: https://github.com/openstreetmap/iD/issues/3924
@@ -1679,7 +4081,7 @@ _Check out the new help texts by opening the Help pane (shortcut <kbd>H</kbd>)._
 * Add Retail Building to buildings, switch Commercial icon to suitcase ([#4590])
 * Change tourist attraction icon from monument to star ([#4563], [#4584], thanks [@lucymk])
 * Add preset for `man_made=monitoring_station` ([#4581], thanks [@abdeldjalil09])
-* Deprectate (i.e. make non-searchable) `office=administrative` ([#4578])
+* Deprecate (i.e. make non-searchable) `office=administrative` ([#4578])
 * Update transit-related presets for Public Transport v2 schema ([#3041], [#3508], [#4566], [#4585])
 * Changed Marketplace preset to not default to `building=yes` ([#4559], [#4568], thanks [@tastrax])
 * Add preset for `railway=miniature` ([#4555], thanks [@tastrax])
@@ -3037,7 +5439,7 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
   * Many deprecated names are still exported as symbols, e.g. `iD.Context` - we will remove these eventually
 * :warning: Customized iD deployments can manipulate live objects, rather than iD.Context accessors
   * No longer need to call things like `presets()`, `imagery()`, `taginfo()` when creating `iD.Context`
-  * See [API.md](https://github.com/openstreetmap/iD/blob/master/API.md#customized-deployments) for details on customized deployments
+  * See [API.md](https://github.com/openstreetmap/iD/blob/develop/API.md#customized-deployments) for details on customized deployments
 * :warning: iD has upgraded to the latest released versions of d3, lodash, rbush, etc.
   * d3 no longer adds itself to the global namespace, but can now be accessed via `iD.d3`
 * :warning: iD now uses `npm` scripts for all build processes
@@ -3216,7 +5618,7 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 ##### 2016-Mar-18
 * Avoid jumpiness when dragging node markers (#3003)
 * Rename "Dock" -> "Wet Dock / Dry Dock" (#3030)
-* Refresh lables when switching to a new GPX file (#3032)
+* Refresh labels when switching to a new GPX file (#3032)
 * Fix bug where adding a space to a name would undo a previous edit (#3035)
 * Display GPX tracks immediately when loaded or toggled (#3027)
 * Include "Local GPX" in imagery used list when GPX loaded via url parameter (#2804)
@@ -3268,13 +5670,13 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 * Add 'building' combo field for ice rink and swim facility
 * Building field should be combo not typeCombo (because `building=yes` is a valid tag)
 * Link to wiki for guidance on good changeset comments (#2923, thanks @kepta)
-* Make preset fields section collapsable (#2894)
+* Make preset fields section collapsible (#2894)
 * Make sure DrawLine mode is called with a clean pre-operation graph (#2303, thanks @tyrasd)
 * Default to user's language when localizing names (#2882, thanks @kepta)
 * Autocomplete changeset comments from previous changeset comments (#2002, thanks @jfirebaugh)
 * Add universal multiline text field for description, fixme (#1518)
 * Fix crash when selecting a category preset with enter button
-* Remove overly agressive regexes for cleaning up websites and emails (#2892, thanks @kepta)
+* Remove overly aggressive regexes for cleaning up websites and emails (#2892, thanks @kepta)
 * Correct typo "Platic" -> "Plastic" (#2925, thanks @M1dgard)
 * Rename "Unclassified Road" to "Minor Road" (#2916)
 
@@ -3624,7 +6026,7 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 ##### 2014-Mar-28
 * Disable circularize and orthogonalize operations when way is <80% contained in the viewport
 * Add place=neighbourhood preset
-* Add denomination=* field for cemetary, graveyard, funeral home
+* Add denomination=* field for cemetery, graveyard, funeral home
 * Add preset for shop=funeral_directors
 * Add icon for public_transport=stop_position
 * Support quartile scheme for any imagery source (#2112)
@@ -3642,7 +6044,7 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 * Add amenity=nightclub
 * Add smoking field for many presets under amenity, building, office, tourism (#1990)
 * barrier=fence shouldn't be an area (fixes #2158)
-* Remove building_area from hospital, school, kindergarden
+* Remove building_area from hospital, school, kindergarten
 * Fix recycling field keys (#2140)
 
 
@@ -3701,8 +6103,8 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 ##### 2013-Nov-22
 * Support for loading GPX-files via url parameter (#1965)
 * Update osm-auth (#1904)
-* Update 3rd party dependencies (Lo-Dash, D3, RBush)
-* Build iD.Way.areaKeys from presets
+* Update 3rd party dependencies (Lodash, D3, RBush)
+* Build areaKeys from presets
 * Add public_transport, military, emankment presets
 * Reverse cardinal directions for relation member roles
 * Improved warning visibility (#1973)
@@ -3924,4 +6326,3 @@ _Map traffic signals, stop signs, benches, crossings, street lamps, fountains, t
 * Update `osm-auth` to 0.2.1
 * Fix the `note` functionality and textarea UI in presets
 * Fix walkthrough translation issues
-

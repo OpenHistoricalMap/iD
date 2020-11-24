@@ -1,13 +1,16 @@
 {
-    "icon": "temaki-storage_tank",
+    "icon": "temaki-camper_trailer_dump",
     "fields": [
         "operator",
         "access_simple",
         "fee",
+        "payment_multi_fee",
+        "charge_fee",
         "water_point"
     ],
     "moreFields": [
-        "payment_multi"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "geometry": [
         "point",

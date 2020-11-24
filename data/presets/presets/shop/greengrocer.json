@@ -1,11 +1,16 @@
 {
-    "icon": "maki-shop",
+    "icon": "fas-carrot",
+    "fields": [
+        "{shop}",
+        "organic"
+    ],
     "geometry": [
         "point",
         "area"
     ],
     "terms": [
         "fruit",
+        "produce",
         "vegetable"
     ],
     "tags": {

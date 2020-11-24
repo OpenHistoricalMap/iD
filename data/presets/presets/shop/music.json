@@ -1,12 +1,14 @@
 {
-    "icon": "maki-music",
+    "icon": "fas-compact-disc",
     "geometry": [
         "point",
         "area"
     ],
     "terms": [
-        "CD",
-        "vinyl"
+        "tape casettes",
+        "CDs",
+        "compact discs",
+        "vinyl records"
     ],
     "tags": {
         "shop": "music"

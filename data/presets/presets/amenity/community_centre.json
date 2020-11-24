@@ -3,14 +3,21 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
-        "building_area"
+        "building_area",
+        "opening_hours",
+        "opening_hours/covid19",
+        "website"
     ],
     "moreFields": [
-        "website",
-        "phone",
+        "air_conditioning",
+        "baby_feeding",
         "email",
         "fax",
+        "gnis/feature_id",
+        "phone",
+        "polling_station",
         "wheelchair"
     ],
     "geometry": [

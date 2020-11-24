@@ -3,15 +3,22 @@
     "fields": [
         "name",
         "address",
+        "screen",
         "building_area",
         "opening_hours",
+        "opening_hours/covid19",
         "payment_multi"
     ],
     "moreFields": [
-        "website",
-        "phone",
+        "air_conditioning",
+        "brand",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "min_age",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

@@ -8,10 +8,12 @@
     ],
     "moreFields": [
         "address",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "opening_hours",
+        "opening_hours/covid19",
+        "phone",
+        "website"
     ],
     "geometry": [
         "vertex",

@@ -1,8 +1,12 @@
 {
-    "icon": "maki-communications-tower",
+    "icon": "temaki-mast_communication",
     "fields": [
         "{man_made/mast}",
         "communication_multi"
+    ],
+    "moreFields": [
+        "{man_made/mast}",
+        "mimics"
     ],
     "geometry": [
         "point"

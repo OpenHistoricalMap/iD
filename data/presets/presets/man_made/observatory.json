@@ -1,4 +1,5 @@
 {
+    "icon": "temaki-telescope",
     "fields": [
         "name",
         "operator",
@@ -7,10 +8,11 @@
         "building_area"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",

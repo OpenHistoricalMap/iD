@@ -5,20 +5,24 @@
         "operator",
         "address",
         "building_area",
-        "opening_hours"
-    ],
-    "moreFields": [
-        "smoking",
-        "outdoor_seating",
-        "capacity",
+        "opening_hours",
+        "opening_hours/covid19",
         "internet_access",
         "internet_access/fee",
-        "internet_access/ssid",
+        "internet_access/ssid"
+    ],
+    "moreFields": [
+        "capacity",
         "diet_multi",
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "level",
+        "not/name",
+        "outdoor_seating",
+        "phone",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [

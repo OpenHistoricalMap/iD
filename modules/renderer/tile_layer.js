@@ -1,5 +1,5 @@
 import { select as d3_select } from 'd3-selection';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 
 import { geoScaleToZoom, geoVecLength } from '../geo';
 import { utilPrefixCSSProperty, utilTiler } from '../util';
@@ -198,6 +198,9 @@ export function rendererTileLayer(context) {
         image.enter()
           .append('img')
             .attr('class', 'tile')
+            .attr('draggable', 'false')
+            .style('width', _tileSize + 'px')
+            .style('height', _tileSize + 'px')
             .attr('src', function(d) { return d[3]; })
             .on('error', error)
             .on('load', load)
@@ -253,23 +256,23 @@ export function rendererTileLayer(context) {
     }
 
 
-    background.projection = function(_) {
+    background.projection = function(val) {
         if (!arguments.length) return _projection;
-        _projection = _;
+        _projection = val;
         return background;
     };
 
 
-    background.dimensions = function(_) {
+    background.dimensions = function(val) {
         if (!arguments.length) return tiler.size();
-        tiler.size(_);
+        tiler.size(val);
         return background;
     };
 
 
-    background.source = function(_) {
+    background.source = function(val) {
         if (!arguments.length) return _source;
-        _source = _;
+        _source = val;
         _tileSize = _source.tileSize;
         _cache = {};
         tiler.tileSize(_source.tileSize).zoomExtent(_source.zoomExtent);

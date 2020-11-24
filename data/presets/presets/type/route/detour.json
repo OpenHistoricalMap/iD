@@ -3,8 +3,8 @@
     "fields": [
         "name",
         "ref_route",
-        "to", 
-        "from"
+        "from",
+        "to"
     ],
     "geometry": [
         "relation"
@@ -12,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "detour"
+    },
+    "reference": {
+        "key": "route",
+        "value": "detour"
     },
     "name": "Detour Route"
 }

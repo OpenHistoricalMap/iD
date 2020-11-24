@@ -1,5 +1,5 @@
 {
-    "icon": "maki-music",
+    "icon": "fas-music",
     "fields": [
         "name",
         "operator",
@@ -8,12 +8,15 @@
         "dance/style"
     ],
     "moreFields": [
-        "opening_hours",
-        "payment_multi",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "level",
+        "opening_hours",
+        "opening_hours/covid19",
+        "payment_multi",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",

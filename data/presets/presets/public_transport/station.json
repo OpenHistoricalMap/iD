@@ -1,5 +1,5 @@
 {
-    "icon": "maki-rail",
+    "icon": "temaki-transit",
     "fields": [
         "name",
         "network",
@@ -9,12 +9,16 @@
         "internet_access"
     ],
     "moreFields": [
-        "internet_access/fee",
-        "internet_access/ssid",
-        "website",
-        "phone",
+        "air_conditioning",
+        "baby_feeding",
         "email",
         "fax",
+        "gnis/feature_id",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "level",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

@@ -1,23 +1,20 @@
 # Contributing to iD
 
-Thinking of contributing to iD? High five! Here are some basics for our habits
-so that you can write code that fits in perfectly.
+Thinking of contributing to iD? High five! There are plenty of ways to get involved.
+You don't need to know the first thing about programming (though it's always a
+great time to learn!)
+
+Everyone involved in the iD project is subject to the [Code of Conduct](CODE_OF_CONDUCT.md).
+Please take a moment to read it before proceeding, it's short and simple. We want
+everyone to feel comfortable contributing to iD.
 
 
-## Code of Conduct
+## Submitting Issues
 
-We want everyone to feel comfortable contributing to iD.  Please read the project
-[Code of Conduct](CODE_OF_CONDUCT.md) and remember to be nice to one another.
+We'd love to hear your feedback about iD. Please [search existing issues](https://github.com/search?l=&q=repo%3Aopenstreetmap%2FiD&type=Issues)
+before [opening a new one](https://github.com/openstreetmap/iD/issues/new). Many bugs and ideas have already been posted.
 
-
-## Reporting Issues
-
-We'd love to hear what you think about iD, about any specific problems or
-concerns you have. Here's a quick list of things to consider:
-
-Please [search for your issue before filing it: many bugs and improvements have already been reported](https://github.com/search?l=&q=repo%3Aopenstreetmap%2FiD&type=Issues)
-
-To report a bug:
+When reporting a bug:
 
 * Write specifically what browser (type and version, like "Firefox 49.0"), OS,
 and browser extensions you have installed
@@ -29,18 +26,17 @@ You can drag the image file onto the GitHub issue and it will be included with y
 * Please keep bug reports professional and straightforward: trust us, we share your dismay at software breaking.
 * If you can, [enable web developer extensions](http://debugbrowser.com/) and report the
 JavaScript error message.
+* When in doubt, over-describe the bug and how you discovered it.
 
-When in doubt, be over-descriptive of the bug and how you discovered it.
+When requesting a feature:
 
-To request a feature:
-
-* If the feature is available in some other software (like Potlatch), link to that software and the implementation.
+* Provide a link if the feature is available in some other software.
   We care about prior art.
-* Understand that iD is meant to be a simple editor and doesn't aim to be
-  as complete or complicated as JOSM or similar.
+* Understand that iD is focused on simplicity and doesn't aim to be
+  as complete as JOSM or other editors.
 
 
-## Issue Labels
+### Issue Labels
 
 We use GitHub labels to keep track of issues.  Some guidelines:
 
@@ -183,14 +179,21 @@ Work in Progress.  Don't start work on these, somebody else already did!
 [wip_link]: https://github.com/openstreetmap/iD/issues?q=is%3Aopen+is%3Aissue+label%3Awip
 
 
-## Verifying Bug Fixes
+## Testing
 
-To verify a bug fix (or test a new feature), use the [master deployment](http://preview.ideditor.com/master/)
-(http://preview.ideditor.com/master/), which is updated every 10 minutes with the
-latest code and translation strings.
+You can use the [development preview site](https://ideditor.netlify.app) to test
+unreleased features and verify bug fixes, all without building iD yourself. This site
+is updated with the latest code and translations every time we change the `develop` branch.
 
-The deployments on openstreetmap.org and http://preview.ideditor.com/release/ are updated only
-with stable releases. Issues that are marked fixed in the tracker may still be present.
+The deployments on https://openstreetmap.org and https://preview.ideditor.com/release
+are updated only with [stable releases](https://github.com/openstreetmap/iD/releases).
+Recently fixed issues may still be present on these sites until the next version of iD
+is released.
+
+While it's possible to edit the live OpenStreetMap database with development versions
+of iD, it's risky to do so. Your edits could be lost or garbled at any time. Press
+the ![live](http://labl.es/svg?text=live&bgcolor=d32232) button in the bottom bar to
+switch to the development database.
 
 
 ## Translating
@@ -216,9 +219,8 @@ preset fields, and lists of search terms. You do _not_ need to translate the
 search terms literally -- use a set of synonyms and related terms appropriate
 to the target language, separated by commas.
 
-You can check your translations in the [master deployment](http://preview.ideditor.com/master/)
-(http://preview.ideditor.com/master/), which is updated every 10 minutes with the
-latest code and translation strings.
+You can check your translations on the [development preview site](https://ideditor.netlify.app),
+which is updated every time we change the `develop` branch.
 
 [iD translation project on Transifex](https://www.transifex.com/projects/p/id-editor/)
 
@@ -228,7 +230,7 @@ project** button near the bottom of the project page. You can edit your
 getting too many notifications.
 
 Translations are licensed under
-[ISC](https://raw.github.com/openstreetmap/iD/master/LICENSE.md), the same license
+[ISC](https://raw.github.com/openstreetmap/iD/develop/LICENSE.md), the same license
 as iD.
 
 **Why are there so many duplicate "Type" translations?** There are multiple
@@ -245,12 +247,19 @@ These are separate translations for uniformity reasons and because some language
  may translate "type" differently in "type of aeroway" and "type of amenity", for
  example.
 
+**Why can't I find the Osmose QA layer translations?** The Osmose QA strings are
+ pulled in from the external Osmose API. You can contribute to the
+ [Osmose Transifex project](https://www.transifex.com/projects/p/osmose/)
+ and the results will be seen in iD once deployed.
 
-## Adding New Strings for Translation or Updating Existing Strings
+Note that if you want to add/update English translations in Osmose then you will
+ need to head on over to the [Osmose backend source code](https://github.com/osm-fr/osmose-backend).
 
-iD translates strings with a `t` function - `t('foo.bar')` translate the key
-`foo.bar` into the current language. If you introduce new translatable strings
-to iD, only display them in the interface through the `t()` function.
+### Translations in Code
+
+iD translates strings with a `t` function: `t('foo.bar')` translates the key
+`foo.bar` into the current language. If you introduce new translatable strings,
+only display them in the interface through the `t()` function.
 
 Then, add the new string to `data/core.yaml`. The translation system, Transifex,
 will automatically detect the change.
@@ -288,30 +297,30 @@ likely to add for a given feature. They are stored in `data/presets/presets`. If
 you're going to update the presets, [review the Presets README](/data/presets/README.md).
 
 
-## JavaScript
+## Contributing Code
 
-iD uses ES5 syntax throughout the code, with one exception:
-[ES6 modules](http://exploringjs.com/es6/ch_modules.html) using `import` and
-`export` constructs. These are processed by [Rollup.js](https://rollupjs.org/guide/en)
-and not present in the distributed iD bundle.
+We like when people get involved! iD is a busy project, so it helps if you first
+open an issue to ask whether an idea makes sense,
+instead of surprising us with a pull request.
 
-ES5 syntax is required for:
-* IE11, which about 15-20% of our users still use
-* PhantomJS which runs our tests (it would be great to replace this!)
+### JavaScript
 
-We will introduce ES6 syntax eventually when it makes sense to do so.
+Legacy iD code was written with ES5 syntax, however we now support most ES6 syntax via [Rollup.js](https://rollupjs.org/guide/en) and the [Rollup Bublé plugin](https://github.com/rollup/plugins/tree/master/packages/buble). You can find details about Bublé [here](https://buble.surge.sh/guide/).
 
-We use the [ES5 Airbnb style guide for JavaScript](https://github.com/airbnb/javascript/tree/es5-deprecated/es5) with
-only one difference:  **4 space soft tabs always for JavaScript, not 2.**
+In order to continue to support older browsers like IE11 and our PhantomJS-based test runner, we also include the [browser-polyfills](https://github.com/tiagomapmarques/browser-polyfills#what-does-it-have) package.
 
-No aligned `=`, no aligned arguments, spaces are either indents or the 1
-space between expressions. No hard tabs, ever.
+We mostly follow the Airbnb style guide for JavaScript:
+- [Modern ES6](https://github.com/airbnb/javascript)
+- [Legacy ES5](https://github.com/airbnb/javascript/tree/es5-deprecated/es5)
 
-JavaScript code should pass through [ESLint](http://eslint.org/) with no
-warnings.
+We ask that you follow the convention of using 4 space indent in ES5 files and 2 space indent in ES6 files. While the indenting doesn't matter to the compiler, it does make it easier for us humans to see at a glance whether a file has been "upgraded" to ES6.
+
+Always spaces, never tabs.
+
+JavaScript code should pass through [ESLint](http://eslint.org/) with no warnings.
 
 
-## HTML
+### HTML
 
 There isn't much HTML in iD, but what there is is similar to JavaScript: 4 spaces
 always, indented by the level of the tree:
@@ -323,12 +332,12 @@ always, indented by the level of the tree:
 ```
 
 
-## CSS
+### CSS
 
 Just like HTML and JavaScript, 4 space soft tabs always.
 
 ```css
-.radial-menu-tooltip {
+.menu-tooltip {
     background: rgba(255, 255, 255, 0.8);
 }
 ```
@@ -337,7 +346,7 @@ We write vanilla CSS with no preprocessing step. Since iD targets modern browser
 (Chrome, Firefox, Safari, Opera, IE11, and Edge) feel free to use newer features wisely.
 
 
-## Tests
+### Tests
 
 Test your code and make sure it passes.
 
@@ -346,7 +355,7 @@ Test your code and make sure it passes.
 3. run `npm test` to see whether your tests pass or fail.
 
 
-## Building / Installing
+### Building / Installing
 
 You can rebuild iD completely with the command `npm run all`.
 
@@ -354,7 +363,7 @@ iD will be built to the `dist` directory. This directory is self-contained; you 
 into the public directory of your webserver to deploy iD.
 
 
-## Licensing
+### Licensing
 
 iD is available under the [ISC License](https://opensource.org/licenses/ISC).
 Some of the libraries it uses are under different licenses. If you're contributing
@@ -362,10 +371,6 @@ to iD, you're contributing ISC Licensed code.
 
 
 ## Submitting Changes
-
-We like when people get involved! iD is a busy project, and it helps the
-maintainers if you first open an issue to ask whether an idea makes sense,
-instead of surprising us with a pull request.
 
 In your local copy, make a branch for this change using a descriptive branch name:
 
@@ -397,7 +402,7 @@ Additionally here is a step-by-step workflow example for beginners:
 
 4. Clone or download your local copy of iD from your GitHub account using https `git clone https://github.com/<yourgithubaccount>/iD.git` or using ssh `git clone git@github.com:{{yourgithubaccount}}/iD.git`. In your local copy you'll have a "remote" called origin.
 
-5. Switch to the iD directory, create a working branch (choose a descriptive name) and switch to it : `cd iD ; git checkout -b <working-branch-name>`. Never do anything in master branch.
+5. Switch to the iD directory, create a working branch (choose a descriptive name) and switch to it : `cd iD ; git checkout -b <working-branch-name>`. Never do anything in the `develop` branch.
 
 6. Edit file(s) and try your change locally (See above).
 
@@ -418,13 +423,13 @@ you can clean up by deleting the branch from your GitHub-iD-Clone and your local
 
 ### Restart with another PR after some while
 
-If you did not use your copy of iD for some while, other Pull Request gets merged and you don't have the latest version of iD. You can replace your master with whatever is in our master. If you have not done so yet: Add the main repo as an "upstream" remote:
+If you did not use your copy of iD for some while, other Pull Request gets merged and you don't have the latest version of iD. You can replace your `develop` with whatever is in our `develop`. If you have not done so yet: Add the main repo as an "upstream" remote:
 
 `git remote add upstream git@github.com:openstreetmap/iD.git`
 
-Then change to the master branch and get everything from upstream (the main repository)
+Then change to the `develop` branch and get everything from upstream (the main repository)
 
-`git checkout master ; git fetch --all && git reset --hard upstream/master`
+`git checkout develop ; git fetch --all && git reset --hard upstream/develop`
 
 
 ## Submitting directly in the Browser
@@ -441,11 +446,11 @@ Additionally here is a step-by-step workflow example for beginners:
 
 2. Go to the [iD main repository](https://github.com/openstreetmap/iD) and fork iD into your GitHub account (Fork is top right).
 
-3. Create a New Branch by clicking on "Branch: master" and entering the name of a new branch (choose a descriptive name).
+3. Create a New Branch by clicking on "Branch: develop" and entering the name of a new branch (choose a descriptive name).
 
 4. Navigate to the file you want to edit and click on "Edit this file" and apply your changes to the file. Alternatively, you could also "Create a new file".
 
-5. When finished editing the file enter a commit text (the description is optional) and commit directly to the newly created branch. You may repeat 4 and 5 until all required changes are commited.
+5. When finished editing the file enter a commit text (the description is optional) and commit directly to the newly created branch. You may repeat 4 and 5 until all required changes are committed.
 
 6. Navigate back to your "id" project - https://github.com/{{yourgithubaccount}}/iD
 

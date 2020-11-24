@@ -1,9 +1,11 @@
 {
+    "icon": "temaki-gondola_lift",
     "geometry": [
         "line"
     ],
     "fields": [
         "name",
+        "oneway",
         "aerialway/occupancy",
         "aerialway/capacity",
         "aerialway/duration",
@@ -13,5 +15,11 @@
     "tags": {
         "aerialway": "gondola"
     },
-    "name": "Gondola"
+    "terms": [
+        "aerial cable",
+        "lift",
+        "skiing",
+        "snowboarding"
+    ],
+    "name": "Gondola Lift"
 }

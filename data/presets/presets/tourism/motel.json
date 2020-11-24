@@ -6,18 +6,25 @@
         "address",
         "building_area",
         "rooms",
-        "internet_access"
+        "internet_access",
+        "internet_access/fee"
     ],
-    "moreFields" : [
-        "operator",
-        "smoking",
-        "payment_multi",
-        "internet_access/fee",
-        "internet_access/ssid",
-        "website",
-        "phone",
+    "moreFields": [
+        "air_conditioning",
+        "brand",
+        "building/levels_building",
         "email",
         "fax",
+        "gnis/feature_id",
+        "height_building",
+        "internet_access/ssid",
+        "operator",
+        "payment_multi",
+        "phone",
+        "ref/vatin",
+        "reservation",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -27,5 +34,10 @@
     "tags": {
         "tourism": "motel"
     },
+    "terms": [
+        "lodging",
+        "motor hotel",
+        "overnight accommodations"
+    ],
     "name": "Motel"
 }

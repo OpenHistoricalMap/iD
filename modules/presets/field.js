@@ -1,35 +1,37 @@
-import _clone from 'lodash-es/clone';
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
+import { utilSafeClassName } from '../util/util';
 
 
-export function presetField(id, field) {
-    field = _clone(field);
+//
+// `presetField` decorates a given `field` Object
+// with some extra methods for searching and matching geometry
+//
+export function presetField(fieldID, field) {
+  let _this = Object.assign({}, field);   // shallow copy
 
-    field.id = id;
+  _this.id = fieldID;
 
-    // for use in classes, element ids, css selectors
-    field.safeid = id.replace(/[^_a-zA-Z0-9\-]/g, '_');
+  // for use in classes, element ids, css selectors
+  _this.safeid = utilSafeClassName(fieldID);
 
-    field.matchGeometry = function(geometry) {
-        return !field.geometry || field.geometry === geometry;
-    };
+  _this.matchGeometry = (geom) => !_this.geometry || _this.geometry.indexOf(geom) !== -1;
 
+  _this.matchAllGeometry = (geometries) => {
+    return !_this.geometry || geometries.every(geom => _this.geometry.indexOf(geom) !== -1);
+  };
 
-    field.t = function(scope, options) {
-        return t('presets.fields.' + id + '.' + scope, options);
-    };
+  _this.t = (scope, options) => t(`presets.fields.${fieldID}.${scope}`, options);
 
+  _this.label = () => _this.overrideLabel || _this.t('label', { 'default': fieldID });
 
-    field.label = function() {
-        return field.overrideLabel || field.t('label', {'default': id});
-    };
+  const _placeholder = _this.placeholder;
+  _this.placeholder = () => _this.t('placeholder', { 'default': _placeholder });
 
+  _this.originalTerms = (_this.terms || []).join();
 
-    var placeholder = field.placeholder;
-    field.placeholder = function() {
-        return field.t('placeholder', {'default': placeholder});
-    };
+  _this.terms = () => _this.t('terms', { 'default': _this.originalTerms })
+    .toLowerCase().trim().split(/\s*,+\s*/);
 
 
-    return field;
+  return _this;
 }

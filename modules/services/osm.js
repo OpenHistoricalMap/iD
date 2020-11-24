@@ -1,41 +1,20 @@
-import _chunk from 'lodash-es/chunk';
-import _cloneDeep from 'lodash-es/cloneDeep';
-import _extend from 'lodash-es/extend';
-import _forEach from 'lodash-es/forEach';
-import _find from 'lodash-es/find';
-import _groupBy from 'lodash-es/groupBy';
-import _isEmpty from 'lodash-es/isEmpty';
-import _map from 'lodash-es/map';
 import _throttle from 'lodash-es/throttle';
-import _uniq from 'lodash-es/uniq';
-
-import rbush from 'rbush';
 
 import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { xml as d3_xml } from 'd3-request';
+import { xml as d3_xml } from 'd3-fetch';
+import { json as d3_json } from 'd3-fetch';
 
 import osmAuth from 'osm-auth';
+import RBush from 'rbush';
+
 import { JXON } from '../util/jxon';
-import { geoExtent, geoVecAdd } from '../geo';
-
-import {
-    osmEntity,
-    osmNode,
-    osmNote,
-    osmRelation,
-    osmWay
-} from '../osm';
-
-import {
-    utilRebind,
-    utilIdleWorker,
-    utilTiler,
-    utilQsString
-} from '../util';
+import { geoExtent, geoRawMercator, geoVecAdd, geoZoomToScale } from '../geo';
+import { osmEntity, osmNode, osmNote, osmRelation, osmWay } from '../osm';
+import { utilArrayChunk, utilArrayGroupBy, utilArrayUniq, utilRebind, utilTiler, utilQsString } from '../util';
 
 
 var tiler = utilTiler();
-var dispatch = d3_dispatch('authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
+var dispatch = d3_dispatch('apiStatusChange', 'authLoading', 'authDone', 'change', 'loading', 'loaded', 'loadedNotes');
 var urlroot = 'https://www.openstreetmap.org';
 var oauth = osmAuth({
     url: urlroot,
@@ -44,13 +23,15 @@ var oauth = osmAuth({
     loading: authLoading,
     done: authDone
 });
-
-var _blacklists = ['.*\.google(apis)?\..*/(vt|kh)[\?/].*([xyz]=.*){3}.*'];
-var _tileCache = { loaded: {}, inflight: {}, seen: {} };
-var _noteCache = { loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: rbush() };
+// hardcode default block of Google Maps
+var _imageryBlocklists = [/.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/];
+var _tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
+var _noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
 var _userCache = { toLoad: {}, user: {} };
+var _cachedApiStatus;
 var _changeset = {};
 
+var _deferred = new Set();
 var _connectionID = 1;
 var _tileZoom = 16;
 var _noteZoom = 12;
@@ -58,6 +39,9 @@ var _rateLimitError;
 var _userChangesets;
 var _userDetails;
 var _off;
+
+// set a default but also load this from the API status
+var _maxWayNodes = 2000;
 
 
 function authLoading() {
@@ -70,20 +54,25 @@ function authDone() {
 }
 
 
-function abortRequest(i) {
-    if (i) {
-        i.abort();
+function abortRequest(controllerOrXHR) {
+    if (controllerOrXHR) {
+        controllerOrXHR.abort();
     }
 }
 
 
-function abortUnwantedRequests(cache, tiles) {
-    _forEach(cache.inflight, function(v, k) {
-        var wanted = _find(tiles, function(tile) { return k === tile.id; });
-        if (!wanted) {
-            abortRequest(v);
-            delete cache.inflight[k];
-        }
+function hasInflightRequests(cache) {
+    return Object.keys(cache.inflight).length;
+}
+
+
+function abortUnwantedRequests(cache, visibleTiles) {
+    Object.keys(cache.inflight).forEach(function(k) {
+        if (cache.toLoad[k]) return;
+        if (visibleTiles.find(function(tile) { return k === tile.id; })) return;
+
+        abortRequest(cache.inflight[k]);
+        delete cache.inflight[k];
     });
 }
 
@@ -104,6 +93,14 @@ function getNodes(obj) {
     return nodes;
 }
 
+function getNodesJSON(obj) {
+    var elems = obj.nodes;
+    var nodes = new Array(elems.length);
+    for (var i = 0, l = elems.length; i < l; i++) {
+        nodes[i] = 'n' + elems[i];
+    }
+    return nodes;
+}
 
 function getTags(obj) {
     var elems = obj.getElementsByTagName('tag');
@@ -131,6 +128,19 @@ function getMembers(obj) {
     return members;
 }
 
+function getMembersJSON(obj) {
+    var elems = obj.members;
+    var members = new Array(elems.length);
+    for (var i = 0, l = elems.length; i < l; i++) {
+        var attrs = elems[i];
+        members[i] = {
+            id: attrs.type[0] + attrs.ref,
+            type: attrs.type,
+            role: attrs.role
+        };
+    }
+    return members;
+}
 
 function getVisible(attrs) {
     return (!attrs.visible || attrs.visible.value !== 'false');
@@ -180,6 +190,94 @@ function encodeNoteRtree(note) {
     };
 }
 
+
+var jsonparsers = {
+
+    node: function nodeData(obj, uid) {
+        return new osmNode({
+            id:  uid,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
+            version: obj.version && obj.version.toString(),
+            changeset: obj.changeset && obj.changeset.toString(),
+            timestamp: obj.timestamp,
+            user: obj.user,
+            uid: obj.uid && obj.uid.toString(),
+            loc: [parseFloat(obj.lon), parseFloat(obj.lat)],
+            tags: obj.tags
+        });
+    },
+
+    way: function wayData(obj, uid) {
+        return new osmWay({
+            id:  uid,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
+            version: obj.version && obj.version.toString(),
+            changeset: obj.changeset && obj.changeset.toString(),
+            timestamp: obj.timestamp,
+            user: obj.user,
+            uid: obj.uid && obj.uid.toString(),
+            tags: obj.tags,
+            nodes: getNodesJSON(obj)
+        });
+    },
+
+    relation: function relationData(obj, uid) {
+        return new osmRelation({
+            id:  uid,
+            visible: typeof obj.visible === 'boolean' ? obj.visible : true,
+            version: obj.version && obj.version.toString(),
+            changeset: obj.changeset && obj.changeset.toString(),
+            timestamp: obj.timestamp,
+            user: obj.user,
+            uid: obj.uid && obj.uid.toString(),
+            tags: obj.tags,
+            members: getMembersJSON(obj)
+        });
+    }
+};
+
+function parseJSON(payload, callback, options) {
+    options = Object.assign({ skipSeen: true }, options);
+    if (!payload)  {
+        return callback({ message: 'No JSON', status: -1 });
+    }
+
+    var json = payload;
+    if (typeof json !== 'object')
+       json = JSON.parse(payload);
+
+    if (!json.elements)
+        return callback({ message: 'No JSON', status: -1 });
+
+    var children = json.elements;
+
+    var handle = window.requestIdleCallback(function() {
+        var results = [];
+        var result;
+        for (var i = 0; i < children.length; i++) {
+            result = parseChild(children[i]);
+            if (result) results.push(result);
+        }
+        callback(null, results);
+    });
+
+    _deferred.add(handle);
+
+    function parseChild(child) {
+        var parser = jsonparsers[child.type];
+        if (!parser) return null;
+
+        var uid;
+
+        uid = osmEntity.id.fromOSM(child.type, child.id);
+        if (options.skipSeen) {
+            if (_tileCache.seen[uid]) return null;  // avoid reparsing a "seen" entity
+            _tileCache.seen[uid] = true;
+        }
+
+        return parser(child, uid);
+    }
+}
 
 var parsers = {
     node: function nodeData(obj, uid) {
@@ -274,7 +372,8 @@ var parsers = {
             id: uid,
             display_name: attrs.display_name && attrs.display_name.value,
             account_created: attrs.account_created && attrs.account_created.value,
-            changesets_count: 0
+            changesets_count: '0',
+            active_blocks: '0'
         };
 
         var img = obj.getElementsByTagName('img');
@@ -287,6 +386,14 @@ var parsers = {
             user.changesets_count = changesets[0].getAttribute('count');
         }
 
+        var blocks = obj.getElementsByTagName('blocks');
+        if (blocks && blocks[0]) {
+            var received = blocks[0].getElementsByTagName('received');
+            if (received && received[0] && received[0].getAttribute('active')) {
+                user.active_blocks = received[0].getAttribute('active');
+            }
+        }
+
         _userCache.user[uid] = user;
         delete _userCache.toLoad[uid];
         return user;
@@ -295,19 +402,26 @@ var parsers = {
 
 
 function parseXML(xml, callback, options) {
-    options = _extend({ skipSeen: true }, options);
+    options = Object.assign({ skipSeen: true }, options);
     if (!xml || !xml.childNodes) {
         return callback({ message: 'No XML', status: -1 });
     }
 
     var root = xml.childNodes[0];
     var children = root.childNodes;
-    utilIdleWorker(children, parseChild, done);
 
-
-    function done(results) {
+    var handle = window.requestIdleCallback(function() {
+        var results = [];
+        var result;
+        for (var i = 0; i < children.length; i++) {
+            result = parseChild(children[i]);
+            if (result) results.push(result);
+        }
         callback(null, results);
-    }
+    });
+
+    _deferred.add(handle);
+
 
     function parseChild(child) {
         var parser = parsers[child.nodeName];
@@ -374,19 +488,25 @@ export default {
 
 
     reset: function() {
+        Array.from(_deferred).forEach(function(handle) {
+            window.cancelIdleCallback(handle);
+            _deferred.delete(handle);
+        });
+
         _connectionID++;
         _userChangesets = undefined;
         _userDetails = undefined;
         _rateLimitError = undefined;
 
-        _forEach(_tileCache.inflight, abortRequest);
-        _forEach(_noteCache.inflight, abortRequest);
-        _forEach(_noteCache.inflightPost, abortRequest);
+        Object.values(_tileCache.inflight).forEach(abortRequest);
+        Object.values(_noteCache.inflight).forEach(abortRequest);
+        Object.values(_noteCache.inflightPost).forEach(abortRequest);
         if (_changeset.inflight) abortRequest(_changeset.inflight);
 
-        _tileCache = { loaded: {}, inflight: {}, seen: {} };
-        _noteCache = { loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: rbush() };
+        _tileCache = { toLoad: {}, loaded: {}, inflight: {}, seen: {}, rtree: new RBush() };
+        _noteCache = { toLoad: {}, loaded: {}, inflight: {}, inflightPost: {}, note: {}, closed: {}, rtree: new RBush() };
         _userCache = { toLoad: {}, user: {} };
+        _cachedApiStatus = undefined;
         _changeset = {};
 
         return this;
@@ -440,11 +560,11 @@ export default {
     // Generic method to load data from the OSM API
     // Can handle either auth or unauth calls.
     loadFromAPI: function(path, callback, options) {
-        options = _extend({ skipSeen: true }, options);
+        options = Object.assign({ skipSeen: true }, options);
         var that = this;
         var cid = _connectionID;
 
-        function done(err, xml) {
+        function done(err, payload) {
             if (that.getConnectionId() !== cid) {
                 if (callback) callback({ message: 'Connection Switched', status: -1 });
                 return;
@@ -454,7 +574,8 @@ export default {
 
             // 400 Bad Request, 401 Unauthorized, 403 Forbidden
             // Logout and retry the request..
-            if (isAuthenticated && err && (err.status === 400 || err.status === 401 || err.status === 403)) {
+            if (isAuthenticated && err && err.status &&
+                    (err.status === 400 || err.status === 401 || err.status === 403)) {
                 that.logout();
                 that.loadFromAPI(path, callback, options);
 
@@ -462,17 +583,28 @@ export default {
             } else {
                 // 509 Bandwidth Limit Exceeded, 429 Too Many Requests
                 // Set the rateLimitError flag and trigger a warning..
-                if (!isAuthenticated && !_rateLimitError && err &&
+                if (!isAuthenticated && !_rateLimitError && err && err.status &&
                         (err.status === 509 || err.status === 429)) {
                     _rateLimitError = err;
                     dispatch.call('change');
+                    that.reloadApiStatus();
+
+                } else if ((err && _cachedApiStatus === 'online') ||
+                    (!err && _cachedApiStatus !== 'online')) {
+                    // If the response's error state doesn't match the status,
+                    // it's likely we lost or gained the connection so reload the status
+                    that.reloadApiStatus();
                 }
 
                 if (callback) {
                     if (err) {
                         return callback(err);
                     } else {
-                        return parseXML(xml, callback, options);
+                        if (path.indexOf('.json') !== -1) {
+                            return parseJSON(payload, callback, options);
+                        } else {
+                            return parseXML(payload, callback, options);
+                        }
                     }
                 }
             }
@@ -482,7 +614,24 @@ export default {
             return oauth.xhr({ method: 'GET', path: path }, done);
         } else {
             var url = urlroot + path;
-            return d3_xml(url).get(done);
+            var controller = new AbortController();
+            d3_xml(url, { signal: controller.signal })
+                .then(function(data) {
+                    done(null, data);
+                })
+                .catch(function(err) {
+                    if (err.name === 'AbortError') return;
+                    // d3-fetch includes status in the error message,
+                    // but we can't access the response itself
+                    // https://github.com/d3/d3-fetch/issues/27
+                    var match = err.message.match(/^\d{3}/);
+                    if (match) {
+                        done({ status: +match[0], statusText: err.message });
+                    } else {
+                        done(err.message);
+                    }
+                });
+            return controller;
         }
     },
 
@@ -524,18 +673,20 @@ export default {
 
     // Load multiple entities in chunks
     // (note: callback may be called multiple times)
+    // Unlike `loadEntity`, child nodes and members are not fetched
     // GET /api/0.6/[nodes|ways|relations]?#parameters
     loadMultiple: function(ids, callback) {
         var that = this;
+        var groups = utilArrayGroupBy(utilArrayUniq(ids), osmEntity.id.type);
 
-        _forEach(_groupBy(_uniq(ids), osmEntity.id.type), function(v, k) {
-            var type = k + 's';
-            var osmIDs = _map(v, osmEntity.id.toOSM);
+        Object.keys(groups).forEach(function(k) {
+            var type = k + 's';   // nodes, ways, relations
+            var osmIDs = groups[k].map(function(id) { return osmEntity.id.toOSM(id); });
             var options = { skipSeen: false };
 
-            _forEach(_chunk(osmIDs, 150), function(arr) {
+            utilArrayChunk(osmIDs, 150).forEach(function(arr) {
                 that.loadFromAPI(
-                    '/api/0.6/' + type + '?' + type + '=' + arr.join(),
+                    '/api/0.6/' + type + type + '=' + arr.join(),
                     function(err, entities) {
                         if (callback) callback(err, { data: entities });
                     },
@@ -624,7 +775,7 @@ export default {
         var toLoad = [];
         var cached = [];
 
-        _uniq(uids).forEach(function(uid) {
+        utilArrayUniq(uids).forEach(function(uid) {
             if (_userCache.user[uid]) {
                 delete _userCache.toLoad[uid];
                 cached.push(_userCache.user[uid]);
@@ -638,7 +789,7 @@ export default {
             if (!this.authenticated()) return;  // require auth
         }
 
-        _chunk(toLoad, 150).forEach(function(arr) {
+        utilArrayChunk(toLoad, 150).forEach(function(arr) {
             oauth.xhr(
                 { method: 'GET', path: '/api/0.6/users?users=' + arr.join() },
                 wrapcb(this, done, _connectionID)
@@ -756,34 +907,72 @@ export default {
     // Fetch the status of the OSM API
     // GET /api/capabilities
     status: function(callback) {
-        d3_xml(urlroot + '/api/capabilities').get(
-            wrapcb(this, done, _connectionID)
-        );
+        var url = urlroot + '/api/capabilities';
+        var errback = wrapcb(this, done, _connectionID);
+        d3_xml(url)
+            .then(function(data) { errback(null, data); })
+            .catch(function(err) { errback(err.message); });
 
         function done(err, xml) {
-            if (err) { return callback(err); }
+            if (err) {
+                // the status is null if no response could be retrieved
+                return callback(err, null);
+            }
 
-            // update blacklists
+            // update blocklists
             var elements = xml.getElementsByTagName('blacklist');
             var regexes = [];
             for (var i = 0; i < elements.length; i++) {
-                var regex = elements[i].getAttribute('regex');  // needs unencode?
-                if (regex) {
-                    regexes.push(regex);
+                var regexString = elements[i].getAttribute('regex');  // needs unencode?
+                if (regexString) {
+                    try {
+                        var regex = new RegExp(regexString);
+                        regexes.push(regex);
+                    } catch (e) {
+                        /* noop */
+                    }
                 }
             }
             if (regexes.length) {
-                _blacklists = regexes;
+                _imageryBlocklists = regexes;
             }
 
             if (_rateLimitError) {
                 return callback(_rateLimitError, 'rateLimited');
             } else {
+                var waynodes = xml.getElementsByTagName('waynodes');
+                var maxWayNodes = waynodes.length && parseInt(waynodes[0].getAttribute('maximum'), 10);
+                if (maxWayNodes && isFinite(maxWayNodes)) _maxWayNodes = maxWayNodes;
+
                 var apiStatus = xml.getElementsByTagName('status');
                 var val = apiStatus[0].getAttribute('api');
                 return callback(undefined, val);
             }
         }
+    },
+
+    // Calls `status` and dispatches an `apiStatusChange` event if the returned
+    // status differs from the cached status.
+    reloadApiStatus: function() {
+        // throttle to avoid unnecessary API calls
+        if (!this.throttledReloadApiStatus) {
+            var that = this;
+            this.throttledReloadApiStatus = _throttle(function() {
+                that.status(function(err, status) {
+                    if (status !== _cachedApiStatus) {
+                        _cachedApiStatus = status;
+                        dispatch.call('apiStatusChange', that, err, status);
+                    }
+                });
+            }, 500);
+        }
+        this.throttledReloadApiStatus();
+    },
+
+
+    // Returns the maximum number of nodes a single way can have
+    maxWayNodes: function() {
+        return _maxWayNodes;
     },
 
 
@@ -792,51 +981,92 @@ export default {
     loadTiles: function(projection, callback) {
         if (_off) return;
 
-        var that = this;
-        var path = '/api/0.6/map?bbox=';
-
         // determine the needed tiles to cover the view
         var tiles = tiler.zoomExtent([_tileZoom, _tileZoom]).getTiles(projection);
 
         // abort inflight requests that are no longer needed
-        var hadRequests = !_isEmpty(_tileCache.inflight);
+        var hadRequests = hasInflightRequests(_tileCache);
         abortUnwantedRequests(_tileCache, tiles);
-        if (hadRequests && _isEmpty(_tileCache.inflight)) {
+        if (hadRequests && !hasInflightRequests(_tileCache)) {
             dispatch.call('loaded');    // stop the spinner
         }
 
         // issue new requests..
         tiles.forEach(function(tile) {
-            if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
-            if (_isEmpty(_tileCache.inflight)) {
-                dispatch.call('loading');   // start the spinner
-            }
+            this.loadTile(tile, callback);
+        }, this);
+    },
 
-            var options = { skipSeen: true };
-            _tileCache.inflight[tile.id] = that.loadFromAPI(
-                path + tile.extent.toParam(),
-                function(err, parsed) {
-                    delete _tileCache.inflight[tile.id];
-                    if (!err) {
-                        _tileCache.loaded[tile.id] = true;
-                    }
-                    if (callback) {
-                        callback(err, _extend({ data: parsed }, tile));
-                    }
-                    if (_isEmpty(_tileCache.inflight)) {
-                        dispatch.call('loaded');     // stop the spinner
-                    }
-                },
-                options
-            );
-        });
+
+    // Load a single data tile
+    // GET /api/0.6/map?bbox=
+    loadTile: function(tile, callback) {
+        if (_off) return;
+        if (_tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
+
+        if (!hasInflightRequests(_tileCache)) {
+            dispatch.call('loading');   // start the spinner
+        }
+
+        var path = '/api/0.6/map?bbox=';
+        var options = { skipSeen: true };
+
+        _tileCache.inflight[tile.id] = this.loadFromAPI(
+            path + tile.extent.toParam(),
+            tileCallback,
+            options
+        );
+
+        function tileCallback(err, parsed) {
+            delete _tileCache.inflight[tile.id];
+            if (!err) {
+                delete _tileCache.toLoad[tile.id];
+                _tileCache.loaded[tile.id] = true;
+                var bbox = tile.extent.bbox();
+                bbox.id = tile.id;
+                _tileCache.rtree.insert(bbox);
+            }
+            if (callback) {
+                callback(err, Object.assign({ data: parsed }, tile));
+            }
+            if (!hasInflightRequests(_tileCache)) {
+                dispatch.call('loaded');     // stop the spinner
+            }
+        }
+    },
+
+
+    isDataLoaded: function(loc) {
+        var bbox = { minX: loc[0], minY: loc[1], maxX: loc[0], maxY: loc[1] };
+        return _tileCache.rtree.collides(bbox);
+    },
+
+
+    // load the tile that covers the given `loc`
+    loadTileAtLoc: function(loc, callback) {
+        // Back off if the toLoad queue is filling up.. re #6417
+        // (Currently `loadTileAtLoc` requests are considered low priority - used by operations to
+        // let users safely edit geometries which extend to unloaded tiles.  We can drop some.)
+        if (Object.keys(_tileCache.toLoad).length > 50) return;
+
+        var k = geoZoomToScale(_tileZoom + 1);
+        var offset = geoRawMercator().scale(k)(loc);
+        var projection = geoRawMercator().transform({ k: k, x: -offset[0], y: -offset[1] });
+        var tiles = tiler.zoomExtent([_tileZoom, _tileZoom]).getTiles(projection);
+
+        tiles.forEach(function(tile) {
+            if (_tileCache.toLoad[tile.id] || _tileCache.loaded[tile.id] || _tileCache.inflight[tile.id]) return;
+
+            _tileCache.toLoad[tile.id] = true;
+            this.loadTile(tile, callback);
+        }, this);
     },
 
 
     // Load notes from the API in tiles
     // GET /api/0.6/notes?bbox=
     loadNotes: function(projection, noteOptions) {
-        noteOptions = _extend({ limit: 10000, closed: 7 }, noteOptions);
+        noteOptions = Object.assign({ limit: 10000, closed: 7 }, noteOptions);
         if (_off) return;
 
         var that = this;
@@ -978,7 +1208,7 @@ export default {
     switch: function(options) {
         urlroot = options.urlroot;
 
-        oauth.options(_extend({
+        oauth.options(Object.assign({
             url: urlroot,
             loading: authLoading,
             done: authDone
@@ -991,8 +1221,8 @@ export default {
     },
 
 
-    toggle: function(_) {
-        _off = !_;
+    toggle: function(val) {
+        _off = !val;
         return this;
     },
 
@@ -1006,11 +1236,28 @@ export default {
     // This is used to save/restore the state when entering/exiting the walkthrough
     // Also used for testing purposes.
     caches: function(obj) {
+        function cloneCache(source) {
+            var target = {};
+            Object.keys(source).forEach(function(k) {
+                if (k === 'rtree') {
+                    target.rtree = new RBush().fromJSON(source.rtree.toJSON());  // clone rbush
+                } else if (k === 'note') {
+                    target.note = {};
+                    Object.keys(source.note).forEach(function(id) {
+                        target.note[id] = osmNote(source.note[id]);   // copy notes
+                    });
+                } else {
+                    target[k] = JSON.parse(JSON.stringify(source[k]));   // clone deep
+                }
+            });
+            return target;
+        }
+
         if (!arguments.length) {
             return {
-                tile: _cloneDeep(_tileCache),
-                note: _cloneDeep(_noteCache),
-                user: _cloneDeep(_userCache)
+                tile: cloneCache(_tileCache),
+                note: cloneCache(_noteCache),
+                user: cloneCache(_userCache)
             };
         }
 
@@ -1079,14 +1326,14 @@ export default {
     },
 
 
-    imageryBlacklists: function() {
-        return _blacklists;
+    imageryBlocklists: function() {
+        return _imageryBlocklists;
     },
 
 
-    tileZoom: function(_) {
+    tileZoom: function(val) {
         if (!arguments.length) return _tileZoom;
-        _tileZoom = _;
+        _tileZoom = val;
         return this;
     },
 

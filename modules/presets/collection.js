@@ -1,158 +1,158 @@
-import _filter from 'lodash-es/filter';
-import _find from 'lodash-es/find';
-import _findIndex from 'lodash-es/findIndex';
-import _some from 'lodash-es/some';
-import _uniq from 'lodash-es/uniq';
-import _values from 'lodash-es/values';
-import _without from 'lodash-es/without';
-
-import { utilEditDistance } from '../util/index';
+import { utilArrayUniq, utilEditDistance } from '../util';
 
 
+//
+// `presetCollection` is a wrapper around an `Array` of presets `collection`,
+// and decorated with some extra methods for searching and matching geometry
+//
 export function presetCollection(collection) {
-    var maxSearchResults = 50;
-    var maxSuggestionResults = 10;
+  const MAXRESULTS = 50;
+  let _this = {};
+  let _memo = {};
 
-    var presets = {
+  _this.collection = collection;
 
-        collection: collection,
+  _this.item = (id) => {
+    if (_memo[id]) return _memo[id];
+    const found = _this.collection.find(d => d.id === id);
+    if (found) _memo[id] = found;
+    return found;
+  };
+
+  _this.index = (id) => _this.collection.findIndex(d => d.id === id);
+
+  _this.matchGeometry = (geometry) => {
+    return presetCollection(
+      _this.collection.filter(d => d.matchGeometry(geometry))
+    );
+  };
+
+  _this.matchAllGeometry = (geometries) => {
+    return presetCollection(
+      _this.collection.filter(d => d && d.matchAllGeometry(geometries))
+    );
+  };
+
+  _this.matchAnyGeometry = (geometries) => {
+    return presetCollection(
+      _this.collection.filter(d => geometries.some(geom => d.matchGeometry(geom)))
+    );
+  };
+
+  _this.fallback = (geometry) => {
+    let id = geometry;
+    if (id === 'vertex') id = 'point';
+    return _this.item(id);
+  };
+
+  _this.search = (value, geometry, countryCode) => {
+    if (!value) return _this;
+
+    value = value.toLowerCase().trim();
+
+    // match at name beginning or just after a space (e.g. "office" -> match "Law Office")
+    function leading(a) {
+      const index = a.indexOf(value);
+      return index === 0 || a[index - 1] === ' ';
+    }
+
+    // match at name beginning only
+    function leadingStrict(a) {
+      const index = a.indexOf(value);
+      return index === 0;
+    }
+
+    function sortNames(a, b) {
+      let aCompare = (a.suggestion ? a.originalName : a.name()).toLowerCase();
+      let bCompare = (b.suggestion ? b.originalName : b.name()).toLowerCase();
+
+      // priority if search string matches preset name exactly - #4325
+      if (value === aCompare) return -1;
+      if (value === bCompare) return 1;
+
+      // priority for higher matchScore
+      let i = b.originalScore - a.originalScore;
+      if (i !== 0) return i;
+
+      // priority if search string appears earlier in preset name
+      i = aCompare.indexOf(value) - bCompare.indexOf(value);
+      if (i !== 0) return i;
+
+      // priority for shorter preset names
+      return aCompare.length - bCompare.length;
+    }
+
+    let pool = _this.collection;
+    if (countryCode) {
+      pool = pool.filter(a => {
+        if (a.countryCodes && a.countryCodes.indexOf(countryCode) === -1) return false;
+        if (a.notCountryCodes && a.notCountryCodes.indexOf(countryCode) !== -1) return false;
+        return true;
+      });
+    }
+    const searchable = pool.filter(a => a.searchable !== false && a.suggestion !== true);
+    const suggestions = pool.filter(a => a.suggestion === true);
+
+    // matches value to preset.name
+    const leading_name = searchable
+      .filter(a => leading(a.name().toLowerCase()))
+      .sort(sortNames);
+
+    // matches value to preset suggestion name (original name is unhyphenated)
+    const leading_suggestions = suggestions
+      .filter(a => leadingStrict(a.originalName.toLowerCase()))
+      .sort(sortNames);
+
+    // matches value to preset.terms values
+    const leading_terms = searchable
+      .filter(a => (a.terms() || []).some(leading));
+
+    // matches value to preset.tags values
+    const leading_tag_values = searchable
+      .filter(a => Object.values(a.tags || {}).filter(val => val !== '*').some(leading));
+
+    // finds close matches to value in preset.name
+    const similar_name = searchable
+      .map(a => ({ preset: a, dist: utilEditDistance(value, a.name()) }))
+      .filter(a => a.dist + Math.min(value.length - a.preset.name().length, 0) < 3)
+      .sort((a, b) => a.dist - b.dist)
+      .map(a => a.preset);
+
+    // finds close matches to value to preset suggestion name (original name is unhyphenated)
+    const similar_suggestions = suggestions
+      .map(a => ({ preset: a, dist: utilEditDistance(value, a.originalName.toLowerCase()) }))
+      .filter(a => a.dist + Math.min(value.length - a.preset.originalName.length, 0) < 1)
+      .sort((a, b) => a.dist - b.dist)
+      .map(a => a.preset);
+
+    // finds close matches to value in preset.terms
+    const similar_terms = searchable
+      .filter(a => {
+        return (a.terms() || []).some(b => {
+          return utilEditDistance(value, b) + Math.min(value.length - b.length, 0) < 3;
+        });
+      });
+
+    let results = leading_name.concat(
+      leading_suggestions,
+      leading_terms,
+      leading_tag_values,
+      similar_name,
+      similar_suggestions,
+      similar_terms
+    ).slice(0, MAXRESULTS - 1);
+
+    if (geometry) {
+      if (typeof geometry === 'string') {
+        results.push(_this.fallback(geometry));
+      } else {
+        geometry.forEach(geom => results.push(_this.fallback(geom)));
+      }
+    }
+
+    return presetCollection(utilArrayUniq(results));
+  };
 
 
-        item: function(id) {
-            return _find(this.collection, function(d) {
-                return d.id === id;
-            });
-        },
-
-        index: function(id) {
-            return _findIndex(this.collection, function(d) {
-                return d.id === id;
-            });
-        },
-
-        matchGeometry: function(geometry) {
-            return presetCollection(this.collection.filter(function(d) {
-                return d.matchGeometry(geometry);
-            }));
-        },
-
-
-        search: function(value, geometry) {
-            if (!value) return this;
-
-            function leading(a) {
-                var index = a.indexOf(value);
-                return index === 0 || a[index - 1] === ' ';
-            }
-
-            function suggestionName(name) {
-                var nameArray = name.split(' - ');
-                if (nameArray.length > 1) {
-                    name = nameArray.slice(0, nameArray.length - 1).join(' - ');
-                }
-                return name.toLowerCase();
-            }
-
-
-            value = value.toLowerCase();
-
-            var searchable = _filter(this.collection, function(a) {
-                return a.searchable !== false && a.suggestion !== true;
-            });
-            var suggestions = _filter(this.collection, function(a) {
-                return a.suggestion === true;
-            });
-
-
-            // matches value to preset.name
-            var leading_name = _filter(searchable, function(a) {
-                    return leading(a.name().toLowerCase());
-                }).sort(function(a, b) {
-                    var aCompare = a.name().toLowerCase();
-                    var bCompare = b.name().toLowerCase();
-                    var i;
-
-                    // priority if search string matches preset name exactly - #4325
-                    if (value === aCompare) return -1;
-                    if (value === bCompare) return 1;
-
-                    // priority for higher matchScore
-                    i = b.originalScore - a.originalScore;
-                    if (i !== 0) return i;
-
-                    // priority if search string appears earlier in preset name
-                    i = aCompare.indexOf(value) - bCompare.indexOf(value);
-                    if (i !== 0) return i;
-
-                    // priority for shorter preset names
-                    return a.name().length - b.name().length;
-                });
-
-            // matches value to preset.terms values
-            var leading_terms = _filter(searchable, function(a) {
-                return _some(a.terms() || [], leading);
-            });
-
-            // matches value to preset.tags values
-            var leading_tag_values = _filter(searchable, function(a) {
-                return _some(_without(_values(a.tags || {}), '*'), leading);
-            });
-
-
-            // finds close matches to value in preset.name
-            var similar_name = searchable
-                .map(function(a) {
-                    return { preset: a, dist: utilEditDistance(value, a.name()) };
-                }).filter(function(a) {
-                    return a.dist + Math.min(value.length - a.preset.name().length, 0) < 3;
-                }).sort(function(a, b) {
-                    return a.dist - b.dist;
-                }).map(function(a) {
-                    return a.preset;
-                });
-
-            // finds close matches to value in preset.terms
-            var similar_terms = _filter(searchable, function(a) {
-                    return _some(a.terms() || [], function(b) {
-                        return utilEditDistance(value, b) + Math.min(value.length - b.length, 0) < 3;
-                    });
-                });
-
-            var leading_suggestions = _filter(suggestions, function(a) {
-                    return leading(suggestionName(a.name()));
-                }).sort(function(a, b) {
-                    a = suggestionName(a.name());
-                    b = suggestionName(b.name());
-                    var i = a.indexOf(value) - b.indexOf(value);
-                    if (i === 0) return a.length - b.length;
-                    else return i;
-                });
-
-            var similar_suggestions = suggestions.map(function(a) {
-                    return { preset: a, dist: utilEditDistance(value, suggestionName(a.name())) };
-                }).filter(function(a) {
-                    return a.dist + Math.min(value.length - suggestionName(a.preset.name()).length, 0) < 1;
-                }).sort(function(a, b) {
-                    return a.dist - b.dist;
-                }).map(function(a) {
-                    return a.preset;
-                });
-
-            var other = presets.item(geometry);
-
-            var results = leading_name.concat(
-                leading_terms,
-                leading_tag_values,
-                leading_suggestions.slice(0, maxSuggestionResults + 5),
-                similar_name,
-                similar_terms,
-                similar_suggestions.slice(0, maxSuggestionResults)
-            ).slice(0, maxSearchResults - 1);
-
-            return presetCollection(_uniq(results.concat(other)));
-        }
-    };
-
-
-    return presets;
+  return _this;
 }

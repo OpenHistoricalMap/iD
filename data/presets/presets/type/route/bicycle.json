@@ -1,12 +1,20 @@
 {
-    "icon": "iD-route-bicycle",
+    "icon": "maki-bicycle",
     "fields": [
         "name",
         "ref_route",
         "network_bicycle",
         "cycle_network",
-        "to", 
-        "from"
+        "network/type",
+        "from",
+        "to"
+    ],
+    "moreFields": [
+        "ascent",
+        "colour",
+        "descent",
+        "distance",
+        "roundtrip"
     ],
     "geometry": [
         "relation"
@@ -14,6 +22,10 @@
     "tags": {
         "type": "route",
         "route": "bicycle"
+    },
+    "reference": {
+        "key": "route",
+        "value": "bicycle"
     },
     "name": "Cycle Route"
 }

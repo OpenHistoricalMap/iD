@@ -1,5 +1,5 @@
 {
-    "icon": "maki-ferry",
+    "icon": "temaki-ferry",
     "fields": [
         "{public_transport/station}"
     ],
@@ -7,6 +7,7 @@
         "{public_transport/station}"
     ],
     "geometry": [
+        "vertex",
         "point",
         "area"
     ],
@@ -15,11 +16,6 @@
         "ferry": "yes"
     },
     "addTags": {
-        "public_transport": "station",
-        "ferry": "yes",
-        "amenity": "ferry_terminal"
-    },
-    "removeTags": {
         "public_transport": "station",
         "ferry": "yes",
         "amenity": "ferry_terminal"
@@ -40,5 +36,5 @@
         "transit",
         "transportation"
     ],
-    "name": "Ferry Station / Terminal"
+    "name": "Ferry Terminal"
 }

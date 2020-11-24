@@ -4,10 +4,11 @@
         "name",
         "building_area",
         "address",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "website" 
+        "website"
     ],
     "geometry": [
         "point",

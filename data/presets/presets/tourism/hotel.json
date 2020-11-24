@@ -1,25 +1,12 @@
 {
-    "icon": "maki-lodging",
+    "icon": "fas-concierge-bell",
     "fields": [
-        "name",
-        "brand",
-        "address",
-        "building_area",
-        "rooms",
-        "internet_access"
+        "{tourism/motel}"
     ],
     "moreFields": [
-        "operator",
-        "smoking",
-        "payment_multi",
-        "internet_access/fee",
-        "internet_access/ssid",
-        "stars",
-        "website",
-        "phone",
-        "email",
-        "fax",
-        "wheelchair"
+        "{tourism/motel}",
+        "bar",
+        "stars"
     ],
     "geometry": [
         "point",
@@ -28,5 +15,11 @@
     "tags": {
         "tourism": "hotel"
     },
+    "terms": [
+        "concierge",
+        "lodge",
+        "lodging",
+        "overnight accommodations"
+    ],
     "name": "Hotel"
 }

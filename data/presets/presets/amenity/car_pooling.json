@@ -1,18 +1,20 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-car_pool",
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "capacity",
         "address",
         "opening_hours",
+        "opening_hours/covid19",
         "lit"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -22,5 +24,11 @@
     "tags": {
         "amenity": "car_pooling"
     },
-    "name": "Car Pooling"
+    "terms": [
+        "car sharing",
+        "carpooling",
+        "lift sharing",
+        "ride sharing"
+    ],
+    "name": "Car Pooling Station"
 }

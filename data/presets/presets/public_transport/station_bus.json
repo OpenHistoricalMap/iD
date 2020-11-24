@@ -1,5 +1,5 @@
 {
-    "icon": "maki-bus",
+    "icon": "temaki-bus",
     "fields": [
         "{public_transport/station}"
     ],
@@ -15,11 +15,6 @@
         "bus": "yes"
     },
     "addTags": {
-        "public_transport": "station",
-        "bus": "yes",
-        "amenity": "bus_station"
-    },
-    "removeTags": {
         "public_transport": "station",
         "bus": "yes",
         "amenity": "bus_station"

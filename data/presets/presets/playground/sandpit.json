@@ -7,5 +7,9 @@
     "tags": {
         "playground": "sandpit"
     },
-    "name": "Sandpit"
+    "terms": [
+        "sandbox",
+        "sandpit"
+    ],
+    "name": "Play Sandbox"
 }

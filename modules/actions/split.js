@@ -1,18 +1,9 @@
-import _extend from 'lodash-es/extend';
-import _indexOf from 'lodash-es/indexOf';
-import _intersection from 'lodash-es/intersection';
-import _some from 'lodash-es/some';
-
 import { actionAddMember } from './add_member';
 import { geoSphericalDistance } from '../geo';
-
-import {
-    osmIsSimpleMultipolygonOuterMember,
-    osmRelation,
-    osmWay
-} from '../osm';
-
-import { utilWrap } from '../util';
+import { osmIsOldMultipolygonOuterMember } from '../osm/multipolygon';
+import { osmRelation } from '../osm/relation';
+import { osmWay } from '../osm/way';
+import { utilArrayIntersection, utilWrap } from '../util';
 
 
 // Split a way at the given node.
@@ -31,6 +22,9 @@ import { utilWrap } from '../util';
 //
 export function actionSplit(nodeId, newWayIds) {
     var _wayIDs;
+
+    // The IDs of the ways actually created by running this action
+    var createdWayIDs = [];
 
     // If the way is closed, we need to search for a partner node
     // to split the way at.
@@ -62,16 +56,17 @@ export function actionSplit(nodeId, newWayIds) {
 
         // calculate lengths
         length = 0;
-        for (i = wrap(idxA+1); i !== idxA; i = wrap(i+1)) {
-            length += dist(nodes[i], nodes[wrap(i-1)]);
+        for (i = wrap(idxA + 1); i !== idxA; i = wrap(i + 1)) {
+            length += dist(nodes[i], nodes[wrap(i - 1)]);
             lengths[i] = length;
         }
 
         length = 0;
-        for (i = wrap(idxA-1); i !== idxA; i = wrap(i-1)) {
-            length += dist(nodes[i], nodes[wrap(i+1)]);
-            if (length < lengths[i])
+        for (i = wrap(idxA - 1); i !== idxA; i = wrap(i - 1)) {
+            length += dist(nodes[i], nodes[wrap(i + 1)]);
+            if (length < lengths[i]) {
                 lengths[i] = length;
+            }
         }
 
         // determine best opposite node to split
@@ -88,16 +83,16 @@ export function actionSplit(nodeId, newWayIds) {
 
 
     function split(graph, wayA, newWayId) {
-        var wayB = osmWay({id: newWayId, tags: wayA.tags});   // `wayB` is the NEW way
+        var wayB = osmWay({ id: newWayId, tags: wayA.tags });   // `wayB` is the NEW way
         var origNodes = wayA.nodes.slice();
         var nodesA;
         var nodesB;
         var isArea = wayA.isArea();
-        var isOuter = osmIsSimpleMultipolygonOuterMember(wayA, graph);
+        var isOuter = osmIsOldMultipolygonOuterMember(wayA, graph);
 
         if (wayA.isClosed()) {
             var nodes = wayA.nodes.slice(0, -1);
-            var idxA = _indexOf(nodes, nodeId);
+            var idxA = nodes.indexOf(nodeId);
             var idxB = splitArea(nodes, idxA, graph);
 
             if (idxB < idxA) {
@@ -108,13 +103,13 @@ export function actionSplit(nodeId, newWayIds) {
                 nodesB = nodes.slice(idxB).concat(nodes.slice(0, idxA + 1));
             }
         } else {
-            var idx = _indexOf(wayA.nodes, nodeId, 1);
+            var idx = wayA.nodes.indexOf(nodeId, 1);
             nodesA = wayA.nodes.slice(0, idx + 1);
             nodesB = wayA.nodes.slice(idx);
         }
 
-        wayA = wayA.update({nodes: nodesA});
-        wayB = wayB.update({nodes: nodesB});
+        wayA = wayA.update({ nodes: nodesA });
+        wayB = wayB.update({ nodes: nodesB });
 
         graph = graph.replace(wayA);
         graph = graph.replace(wayB);
@@ -126,7 +121,7 @@ export function actionSplit(nodeId, newWayIds) {
             // 1. Splitting a FROM/TO way - only `wayA` OR `wayB` remains in relation
             //    (whichever one is connected to the VIA node/ways)
             // 2. Splitting a VIA way - `wayB` remains in relation as a VIA way
-            if (relation.isRestriction()) {
+            if (relation.hasFromViaTo()) {
                 var f = relation.memberByRole('from');
                 var v = relation.membersByRole('via');
                 var t = relation.memberByRole('to');
@@ -141,7 +136,7 @@ export function actionSplit(nodeId, newWayIds) {
                         for (i = 0; i < v.length; i++) {
                             if (v[i].type === 'way') {
                                 var wayVia = graph.hasEntity(v[i].id);
-                                if (wayVia && _intersection(wayB.nodes, wayVia.nodes).length) {
+                                if (wayVia && utilArrayIntersection(wayB.nodes, wayVia.nodes).length) {
                                     keepB = true;
                                     break;
                                 }
@@ -175,8 +170,8 @@ export function actionSplit(nodeId, newWayIds) {
             } else {
                 if (relation === isOuter) {
                     graph = graph.replace(relation.mergeTags(wayA.tags));
-                    graph = graph.replace(wayA.update({tags: {}}));
-                    graph = graph.replace(wayB.update({tags: {}}));
+                    graph = graph.replace(wayA.update({ tags: {} }));
+                    graph = graph.replace(wayB.update({ tags: {} }));
                 }
 
                 member = {
@@ -197,35 +192,42 @@ export function actionSplit(nodeId, newWayIds) {
 
         if (!isOuter && isArea) {
             var multipolygon = osmRelation({
-                tags: _extend({}, wayA.tags, {type: 'multipolygon'}),
+                tags: Object.assign({}, wayA.tags, { type: 'multipolygon' }),
                 members: [
-                    {id: wayA.id, role: 'outer', type: 'way'},
-                    {id: wayB.id, role: 'outer', type: 'way'}
+                    { id: wayA.id, role: 'outer', type: 'way' },
+                    { id: wayB.id, role: 'outer', type: 'way' }
                 ]
             });
 
             graph = graph.replace(multipolygon);
-            graph = graph.replace(wayA.update({tags: {}}));
-            graph = graph.replace(wayB.update({tags: {}}));
+            graph = graph.replace(wayA.update({ tags: {} }));
+            graph = graph.replace(wayB.update({ tags: {} }));
         }
+
+        createdWayIDs.push(wayB.id);
 
         return graph;
     }
 
-
     var action = function(graph) {
         var candidates = action.ways(graph);
+        createdWayIDs = [];
         for (var i = 0; i < candidates.length; i++) {
             graph = split(graph, candidates[i], newWayIds && newWayIds[i]);
         }
         return graph;
     };
 
+    action.getCreatedWayIDs = function() {
+        return createdWayIDs;
+    };
 
     action.ways = function(graph) {
         var node = graph.entity(nodeId);
         var parents = graph.parentWays(node);
-        var hasLines = _some(parents, function(parent) { return parent.geometry(graph) === 'line'; });
+        var hasLines = parents.some(function(parent) {
+            return parent.geometry(graph) === 'line';
+        });
 
         return parents.filter(function(parent) {
             if (_wayIDs && _wayIDs.indexOf(parent.id) === -1)
@@ -251,14 +253,15 @@ export function actionSplit(nodeId, newWayIds) {
 
     action.disabled = function(graph) {
         var candidates = action.ways(graph);
-        if (candidates.length === 0 || (_wayIDs && _wayIDs.length !== candidates.length))
+        if (candidates.length === 0 || (_wayIDs && _wayIDs.length !== candidates.length)) {
             return 'not_eligible';
+        }
     };
 
 
-    action.limitWays = function(_) {
+    action.limitWays = function(val) {
         if (!arguments.length) return _wayIDs;
-        _wayIDs = _;
+        _wayIDs = val;
         return action;
     };
 

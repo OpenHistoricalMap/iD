@@ -1,7 +1,15 @@
 {
+    "icon": "temaki-billboard",
     "fields": [
-       "direction",
-       "lit"
+        "operator",
+        "lit",
+        "support",
+        "visibility"
+    ],
+    "moreFields": [
+        "access_simple",
+        "direction",
+        "height"
     ],
     "geometry": [
         "point",
