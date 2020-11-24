@@ -6,17 +6,21 @@
         "address",
         "building_area",
         "rooms",
-        "internet_access"
+        "internet_access",
+        "internet_access/fee"
     ],
-    "moreFields" : [
-        "smoking",
-        "payment_multi",
-        "internet_access/fee",
-        "internet_access/ssid",
-        "website",
-        "phone",
+    "moreFields": [
+        "building/levels_building",
         "email",
         "fax",
+        "height_building",
+        "internet_access/ssid",
+        "level",
+        "payment_multi",
+        "phone",
+        "reservation",
+        "smoking",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -26,5 +30,12 @@
     "tags": {
         "tourism": "apartment"
     },
+    "terms": [
+        "bnb",
+        "holiday rental",
+        "lodging",
+        "overnight accommodations",
+        "vacation rental"
+    ],
     "name": "Guest Apartment / Condo"
 }

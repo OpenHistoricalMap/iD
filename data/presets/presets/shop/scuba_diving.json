@@ -1,5 +1,5 @@
 {
-    "icon": "maki-swimming",
+    "icon": "temaki-scuba_diving",
     "fields": [
         "{shop}",
         "scuba_diving"
@@ -10,7 +10,8 @@
     ],
     "terms": [
         "diving",
-        "scuba"
+        "scuba",
+        "snorkel"
     ],
     "tags": {
         "shop": "scuba_diving"

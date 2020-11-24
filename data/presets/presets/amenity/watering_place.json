@@ -3,12 +3,15 @@
     "fields": [
         "operator",
         "fee",
-        "payment_multi"
+        "payment_multi_fee",
+        "charge_fee",
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "geometry": [
-        "area",
+        "point",
         "vertex",
-        "point"
+        "area"
     ],
     "tags": {
         "amenity": "watering_place"

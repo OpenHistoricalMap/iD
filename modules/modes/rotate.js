@@ -8,20 +8,19 @@ import {
     polygonCentroid as d3_polygonCentroid
 } from 'd3-polygon';
 
-import { t } from '../util/locale';
-import { actionRotate } from '../actions';
-import { behaviorEdit } from '../behavior';
+import { t } from '../core/localizer';
+import { actionRotate } from '../actions/rotate';
+import { actionNoop } from '../actions/noop';
+import { behaviorEdit } from '../behavior/edit';
 import { geoVecInterp } from '../geo';
-import { modeBrowse, modeSelect } from './index';
+import { modeBrowse } from './browse';
+import { modeSelect } from './select';
 
-import {
-    operationCircularize,
-    operationDelete,
-    operationMove,
-    operationOrthogonalize,
-    operationReflectLong,
-    operationReflectShort
-} from '../operations';
+import { operationCircularize } from '../operations/circularize';
+import { operationDelete } from '../operations/delete';
+import { operationMove } from '../operations/move';
+import { operationOrthogonalize } from '../operations/orthogonalize';
+import { operationReflectLong, operationReflectShort } from '../operations/reflect';
 
 import { utilGetAllNodes, utilKeybinding } from '../util';
 
@@ -35,15 +34,15 @@ export function modeRotate(context, entityIDs) {
     var keybinding = utilKeybinding('rotate');
     var behaviors = [
         behaviorEdit(context),
-        operationCircularize(entityIDs, context).behavior,
-        operationDelete(entityIDs, context).behavior,
-        operationMove(entityIDs, context).behavior,
-        operationOrthogonalize(entityIDs, context).behavior,
-        operationReflectLong(entityIDs, context).behavior,
-        operationReflectShort(entityIDs, context).behavior
+        operationCircularize(context, entityIDs).behavior,
+        operationDelete(context, entityIDs).behavior,
+        operationMove(context, entityIDs).behavior,
+        operationOrthogonalize(context, entityIDs).behavior,
+        operationReflectLong(context, entityIDs).behavior,
+        operationReflectShort(context, entityIDs).behavior
     ];
     var annotation = entityIDs.length === 1 ?
-        t('operations.rotate.annotation.' + context.geometry(entityIDs[0])) :
+        t('operations.rotate.annotation.' + context.graph().geometry(entityIDs[0])) :
         t('operations.rotate.annotation.multiple');
 
     var _prevGraph;
@@ -70,34 +69,45 @@ export function modeRotate(context, entityIDs) {
 
             var nodes = utilGetAllNodes(entityIDs, context.graph());
             var points = nodes.map(function(n) { return projection(n.loc); });
-
-            if (points.length === 1) {  // degenerate case
-                _pivot = points[0];
-            } else if (points.length === 2) {
-                _pivot = geoVecInterp(points[0], points[1], 0.5);
-            } else {
-                _pivot = d3_polygonCentroid(d3_polygonHull(points));
-            }
+            _pivot = getPivot(points);
             _prevAngle = undefined;
         }
 
 
-        var currMouse = context.mouse();
+        var currMouse = context.map().mouse();
         var currAngle = Math.atan2(currMouse[1] - _pivot[1], currMouse[0] - _pivot[0]);
 
         if (typeof _prevAngle === 'undefined') _prevAngle = currAngle;
         var delta = currAngle - _prevAngle;
 
-        fn(actionRotate(entityIDs, _pivot, delta, projection), annotation);
+        fn(actionRotate(entityIDs, _pivot, delta, projection));
 
         _prevTransform = currTransform;
         _prevAngle = currAngle;
         _prevGraph = context.graph();
     }
 
+    function getPivot(points) {
+        var _pivot;
+        if (points.length === 1) {
+            _pivot = points[0];
+        } else if (points.length === 2) {
+            _pivot = geoVecInterp(points[0], points[1], 0.5);
+        } else {
+            var polygonHull = d3_polygonHull(points);
+            if (polygonHull.length === 2) {
+                _pivot = geoVecInterp(points[0], points[1], 0.5);
+            } else {
+                _pivot = d3_polygonCentroid(d3_polygonHull(points));
+            }
+        }
+        return _pivot;
+    }
+
 
     function finish() {
         d3_event.stopPropagation();
+        context.replace(actionNoop(), annotation);
         context.enter(modeSelect(context, entityIDs));
     }
 
@@ -114,6 +124,8 @@ export function modeRotate(context, entityIDs) {
 
 
     mode.enter = function() {
+        context.features().forceVisible(entityIDs);
+
         behaviors.forEach(context.install);
 
         context.surface()
@@ -144,6 +156,8 @@ export function modeRotate(context, entityIDs) {
 
         d3_select(document)
             .call(keybinding.unbind);
+
+        context.features().forceVisible([]);
     };
 
 

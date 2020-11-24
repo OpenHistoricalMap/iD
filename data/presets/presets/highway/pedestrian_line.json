@@ -1,5 +1,5 @@
 {
-    "icon": "iD-highway-footway",
+    "icon": "temaki-pedestrian",
     "fields": [
         "name",
         "surface",
@@ -11,6 +11,8 @@
     ],
     "moreFields": [
         "covered",
+        "incline",
+        "maxweight_bridge",
         "smoothness"
     ],
     "geometry": [

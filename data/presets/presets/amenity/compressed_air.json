@@ -1,10 +1,17 @@
 {
-    "icon": "maki-car",
+    "icon": "fas-tachometer-alt",
     "fields": [
         "operator",
+        "access_simple",
         "fee",
-        "payment_multi",
+        "payment_multi_fee",
+        "charge_fee",
+        "covered",
         "lit"
+    ],
+    "moreFields": [
+        "brand",
+        "manufacturer"
     ],
     "geometry": [
         "point",

@@ -1,5 +1,9 @@
 {
-    "icon": "maki-water",
+    "icon": "iD-waterway-canal",
+    "fields": [
+        "{natural/water}",
+        "salt"
+    ],
     "geometry": [
         "area"
     ],
@@ -11,5 +15,5 @@
         "key": "water",
         "value": "canal"
     },
-    "name": "Canal"
+    "name": "Canal Area"
 }

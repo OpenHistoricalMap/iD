@@ -1,12 +1,9 @@
 import _debounce from 'lodash-es/debounce';
-import _extend from 'lodash-es/extend';
-import _forEach from 'lodash-es/forEach';
-import _omit from 'lodash-es/omit';
 
-import { json as d3_json } from 'd3-request';
+import { json as d3_json } from 'd3-fetch';
 
-import { utilQsString } from '../util';
-import { currentLocale } from '../util/locale';
+import { utilObjectOmit, utilQsString } from '../util';
+import { localizer } from '../core/localizer';
 
 
 var apibase = 'https://taginfo.openstreetmap.org/api/4/';
@@ -66,7 +63,7 @@ function setSortMembers(params) {
 
 
 function clean(params) {
-    return _omit(params, ['geometry', 'debounce']);
+    return utilObjectOmit(params, ['geometry', 'debounce']);
 }
 
 
@@ -115,10 +112,14 @@ function valKey(d) {
 
 
 function valKeyDescription(d) {
-    return {
+    var obj = {
         value: d.value,
         title: d.description || d.value
     };
+    if (d.count) {
+        obj.count = d.count;
+    }
+    return obj;
 }
 
 
@@ -145,10 +146,19 @@ function request(url, params, exactMatch, callback, loaded) {
 
     if (checkCache(url, params, exactMatch, callback)) return;
 
-    _inflight[url] = d3_json(url, function (err, data) {
-        delete _inflight[url];
-        loaded(err, data);
-    });
+    var controller = new AbortController();
+    _inflight[url] = controller;
+
+    d3_json(url, { signal: controller.signal })
+        .then(function(result) {
+            delete _inflight[url];
+            if (loaded) loaded(null, result);
+        })
+        .catch(function(err) {
+            delete _inflight[url];
+            if (err.name === 'AbortError') return;
+            if (loaded) loaded(err.message);
+        });
 }
 
 
@@ -185,7 +195,17 @@ export default {
         _inflight = {};
         _taginfoCache = {};
         _popularKeys = {
-            postal_code: true   // #5377
+            // manually exclude some keys – #5377, #7485
+            postal_code: true,
+            full_name: true,
+            loc_name: true,
+            reg_name: true,
+            short_name: true,
+            sorting_name: true,
+            artist_name: true,
+            nat_name: true,
+            long_name: true,
+            'bridge:name': true
         };
 
         // Fetch popular keys.  We'll exclude these from `values`
@@ -197,7 +217,7 @@ export default {
             sortorder: 'desc',
             page: 1,
             debounce: false,
-            lang: currentLocale
+            lang: localizer.languageCode()
         };
         this.keys(params, function(err, data) {
             if (err) return;
@@ -210,7 +230,7 @@ export default {
 
 
     reset: function() {
-        _forEach(_inflight, function(req) { req.abort(); });
+        Object.values(_inflight).forEach(function(controller) { controller.abort(); });
         _inflight = {};
     },
 
@@ -218,12 +238,12 @@ export default {
     keys: function(params, callback) {
         var doRequest = params.debounce ? debouncedRequest : request;
         params = clean(setSort(params));
-        params = _extend({
+        params = Object.assign({
             rp: 10,
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'keys/all?' + utilQsString(params);
@@ -243,12 +263,12 @@ export default {
     multikeys: function(params, callback) {
         var doRequest = params.debounce ? debouncedRequest : request;
         params = clean(setSort(params));
-        params = _extend({
+        params = Object.assign({
             rp: 25,
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var prefix = params.query;
@@ -276,12 +296,12 @@ export default {
 
         var doRequest = params.debounce ? debouncedRequest : request;
         params = clean(setSort(setFilter(params)));
-        params = _extend({
+        params = Object.assign({
             rp: 25,
             sortname: 'count_all',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'key/values?' + utilQsString(params);
@@ -293,8 +313,8 @@ export default {
                 // A few OSM keys expect values to contain uppercase values (see #3377).
                 // This is not an exhaustive list (e.g. `name` also has uppercase values)
                 // but these are the fields where taginfo value lookup is most useful.
-                var re = /network|taxon|genus|species|brand|grape_variety|royal_cypher|listed_status|booth|rating|stars|:output|_hours|_times/;
-                var allowUpperCase = (params.key.match(re) !== null);
+                var re = /network|taxon|genus|species|brand|grape_variety|royal_cypher|listed_status|booth|rating|stars|:output|_hours|_times|_ref|manufacturer|country|target|brewery/;
+                var allowUpperCase = re.test(params.key);
                 var f = filterValues(allowUpperCase);
 
                 var result = d.data.filter(f).map(valKeyDescription);
@@ -309,12 +329,12 @@ export default {
         var doRequest = params.debounce ? debouncedRequest : request;
         var geometry = params.geometry;
         params = clean(setSortMembers(params));
-        params = _extend({
+        params = Object.assign({
             rp: 25,
             sortname: 'count_all_members',
             sortorder: 'desc',
             page: 1,
-            lang: currentLocale
+            lang: localizer.languageCode()
         }, params);
 
         var url = apibase + 'relation/roles?' + utilQsString(params);

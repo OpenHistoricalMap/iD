@@ -1,5 +1,5 @@
 {
-    "icon": "maki-golf",
+    "icon": "temaki-golf_green",
     "fields": [
         "name"
     ],
@@ -7,14 +7,11 @@
         "area"
     ],
     "tags": {
-        "golf": "green",
-        "landuse": "grass",
-        "leisure": "pitch",
-        "sport": "golf"
+        "golf": "green"
     },
-    "reference": {
-        "key": "golf",
-        "value": "green"
+    "addTags": {
+        "golf": "green",
+        "landuse": "grass"
     },
     "name": "Putting Green"
 }

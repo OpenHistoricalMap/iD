@@ -1,7 +1,16 @@
 {
     "icon": "maki-waste-basket",
     "fields": [
-        "collection_times"
+        "operator",
+        "waste",
+        "collection_times",
+        "material",
+        "colour"
+    ],
+    "moreFields": [
+        "covered",
+        "indoor",
+        "manufacturer"
     ],
     "geometry": [
         "point",

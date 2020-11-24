@@ -1,6 +1,10 @@
 {
     "fields": [
+        "name",
         "aerialway"
+    ],
+    "moreFields": [
+        "layer"
     ],
     "geometry": [
         "point",
@@ -10,11 +14,6 @@
     "tags": {
         "aerialway": "*"
     },
-    "terms": [
-        "ski lift",
-        "funifor",
-        "funitel"
-    ],
     "searchable": false,
-    "name": "Aerialway"
+    "name": "Aerialway Feature"
 }

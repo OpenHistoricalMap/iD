@@ -1,5 +1,5 @@
 {
-    "icon": "temaki-military",
+    "icon": "temaki-army_tent",
     "fields": [
         "name",
         "building_area"
@@ -12,10 +12,6 @@
         "military": "barracks"
     },
     "addTags": {
-        "landuse": "military",
-        "military": "barracks"
-    },
-    "removeTags": {
         "landuse": "military",
         "military": "barracks"
     },

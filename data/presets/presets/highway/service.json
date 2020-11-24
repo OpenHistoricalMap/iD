@@ -6,16 +6,22 @@
         "oneway",
         "maxspeed",
         "surface",
+        "covered",
         "structure",
         "access"
     ],
     "moreFields": [
-        "covered",
+        "flood_prone",
+        "incline",
         "lanes",
         "lit",
         "maxheight",
         "maxspeed/advisory",
-        "oneway/bicycle"
+        "maxweight_bridge",
+        "oneway/bicycle",
+        "smoothness",
+        "trolley_wire",
+        "width"
     ],
     "geometry": [
         "line"
@@ -27,5 +33,6 @@
         "road",
         "street"
     ],
+    "matchScore": 0.9,
     "name": "Service Road"
 }

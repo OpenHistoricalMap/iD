@@ -1,10 +1,14 @@
 {
-    "icon": "maki-car",
+    "icon": "temaki-car_structure",
     "fields": [
+        "name",
         "{amenity/parking}",
-        "building",
-        "levels",
-        "height"
+        "building"
+    ],
+    "moreFields": [
+        "{amenity/parking}",
+        "height",
+        "building/levels"
     ],
     "geometry": [
         "area"
@@ -14,11 +18,6 @@
         "parking": "multi-storey"
     },
     "addTags": {
-        "building": "parking",
-        "amenity": "parking",
-        "parking": "multi-storey"
-    },
-    "removeTags": {
         "building": "parking",
         "amenity": "parking",
         "parking": "multi-storey"

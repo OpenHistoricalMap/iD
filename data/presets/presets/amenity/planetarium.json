@@ -1,19 +1,23 @@
 {
-    "icon": "maki-museum",
+    "icon": "maki-globe",
     "fields": [
         "name",
         "operator",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "website",
-        "phone",
+        "air_conditioning",
+        "charge_fee",
         "email",
         "fax",
+        "fee",
+        "gnis/feature_id",
+        "payment_multi_fee",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

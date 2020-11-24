@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-foot",
+    "icon": "temaki-pedestrian",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network_foot",
-        "to", 
-        "from"
+        "{type/route/hiking}"
+    ],
+    "moreFields": [
+        "{type/route/hiking}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "foot"
+    },
+    "reference": {
+        "key": "route",
+        "value": "foot"
     },
     "name": "Foot Route"
 }

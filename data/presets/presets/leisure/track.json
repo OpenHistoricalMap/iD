@@ -1,5 +1,5 @@
 {
-    "icon": "iD-highway-road",
+    "icon": "temaki-racetrack_oval",
     "fields": [
         "surface",
         "sport_racing_nonmotor",
@@ -7,9 +7,16 @@
         "width",
         "lanes"
     ],
+    "moreFields": [
+        "access",
+        "covered",
+        "gnis/feature_id",
+        "indoor",
+        "level"
+    ],
     "geometry": [
-        "point",
         "line",
+        "point",
         "area"
     ],
     "tags": {

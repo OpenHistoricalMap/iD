@@ -1,39 +1,30 @@
-import _intersection from 'lodash-es/intersection';
-import _map from 'lodash-es/map';
-import _uniq from 'lodash-es/uniq';
-import _values from 'lodash-es/values';
-import _without from 'lodash-es/without';
+import { event as d3_event, select as d3_select } from 'd3-selection';
 
-import {
-    event as d3_event,
-    select as d3_select
-} from 'd3-selection';
+import { t } from '../core/localizer';
 
-import { t } from '../util/locale';
+import { actionAddMidpoint } from '../actions/add_midpoint';
+import { actionDeleteRelation } from '../actions/delete_relation';
+import { actionMove } from '../actions/move';
 
-import { actionAddMidpoint } from '../actions';
+import { behaviorBreathe } from '../behavior/breathe';
+import { behaviorHover } from '../behavior/hover';
+import { behaviorLasso } from '../behavior/lasso';
+import { behaviorPaste } from '../behavior/paste';
+import { behaviorSelect } from '../behavior/select';
 
-import {
-    behaviorBreathe,
-    behaviorCopy,
-    behaviorHover,
-    behaviorLasso,
-    behaviorPaste,
-    behaviorSelect
-} from '../behavior';
+import { operationMove } from '../operations/move';
 
-import { geoExtent, geoChooseEdge, geoPointInPolygon } from '../geo';
+import { geoExtent, geoChooseEdge } from '../geo';
 import { modeBrowse } from './browse';
 import { modeDragNode } from './drag_node';
 import { modeDragNote } from './drag_note';
 import { osmNode, osmWay } from '../osm';
 import * as Operations from '../operations/index';
-import { uiEditMenu, uiSelectionList } from '../ui';
 import { uiCmd } from '../ui/cmd';
-import { utilEntityOrMemberSelector, utilEntitySelector, utilKeybinding } from '../util';
-
-// deprecation warning - Radial Menu to be removed in iD v3
-import { uiRadialMenu } from '../ui';
+import {
+    utilArrayIntersection, utilDeepMemberSelector, utilEntityOrDeepMemberSelector,
+    utilEntitySelector, utilKeybinding
+} from '../util';
 
 
 var _relatedParent;
@@ -46,32 +37,27 @@ export function modeSelect(context, selectedIDs) {
     };
 
     var keybinding = utilKeybinding('select');
-    var timeout = null;
-    var behaviors = [
-        behaviorCopy(context),
-        behaviorPaste(context),
-        behaviorBreathe(context),
-        behaviorHover(context),
-        behaviorSelect(context),
-        behaviorLasso(context),
-        modeDragNode(context).restoreSelectedIDs(selectedIDs).behavior,
-        modeDragNote(context).behavior
-    ];
-    var inspector;
-    var editMenu;
-    var newFeature = false;
-    var suppressMenu = true;
-    var follow = false;
 
+    var _breatheBehavior = behaviorBreathe(context);
+    var _modeDragNode = modeDragNode(context);
+    var _selectBehavior;
+    var _behaviors = [];
 
-    var wrap = context.container()
-        .select('.inspector-wrap');
+    var _operations = [];
+    var _newFeature = false;
+    var _follow = false;
 
 
     function singular() {
-        if (selectedIDs.length === 1) {
+        if (selectedIDs && selectedIDs.length === 1) {
             return context.hasEntity(selectedIDs[0]);
         }
+    }
+
+    function selectedEntities() {
+        return selectedIDs.map(function(id) {
+            return context.hasEntity(id);
+        }).filter(Boolean);
     }
 
 
@@ -83,12 +69,18 @@ export function modeSelect(context, selectedIDs) {
             });
         }
 
-        if (ids.length) {
-            selectedIDs = ids;
-        } else {
+        if (!ids.length) {
             context.enter(modeBrowse(context));
+            return false;
+        } else if ((selectedIDs.length > 1 && ids.length === 1) ||
+            (selectedIDs.length === 1 && ids.length > 1)) {
+            // switch between single- and multi-select UI
+            context.enter(modeSelect(context, ids));
+            return false;
         }
-        return !!ids.length;
+
+        selectedIDs = ids;
+        return true;
     }
 
 
@@ -100,16 +92,16 @@ export function modeSelect(context, selectedIDs) {
         for (var i = 0; i < selectedIDs.length; i++) {
             var entity = context.hasEntity(selectedIDs[i]);
             if (!entity || entity.geometry(graph) !== 'vertex') {
-                return [];  // selection includes some not vertexes
+                return [];  // selection includes some not vertices
             }
 
-            var currParents = _map(graph.parentWays(entity), 'id');
+            var currParents = graph.parentWays(entity).map(function(w) { return w.id; });
             if (!commonParents.length) {
                 commonParents = currParents;
                 continue;
             }
 
-            commonParents = _intersection(commonParents, currParents);
+            commonParents = utilArrayIntersection(commonParents, currParents);
             if (!commonParents.length) {
                 return [];
             }
@@ -142,123 +134,100 @@ export function modeSelect(context, selectedIDs) {
     }
 
 
-    function closeMenu() {
-        if (editMenu) {
-            context.surface().call(editMenu.close);
-        }
-    }
-
-
-    function positionMenu() {
-        if (!editMenu) { return; }
-
-        var entity = singular();
-        if (entity && context.geometry(entity.id) === 'relation') {
-            suppressMenu = true;
-        } else {
-            var point = context.mouse();
-            var viewport = geoExtent(context.projection.clipExtent()).polygon();
-
-            if (point && geoPointInPolygon(point, viewport)) {
-                editMenu.center(point);
-            } else {
-                suppressMenu = true;
-            }
-        }
-    }
-
-
-    function showMenu() {
-        closeMenu();
-        if (editMenu) {
-            context.surface().call(editMenu);
-        }
-    }
-
-
-    function toggleMenu() {
-        // deprecation warning - Radial Menu to be removed in iD v3
-        if (d3_select('.edit-menu, .radial-menu').empty()) {
-            positionMenu();
-            showMenu();
-        } else {
-            closeMenu();
-        }
-    }
-
-
-    mode.selectedIDs = function() {
-        return selectedIDs;
+    mode.selectedIDs = function(val) {
+        if (!arguments.length) return selectedIDs;
+        selectedIDs = val;
+        return mode;
     };
 
 
     mode.zoomToSelected = function() {
-        var entity = singular();
-        if (entity) {
-            context.map().zoomToEase(entity);
-        }
+        context.map().zoomToEase(selectedEntities());
     };
 
 
-    mode.reselect = function() {
-        if (!checkSelectedIDs()) return;
-
-        var surfaceNode = context.surface().node();
-        if (surfaceNode.focus) {   // FF doesn't support it
-            surfaceNode.focus();
-        }
-
-        positionMenu();
-        if (!suppressMenu) {
-            showMenu();
-        }
-    };
-
-
-    mode.newFeature = function(_) {
-        if (!arguments.length) return newFeature;
-        newFeature = _;
+    mode.newFeature = function(val) {
+        if (!arguments.length) return _newFeature;
+        _newFeature = val;
         return mode;
     };
 
 
-    mode.suppressMenu = function(_) {
-        if (!arguments.length) return suppressMenu;
-        suppressMenu = _;
+    mode.selectBehavior = function(val) {
+        if (!arguments.length) return _selectBehavior;
+        _selectBehavior = val;
         return mode;
     };
 
 
-    mode.follow = function(_) {
-        if (!arguments.length) return follow;
-        follow = _;
+    mode.follow = function(val) {
+        if (!arguments.length) return _follow;
+        _follow = val;
         return mode;
+    };
+
+    function loadOperations() {
+
+        _operations.forEach(function(operation) {
+            if (operation.behavior) {
+                context.uninstall(operation.behavior);
+            }
+        });
+
+        _operations = Object.values(Operations)
+            .map(function(o) { return o(context, selectedIDs); })
+            .filter(function(o) { return o.available() && o.id !== 'delete' && o.id !== 'downgrade' && o.id !== 'copy'; });
+
+        var copyOperation = Operations.operationCopy(context, selectedIDs);
+        if (copyOperation.available()) {
+            // group copy operation with delete/downgrade
+            _operations.push(copyOperation);
+        }
+
+        var downgradeOperation = Operations.operationDowngrade(context, selectedIDs);
+        // don't allow delete if downgrade is available
+        var lastOperation = !context.inIntro() && downgradeOperation.available() ? downgradeOperation : Operations.operationDelete(context, selectedIDs);
+
+        _operations.push(lastOperation);
+
+        _operations.forEach(function(operation) {
+            if (operation.behavior) {
+                context.install(operation.behavior);
+            }
+        });
+
+        // remove any displayed menu
+        context.ui().closeEditMenu();
+    }
+
+    mode.operations = function() {
+        return _operations;
     };
 
 
     mode.enter = function() {
         if (!checkSelectedIDs()) return;
 
-        var operations = _without(_values(Operations), Operations.operationDelete)
-            .map(function(o) { return o(selectedIDs, context); })
-            .filter(function(o) { return o.available(); });
+        context.features().forceVisible(selectedIDs);
 
-        // deprecation warning - Radial Menu to be removed in iD v3
-        var isRadialMenu = context.storage('edit-menu-style') === 'radial';
-        if (isRadialMenu) {
-            operations = operations.slice(0,7);
-            operations.unshift(Operations.operationDelete(selectedIDs, context));
-        } else {
-            operations.push(Operations.operationDelete(selectedIDs, context));
+        _modeDragNode.restoreSelectedIDs(selectedIDs);
+
+        loadOperations();
+
+        if (!_behaviors.length) {
+            if (!_selectBehavior) _selectBehavior = behaviorSelect(context);
+
+            _behaviors = [
+                behaviorPaste(context),
+                _breatheBehavior,
+                behaviorHover(context).on('hover', context.ui().sidebar.hoverModeSelect),
+                _selectBehavior,
+                behaviorLasso(context),
+                _modeDragNode.behavior,
+                modeDragNote(context).behavior
+            ];
         }
-
-        operations.forEach(function(operation) {
-            if (operation.behavior) {
-                behaviors.push(operation.behavior);
-            }
-        });
-
-        behaviors.forEach(context.install);
+        _behaviors.forEach(context.install);
 
         keybinding
             .on(t('inspector.zoom_to.key'), mode.zoomToSelected)
@@ -266,42 +235,46 @@ export function modeSelect(context, selectedIDs) {
             .on([']', 'pgdown'], nextVertex)
             .on(['{', uiCmd('⌘['), 'home'], firstVertex)
             .on(['}', uiCmd('⌘]'), 'end'], lastVertex)
+            .on(uiCmd('⇧←'), nudgeSelection([-10, 0]))
+            .on(uiCmd('⇧↑'), nudgeSelection([0, -10]))
+            .on(uiCmd('⇧→'), nudgeSelection([10, 0]))
+            .on(uiCmd('⇧↓'), nudgeSelection([0, 10]))
+            .on(uiCmd('⇧⌘←'), nudgeSelection([-100, 0]))
+            .on(uiCmd('⇧⌘↑'), nudgeSelection([0, -100]))
+            .on(uiCmd('⇧⌘→'), nudgeSelection([100, 0]))
+            .on(uiCmd('⇧⌘↓'), nudgeSelection([0, 100]))
             .on(['\\', 'pause'], nextParent)
-            .on('⎋', esc, true)
-            .on('space', toggleMenu);
+            .on('⎋', esc, true);
 
         d3_select(document)
             .call(keybinding);
 
-
-        // deprecation warning - Radial Menu to be removed in iD v3
-        editMenu = isRadialMenu
-            ? uiRadialMenu(context, operations)
-            : uiEditMenu(context, operations);
-
         context.ui().sidebar
-            .select(singular() ? singular().id : null, newFeature);
+            .select(selectedIDs, _newFeature);
 
         context.history()
-            .on('undone.select', update)
-            .on('redone.select', update);
+            .on('change.select', function() {
+                loadOperations();
+                // reselect after change in case relation members were removed or added
+                selectElements();
+            })
+            .on('undone.select', checkSelectedIDs)
+            .on('redone.select', checkSelectedIDs);
 
         context.map()
-            .on('move.select', closeMenu)
-            .on('drawn.select', selectElements);
+            .on('drawn.select', selectElements)
+            .on('crossEditableZoom.select', function() {
+                selectElements();
+                _breatheBehavior.restartIfNeeded(context.surface());
+            });
 
-        context.surface()
-            .on('dblclick.select', dblclick);
+        context.map().doubleUpHandler()
+            .on('doubleUp.modeSelect', didDoubleUp);
 
 
         selectElements();
 
-        if (selectedIDs.length > 1) {
-            var entities = uiSelectionList(context, selectedIDs);
-            context.ui().sidebar.show(entities);
-        }
-
-        if (follow) {
+        if (_follow) {
             var extent = geoExtent();
             var graph = context.graph();
             selectedIDs.forEach(function(id) {
@@ -311,25 +284,33 @@ export function modeSelect(context, selectedIDs) {
 
             var loc = extent.center();
             context.map().centerEase(loc);
-        } else if (singular() && singular().type === 'way') {
-            context.map().pan([0,0]);  // full redraw, to adjust z-sorting #2914
-        }
-
-        timeout = window.setTimeout(function() {
-            positionMenu();
-            if (!suppressMenu) {
-                showMenu();
-            }
-        }, 270);  /* after any centerEase completes */
-
-
-        function update() {
-            closeMenu();
-            checkSelectedIDs();
+            // we could enter the mode multiple times, so reset follow for next time
+            _follow = false;
         }
 
 
-        function dblclick() {
+        function nudgeSelection(delta) {
+            return function() {
+                // prevent nudging during low zoom selection
+                if (!context.map().withinEditableZoom()) return;
+
+                var moveOp = operationMove(context, selectedIDs);
+                if (moveOp.disabled()) {
+                    context.ui().flash
+                        .duration(4000)
+                        .iconName('#iD-operation-' + moveOp.id)
+                        .iconClass('operation disabled')
+                        .text(moveOp.tooltip)();
+                } else {
+                    context.perform(actionMove(selectedIDs, delta, context.projection), moveOp.annotation());
+                }
+            };
+        }
+
+
+        function didDoubleUp(loc) {
+            if (!context.map().withinEditableZoom()) return;
+
             var target = d3_select(d3_event.target);
 
             var datum = target.datum();
@@ -337,39 +318,33 @@ export function modeSelect(context, selectedIDs) {
             if (!entity) return;
 
             if (entity instanceof osmWay && target.classed('target')) {
-                var choice = geoChooseEdge(context.childNodes(entity), context.mouse(), context.projection);
+                var choice = geoChooseEdge(context.graph().childNodes(entity), loc, context.projection);
                 var prev = entity.nodes[choice.index - 1];
                 var next = entity.nodes[choice.index];
 
                 context.perform(
-                    actionAddMidpoint({loc: choice.loc, edge: [prev, next]}, osmNode()),
+                    actionAddMidpoint({ loc: choice.loc, edge: [prev, next] }, osmNode()),
                     t('operations.add.annotation.vertex')
                 );
 
-                d3_event.preventDefault();
-                d3_event.stopPropagation();
-
             } else if (entity.type === 'midpoint') {
                 context.perform(
-                    actionAddMidpoint({loc: entity.loc, edge: entity.edge}, osmNode()),
+                    actionAddMidpoint({ loc: entity.loc, edge: entity.edge }, osmNode()),
                     t('operations.add.annotation.vertex'));
-
-                d3_event.preventDefault();
-                d3_event.stopPropagation();
             }
         }
 
 
-        function selectElements(drawn) {
+        function selectElements() {
             if (!checkSelectedIDs()) return;
 
             var surface = context.surface();
-            var entity = singular();
 
-            if (entity && context.geometry(entity.id) === 'relation') {
-                suppressMenu = true;
-                return;
-            }
+            surface.selectAll('.selected-member')
+                .classed('selected-member', false);
+
+            surface.selectAll('.selected')
+                .classed('selected', false);
 
             surface.selectAll('.related')
                 .classed('related', false);
@@ -380,25 +355,22 @@ export function modeSelect(context, selectedIDs) {
                     .classed('related', true);
             }
 
-            var selection = context.surface()
-                .selectAll(utilEntityOrMemberSelector(selectedIDs, context.graph()));
+            if (context.map().withinEditableZoom()) {
+                // Apply selection styling if not in wide selection
 
-            if (selection.empty()) {
-                // Return to browse mode if selected DOM elements have
-                // disappeared because the user moved them out of view..
-                var source = d3_event && d3_event.type === 'zoom' && d3_event.sourceEvent;
-                if (drawn && source && (source.type === 'mousemove' || source.type === 'touchmove')) {
-                    context.enter(modeBrowse(context));
-                }
-            } else {
-                selection
+                surface
+                    .selectAll(utilDeepMemberSelector(selectedIDs, context.graph(), true /* skipMultipolgonMembers */))
+                    .classed('selected-member', true);
+                surface
+                    .selectAll(utilEntityOrDeepMemberSelector(selectedIDs, context.graph()))
                     .classed('selected', true);
             }
+
         }
 
 
         function esc() {
-            if (d3_select('.combobox').size()) return;
+            if (context.container().select('.combobox').size()) return;
             context.enter(modeBrowse(context));
         }
 
@@ -493,7 +465,7 @@ export function modeSelect(context, selectedIDs) {
 
         function nextParent() {
             d3_event.preventDefault();
-            var parents = _uniq(commonParents());
+            var parents = commonParents();
             if (!parents || parents.length < 2) return;
 
             var index = parents.indexOf(_relatedParent);
@@ -516,29 +488,41 @@ export function modeSelect(context, selectedIDs) {
 
 
     mode.exit = function() {
-        if (timeout) window.clearTimeout(timeout);
-        if (inspector) wrap.call(inspector.close);
 
-        behaviors.forEach(context.uninstall);
+        _newFeature = false;
+
+        _operations.forEach(function(operation) {
+            if (operation.behavior) {
+                context.uninstall(operation.behavior);
+            }
+        });
+        _operations = [];
+
+        _behaviors.forEach(context.uninstall);
 
         d3_select(document)
             .call(keybinding.unbind);
 
-        closeMenu();
-        editMenu = undefined;
+        context.ui().closeEditMenu();
 
         context.history()
+            .on('change.select', null)
             .on('undone.select', null)
             .on('redone.select', null);
 
         var surface = context.surface();
 
         surface
-            .on('dblclick.select', null);
+            .selectAll('.selected-member')
+            .classed('selected-member', false);
 
         surface
             .selectAll('.selected')
             .classed('selected', false);
+
+        surface
+            .selectAll('.highlighted')
+            .classed('highlighted', false);
 
         surface
             .selectAll('.related')
@@ -546,6 +530,21 @@ export function modeSelect(context, selectedIDs) {
 
         context.map().on('drawn.select', null);
         context.ui().sidebar.hide();
+        context.features().forceVisible([]);
+
+        var entity = singular();
+        if (_newFeature && entity && entity.type === 'relation' &&
+            // no tags
+            Object.keys(entity.tags).length === 0 &&
+            // no parent relations
+            context.graph().parentRelations(entity).length === 0 &&
+            // no members or one member with no role
+            (entity.members.length === 0 || (entity.members.length === 1 && !entity.members[0].role))
+        ) {
+            // the user added this relation but didn't edit it at all, so just delete it
+            var deleteAction = actionDeleteRelation(entity.id, true /* don't delete untagged members */);
+            context.perform(deleteAction, t('operations.delete.annotation.relation'));
+        }
     };
 
 

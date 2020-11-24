@@ -9,13 +9,18 @@
         "building_area"
     ],
     "moreFields": [
-        "opening_hours",
-        "payment_multi",
         "brand",
-        "website",
-        "phone",
+        "building/levels_building",
         "email",
         "fax",
+        "gnis/feature_id",
+        "height_building",
+        "level",
+        "opening_hours",
+        "opening_hours/covid19",
+        "payment_multi",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

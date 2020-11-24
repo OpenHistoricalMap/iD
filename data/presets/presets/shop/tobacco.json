@@ -1,5 +1,9 @@
 {
-    "icon": "maki-shop",
+    "icon": "temaki-pipe",
+    "moreFields": [
+        "{shop}",
+        "min_age"
+    ],
     "geometry": [
         "point",
         "area"
@@ -7,5 +11,9 @@
     "tags": {
         "shop": "tobacco"
     },
+    "terms": [
+        "cigarettes",
+        "cigars"
+    ],
     "name": "Tobacco Shop"
 }

@@ -1,5 +1,5 @@
 {
-    "icon": "maki-rail",
+    "icon": "temaki-train",
     "fields": [
         "{public_transport/stop_position}"
     ],
@@ -14,11 +14,6 @@
         "train": "yes"
     },
     "addTags": {
-        "public_transport": "stop_position",
-        "train": "yes",
-        "railway": "stop"
-    },
-    "removeTags": {
         "public_transport": "stop_position",
         "train": "yes",
         "railway": "stop"

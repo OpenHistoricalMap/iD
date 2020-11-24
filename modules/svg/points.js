@@ -1,7 +1,9 @@
+import deepEqual from 'fast-deep-equal';
 import { geoScaleToZoom } from '../geo';
 import { osmEntity } from '../osm';
-import { svgPointTransform, svgTagClasses } from './index';
-
+import { svgPointTransform } from './helpers';
+import { svgTagClasses } from './tag_classes';
+import { presetManager } from '../presets';
 
 export function svgPoints(projection, context) {
 
@@ -70,6 +72,7 @@ export function svgPoints(projection, context) {
     function drawPoints(selection, graph, entities, filter) {
         var wireframe = context.surface().classed('fill-wireframe');
         var zoom = geoScaleToZoom(projection.scale());
+        var base = context.history().base();
 
         // Points with a direction will render as vertices at higher zooms..
         function renderAsPoint(entity) {
@@ -124,15 +127,22 @@ export function svgPoints(projection, context) {
         groups = groups
             .merge(enter)
             .attr('transform', svgPointTransform(projection))
+            .classed('added', function(d) {
+                return !base.entities[d.id]; // if it doesn't exist in the base graph, it's new
+            })
+            .classed('moved', function(d) {
+                return base.entities[d.id] && !deepEqual(graph.entities[d.id].loc, base.entities[d.id].loc);
+            })
+            .classed('retagged', function(d) {
+                return base.entities[d.id] && !deepEqual(graph.entities[d.id].tags, base.entities[d.id].tags);
+            })
             .call(svgTagClasses());
 
-        // Selecting the following implicitly
-        // sets the data (point entity) on the element
-        groups.select('.shadow');
-        groups.select('.stroke');
-        groups.select('.icon')
+        groups.select('.shadow');   // propagate bound data
+        groups.select('.stroke');   // propagate bound data
+        groups.select('.icon')      // propagate bound data
             .attr('xlink:href', function(entity) {
-                var preset = context.presets().match(entity, graph);
+                var preset = presetManager.match(entity, graph);
                 var picon = preset && preset.icon;
 
                 if (!picon) {

@@ -2,7 +2,7 @@ import _debounce from 'lodash-es/debounce';
 
 import { select as d3_select } from 'd3-selection';
 
-import { t } from '../util/locale';
+import { t } from '../core/localizer';
 import { svgIcon } from '../svg/index';
 
 
@@ -18,7 +18,7 @@ export function uiContributors(context) {
         if (!osm) return;
 
         var users = {},
-            entities = context.intersects(context.map().extent());
+            entities = context.history().intersects(context.map().extent());
 
         entities.forEach(function(entity) {
             if (entity && entity.user) users[entity.user] = true;
@@ -39,7 +39,6 @@ export function uiContributors(context) {
             .attr('class', 'user-link')
             .attr('href', function(d) { return osm.userURL(d); })
             .attr('target', '_blank')
-            .attr('tabindex', -1)
             .text(String);
 
         if (u.length > limit) {
@@ -47,7 +46,6 @@ export function uiContributors(context) {
 
             count.append('a')
                 .attr('target', '_blank')
-                .attr('tabindex', -1)
                 .attr('href', function() {
                     return osm.changesetsURL(context.map().center(), context.map().zoom());
                 })

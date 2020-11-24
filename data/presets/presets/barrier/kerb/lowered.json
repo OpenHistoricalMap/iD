@@ -1,10 +1,18 @@
 {
-    "icon": "maki-wheelchair",
+    "icon": "temaki-kerb-lowered",
+    "fields": [
+        "kerb",
+        "{barrier/kerb}",
+        "kerb/height"
+    ],
     "geometry": [
         "vertex",
         "line"
     ],
     "tags": {
+        "kerb": "lowered"
+    },
+    "addTags": {
         "barrier": "kerb",
         "kerb": "lowered"
     },
@@ -19,5 +27,6 @@
         "dropped kerb",
         "pram ramp"
     ],
+    "matchScore": 0.55,
     "name": "Lowered Curb"
 }

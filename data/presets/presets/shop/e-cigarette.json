@@ -1,5 +1,9 @@
 {
     "icon": "maki-shop",
+    "moreFields": [
+        "{shop}",
+        "min_age"
+    ],
     "geometry": [
         "point",
         "area"
@@ -9,6 +13,8 @@
     },
     "terms": [
         "electronic",
+        "vape",
+        "vaping",
         "vapor"
     ],
     "name": "E-Cigarette Shop"

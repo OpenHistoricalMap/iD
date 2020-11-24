@@ -9,13 +9,15 @@
         "horse_scale"
     ],
     "moreFields": [
-        "wheelchair",
-        "lit",
-        "smoothness",
         "covered",
-        "dog"
+        "dog",
+        "lit",
+        "maxweight_bridge",
+        "smoothness",
+        "stroller",
+        "wheelchair"
     ],
-    "icon": "iD-highway-bridleway",
+    "icon": "maki-horse-riding",
     "geometry": [
         "line"
     ],

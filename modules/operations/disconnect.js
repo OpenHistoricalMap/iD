@@ -1,54 +1,184 @@
-import _filter from 'lodash-es/filter';
-import _some from 'lodash-es/some';
-import _without from 'lodash-es/without';
-
-import { t } from '../util/locale';
-import { actionDisconnect } from '../actions/index';
-import { behaviorOperation } from '../behavior/index';
+import { t } from '../core/localizer';
+import { actionDisconnect } from '../actions/disconnect';
+import { behaviorOperation } from '../behavior/operation';
+import { utilGetAllNodes, utilTotalExtent } from '../util/util';
 
 
-export function operationDisconnect(selectedIDs, context) {
-    var vertices = _filter(selectedIDs, function(entityId) {
-        return context.geometry(entityId) === 'vertex';
+export function operationDisconnect(context, selectedIDs) {
+    var _vertexIDs = [];
+    var _wayIDs = [];
+    var _otherIDs = [];
+    var _actions = [];
+
+    selectedIDs.forEach(function(id) {
+        var entity = context.entity(id);
+        if (entity.type === 'way'){
+            _wayIDs.push(id);
+        } else if (entity.geometry(context.graph()) === 'vertex') {
+            _vertexIDs.push(id);
+        } else {
+            _otherIDs.push(id);
+        }
     });
 
-    var entityId = vertices[0],
-        action = actionDisconnect(entityId);
+    var _extent, _nodes, _coords, _descriptionID = '', _annotationID = 'features';
 
-    if (selectedIDs.length > 1) {
-        action.limitWays(_without(selectedIDs, entityId));
+    if (_vertexIDs.length > 0) {
+        // At the selected vertices, disconnect the selected ways, if any, else
+        // disconnect all connected ways
+
+        _extent = utilTotalExtent(_vertexIDs, context.graph());
+
+        _vertexIDs.forEach(function(vertexID) {
+            var action = actionDisconnect(vertexID);
+
+            if (_wayIDs.length > 0) {
+                var waysIDsForVertex = _wayIDs.filter(function(wayID) {
+                    var way = context.entity(wayID);
+                    return way.nodes.indexOf(vertexID) !== -1;
+                });
+                action.limitWays(waysIDsForVertex);
+            }
+            _actions.push(action);
+        });
+
+        _descriptionID += _actions.length === 1 ? 'single_point.' : 'multiple_points.';
+        if (_wayIDs.length === 1) {
+            _descriptionID += 'single_way.' + context.graph().geometry(_wayIDs[0]);
+        } else {
+            _descriptionID += _wayIDs.length === 0 ? 'no_ways' : 'multiple_ways';
+        }
+
+    } else if (_wayIDs.length > 0) {
+        // Disconnect the selected ways from each other, if they're connected,
+        // else disconnect them from all connected ways
+
+        var ways = _wayIDs.map(function(id) {
+            return context.entity(id);
+        });
+        _nodes = utilGetAllNodes(_wayIDs, context.graph());
+        _coords = _nodes.map(function(n) { return n.loc; });
+
+        // actions for connected nodes shared by at least two selected ways
+        var sharedActions = [];
+        var sharedNodes = [];
+        // actions for connected nodes
+        var unsharedActions = [];
+        var unsharedNodes = [];
+
+        _nodes.forEach(function(node) {
+            var action = actionDisconnect(node.id).limitWays(_wayIDs);
+            if (action.disabled(context.graph()) !== 'not_connected') {
+
+                var count = 0;
+                for (var i in ways) {
+                    var way = ways[i];
+                    if (way.nodes.indexOf(node.id) !== -1) {
+                        count += 1;
+                    }
+                    if (count > 1) break;
+                }
+
+                if (count > 1) {
+                    sharedActions.push(action);
+                    sharedNodes.push(node);
+                } else {
+                    unsharedActions.push(action);
+                    unsharedNodes.push(node);
+                }
+            }
+        });
+
+        _descriptionID += 'no_points.';
+        _descriptionID += _wayIDs.length === 1 ? 'single_way.' : 'multiple_ways.';
+
+        if (sharedActions.length) {
+            // if any nodes are shared, only disconnect the selected ways from each other
+            _actions = sharedActions;
+            _extent = utilTotalExtent(sharedNodes, context.graph());
+            _descriptionID += 'conjoined';
+            _annotationID = 'from_each_other';
+        } else {
+            // if no nodes are shared, disconnect the selected ways from all connected ways
+            _actions = unsharedActions;
+            _extent = utilTotalExtent(unsharedNodes, context.graph());
+            if (_wayIDs.length === 1) {
+                _descriptionID += context.graph().geometry(_wayIDs[0]);
+            } else {
+                _descriptionID += 'separate';
+            }
+        }
     }
 
 
     var operation = function() {
-        context.perform(action, operation.annotation());
+        context.perform(function(graph) {
+            return _actions.reduce(function(graph, action) { return action(graph); }, graph);
+        }, operation.annotation());
+
+        context.validator().validate();
     };
 
 
     operation.available = function() {
-        return vertices.length === 1;
+        if (_actions.length === 0) return false;
+        if (_otherIDs.length !== 0) return false;
+
+        if (_vertexIDs.length !== 0 && _wayIDs.length !== 0 && !_wayIDs.every(function(wayID) {
+            return _vertexIDs.some(function(vertexID) {
+                var way = context.entity(wayID);
+                return way.nodes.indexOf(vertexID) !== -1;
+            });
+        })) return false;
+
+        return true;
     };
 
 
     operation.disabled = function() {
         var reason;
-        if (_some(selectedIDs, context.hasHiddenConnections)) {
-            reason = 'connected_to_hidden';
+        for (var actionIndex in _actions) {
+            reason = _actions[actionIndex].disabled(context.graph());
+            if (reason) return reason;
         }
-        return action.disabled(context.graph()) || reason;
+
+        if (_extent && _extent.percentContainedIn(context.map().extent()) < 0.8) {
+            return 'too_large.' + ((_vertexIDs.length ? _vertexIDs : _wayIDs).length === 1 ? 'single' : 'multiple');
+        } else if (_coords && someMissing()) {
+            return 'not_downloaded';
+        } else if (selectedIDs.some(context.hasHiddenConnections)) {
+            return 'connected_to_hidden';
+        }
+
+        return false;
+
+
+        function someMissing() {
+            if (context.inIntro()) return false;
+            var osm = context.connection();
+            if (osm) {
+                var missing = _coords.filter(function(loc) { return !osm.isDataLoaded(loc); });
+                if (missing.length) {
+                    missing.forEach(function(loc) { context.loadTileAtLoc(loc); });
+                    return true;
+                }
+            }
+            return false;
+        }
     };
 
 
     operation.tooltip = function() {
         var disable = operation.disabled();
-        return disable ?
-            t('operations.disconnect.' + disable) :
-            t('operations.disconnect.description');
+        if (disable) {
+            return t('operations.disconnect.' + disable);
+        }
+        return t('operations.disconnect.description.' + _descriptionID);
     };
 
 
     operation.annotation = function() {
-        return t('operations.disconnect.annotation');
+        return t('operations.disconnect.annotation.' + _annotationID);
     };
 
 

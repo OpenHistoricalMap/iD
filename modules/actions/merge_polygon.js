@@ -1,34 +1,26 @@
-import _extend from 'lodash-es/extend';
-import _groupBy from 'lodash-es/groupBy';
-import _map from 'lodash-es/map';
-import _omit from 'lodash-es/omit';
-import _some from 'lodash-es/some';
-
 import { geoPolygonContainsPolygon } from '../geo';
-
-import {
-    osmJoinWays,
-    osmRelation
-} from '../osm';
+import { osmJoinWays, osmRelation } from '../osm';
+import { utilArrayGroupBy, utilArrayIntersection, utilObjectOmit } from '../util';
 
 
 export function actionMergePolygon(ids, newRelationId) {
 
     function groupEntities(graph) {
         var entities = ids.map(function (id) { return graph.entity(id); });
-        return _extend({
-                closedWay: [],
-                multipolygon: [],
-                other: []
-            }, _groupBy(entities, function(entity) {
-                if (entity.type === 'way' && entity.isClosed()) {
-                    return 'closedWay';
-                } else if (entity.type === 'relation' && entity.isMultipolygon()) {
-                    return 'multipolygon';
-                } else {
-                    return 'other';
-                }
-            }));
+        var geometryGroups = utilArrayGroupBy(entities, function(entity) {
+            if (entity.type === 'way' && entity.isClosed()) {
+                return 'closedWay';
+            } else if (entity.type === 'relation' && entity.isMultipolygon()) {
+                return 'multipolygon';
+            } else {
+                return 'other';
+            }
+        });
+
+        return Object.assign(
+            { closedWay: [], multipolygon: [], other: [] },
+            geometryGroups
+        );
     }
 
 
@@ -54,14 +46,15 @@ export function actionMergePolygon(ids, newRelationId) {
             return polygons.map(function(d, n) {
                 if (i === n) return null;
                 return geoPolygonContainsPolygon(
-                    _map(d.nodes, 'loc'),
-                    _map(w.nodes, 'loc'));
+                    d.nodes.map(function(n) { return n.loc; }),
+                    w.nodes.map(function(n) { return n.loc; })
+                );
             });
         });
 
         // Sort all polygons as either outer or inner ways
-        var members = [],
-            outer = true;
+        var members = [];
+        var outer = true;
 
         while (polygons.length) {
             extractUncontained(polygons);
@@ -70,7 +63,7 @@ export function actionMergePolygon(ids, newRelationId) {
         }
 
         function isContained(d, i) {
-            return _some(contained[i]);
+            return contained[i].some(function(val) { return val; });
         }
 
         function filterContained(d) {
@@ -113,7 +106,7 @@ export function actionMergePolygon(ids, newRelationId) {
 
         return graph.replace(relation.update({
             members: members,
-            tags: _omit(relation.tags, 'area')
+            tags: utilObjectOmit(relation.tags, ['area'])
         }));
     };
 
@@ -121,10 +114,35 @@ export function actionMergePolygon(ids, newRelationId) {
     action.disabled = function(graph) {
         var entities = groupEntities(graph);
         if (entities.other.length > 0 ||
-            entities.closedWay.length + entities.multipolygon.length < 2)
+            entities.closedWay.length + entities.multipolygon.length < 2) {
             return 'not_eligible';
-        if (!entities.multipolygon.every(function(r) { return r.isComplete(graph); }))
+        }
+        if (!entities.multipolygon.every(function(r) { return r.isComplete(graph); })) {
             return 'incomplete_relation';
+        }
+
+        if (!entities.multipolygon.length) {
+            var sharedMultipolygons = [];
+            entities.closedWay.forEach(function(way, i) {
+                if (i === 0) {
+                    sharedMultipolygons = graph.parentMultipolygons(way);
+                } else {
+                    sharedMultipolygons = utilArrayIntersection(sharedMultipolygons, graph.parentMultipolygons(way));
+                }
+            });
+            sharedMultipolygons = sharedMultipolygons.filter(function(relation) {
+                return relation.members.length === entities.closedWay.length;
+            });
+            if (sharedMultipolygons.length) {
+                // don't create a new multipolygon if it'd be redundant
+                return 'not_eligible';
+            }
+        } else if (entities.closedWay.some(function(way) {
+                return utilArrayIntersection(graph.parentMultipolygons(way), entities.multipolygon).length;
+            })) {
+            // don't add a way to a multipolygon again if it's already a member
+            return 'not_eligible';
+        }
     };
 
 

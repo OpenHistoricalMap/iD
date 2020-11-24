@@ -1,38 +1,54 @@
-import _find from 'lodash-es/find';
-import _includes from 'lodash-es/includes';
-import _reduce from 'lodash-es/reduce';
-import _uniqBy from 'lodash-es/uniqBy';
-
 import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { select as d3_select } from 'd3-selection';
+import * as countryCoder from '@ideditor/country-coder';
 
-import { dataAddressFormats } from '../../../data';
+import { presetManager } from '../../presets';
+import { fileFetcher } from '../../core/file_fetcher';
 import { geoExtent, geoChooseEdge, geoSphericalDistance } from '../../geo';
-import { services } from '../../services';
-import { uiCombobox } from '../index';
-import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
+import { uiCombobox } from '../combobox';
+import { utilArrayUniqBy, utilGetSetValue, utilNoAuto, utilRebind, utilTotalExtent } from '../../util';
+import { t } from '../../core/localizer';
 
 
 export function uiFieldAddress(field, context) {
-    var dispatch = d3_dispatch('init', 'change');
-    var nominatim = services.geocoder;
-    var wrap = d3_select(null);
-    var _isInitialized = false;
-    var _entity;
+    var dispatch = d3_dispatch('change');
+    var _selection = d3_select(null);
+    var _wrap = d3_select(null);
+    var addrField = presetManager.field('address');   // needed for placeholder strings
+
+    var _entityIDs = [];
+    var _tags;
+    var _countryCode;
+    var _addressFormats = [{
+        format: [
+            ['housenumber', 'street'],
+            ['city', 'postcode']
+        ]
+      }];
+
+    fileFetcher.get('address_formats')
+        .then(function(d) {
+            _addressFormats = d;
+            if (!_selection.empty()) {
+                _selection.call(address);
+            }
+        })
+        .catch(function() { /* ignore */ });
+
 
     function getNearStreets() {
-        var extent = _entity.extent(context.graph());
+        var extent = combinedEntityExtent();
         var l = extent.center();
         var box = geoExtent(l).padByMeters(200);
 
-        var streets = context.intersects(box)
+        var streets = context.history().intersects(box)
             .filter(isAddressable)
             .map(function(d) {
                 var loc = context.projection([
                     (extent[0][0] + extent[1][0]) / 2,
                     (extent[0][1] + extent[1][1]) / 2
                 ]);
-                var choice = geoChooseEdge(context.childNodes(d), loc, context.projection);
+                var choice = geoChooseEdge(context.graph().childNodes(d), loc, context.projection);
 
                 return {
                     title: d.tags.name,
@@ -44,7 +60,7 @@ export function uiFieldAddress(field, context) {
                 return a.dist - b.dist;
             });
 
-        return _uniqBy(streets, 'value');
+        return utilArrayUniqBy(streets, 'value');
 
         function isAddressable(d) {
             return d.tags.highway && d.tags.name && d.type === 'way';
@@ -53,11 +69,11 @@ export function uiFieldAddress(field, context) {
 
 
     function getNearCities() {
-        var extent = _entity.extent(context.graph());
+        var extent = combinedEntityExtent();
         var l = extent.center();
         var box = geoExtent(l).padByMeters(200);
 
-        var cities = context.intersects(box)
+        var cities = context.history().intersects(box)
             .filter(isAddressable)
             .map(function(d) {
                 return {
@@ -70,7 +86,7 @@ export function uiFieldAddress(field, context) {
                 return a.dist - b.dist;
             });
 
-        return _uniqBy(cities, 'value');
+        return utilArrayUniqBy(cities, 'value');
 
 
         function isAddressable(d) {
@@ -91,12 +107,12 @@ export function uiFieldAddress(field, context) {
     }
 
     function getNearValues(key) {
-        var extent = _entity.extent(context.graph());
+        var extent = combinedEntityExtent();
         var l = extent.center();
         var box = geoExtent(l).padByMeters(200);
 
-        var results = context.intersects(box)
-            .filter(function hasTag(d) { return d.tags[key]; })
+        var results = context.history().intersects(box)
+            .filter(function hasTag(d) { return _entityIDs.indexOf(d.id) === -1 && d.tags[key]; })
             .map(function(d) {
                 return {
                     title: d.tags[key],
@@ -108,16 +124,24 @@ export function uiFieldAddress(field, context) {
                 return a.dist - b.dist;
             });
 
-        return _uniqBy(results, 'value');
+        return utilArrayUniqBy(results, 'value');
     }
 
 
-    function countryCallback(err, countryCode) {
-        if (err) return;
+    function updateForCountryCode() {
 
-        var addressFormat = _find(dataAddressFormats, function (a) {
-            return a && a.countryCodes && _includes(a.countryCodes, countryCode.toLowerCase());
-        }) || dataAddressFormats[0];
+        if (!_countryCode) return;
+
+        var addressFormat;
+        for (var i = 0; i < _addressFormats.length; i++) {
+            var format = _addressFormats[i];
+            if (!format.countryCodes) {
+                addressFormat = format;   // choose the default format, keep going
+            } else if (format.countryCodes.indexOf(_countryCode) !== -1) {
+                addressFormat = format;   // choose the country format, stop here
+                break;
+            }
+        }
 
         var dropdowns = addressFormat.dropdowns || [
             'city', 'county', 'country', 'district', 'hamlet',
@@ -132,7 +156,7 @@ export function uiFieldAddress(field, context) {
 
         function row(r) {
             // Normalize widths.
-            var total = _reduce(r, function(sum, key) {
+            var total = r.reduce(function(sum, key) {
                 return sum + (widths[key] || 0.5);
             }, 0);
 
@@ -144,8 +168,15 @@ export function uiFieldAddress(field, context) {
             });
         }
 
-        wrap.selectAll('.addr-row')
-            .data(addressFormat.format)
+        var rows = _wrap.selectAll('.addr-row')
+            .data(addressFormat.format, function(d) {
+                return d.toString();
+            });
+
+        rows.exit()
+            .remove();
+
+        rows
             .enter()
             .append('div')
             .attr('class', 'addr-row')
@@ -154,11 +185,7 @@ export function uiFieldAddress(field, context) {
             .enter()
             .append('input')
             .property('type', 'text')
-            .attr('placeholder', function (d) {
-                var localkey = d.id + '!' + countryCode.toLowerCase();
-                var tkey = field.strings.placeholders[localkey] ? localkey : d.id;
-                return field.t('placeholders.' + tkey);
-            })
+            .call(updatePlaceholder)
             .attr('class', function (d) { return 'addr-' + d.id; })
             .call(utilNoAuto)
             .each(addDropdown)
@@ -175,38 +202,50 @@ export function uiFieldAddress(field, context) {
             d3_select(this)
                 .call(uiCombobox(context, 'address-' + d.id)
                     .minItems(1)
+                    .caseSensitive(true)
                     .fetcher(function(value, callback) {
                         callback(nearValues('addr:' + d.id));
                     })
                 );
         }
 
-        wrap.selectAll('input')
+        _wrap.selectAll('input')
             .on('blur', change())
             .on('change', change());
 
-        wrap.selectAll('input:not(.combobox-input)')
+        _wrap.selectAll('input:not(.combobox-input)')
             .on('input', change(true));
 
-        dispatch.call('init');
-        _isInitialized = true;
+        if (_tags) updateTags(_tags);
     }
 
 
     function address(selection) {
-        _isInitialized = false;
+        _selection = selection;
 
-        wrap = selection.selectAll('.form-field-input-wrap')
+        _wrap = selection.selectAll('.form-field-input-wrap')
             .data([0]);
 
-        wrap = wrap.enter()
+        _wrap = _wrap.enter()
             .append('div')
             .attr('class', 'form-field-input-wrap form-field-input-' + field.type)
-            .merge(wrap);
+            .merge(_wrap);
 
-        if (nominatim && _entity) {
-            var center = _entity.extent(context.graph()).center();
-            nominatim.countryCode(center, countryCallback);
+        var extent = combinedEntityExtent();
+
+        if (extent) {
+            var countryCode;
+            if (context.inIntro()) {
+                // localize the address format for the walkthrough
+                countryCode = t('intro.graph.countrycode');
+            } else {
+                var center = extent.center();
+                countryCode = countryCoder.iso1A2Code(center);
+            }
+            if (countryCode) {
+                _countryCode = countryCode.toLowerCase();
+                updateForCountryCode();
+            }
         }
     }
 
@@ -215,44 +254,73 @@ export function uiFieldAddress(field, context) {
         return function() {
             var tags = {};
 
-            wrap.selectAll('input')
-                .each(function (field) {
-                    tags['addr:' + field.id] = this.value || undefined;
+            _wrap.selectAll('input')
+                .each(function (subfield) {
+                    var key = field.key + ':' + subfield.id;
+
+                    var value = this.value;
+                    if (!onInput) value = context.cleanTagValue(value);
+
+                    // don't override multiple values with blank string
+                    if (Array.isArray(_tags[key]) && !value) return;
+
+                    tags[key] = value || undefined;
                 });
 
             dispatch.call('change', this, tags, onInput);
         };
     }
 
-
-    function updateTags(tags) {
-        utilGetSetValue(wrap.selectAll('input'), function (field) {
-            return tags['addr:' + field.id] || '';
+    function updatePlaceholder(inputSelection) {
+        return inputSelection.attr('placeholder', function(subfield) {
+            if (_tags && Array.isArray(_tags[field.key + ':' + subfield.id])) {
+                return t('inspector.multiple_values');
+            }
+            if (_countryCode) {
+                var localkey = subfield.id + '!' + _countryCode;
+                var tkey = addrField.strings.placeholders[localkey] ? localkey : subfield.id;
+                return addrField.t('placeholders.' + tkey);
+            }
         });
     }
 
 
-    address.entity = function(val) {
-        if (!arguments.length) return _entity;
-        _entity = val;
+    function updateTags(tags) {
+        utilGetSetValue(_wrap.selectAll('input'), function (subfield) {
+                var val = tags[field.key + ':' + subfield.id];
+                return typeof val === 'string' ? val : '';
+            })
+            .attr('title', function(subfield) {
+                var val = tags[field.key + ':' + subfield.id];
+                return val && Array.isArray(val) && val.filter(Boolean).join('\n');
+            })
+            .classed('mixed', function(subfield) {
+                return Array.isArray(tags[field.key + ':' + subfield.id]);
+            })
+            .call(updatePlaceholder);
+    }
+
+
+    function combinedEntityExtent() {
+        return _entityIDs && _entityIDs.length && utilTotalExtent(_entityIDs, context.graph());
+    }
+
+
+    address.entityIDs = function(val) {
+        if (!arguments.length) return _entityIDs;
+        _entityIDs = val;
         return address;
     };
 
 
     address.tags = function(tags) {
-        if (_isInitialized) {
-            updateTags(tags);
-        } else {
-            dispatch.on('init', function () {
-                dispatch.on('init', null);
-                updateTags(tags);
-            });
-        }
+        _tags = tags;
+        updateTags(tags);
     };
 
 
     address.focus = function() {
-        var node = wrap.selectAll('input').node();
+        var node = _wrap.selectAll('input').node();
         if (node) node.focus();
     };
 

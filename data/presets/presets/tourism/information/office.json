@@ -4,16 +4,19 @@
         "name",
         "operator",
         "address",
-        "building_area"
+        "building_area",
+        "internet_access",
+        "internet_access/fee"
     ],
     "moreFields": [
-        "internet_access",
-        "internet_access/fee",
-        "internet_access/ssid",
-        "website",
-        "phone",
+        "building/levels_building",
         "email",
         "fax",
+        "gnis/feature_id",
+        "height_building",
+        "internet_access/ssid",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -29,5 +32,14 @@
         "key": "information",
         "value": "office"
     },
-    "name": "Tourist Information Office"
+    "terms": [
+        "information office",
+        "tour guide",
+        "tourism office",
+        "tourist information center",
+        "visitors center",
+        "visitors information center",
+        "welcome center"
+    ],
+    "name": "Visitor Center"
 }

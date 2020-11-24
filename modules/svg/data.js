@@ -1,29 +1,17 @@
-import _flatten from 'lodash-es/flatten';
-import _isEmpty from 'lodash-es/isEmpty';
-import _reduce from 'lodash-es/reduce';
-import _union from 'lodash-es/union';
 import _throttle from 'lodash-es/throttle';
 
-import {
-    geoBounds as d3_geoBounds,
-    geoPath as d3_geoPath
-} from 'd3-geo';
-
-import { text as d3_text } from 'd3-request';
-
-import {
-    event as d3_event,
-    select as d3_select
-} from 'd3-selection';
+import { geoBounds as d3_geoBounds, geoPath as d3_geoPath } from 'd3-geo';
+import { text as d3_text } from 'd3-fetch';
+import { event as d3_event, select as d3_select } from 'd3-selection';
 
 import stringify from 'fast-json-stable-stringify';
 import toGeoJSON from '@mapbox/togeojson';
 
 import { geoExtent, geoPolygonIntersectsPolygon } from '../geo';
 import { services } from '../services';
-import { svgPath } from './index';
+import { svgPath } from './helpers';
 import { utilDetect } from '../util/detect';
-import { utilHashcode } from '../util';
+import { utilArrayFlatten, utilArrayUnion, utilHashcode } from '../util';
 
 
 var _initialized = false;
@@ -54,7 +42,7 @@ export function svgData(projection, context, dispatch) {
             d3_event.dataTransfer.dropEffect = 'copy';
         }
 
-        d3_select('body')
+        context.container()
             .attr('dropzone', 'copy')
             .on('drop.svgData', function() {
                 d3_event.stopPropagation();
@@ -162,7 +150,7 @@ export function svgData(projection, context, dispatch) {
 
 
     function clipPathID(d) {
-        return 'data-' + d.__featurehash__ + '-clippath';
+        return 'ideditor-data-' + d.__featurehash__ + '-clippath';
     }
 
 
@@ -347,7 +335,8 @@ export function svgData(projection, context, dispatch) {
                 break;
         }
 
-        if (!_isEmpty(gj)) {
+        gj = gj || {};
+        if (Object.keys(gj).length) {
             _geojson = ensureIDs(gj);
             _src = extension + ' data file';
             this.fitZoom();
@@ -382,35 +371,32 @@ export function svgData(projection, context, dispatch) {
 
 
     drawData.hasData = function() {
-        return !!(_template || !_isEmpty(_geojson));
+        var gj = _geojson || {};
+        return !!(_template || Object.keys(gj).length);
     };
 
 
     drawData.template = function(val, src) {
         if (!arguments.length) return _template;
 
-        // test source against OSM imagery blacklists..
+        // test source against OSM imagery blocklists..
         var osm = context.connection();
         if (osm) {
-            var blacklists = osm.imageryBlacklists();
+            var blocklists = osm.imageryBlocklists();
             var fail = false;
             var tested = 0;
             var regex;
 
-            for (var i = 0; i < blacklists.length; i++) {
-                try {
-                    regex = new RegExp(blacklists[i]);
-                    fail = regex.test(val);
-                    tested++;
-                    if (fail) break;
-                } catch (e) {
-                    /* noop */
-                }
+            for (var i = 0; i < blocklists.length; i++) {
+                regex = blocklists[i];
+                fail = regex.test(val);
+                tested++;
+                if (fail) break;
             }
 
             // ensure at least one test was run.
             if (!tested) {
-                regex = new RegExp('.*\.google(apis)?\..*/(vt|kh)[\?/].*([xyz]=.*){3}.*');
+                regex = /.*\.google(apis)?\..*\/(vt|kh)[\?\/].*([xyz]=.*){3}.*/;
                 fail = regex.test(val);
             }
         }
@@ -436,7 +422,8 @@ export function svgData(projection, context, dispatch) {
         _geojson = null;
         _src = null;
 
-        if (!_isEmpty(gj)) {
+        gj = gj || {};
+        if (Object.keys(gj).length) {
             _geojson = ensureIDs(gj);
             _src = src || 'unknown.geojson';
         }
@@ -481,10 +468,14 @@ export function svgData(projection, context, dispatch) {
         var extension = getExtension(testUrl) || defaultExtension;
         if (extension) {
             _template = null;
-            d3_text(url, function(err, data) {
-                if (err) return;
-                drawData.setFile(extension, data);
-            });
+            d3_text(url)
+                .then(function(data) {
+                    drawData.setFile(extension, data);
+                })
+                .catch(function() {
+                    /* ignore */
+                });
+
         } else {
             drawData.template(url);
         }
@@ -504,11 +495,14 @@ export function svgData(projection, context, dispatch) {
 
         var map = context.map();
         var viewport = map.trimmedExtent().polygon();
-        var coords = _reduce(features, function(coords, feature) {
-            var c = feature.geometry.coordinates;
+        var coords = features.reduce(function(coords, feature) {
+            var geom = feature.geometry;
+            if (!geom) return coords;
+
+            var c = geom.coordinates;
 
             /* eslint-disable no-fallthrough */
-            switch (feature.geometry.type) {
+            switch (geom.type) {
                 case 'Point':
                     c = [c];
                 case 'MultiPoint':
@@ -516,15 +510,15 @@ export function svgData(projection, context, dispatch) {
                     break;
 
                 case 'MultiPolygon':
-                    c = _flatten(c);
+                    c = utilArrayFlatten(c);
                 case 'Polygon':
                 case 'MultiLineString':
-                    c = _flatten(c);
+                    c = utilArrayFlatten(c);
                     break;
             }
             /* eslint-enable no-fallthrough */
 
-            return _union(coords, c);
+            return utilArrayUnion(coords, c);
         }, []);
 
         if (!geoPolygonIntersectsPolygon(viewport, coords, true)) {

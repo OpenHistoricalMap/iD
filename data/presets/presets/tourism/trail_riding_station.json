@@ -8,11 +8,16 @@
     ],
     "moreFields": [
         "address",
-        "opening_hours",
-        "website",
-        "phone",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "opening_hours",
+        "opening_hours/covid19",
+        "phone",
+        "website"
     ],
     "geometry": [
         "point",
@@ -22,5 +27,5 @@
         "tourism": "trail_riding_station"
     },
     "name": "Trail Riding Station",
-    "matchScore": 2.0
+    "matchScore": 2
 }

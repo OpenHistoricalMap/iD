@@ -1,25 +1,28 @@
 {
-    "icon": "maki-ice-cream",
+    "icon": "fas-ice-cream",
     "fields": [
         "name",
         "address",
         "building_area",
         "opening_hours",
+        "opening_hours/covid19",
         "outdoor_seating"
     ],
     "moreFields": [
-        "takeaway",
         "delivery",
+        "diet_multi",
         "drive_through",
+        "email",
+        "fax",
+        "gnis/feature_id",
         "internet_access",
         "internet_access/fee",
         "internet_access/ssid",
-        "diet_multi",
+        "level",
         "payment_multi",
-        "website",
         "phone",
-        "email",
-        "fax",
+        "takeaway",
+        "website",
         "wheelchair"
     ],
     "geometry": [

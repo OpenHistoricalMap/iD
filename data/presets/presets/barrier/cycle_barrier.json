@@ -1,5 +1,5 @@
 {
-    "icon": "maki-roadblock",
+    "icon": "temaki-cycle_barrier",
     "fields": [
         "access"
     ],
@@ -9,5 +9,11 @@
     "tags": {
         "barrier": "cycle_barrier"
     },
+    "terms": [
+        "bicycle barrier",
+        "bicycling barrier",
+        "bike gates",
+        "cycling barrier"
+    ],
     "name": "Cycle Barrier"
 }

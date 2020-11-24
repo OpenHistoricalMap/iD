@@ -7,18 +7,31 @@
         "access_simple",
         "capacity",
         "fee",
-        "internet_access"
+        "payment_multi_fee",
+        "charge_fee"
     ],
-    "moreFields" : [
-        "payment_multi",
-        "internet_access/fee",
-        "internet_access/ssid",
-        "sanitary_dump_station",
-        "power_supply",
-        "website",
-        "phone",
+    "moreFields": [
+        "backcountry",
+        "dog",
         "email",
         "fax",
+        "gnis/feature_id",
+        "group_only",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "openfire",
+        "opening_hours",
+        "opening_hours/covid19",
+        "phone",
+        "power_supply",
+        "ref/vatin",
+        "reservation",
+        "sanitary_dump_station",
+        "shower",
+        "stars",
+        "toilets",
+        "website",
         "wheelchair"
     ],
     "geometry": [
@@ -26,12 +39,21 @@
         "vertex",
         "area"
     ],
-    "terms": [
-        "tent",
-        "rv"
-    ],
     "tags": {
         "tourism": "camp_site"
     },
+    "terms": [
+        "caravans",
+        "camp ground",
+        "camp pitch",
+        "camp site",
+        "campers",
+        "campground",
+        "campsite",
+        "mobile homes",
+        "recreational vehicles",
+        "rv",
+        "tenting"
+    ],
     "name": "Campground"
 }

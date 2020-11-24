@@ -1,19 +1,31 @@
 {
     "icon": "maki-heliport",
-    "geometry": [
-        "point",
-        "area"
-    ],
     "fields": [
-        "ref"
+        "name",
+        "ref",
+        "operator",
+        "surface",
+        "lit"
     ],
+    "moreFields": [
+        "access_simple",
+        "address",
+        "charge_fee",
+        "fee",
+        "opening_hours",
+        "opening_hours/covid19"
+    ],
+    "geometry": [
+        "area",
+        "point"
+    ],
+    "tags": {
+        "aeroway": "helipad"
+    },
     "terms": [
         "helicopter",
         "helipad",
         "heliport"
     ],
-    "tags": {
-        "aeroway": "helipad"
-    },
     "name": "Helipad"
 }

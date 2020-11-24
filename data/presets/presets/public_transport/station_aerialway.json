@@ -1,5 +1,5 @@
 {
-    "icon": "maki-aerialway",
+    "icon": "temaki-gondola_lift",
     "fields": [
         "{public_transport/station}",
         "aerialway/access",
@@ -10,11 +10,15 @@
     ],
     "geometry": [
         "point",
+        "vertex",
         "area"
     ],
     "tags": {
+        "aerialway": "station"
+    },
+    "addTags": {
         "public_transport": "station",
-        "aerialway": "yes"
+        "aerialway": "station"
     },
     "reference": {
         "key": "aerialway",

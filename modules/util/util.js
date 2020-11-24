@@ -1,15 +1,62 @@
-import _map from 'lodash-es/map';
-
-import { t, textDirection } from './locale';
-import { utilDetect } from './detect';
 import { remove as removeDiacritics } from 'diacritics';
 import { fixRTLTextForSvg, rtlRegex } from './svg_paths_rtl_fix';
 
+import { presetManager } from '../presets';
+import { t, localizer } from '../core/localizer';
+import { utilArrayUnion } from './array';
+import { utilDetect } from './detect';
+import { geoExtent } from '../geo/extent';
+
 
 export function utilTagText(entity) {
-    return _map(entity.tags, function(v, k) {
-        return k + '=' + v;
-    }).join(', ');
+    var obj = (entity && entity.tags) || {};
+    return Object.keys(obj)
+        .map(function(k) { return k + '=' + obj[k]; })
+        .join(', ');
+}
+
+
+export function utilTotalExtent(array, graph) {
+    var extent = geoExtent();
+    var val, entity;
+    for (var i = 0; i < array.length; i++) {
+        val = array[i];
+        entity = typeof val === 'string' ? graph.hasEntity(val) : val;
+        if (entity) {
+            extent._extend(entity.extent(graph));
+        }
+    }
+    return extent;
+}
+
+
+export function utilTagDiff(oldTags, newTags) {
+    var tagDiff = [];
+    var keys = utilArrayUnion(Object.keys(oldTags), Object.keys(newTags)).sort();
+    keys.forEach(function(k) {
+        var oldVal = oldTags[k];
+        var newVal = newTags[k];
+
+        if ((oldVal || oldVal === '') && (newVal === undefined || newVal !== oldVal)) {
+            tagDiff.push({
+                type: '-',
+                key: k,
+                oldVal: oldVal,
+                newVal: newVal,
+                display: '- ' + k + '=' + oldVal
+            });
+        }
+        if ((newVal || newVal === '') && (oldVal === undefined || newVal !== oldVal)) {
+            tagDiff.push({
+                type: '+',
+                key: k,
+                oldVal: oldVal,
+                newVal: newVal,
+                display: '+ ' + k + '=' + newVal
+            });
+        }
+    });
+    return tagDiff;
 }
 
 
@@ -18,76 +65,122 @@ export function utilEntitySelector(ids) {
 }
 
 
+// returns an selector to select entity ids for:
+//  - entityIDs passed in
+//  - shallow descendant entityIDs for any of those entities that are relations
 export function utilEntityOrMemberSelector(ids, graph) {
-    var s = utilEntitySelector(ids);
+    var seen = new Set(ids);
+    ids.forEach(collectShallowDescendants);
+    return utilEntitySelector(Array.from(seen));
 
-    ids.forEach(function(id) {
+    function collectShallowDescendants(id) {
         var entity = graph.hasEntity(id);
-        if (entity && entity.type === 'relation') {
-            entity.members.forEach(function(member) {
-                s += ',.' + member.id;
-            });
-        }
-    });
+        if (!entity || entity.type !== 'relation') return;
 
-    return s;
-}
-
-
-export function utilEntityOrDeepMemberSelector(ids, graph) {
-    var seen = {};
-    var allIDs = [];
-
-    function addEntityAndMembersIfNotYetSeen(id) {
-        // avoid infinite recursion for circular relations by skipping seen entities
-        if (seen[id]) return;
-        // mark the entity as seen
-        seen[id] = true;
-        // add the id;
-        allIDs.push(id);
-        if (graph.hasEntity(id)) {
-            var entity = graph.entity(id);
-            if (entity.type === 'relation' && entity.members) {
-                entity.members.forEach(function(member){
-                    addEntityAndMembersIfNotYetSeen(member.id);
-                });
-            }
-        }
+        entity.members
+            .map(function(member) { return member.id; })
+            .forEach(function(id) { seen.add(id); });
     }
-
-    ids.forEach(function(id) {
-        addEntityAndMembersIfNotYetSeen(id);
-    });
-    return utilEntitySelector(allIDs);
 }
 
 
-export function utilGetAllNodes(ids, graph) {
-    var seen = {};
-    var nodes = [];
-    ids.forEach(getNodes);
-    return nodes;
+// returns an selector to select entity ids for:
+//  - entityIDs passed in
+//  - deep descendant entityIDs for any of those entities that are relations
+export function utilEntityOrDeepMemberSelector(ids, graph) {
+    return utilEntitySelector(utilEntityAndDeepMemberIDs(ids, graph));
+}
 
-    function getNodes(id) {
-        if (seen[id]) return;
-        seen[id] = true;
+
+// returns an selector to select entity ids for:
+//  - entityIDs passed in
+//  - deep descendant entityIDs for any of those entities that are relations
+export function utilEntityAndDeepMemberIDs(ids, graph) {
+    var seen = new Set();
+    ids.forEach(collectDeepDescendants);
+    return Array.from(seen);
+
+    function collectDeepDescendants(id) {
+        if (seen.has(id)) return;
+        seen.add(id);
+
+        var entity = graph.hasEntity(id);
+        if (!entity || entity.type !== 'relation') return;
+
+        entity.members
+            .map(function(member) { return member.id; })
+            .forEach(collectDeepDescendants);   // recurse
+    }
+}
+
+// returns an selector to select entity ids for:
+//  - deep descendant entityIDs for any of those entities that are relations
+export function utilDeepMemberSelector(ids, graph, skipMultipolgonMembers) {
+    var idsSet = new Set(ids);
+    var seen = new Set();
+    var returners = new Set();
+    ids.forEach(collectDeepDescendants);
+    return utilEntitySelector(Array.from(returners));
+
+    function collectDeepDescendants(id) {
+        if (seen.has(id)) return;
+        seen.add(id);
+
+        if (!idsSet.has(id)) {
+            returners.add(id);
+        }
+
+        var entity = graph.hasEntity(id);
+        if (!entity || entity.type !== 'relation') return;
+        if (skipMultipolgonMembers && entity.isMultipolygon()) return;
+        entity.members
+            .map(function(member) { return member.id; })
+            .forEach(collectDeepDescendants);   // recurse
+    }
+}
+
+
+// Adds or removes highlight styling for the specified entities
+export function utilHighlightEntities(ids, highlighted, context) {
+    context.surface()
+        .selectAll(utilEntityOrDeepMemberSelector(ids, context.graph()))
+        .classed('highlighted', highlighted);
+}
+
+
+// returns an Array that is the union of:
+//  - nodes for any nodeIDs passed in
+//  - child nodes of any wayIDs passed in
+//  - descendant member and child nodes of relationIDs passed in
+export function utilGetAllNodes(ids, graph) {
+    var seen = new Set();
+    var nodes = new Set();
+
+    ids.forEach(collectNodes);
+    return Array.from(nodes);
+
+    function collectNodes(id) {
+        if (seen.has(id)) return;
+        seen.add(id);
 
         var entity = graph.hasEntity(id);
         if (!entity) return;
 
         if (entity.type === 'node') {
-            nodes.push(entity);
+            nodes.add(entity);
         } else if (entity.type === 'way') {
-            entity.nodes.forEach(getNodes);
+            entity.nodes.forEach(collectNodes);
         } else {
-            entity.members.map(function(member) { return member.id; }).forEach(getNodes);
+            entity.members
+                .map(function(member) { return member.id; })
+                .forEach(collectNodes);   // recurse
         }
     }
 }
 
 
 export function utilDisplayName(entity) {
-    var localizedNameKey = 'name:' + utilDetect().locale.toLowerCase().split('-')[0];
+    var localizedNameKey = 'name:' + localizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || '';
     var network = entity.tags.cycle_network || entity.tags.network;
 
@@ -123,6 +216,22 @@ export function utilDisplayType(id) {
 }
 
 
+export function utilDisplayLabel(entity, graph) {
+    var displayName = utilDisplayName(entity);
+    if (displayName) {
+        // use the display name if there is one
+        return displayName;
+    }
+    var preset = presetManager.match(entity, graph);
+    if (preset && preset.name()) {
+        // use the preset name if there is a match
+        return preset.name();
+    }
+    // fallback to the display type (node/way/relation)
+    return utilDisplayType(entity.id);
+}
+
+
 export function utilEntityRoot(entityType) {
     return {
         node: 'n',
@@ -132,14 +241,102 @@ export function utilEntityRoot(entityType) {
 }
 
 
+// Returns a single object containing the tags of all the given entities.
+// Example:
+// {
+//   highway: 'service',
+//   service: 'parking_aisle'
+// }
+//           +
+// {
+//   highway: 'service',
+//   service: 'driveway',
+//   width: '3'
+// }
+//           =
+// {
+//   highway: 'service',
+//   service: [ 'driveway', 'parking_aisle' ],
+//   width: [ '3', undefined ]
+// }
+export function utilCombinedTags(entityIDs, graph) {
+
+    var tags = {};
+    var tagCounts = {};
+    var allKeys = new Set();
+
+    var entities = entityIDs.map(function(entityID) {
+        return graph.hasEntity(entityID);
+    }).filter(Boolean);
+
+    // gather the aggregate keys
+    entities.forEach(function(entity) {
+        var keys = Object.keys(entity.tags).filter(Boolean);
+        keys.forEach(function(key) {
+            allKeys.add(key);
+        });
+    });
+
+    entities.forEach(function(entity) {
+
+        allKeys.forEach(function(key) {
+
+            var value = entity.tags[key]; // purposely allow `undefined`
+
+            if (!tags.hasOwnProperty(key)) {
+                // first value, set as raw
+                tags[key] = value;
+            } else {
+                if (!Array.isArray(tags[key])) {
+                    if (tags[key] !== value) {
+                        // first alternate value, replace single value with array
+                        tags[key] = [tags[key], value];
+                    }
+                } else { // type is array
+                    if (tags[key].indexOf(value) === -1) {
+                        // subsequent alternate value, add to array
+                        tags[key].push(value);
+                    }
+                }
+            }
+
+            var tagHash = key + '=' + value;
+            if (!tagCounts[tagHash]) tagCounts[tagHash] = 0;
+            tagCounts[tagHash] += 1;
+        });
+    });
+
+    for (var key in tags) {
+        if (!Array.isArray(tags[key])) continue;
+
+        // sort values by frequency then alphabetically
+        tags[key] = tags[key].sort(function(val1, val2) {
+            var key = key; // capture
+            var count2 = tagCounts[key + '=' + val2];
+            var count1 = tagCounts[key + '=' + val1];
+            if (count2 !== count1) {
+                return count2 - count1;
+            }
+            if (val2 && val1) {
+                return val1.localeCompare(val2);
+            }
+            return val1 ? 1 : -1;
+        });
+    }
+
+    return tags;
+}
+
+
 export function utilStringQs(str) {
+    var i = 0;  // advance past any leading '?' or '#' characters
+    while (i < str.length && (str[i] === '?' || str[i] === '#')) i++;
+    str = str.slice(i);
+
     return str.split('&').reduce(function(obj, pair){
         var parts = pair.split('=');
         if (parts.length === 2) {
             obj[parts[0]] = (null === parts[1]) ? '' : decodeURIComponent(parts[1]);
-        }
-        if (parts[0] === 'mvt') {
-            obj[parts[0]] = (parts[2] !== undefined) ? (decodeURIComponent(parts[1]) + '=' + decodeURIComponent(parts[2])) : (decodeURIComponent(parts[1]));
         }
         return obj;
     }, {});
@@ -245,21 +442,12 @@ export function utilFastMouse(container) {
     var rectTop = rect.top;
     var clientLeft = +container.clientLeft;
     var clientTop = +container.clientTop;
-
-    if (textDirection === 'rtl') {
-        rectLeft = 0;
-    }
     return function(e) {
         return [
             e.clientX - rectLeft - clientLeft,
             e.clientY - rectTop - clientTop];
     };
 }
-
-
-/* eslint-disable no-proto */
-export var utilGetPrototypeOf = Object.getPrototypeOf || function(obj) { return obj.__proto__; };
-/* eslint-enable no-proto */
 
 
 export function utilAsyncMap(inputs, func, callback) {
@@ -328,9 +516,29 @@ export function utilHashcode(str) {
     return hash;
 }
 
-// Adds or removes highlight styling for the specified entity's SVG elements in the map.
-export function utilHighlightEntity(id, highlighted, context) {
-    context.surface()
-        .selectAll(utilEntityOrDeepMemberSelector([id], context.graph()))
-        .classed('highlighted', highlighted);
+// Returns version of `str` with all runs of special characters replaced by `_`;
+// suitable for HTML ids, classes, selectors, etc.
+export function utilSafeClassName(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+}
+
+// Returns string based on `val` that is highly unlikely to collide with an id
+// used previously or that's present elsewhere in the document. Useful for preventing
+// browser-provided autofills or when embedding iD on pages with unknown elements.
+export function utilUniqueDomId(val) {
+    return 'ideditor-' + utilSafeClassName(val.toString()) + '-' + new Date().getTime().toString();
+}
+
+// Returns the length of `str` in unicode characters. This can be less than
+// `String.length()` since a single unicode character can be composed of multiple
+// JavaScript UTF-16 code units.
+export function utilUnicodeCharsCount(str) {
+    // Native ES2015 implementations of `Array.from` split strings into unicode characters
+    return Array.from(str).length;
+}
+
+// Returns a new string representing `str` cut from its start to `limit` length
+// in unicode characters. Note that this runs the risk of splitting graphemes.
+export function utilUnicodeCharsTruncated(str, limit) {
+    return Array.from(str).slice(0, limit).join('');
 }

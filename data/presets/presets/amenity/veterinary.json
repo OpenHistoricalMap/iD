@@ -5,15 +5,19 @@
         "operator",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "website",
-        "phone",
+        "charge_fee",
         "email",
         "fax",
+        "fee",
+        "gnis/feature_id",
+        "level",
+        "payment_multi_fee",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

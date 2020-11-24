@@ -1,21 +1,15 @@
 {
-    "icon": "maki-swimming",
+    "icon": "fas-swimmer",
     "fields": [
-        "name",
-        "operator",
-        "address"
+        "{tourism/theme_park}",
+        "sport"
     ],
     "moreFields": [
-        "payment_multi",
-        "brand",
-        "website",
-        "phone",
-        "email",
-        "fax"
+        "{tourism/theme_park}"
     ],
     "geometry": [
-        "point",
-        "area"
+        "area",
+        "point"
     ],
     "terms": [
         "swim",

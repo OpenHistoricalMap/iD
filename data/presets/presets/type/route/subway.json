@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-subway",
+    "icon": "temaki-subway",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network",
-        "to", 
-        "from"
+        "{type/route/train}"
+    ],
+    "moreFields": [
+        "{type/route/train}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "subway"
+    },
+    "reference": {
+        "key": "route",
+        "value": "subway"
     },
     "name": "Subway Route"
 }

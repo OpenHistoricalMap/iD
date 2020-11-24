@@ -5,7 +5,11 @@
         "route",
         "ref_route",
         "operator",
-        "network"
+        "network",
+        "network/type"
+    ],
+    "moreFields": [
+        "distance"
     ],
     "geometry": [
         "relation"

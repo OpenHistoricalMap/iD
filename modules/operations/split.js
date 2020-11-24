@@ -1,25 +1,20 @@
-import _filter from 'lodash-es/filter';
-import _some from 'lodash-es/some';
-import _without from 'lodash-es/without';
-
-import { t } from '../util/locale';
-import { actionSplit } from '../actions/index';
-import { behaviorOperation } from '../behavior/index';
-import { modeSelect } from '../modes/index';
+import { t } from '../core/localizer';
+import { actionSplit } from '../actions/split';
+import { behaviorOperation } from '../behavior/operation';
+import { modeSelect } from '../modes/select';
 
 
-export function operationSplit(selectedIDs, context) {
-    var vertices = _filter(selectedIDs, function(entityId) {
-        return context.geometry(entityId) === 'vertex';
-    });
-
-    var entityId = vertices[0],
-        action = actionSplit(entityId),
-        ways = [];
+export function operationSplit(context, selectedIDs) {
+    var vertices = selectedIDs
+        .filter(function(id) { return context.graph().geometry(id) === 'vertex'; });
+    var entityID = vertices[0];
+    var action = actionSplit(entityID);
+    var ways = [];
 
     if (vertices.length === 1) {
-        if (selectedIDs.length > 1) {
-            action.limitWays(_without(selectedIDs, entityId));
+        if (entityID && selectedIDs.length > 1) {
+            var ids = selectedIDs.filter(function(id) { return id !== entityID; });
+            action.limitWays(ids);
         }
         ways = action.ways(context.graph());
     }
@@ -37,11 +32,14 @@ export function operationSplit(selectedIDs, context) {
 
 
     operation.disabled = function() {
-        var reason;
-        if (_some(selectedIDs, context.hasHiddenConnections)) {
-            reason = 'connected_to_hidden';
+        var reason = action.disabled(context.graph());
+        if (reason) {
+            return reason;
+        } else if (selectedIDs.some(context.hasHiddenConnections)) {
+            return 'connected_to_hidden';
         }
-        return action.disabled(context.graph()) || reason;
+
+        return false;
     };
 
 
@@ -49,9 +47,8 @@ export function operationSplit(selectedIDs, context) {
         var disable = operation.disabled();
         if (disable) {
             return t('operations.split.' + disable);
-        }
-        if (ways.length === 1) {
-            return t('operations.split.description.' + context.geometry(ways[0].id));
+        } else if (ways.length === 1) {
+            return t('operations.split.description.' + context.graph().geometry(ways[0].id));
         } else {
             return t('operations.split.description.multiple');
         }
@@ -60,7 +57,7 @@ export function operationSplit(selectedIDs, context) {
 
     operation.annotation = function() {
         return ways.length === 1 ?
-            t('operations.split.annotation.' + context.geometry(ways[0].id)) :
+            t('operations.split.annotation.' + context.graph().geometry(ways[0].id)) :
             t('operations.split.annotation.multiple', { n: ways.length });
     };
 

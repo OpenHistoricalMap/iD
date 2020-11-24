@@ -5,12 +5,21 @@
         "area"
     ],
     "terms": [
+        "bracelet",
         "diamond",
+        "earrings",
         "gem",
-        "ring"
+        "gold",
+        "jeweler",
+        "jewellery",
+        "jeweller",
+        "necklace",
+        "pins",
+        "ring",
+        "silver"
     ],
     "tags": {
         "shop": "jewelry"
     },
-    "name": "Jeweler"
+    "name": "Jewelry Store"
 }

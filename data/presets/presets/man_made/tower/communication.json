@@ -1,10 +1,13 @@
 {
-    "icon": "temaki-tower",
+    "icon": "temaki-tower_communication",
     "fields": [
-        "tower/type",
-        "tower/construction",
-        "height",
-        "communication_multi"
+        "{man_made/tower}",
+        "communication_multi",
+        "mimics"
+    ],
+    "moreFields": [
+        "{man_made/tower}",
+        "mimics"
     ],
     "geometry": [
         "point",

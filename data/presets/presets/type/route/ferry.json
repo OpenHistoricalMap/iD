@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-ferry",
+    "icon": "temaki-ferry",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network",
-        "to", 
-        "from"
+        "{route/ferry}"
+    ],
+    "moreFields": [
+        "{route/ferry}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "ferry"
+    },
+    "reference": {
+        "key": "route",
+        "value": "ferry"
     },
     "name": "Ferry Route"
 }

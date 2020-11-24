@@ -3,27 +3,29 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
-        "opening_hours",
-        "dog"
+        "access_simple",
+        "website"
     ],
     "moreFields": [
-        "website",
-        "phone",
+        "dog",
         "email",
-        "fax"
+        "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "phone",
+        "ref"
     ],
     "geometry": [
-        "point",
-        "area"
-    ],
-    "fields": [
-        "name"
-    ],
-    "terms": [
+        "area",
+        "point"
     ],
     "tags": {
         "leisure": "dog_park"
     },
+    "terms": [],
     "name": "Dog Park"
 }

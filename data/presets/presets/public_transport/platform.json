@@ -1,21 +1,23 @@
 {
-    "icon": "maki-bus",
+    "icon": "temaki-board_transit",
     "fields": [
-        "name",
         "ref_platform",
         "network",
         "operator",
+        "departures_board",
         "surface"
     ],
     "moreFields": [
+        "access",
+        "covered",
+        "indoor",
+        "layer",
+        "level",
         "lit",
-        "bench",
-        "shelter",
-        "passenger_information_display",
         "wheelchair"
     ],
     "geometry": [
-        "point",
+        "line",
         "area"
     ],
     "tags": {
@@ -28,6 +30,6 @@
         "transit",
         "transportation"
     ],
-    "name": "Transit Stop / Platform",
-    "matchScore": 0.2
+    "name": "Transit Platform",
+    "matchScore": 0.6
 }

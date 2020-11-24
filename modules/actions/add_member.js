@@ -1,8 +1,6 @@
-import _clone from 'lodash-es/clone';
-import _groupBy from 'lodash-es/groupBy';
-import _omit from 'lodash-es/omit';
-
-import { osmJoinWays, osmWay } from '../osm';
+import { osmJoinWays } from '../osm/multipolygon';
+import { osmWay } from '../osm/way';
+import { utilArrayGroupBy, utilObjectOmit } from '../util';
 
 
 export function actionAddMember(relationId, member, memberIndex, insertPair) {
@@ -64,12 +62,12 @@ export function actionAddMember(relationId, member, memberIndex, insertPair) {
             graph = graph.replace(tempWay);
             var tempMember = { id: tempWay.id, type: 'way', role: member.role };
             var tempRelation = relation.replaceMember({id: insertPair.originalID}, tempMember, true);
-            groups = _groupBy(tempRelation.members, function(m) { return m.type; });
+            groups = utilArrayGroupBy(tempRelation.members, 'type');
             groups.way = groups.way || [];
 
         } else {
             // Add the member anywhere, one time. Just push and let `osmJoinWays` decide where to put it.
-            groups = _groupBy(relation.members, function(m) { return m.type; });
+            groups = utilArrayGroupBy(relation.members, 'type');
             groups.way = groups.way || [];
             groups.way.push(member);
         }
@@ -136,7 +134,7 @@ export function actionAddMember(relationId, member, memberIndex, insertPair) {
                 wayMembers.push(item.pair[0]);
                 wayMembers.push(item.pair[1]);
             } else {
-                wayMembers.push(_omit(item, 'index'));
+                wayMembers.push(utilObjectOmit(item, ['index']));
             }
         }
 
@@ -145,7 +143,7 @@ export function actionAddMember(relationId, member, memberIndex, insertPair) {
         // see https://wiki.openstreetmap.org/wiki/Public_transport#Service_routes
         var newMembers = PTv2members.concat( (groups.node || []), wayMembers, (groups.relation || []) );
 
-        return graph.replace(relation.update({members: newMembers}));
+        return graph.replace(relation.update({ members: newMembers }));
 
 
         // `moveMember()` changes the `members` array in place by splicing
@@ -177,7 +175,7 @@ export function actionAddMember(relationId, member, memberIndex, insertPair) {
                 }
             }
 
-            var item = _clone(arr[i]);
+            var item = Object.assign({}, arr[i]);   // shallow copy
             arr[i].index = -1;   // mark as dead
             item.index = toIndex;
             arr.splice(toIndex, 0, item);
@@ -189,7 +187,7 @@ export function actionAddMember(relationId, member, memberIndex, insertPair) {
         function withIndex(arr) {
             var result = new Array(arr.length);
             for (var i = 0; i < arr.length; i++) {
-                result[i] = _clone(arr[i]);
+                result[i] = Object.assign({}, arr[i]);   // shallow copy
                 result[i].index = i;
             }
             return result;

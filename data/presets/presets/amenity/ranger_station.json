@@ -5,13 +5,18 @@
         "operator",
         "address",
         "building_area",
-        "opening_hours"
+        "opening_hours",
+        "opening_hours/covid19"
     ],
     "moreFields": [
-        "website",
-        "phone",
         "email",
         "fax",
+        "gnis/feature_id",
+        "internet_access",
+        "internet_access/fee",
+        "internet_access/ssid",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

@@ -1,12 +1,10 @@
 {
-    "icon": "iD-route-light-rail",
+    "icon": "temaki-light_rail",
     "fields": [
-        "name",
-        "ref_route",
-        "operator",
-        "network",
-        "to", 
-        "from"
+        "{type/route/train}"
+    ],
+    "moreFields": [
+        "{type/route/train}"
     ],
     "geometry": [
         "relation"
@@ -14,6 +12,10 @@
     "tags": {
         "type": "route",
         "route": "light_rail"
+    },
+    "reference": {
+        "key": "route",
+        "value": "light_rail"
     },
     "name": "Light Rail Route"
 }

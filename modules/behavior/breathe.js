@@ -1,4 +1,4 @@
-import _isEqual from 'lodash-es/isEqual';
+import deepEqual from 'fast-deep-equal';
 
 import {
     interpolateNumber as d3_interpolateNumber,
@@ -117,24 +117,36 @@ export function behaviorBreathe() {
 
         if (_done || currSelected.empty()) {
             _selected.call(reset);
+            _selected = d3_select(null);
             return;
         }
 
-        if (!_isEqual(currSelected.data(), _selected.data()) || currClassed !== _classed) {
+        if (!deepEqual(currSelected.data(), _selected.data()) || currClassed !== _classed) {
             _selected.call(reset);
             _classed = currClassed;
             _selected = currSelected.call(calcAnimationParams);
         }
+
+        var didCallNextRun = false;
 
         _selected
             .transition()
             .duration(duration)
             .call(setAnimationParams, fromTo)
             .on('end', function() {
-                surface.call(run, toFrom);
+                // `end` event is called for each selected element, but we want
+                // it to run only once
+                if (!didCallNextRun) {
+                    surface.call(run, toFrom);
+                    didCallNextRun = true;
+                }
+
+                // if entity was deselected, remove breathe styling
+                if (!d3_select(this).classed('selected')) {
+                    reset(d3_select(this));
+                }
             });
     }
-
 
     function behavior(surface) {
         _done = false;
@@ -150,6 +162,14 @@ export function behaviorBreathe() {
         }, 20);
     }
 
+    behavior.restartIfNeeded = function(surface) {
+        if (_selected.empty()) {
+            surface.call(run, 'from');
+            if (_timer) {
+                _timer.stop();
+            }
+        }
+    };
 
     behavior.off = function() {
         _done = true;

@@ -1,5 +1,5 @@
 {
-    "icon": "maki-art-gallery",
+    "icon": "temaki-vase",
     "geometry": [
         "point",
         "area"
@@ -7,5 +7,5 @@
     "tags": {
         "craft": "handicraft"
     },
-    "name": "Handicraft"
+    "name": "Handicraft Workspace"
 }

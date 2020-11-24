@@ -3,18 +3,21 @@
     "fields": [
         "name",
         "operator",
+        "operator/type",
         "address",
         "building",
         "opening_hours",
+        "opening_hours/covid19",
         "recycling_accepts"
     ],
     "moreFields": [
-        "fee",
-        "payment_multi",
-        "website",
-        "phone",
+        "charge_fee",
         "email",
         "fax",
+        "fee",
+        "payment_multi_fee",
+        "phone",
+        "website",
         "wheelchair"
     ],
     "geometry": [

@@ -1,6 +1,6 @@
 import _throttle from 'lodash-es/throttle';
 import { select as d3_select } from 'd3-selection';
-import { svgPath, svgPointTransform } from './index';
+import { svgPath, svgPointTransform } from './helpers';
 import { services } from '../services';
 
 
@@ -36,7 +36,6 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
         var service = getService();
         if (!service) return;
 
-        service.loadViewer(context);
         editOn();
 
         layer
@@ -49,11 +48,6 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
 
 
     function hideLayer() {
-        var service = getService();
-        if (service) {
-            service.hideViewer();
-        }
-
         throttledRedraw.cancel();
 
         layer
@@ -80,9 +74,9 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
         if (!service) return;
 
         service
-            .selectImage(d)
-            .updateViewer(d)
-            .showViewer();
+            .selectImage(context, d)
+            .updateViewer(context, d)
+            .showViewer(context);
 
         context.map().centerEase(d.loc);
     }
@@ -90,13 +84,13 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
 
     function mouseover(d) {
         var service = getService();
-        if (service) service.setStyles(d);
+        if (service) service.setStyles(context, d);
     }
 
 
     function mouseout() {
         var service = getService();
-        if (service) service.setStyles(null);
+        if (service) service.setStyles(context, null);
     }
 
 
@@ -109,8 +103,10 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
     }
 
 
+    context.photos().on('change.openstreetcam_images', update);
+
     function update() {
-        var viewer = d3_select('#photoviewer');
+        var viewer = context.container().select('.photoviewer');
         var selected = viewer.empty() ? undefined : viewer.datum();
 
         var z = ~~context.map().zoom();
@@ -118,8 +114,13 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
         var showViewfields = (z >= minViewfieldZoom);
 
         var service = getService();
-        var sequences = (service ? service.sequences(projection) : []);
-        var images = (service && showMarkers ? service.images(projection) : []);
+        var sequences = [];
+        var images = [];
+
+        if (context.photos().showsFlat()) {
+            sequences = (service ? service.sequences(projection) : []);
+            images = (service && showMarkers ? service.images(projection) : []);
+        }
 
         var traces = layer.selectAll('.sequences').selectAll('.sequence')
             .data(sequences, function(d) { return d.properties.key; });
@@ -147,8 +148,8 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
         var groupsEnter = groups.enter()
             .append('g')
             .attr('class', 'viewfield-group')
-            .on('mouseover', mouseover)
-            .on('mouseout', mouseout)
+            .on('mouseenter', mouseover)
+            .on('mouseleave', mouseout)
             .on('click', click);
 
         groupsEnter
@@ -193,7 +194,7 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
         var enabled = svgOpenstreetcamImages.enabled,
             service = getService();
 
-        layer = selection.selectAll('.layer-openstreetcam-images')
+        layer = selection.selectAll('.layer-openstreetcam')
             .data(service ? [0] : []);
 
         layer.exit()
@@ -201,7 +202,7 @@ export function svgOpenstreetcamImages(projection, context, dispatch) {
 
         var layerEnter = layer.enter()
             .append('g')
-            .attr('class', 'layer-openstreetcam-images')
+            .attr('class', 'layer-openstreetcam')
             .style('display', enabled ? 'block' : 'none');
 
         layerEnter

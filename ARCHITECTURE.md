@@ -11,16 +11,15 @@ rendering the map data as well as many sorts of general DOM manipulation tasks
 for which jQuery would often be used.
 
 Notable features of d3 that are used by iD include
-[d3.request](https://github.com/d3/d3/blob/master/API.md#requests-d3-request), which is
-used to make the API requests to download data from openstreetmap.org and save
-changes;
-[d3.dispatch](https://github.com/d3/d3/blob/master/API.md#dispatches-d3-dispatch),
+[d3.fetch](https://github.com/d3/d3/blob/develop/API.md#fetches-d3-fetch), which is
+used to make the API requests to download data from openstreetmap.org and save changes;
+[d3.dispatch](https://github.com/d3/d3/blob/develop/API.md#dispatches-d3-dispatch),
 which provides a callback-based [Observer
 pattern](http://en.wikipedia.org/wiki/Observer_pattern) between different
 parts of iD;
-[d3.geoPath](https://github.com/d3/d3/blob/master/API.md#paths), which
+[d3.geoPath](https://github.com/d3/d3/blob/develop/API.md#paths), which
 generates SVG paths for lines and areas; and
-[d3.zoom](https://github.com/d3/d3/blob/master/API.md#zooming-d3-zoom),
+[d3.zoom](https://github.com/d3/d3/blob/develop/API.md#zooming-d3-zoom),
 which implements map panning and zooming.
 
 
@@ -234,7 +233,7 @@ of duplicating the code to implement this behavior in all these modes, we
 extract it to `iD.behaviorHover`.
 
 _Behaviors_ take their inspiration from [d3's
-behaviors](https://github.com/d3/d3/blob/master/API.md). Like d3's `zoom`
+behaviors](https://github.com/d3/d3/blob/develop/API.md). Like d3's `zoom`
 and `drag`, each iD behavior is a function that takes as input a d3 selection
 (assumed to consist of a single element) and installs the DOM event bindings
 necessary to implement the behavior. The `Hover` behavior, for example,
@@ -343,7 +342,7 @@ argument is required, a `context`.
 
 The constructor function returns a draw function which accepts a d3 selection.
 Drawing is then accomplished with
-[d3.selection#call](https://github.com/d3/d3-selection/blob/master/README.md#selection_call):
+[d3.selection#call](https://github.com/d3/d3-selection/blob/develop/README.md#selection_call):
 
 ```js
     footer = footer.enter()
@@ -365,3 +364,164 @@ inspector(container); // render the inspector
 inspector.tags(); // retrieve the current tags
 inspector.on('change', callback); // get notified when a tag change is made
 ```
+
+### Validation Module
+
+Runtime data validation in iD is managed by `coreValidator`.
+
+#### Issue Severities
+
+"Issue" is the general term for anything noted by the validator. Issues are further categorized by severity.
+
+##### `error`
+
+_Red._ Errors are the most severe issues. The user must resolve all errors before uploading their changes. Thus, these should be straightforward to fix and there should be virtually no false positives.
+
+##### `warning`
+
+_Yellow._ Warnings are general issues that the user is free to ignore. They have varying degrees of importance, accuracy, and fixability. Still, only clear and relevant warnings should be shown to avoid overwhelming the user. Most issues are warnings.
+
+#### Validation Rules
+
+A validation rule is an object that takes an entity and a graph and returns objects of type `validationIssue` representing problems found with that entity for that graph. Rules are listed under `modules/validations` and correspond directly to the toggleable Rules list under the Issues pane in iD's UI.
+
+Each `validationIssue` takes its rule's `type` and may include a `subtype` that further differentiates it.
+
+#### Issue Types
+
+##### `almost_junction`
+
+A way ends close to another way, indicating they should likely be connected. The current distance threshold is 5 meters.
+
+* `highway-highway`: both the ways are roads or paths; no issue is flagged if the endpoint is an entrance or is tagged `noexit=yes`
+
+##### `close_nodes`
+
+Two nodes have a very small distance between them. The threshold distance is smaller for features expected to be mapped at higher levels of detail (e.g. paths, rooms).
+
+* `detached`: the nodes are not part of any ways; close points with differing z-axis tags like `layer` and `level` are not flagged
+* `vertices`: the nodes are adjacent members of a way
+
+##### `crossing_ways`
+
+Two ways cross without a junction node or enough information to clarify how they cross.
+
+Building crossings are flagged per-feature. Other subtypes are flagged per-crossing.
+
+* `building-building`
+* `building-highway`
+* `building-railway`
+* `building-waterway`
+* `highway-highway`
+* `highway-railway`
+* `highway-waterway`
+* `railway-railway`
+* `railway-waterway`
+* `waterway-waterway`
+
+##### `disconnected_way`
+
+One or more interconnected, routable feature are not connected to the rest of the routable network (i.e. they form a routing island). A way is considered connected to the network if any of its nodes are on an unloaded tile, meaning large routing islands may not always be detected.
+
+* `highway`: the feature is a road, path, ferry route, or elevator; entrances are also considered network connections
+
+##### `help_request`
+
+Someone has indicated a feature needs further attention.
+
+* `fixme_tag`: a feature has a `fixme` tag that existed before the user's current edits; deleting the `fixme` tag marks the issue as resolved regardless of the user's other edits
+
+##### `impossible_oneway`
+
+A one-way line does not have a valid connection at its first or last node.
+
+* `highway`: a one-way road or path does not start or end at another highway or an entrance
+* `waterway`: multiple streams, etc., start or end at the same node that's not a spring, drain, or water body
+
+##### `incompatible_source`
+
+The `source` tag of a feature references a data source known to have a license incompatible with OpenStreetMap. This is very much not exhaustive and currently only flags sources containing "google".
+
+##### `invalid_format`
+
+A tag of a feature has an unexpected syntax.
+
+* `email`: the `email` tag does not look like "user@example.com"
+
+##### `maprules`
+
+An issue with the active [MapRules](https://github.com/radiant-maxar/maprules) validation rules.
+
+##### `mismatched_geometry`
+
+A feature's tags indicate it should have a different geometry than it currently does.
+
+* `area_as_line`: an unclosed way has tags implying it should be a closed area (e.g. `area=yes` or `building=yes`)
+* `vertex_as_point`: a detached node has tags implying it should be part of a way (e.g. `highway=stop`)
+* `point_as_vertex`: a vertex node has tags implying it should be detached from ways (e.g. `amenity=cafe`)
+* `unclosed_multipolygon_part`: a relation is tagged as a multipolygon but not all of its member ways form closed rings
+
+##### `missing_role`
+
+A relation membership does not have a set `role`.
+
+##### `missing_tag`
+
+A feature does not have enough tags to define what it is.
+
+* `any`: there are zero tags
+* `descriptive`: there are `area`, `name`, `type=multipolygon`, and/or meta tags (e.g. `source`), but no defining tags
+* `relation_type`: the OSM entity type is `relation` but there is no `type` tag
+* `highway_classification`: the OSM entity type is `way` and the feature is tagged as `highway=road`
+
+##### `outdated_tags`
+
+A feature has nonstandard tags.
+
+* `deprecated_tags`: the feature has tags that should be replaced or removed, as specified in `deprecated.json` or the `replacement` property of a preset
+* `incomplete_tags`: the feature has tags that indicate it should also have some other tags
+* `noncanonical_brand`: the feature indicates it should match a name-suggestion-index entry but does not have all of the given tags
+* `old_multipolygon`: the feature is a multipolygon relation with its defining tags set on its outer member way
+
+##### `private_data`
+
+An email address, phone number, or fax number is present on a residential feature that isn't also tagged as a POI.
+
+##### `suspicious_name`
+
+There's indication that a `name` tag doesn't contain the actual name of the feature. Multilingual names like `name:de` are also checked.
+
+* `generic_name`: a name matches the raw key or value of the feature's defining tags (e.g. `amenity`, `cafe`) or it matches something the name-suggestion-index discards as generic when checking the most common place names in OpenStreetMap
+* `not_name`: a name tag matches a value under the `not:name` tag
+
+##### `unsquare_way`
+
+A way has corners close to, but not quite 90°. The user can vary the "close to" degree threshold between 0° and 20°. The default is 5°. Only buildings are currently flagged.
+
+* `building`: the feature has a `building` tag
+
+#### Issue Changeset Tags
+
+To assist data reviewers, tags indicating the number and type of issues created and resolved via the user's edits are included in the changeset tags.
+
+These counts are tied to issues and not features, so edits to a single feature could both create and resolve issues while leaving still others unchanged.
+
+These tags cannot be manually removed or altered by the user—for example, by disabling rules or ignoring issues. One exception to this is that the user can change the `unsquare_way` degree threshold.
+
+The format is: `{warnings|resolved}:{type}:{subtype}={count}`
+
+Note that specific `type` and `subtype` IDs could change or vary slightly in meaning between different versions of iD.
+
+##### `warnings`
+
+The `warnings` namespace indicates issues that were created and ignored by the user. These must all be issues of severity `warning` and not `error` since errors block upload altogether and thus cannot be ignored.
+
+Prior to iD 2.16.0, these also included any warnings concerning features edited by the user, even if they weren't created via the user's edits.
+
+e.g. `warnings:disconnected_way:highway=4`
+
+##### `resolved`
+
+The `resolved` namespace indicates issues of any kind that were fixed by the user. A resolved issue did not necessarily appear under `warnings` in some previous OSM changeset.
+
+e.g. `resolved:crossing_ways:building-highway=2`

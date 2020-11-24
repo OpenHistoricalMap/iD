@@ -14,10 +14,6 @@
         "landuse": "military",
         "military": "training_area"
     },
-    "removeTags": {
-        "landuse": "military",
-        "military": "training_area"
-    },
     "terms": [
         "air force",
         "army",
@@ -36,5 +32,5 @@
         "troop",
         "war"
     ],
-    "name": "Training Area"
+    "name": "Military Training Area"
 }

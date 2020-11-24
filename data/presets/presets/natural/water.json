@@ -5,6 +5,12 @@
         "water",
         "intermittent"
     ],
+    "moreFields": [
+        "fishing",
+        "gnis/feature_id",
+        "salt",
+        "tidal"
+    ],
     "geometry": [
         "area"
     ],

@@ -1,8 +1,9 @@
 {
-    "icon": "maki-rail",
+    "icon": "temaki-train_kids",
     "fields": [
         "{attraction}",
-        "fee"
+        "fee",
+        "charge_fee"
     ],
     "geometry": [
         "point",
