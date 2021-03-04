@@ -804,12 +804,13 @@ en:
       description: Full Fill
       tooltip: "Areas are drawn fully filled."
   date_ranges:
+    title: Date Range
     start_date:
-      description: Start Date
-      tooltip: The start of your specified date range
+      description: Start Year
+      tooltip: The start year, as an integer, negatives OK
     end_date:
-      description: End Date
-      tooltip: The end of your specified date range
+      description: End Year
+      tooltip: The end year, as an integer, negatives OK
   settings:
     custom_background:
       tooltip: Edit custom background

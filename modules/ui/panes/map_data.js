@@ -6,6 +6,7 @@ import { uiSectionDataLayers } from '../sections/data_layers';
 import { uiSectionMapFeatures } from '../sections/map_features';
 import { uiSectionMapStyleOptions } from '../sections/map_style_options';
 import { uiSectionPhotoOverlays } from '../sections/photo_overlays';
+import { uiSectionDateRange } from '../sections/map_daterange';
 
 export function uiPaneMapData(context) {
 
@@ -16,6 +17,7 @@ export function uiPaneMapData(context) {
         .iconName('iD-icon-data')
         .sections([
             uiSectionDataLayers(context),
+            uiSectionDateRange(context),
             uiSectionPhotoOverlays(context),
             uiSectionMapStyleOptions(context),
             uiSectionMapFeatures(context)
