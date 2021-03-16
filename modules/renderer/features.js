@@ -449,13 +449,24 @@ export function rendererFeatures(context) {
         const fmax = context.features().dateRange[1];
 
         // strip the start/end year to integer, and treat null as meaning infinite/eternal start/end
-        const tmin = entity.tags.start_date ? parseInt(entity.tags.start_date.substr(0, 4)) : -Infinity;
-        const tmax = entity.tags.end_date ? parseInt(entity.tags.end_date.substr(0, 4)) : Infinity;
+        const tmin = features.parseDateStringToIntegerYear(entity.tags.start_date, -Infinity);
+        const tmax = features.parseDateStringToIntegerYear(entity.tags.end_date, Infinity);
 
         // the comparison
         const isinrange = ! ( (tmax < fmin) || (tmin > fmax) );
-        // if (entity.tags.name == 'Occidental Hotel') console.debug(`features.checkDateFilter: ${fmin}-${fmax} vs ${tmin}-${tmax} = ${isinrange}`);
         return isinrange;
+    };
+
+
+    features.parseDateStringToIntegerYear = function(datestring, ifblank) {
+        // expect a date string in ISO format: yyyy-mm-dd
+        // handle negative dates -yyyy-mm-dd and partial dates yyyy-mm and yyyy
+        // and supply a failover if the date is blank/unparseable
+        if (! datestring) return ifblank;  // instant fail
+
+        const getyear = /^(\-?\d+)/;
+        const yearbit = datestring.match(getyear);
+        return yearbit ? parseInt(yearbit) : ifblank;
     };
 
 
