@@ -4,6 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
+import { utilQsString, utilStringQs } from '../../util';
 
 const MIN_YEAR = -4000;
 const MAX_YEAR = (new Date()).getFullYear();
@@ -25,8 +26,9 @@ const LABEL_STYLES = [
 
 export function uiSectionDateRange(context) {
     // despite appearing as a separate panel, Map Features does the real filtering
-    // see applyDateRange() here where the filter value is set
+    // see applyDateRange() in this panel, where the dateRange value is set
     // see modules/renderer/features.js checkDateFilter() which applies the filters
+    // see modules/renderer/features.js update() which updates URL params
 
     const section = uiSection('date_ranges', context)
         .title(t('date_ranges.title'))
@@ -148,6 +150,8 @@ export function uiSectionDateRange(context) {
 
             context.features().dateRange = [minyear, maxyear];
             context.flush();
+
+            updateUrlParam();
         }
 
         function ensureValidInputs() {
@@ -166,6 +170,21 @@ export function uiSectionDateRange(context) {
             }
         }
 
+        function updateUrlParam() {
+            if (!window.mocha) {
+                const hash = utilStringQs(window.location.hash);
+
+                const daterange = context.features().dateRange;
+                if (daterange) {
+                    hash.daterange = daterange.join(',');
+                } else {
+                    delete hash.daterange;
+                }
+
+                window.location.replace('#' + utilQsString(hash, true));
+            }
+        }
+
         mindate_input.on('change', function () {
             ensureValidInputs();
             applyDateRange();
@@ -175,7 +194,19 @@ export function uiSectionDateRange(context) {
             applyDateRange();
         });
 
-        // apply now so we have context.dateRange always defined
+        // startup
+        // load the start/end date from URL params
+        // then apply it so we have context().dateRange defined as early as possible
+        let startingdaterange = utilStringQs(window.location.hash).daterange;
+        if (startingdaterange) {
+            startingdaterange = startingdaterange.split(',').map(d => parseInt(d));
+            const isvalid = (!isNaN(startingdaterange[0]) && startingdaterange[0] >= MIN_YEAR) &&
+                            (!isNaN(startingdaterange[1]) && startingdaterange[1] <= MAX_YEAR);
+            if (isvalid) {
+                mindate_input.property('value', startingdaterange[0]);
+                maxdate_input.property('value', startingdaterange[1]);
+            }
+        }
         applyDateRange();
     }
 
