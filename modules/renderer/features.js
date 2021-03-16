@@ -100,45 +100,6 @@ export function rendererFeatures(context) {
         };
     }
 
-    defineRule('date_range', function isWithinRange(tags) {
-      // Function to parse time (YYYY-MM-DD) to an INT
-      var valueToInt = function(value) {
-        return (typeof value === 'string') ?
-          parseInt(value.replace(/-/g, ''), 10) :
-          0;
-      };
-
-      // Convert the date range from the entity to a number
-      var entityRange = {
-        'start_date': valueToInt(tags.start_date),
-        'end_date': valueToInt(tags.end_date)
-      };
-
-      // These will be pulled from the on-screen controls
-      // Maybe put them in browser storage?
-      var selectedRange = {
-        'start_date': -Infinity, //valueToInt(entity['start_date']),
-        'end_date': Infinity // valueToInt(entity['end_date'])
-      };
-      if (context.features().dateRange) {
-        selectedRange.start_date = context.features().dateRange[0];
-        selectedRange.end_date = context.features().dateRange[1];
-      }
-
-    //   // console.log('v---------------------------------------------v');
-    //   // console.log('selectedRange', selectedRange);
-    //   // console.log('entityRange', entityRange);
-    //   // console.log('Return', !((selectedRange['start_date'] <= entityRange['end_date']) && (entityRange['start_date'] <= selectedRange['end_date'])));
-    //   // console.log('^---------------------------------------------^');
-
-    //   // Within range if:
-    //   //    the entity started before the selected range started
-    //   //    and also ended after the selected range started
-      return !((selectedRange.start_date <= entityRange.end_date) &&
-        (entityRange.start_date <= selectedRange.end_date));
-
-    });
-
     defineRule('points', function isPoint(tags, geometry) {
         return geometry === 'point';
     }, 200);
@@ -480,6 +441,24 @@ export function rendererFeatures(context) {
     };
 
 
+    features.checkDateFilter = function (entity) {
+        // filter by Date Range, see modules/ui/sections/map_daterange.js for the UI in a separate panel
+        // during startup or during transition, simply return true if no date
+        if (! context.features().dateRange) return true;
+        const fmin = context.features().dateRange[0];
+        const fmax = context.features().dateRange[1];
+
+        // strip the start/end year to integer, and treat null as meaning infinite/eternal start/end
+        const tmin = entity.tags.start_date ? parseInt(entity.tags.start_date.substr(0, 4)) : -Infinity;
+        const tmax = entity.tags.end_date ? parseInt(entity.tags.end_date.substr(0, 4)) : Infinity;
+
+        // the comparison
+        const isinrange = ! ( (tmax < fmin) || (tmin > fmax) );
+        // if (entity.tags.name == 'Occidental Hotel') console.debug(`features.checkDateFilter: ${fmin}-${fmax} vs ${tmin}-${tmax} = ${isinrange}`);
+        return isinrange;
+    };
+
+
     features.getParents = function(entity, resolver, geometry) {
         if (geometry === 'point') return [];
 
@@ -522,6 +501,9 @@ export function rendererFeatures(context) {
         if (!_hidden.length) return false;
         if (!entity.version) return false;
         if (_forceVisible[entity.id]) return false;
+
+        const matchesdatefilter = features.checkDateFilter(entity);
+        if (! matchesdatefilter) return true;
 
         var matches = Object.keys(features.getMatches(entity, resolver, geometry));
         return matches.length && matches.every(function(k) { return features.hidden(k); });
