@@ -6,6 +6,7 @@ import { uiSectionDataLayers } from '../sections/data_layers';
 import { uiSectionMapFeatures } from '../sections/map_features';
 import { uiSectionMapStyleOptions } from '../sections/map_style_options';
 import { uiSectionPhotoOverlays } from '../sections/photo_overlays';
+import { uiSectionDateRange } from '../sections/map_daterange';
 
 export function uiPaneMapData(context) {
 
@@ -18,6 +19,7 @@ export function uiPaneMapData(context) {
             uiSectionDataLayers(context),
             uiSectionPhotoOverlays(context),
             uiSectionMapStyleOptions(context),
+            uiSectionDateRange(context),
             uiSectionMapFeatures(context)
         ]);
 

@@ -741,9 +741,6 @@ en:
         title: "Panoramic Photos"
         tooltip: "360° photos"
   feature:
-    date_range:
-      description: Show features from all dates
-      tooltip: "When selected, shows all feature dates, when unselected only shows the specified dates"
     points:
       description: Points
       tooltip: "Points of Interest"
@@ -804,12 +801,15 @@ en:
       description: Full Fill
       tooltip: "Areas are drawn fully filled."
   date_ranges:
+    title: Date Range
     start_date:
-      description: Start Date
-      tooltip: The start of your specified date range
+      description: Start Year
+      tooltip: The start year, as an integer, negatives OK
+      placeholder: e.g. 1487
     end_date:
-      description: End Date
-      tooltip: The end of your specified date range
+      description: End Year
+      tooltip: The end year, as an integer, negatives OK
+      placeholder: e.g. 1976
   settings:
     custom_background:
       tooltip: Edit custom background
