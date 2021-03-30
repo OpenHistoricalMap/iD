@@ -492,7 +492,6 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenPreset = function(preset, geometry) {
-        if (!_hidden.length) return false;
         if (!preset.tags) return false;
 
         var test = preset.setTags({}, geometry);
@@ -509,7 +508,6 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenFeature = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version) return false;
         if (_forceVisible[entity.id]) return false;
 
@@ -522,7 +520,6 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenChild = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version || geometry === 'point') return false;
         if (_forceVisible[entity.id]) return false;
 
@@ -539,8 +536,6 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
-        if (!_hidden.length) return false;
-
         var childNodes, connections;
         if (entity.type === 'midpoint') {
             childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -562,17 +557,13 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
-        if (!entity.version) return false;
-
+        // wrapper function to either isHiddenChild() or isHiddenFeature()
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
     };
 
 
     features.filter = function(d, resolver) {
-        if (!_hidden.length) return d;
-
         var result = [];
         for (var i = 0; i < d.length; i++) {
             var entity = d[i];
