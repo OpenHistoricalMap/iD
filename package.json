@@ -1,11 +1,11 @@
 {
-  "name": "iD",
+  "name": "@openhistoricalmap/id",
   "version": "2.18.5",
-  "description": "A friendly editor for OpenStreetMap",
+  "description": "A friendly editor for OpenHistoricalMap",
   "main": "dist/iD.min.js",
-  "repository": "github:openstreetmap/iD",
-  "homepage": "https://github.com/openstreetmap/iD",
-  "bugs": "https://github.com/openstreetmap/iD/issues",
+  "repository": "github:OpenHistoricalMap/iD",
+  "homepage": "https://github.com/OpenHistoricalMap/iD",
+  "bugs": "https://github.com/OpenHistoricalMap/iD/issues",
   "keywords": [
     "editor",
     "openstreetmap"
