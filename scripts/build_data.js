@@ -797,7 +797,7 @@ function translationsToYAML(translations) {
 
 function writeEnJson(tstrings) {
   const readCoreYaml = fs.readFileSync('data/core.yaml', 'utf8');
-  const readImagery = fs.readFileSync('node_modules/editor-layer-index/i18n/en.yaml', 'utf8');
+  const readImagery = fs.readFileSync('node_modules/ohm-editor-layer-index/i18n/en.yaml', 'utf8');
   const readCommunity = fs.readFileSync('node_modules/osm-community-index/i18n/en.yaml', 'utf8');
   const readManualImagery = fs.readFileSync('data/manual_imagery.json', 'utf8');
 
