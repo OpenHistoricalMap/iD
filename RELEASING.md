@@ -15,7 +15,7 @@ on the iD project, and then create this file with contents like<br><pre>
 #### Update `develop` branch
 ```bash
 $  git checkout develop
-$  rm -rf node_modules/editor-layer-index/
+$  rm -rf node_modules/ohm-editor-layer-index/
 $  npm install
 $  npm run imagery
 $  npm run all

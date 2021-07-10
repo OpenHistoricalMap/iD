@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const fs = require('fs');
-let sources = require('editor-layer-index/imagery.json');
+let sources = require('ohm-editor-layer-index/imagery.json');
 const prettyStringify = require('json-stringify-pretty-compact');
 
 if (fs.existsSync('./data/manual_imagery.json')) {
@@ -9,10 +9,6 @@ if (fs.existsSync('./data/manual_imagery.json')) {
 }
 
 let imagery = [];
-
-// ignore imagery more than 20 years old..
-let cutoffDate = new Date();
-cutoffDate.setFullYear(cutoffDate.getFullYear() - 20);
 
 
 const discard = {
@@ -115,7 +111,6 @@ sources.forEach(source => {
     endDate = new Date(source.end_date);
     isValid = !isNaN(endDate.getTime());
     if (isValid) {
-      if (endDate <= cutoffDate) return;  // too old
       im.endDate = endDate;
     }
   }
