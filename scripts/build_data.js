@@ -392,6 +392,31 @@ function addDateRange(preset) {
   return preset;
 }
 
+function addLicense(preset) {
+  // Add the source & license fields to every preset
+  preset = preset || {};
+  preset.fields = preset.fields || [];
+
+  // these fields are inserted after "name" if exists, or else at the end
+  var addFields = [
+    'source',
+    'license',
+  ];
+
+  addFields.forEach(function(field) {
+    if (preset.fields.indexOf(field) !== -1) return;  // field already listed
+
+    var aftername = preset.fields.indexOf('name');
+    if (aftername === -1) {
+      preset.fields.push(field);
+    } else {
+      preset.fields.splice(aftername + 1, 0, field);
+    }
+  });
+
+  return preset;
+}
+
 function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
   let presets = {};
 
@@ -401,6 +426,7 @@ function generatePresets(tstrings, faIcons, tnpIcons, searchableFieldIDs) {
 
     validate(file, preset, presetSchema);
     preset = addDateRange(preset);
+    preset = addLicense(preset);
 
     tstrings.presets[id] = {
       name: preset.name,
@@ -697,7 +723,7 @@ function validateCategoryPresets(categories, presets) {
 
 function validatePresetFields(presets, fields) {
   const betweenBracketsRegex = /([^{]*?)(?=\})/;
-  const maxFieldsBeforeError = 12;
+  const maxFieldsBeforeError = 15;
   const maxFieldsBeforeWarning = 8;
 
   for (let presetID in presets) {

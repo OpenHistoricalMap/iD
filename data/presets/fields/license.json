@@ -1,0 +1,7 @@
+{
+    "key": "license",
+    "type": "text",
+    "universal": true,
+    "label": "License",
+    "placeholder": "license"
+}
