@@ -1365,6 +1365,12 @@ en:
       liaison:
         # liaison=*
         label: Type
+      license:
+        # license=*
+        label: License
+        # license field placeholder
+        placeholder: license
+        terms: '[translate with synonyms or related terms for ''License'', separated by commas]'
       line_attachment:
         # line_attachment=*
         label: Line Attachment
@@ -2425,9 +2431,10 @@ en:
         label: People Served
       source:
         # source=*
-        label: Sources
-        # 'terms: reference'
-        terms: '[translate with synonyms or related terms for ''Sources'', separated by commas]'
+        label: Source
+        # source field placeholder
+        placeholder: source(s)
+        terms: '[translate with synonyms or related terms for ''Source'', separated by commas]'
       species/wikidata:
         # 'species:wikidata=*, species:wikipedia=*'
         label: Species Wikidata
