@@ -3954,6 +3954,11 @@
                 "liaison": {
                     "label": "Type"
                 },
+                "license": {
+                    "label": "License",
+                    "terms": "",
+                    "placeholder": "license"
+                },
                 "line_attachment": {
                     "label": "Line Attachment"
                 },
@@ -4812,8 +4817,9 @@
                     "label": "Type"
                 },
                 "source": {
-                    "label": "Sources",
-                    "terms": "reference"
+                    "label": "Source",
+                    "terms": "",
+                    "placeholder": "source(s)"
                 },
                 "species/wikidata": {
                     "label": "Species Wikidata",
@@ -11065,7 +11071,7 @@
                 "attribution": {
                     "text": "© Stockholm municipality, CC0"
                 },
-                "description": "Orthophotos from the municipality of Stockholm 2016, CC0 license",
+                "description": "Orthophotos from the municipality of Stockholm 2018, CC0 license",
                 "name": "Stockholm Orthophoto"
             },
             "susono_shizuoka_jp_orthophoto": {
