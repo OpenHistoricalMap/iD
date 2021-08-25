@@ -72,6 +72,27 @@ export function uiToolSave(context) {
         }
     }
 
+    function customFieldValidation() {
+        // return a list of invalidities: field name other other such message
+        var invalid_fields = [];
+
+        var start_date = context.container().select('div.wrap-form-field.wrap-form-field-start_date input[type="text"]').node();
+        var end_date = context.container().select('div.wrap-form-field.wrap-form-field-end_date input[type="text"]').node();
+        start_date = start_date ? start_date.value : null;
+        end_date = end_date ? end_date.value : null;
+        var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
+        var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
+        var dates_regex3 = /^\-?\d\d\d\d$/;
+
+        if (start_date && ! start_date.match(dates_regex1) && ! start_date.match(dates_regex2) && ! start_date.match(dates_regex3)) {
+                invalid_fields.push("Start Date: YYYY-MM-DD, YYYY-MM, or YYYY");
+        }
+        if (end_date && ! end_date.match(dates_regex1) && ! end_date.match(dates_regex2) && ! end_date.match(dates_regex3)) {
+                invalid_fields.push("End Date: YYYY-MM-DD, YYYY-MM, or YYYY");
+        }
+
+        return invalid_fields;
+    }
 
     tool.render = function(selection) {
         tooltipBehavior = uiTooltip()
@@ -89,6 +110,12 @@ export function uiToolSave(context) {
                 lastPointerUpType = d3_event.pointerType;
             })
             .on('click', function() {
+                var invalids = customFieldValidation();
+                if (invalids && invalids.length) {
+                    var errmsg = t('save.error') + "\n" + invalids.join("\n");
+                    return alert(errmsg);
+                }
+
                 d3_event.preventDefault();
 
                 save();

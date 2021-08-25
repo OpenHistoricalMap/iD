@@ -1,6 +1,6 @@
 {
     "key": "end_date",
-    "type": "date",
+    "type": "text",
     "universal": true,
     "label": "End Date",
     "placeholder": "YYYY-MM-DD"
