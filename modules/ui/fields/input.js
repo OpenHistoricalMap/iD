@@ -65,8 +65,8 @@ export function uiFieldText(field, context) {
             .attr('readonly', isLocked || null)
             .on('input', change(true))
             .on('blur', change())
-            .on('change', change());
-
+            .on('change', change())
+            .on('change', checkFieldValidation());
 
         if (field.type === 'tel') {
             updatePhonePlaceholder();
@@ -165,6 +165,40 @@ export function uiFieldText(field, context) {
         return num;
     }
 
+
+    function checkFieldValidation() {
+        function validateFieldValue_PartialDate(value, fieldname) {
+            var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
+            var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
+            var dates_regex3 = /^\-?\d\d\d\d$/;
+
+            if (! value.match(dates_regex1) && ! value.match(dates_regex2) && ! value.match(dates_regex3)) {
+                return fieldname + ": Accepted date formats: YYYY-MM-DD YYYY-MM YYYY";
+            }
+        }
+
+        return function() {
+            var value = utilGetSetValue(input);
+            var label = field.label();
+
+            var errmsg;  // temp variable for each error message as we check
+            var errmsgs = [];  // collected list of error messages to report
+
+            // validation: start_date and end_date = ISO date or or partial date
+            var check_partialdate = field.key == 'start_date' || field.key == 'end_date';
+            if (check_partialdate && value) {
+                errmsg = validateFieldValue_PartialDate(value, label);
+                if (errmsg) errmsgs.push(errmsg);
+            }
+
+            // any errmsgs = alert and empty and focus
+            if (errmsgs.length) {
+                alert(errmsgs.join("\n"));
+                utilGetSetValue(input, '');
+                field.focus();
+            }
+        };
+    }
 
     function change(onInput) {
         return function() {
