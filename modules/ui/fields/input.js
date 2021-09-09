@@ -63,6 +63,8 @@ export function uiFieldText(field, context) {
         input
             .classed('disabled', !!isLocked)
             .attr('readonly', isLocked || null)
+            .on('input', change(true))
+            .on('blur', change())
             .on('change', change());
 
         selection.on('keydown', function () {
