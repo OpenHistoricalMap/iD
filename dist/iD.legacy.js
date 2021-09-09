@@ -10909,7 +10909,7 @@
 
 	var filterEvents = {};
 
-	var event = null;
+	var event$1 = null;
 
 	if (typeof document !== "undefined") {
 	  var element = document.documentElement;
@@ -10930,12 +10930,12 @@
 
 	function contextListener(listener, index, group) {
 	  return function(event1) {
-	    var event0 = event; // Events can be reentrant (e.g., focus).
-	    event = event1;
+	    var event0 = event$1; // Events can be reentrant (e.g., focus).
+	    event$1 = event1;
 	    try {
 	      listener.call(this, this.__data__, index, group);
 	    } finally {
-	      event = event0;
+	      event$1 = event0;
 	    }
 	  };
 	}
@@ -11005,13 +11005,13 @@
 	}
 
 	function customEvent(event1, listener, that, args) {
-	  var event0 = event;
-	  event1.sourceEvent = event;
-	  event = event1;
+	  var event0 = event$1;
+	  event1.sourceEvent = event$1;
+	  event$1 = event1;
 	  try {
 	    return listener.apply(that, args);
 	  } finally {
-	    event = event0;
+	    event$1 = event0;
 	  }
 	}
 
@@ -11101,7 +11101,7 @@
 	}
 
 	function sourceEvent() {
-	  var current = event, source;
+	  var current = event$1, source;
 	  while (source = current.sourceEvent) { current = source; }
 	  return current;
 	}
@@ -11145,12 +11145,12 @@
 	}
 
 	function nopropagation() {
-	  event.stopImmediatePropagation();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function noevent() {
-	  event.preventDefault();
-	  event.stopImmediatePropagation();
+	  event$1.preventDefault();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function dragDisable(view) {
@@ -11205,7 +11205,7 @@
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultContainer() {
@@ -11213,7 +11213,7 @@
 	}
 
 	function defaultSubject(d) {
-	  return d == null ? {x: event.x, y: event.y} : d;
+	  return d == null ? {x: event$1.x, y: event$1.y} : d;
 	}
 
 	function defaultTouchable() {
@@ -11249,27 +11249,27 @@
 	    if (touchending || !filter.apply(this, arguments)) { return; }
 	    var gesture = beforestart("mouse", container.apply(this, arguments), mouse, this, arguments);
 	    if (!gesture) { return; }
-	    select(event.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
-	    dragDisable(event.view);
+	    select(event$1.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
+	    dragDisable(event$1.view);
 	    nopropagation();
 	    mousemoving = false;
-	    mousedownx = event.clientX;
-	    mousedowny = event.clientY;
+	    mousedownx = event$1.clientX;
+	    mousedowny = event$1.clientY;
 	    gesture("start");
 	  }
 
 	  function mousemoved() {
 	    noevent();
 	    if (!mousemoving) {
-	      var dx = event.clientX - mousedownx, dy = event.clientY - mousedowny;
+	      var dx = event$1.clientX - mousedownx, dy = event$1.clientY - mousedowny;
 	      mousemoving = dx * dx + dy * dy > clickDistance2;
 	    }
 	    gestures.mouse("drag");
 	  }
 
 	  function mouseupped() {
-	    select(event.view).on("mousemove.drag mouseup.drag", null);
-	    yesdrag(event.view, mousemoving);
+	    select(event$1.view).on("mousemove.drag mouseup.drag", null);
+	    yesdrag(event$1.view, mousemoving);
 	    noevent();
 	    gestures.mouse("end");
 	  }
@@ -11278,7 +11278,7 @@
 	    var arguments$1 = arguments;
 
 	    if (!filter.apply(this, arguments)) { return; }
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        c = container.apply(this, arguments),
 	        n = touches.length, i, gesture;
 
@@ -11291,7 +11291,7 @@
 	  }
 
 	  function touchmoved() {
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        n = touches.length, i, gesture;
 
 	    for (i = 0; i < n; ++i) {
@@ -11303,7 +11303,7 @@
 	  }
 
 	  function touchended() {
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        n = touches.length, i, gesture;
 
 	    if (touchending) { clearTimeout(touchending); }
@@ -11321,7 +11321,7 @@
 	        sublisteners = listeners.copy();
 
 	    if (!customEvent(new DragEvent(drag, "beforestart", s, id, active, p[0], p[1], 0, 0, sublisteners), function() {
-	      if ((event.subject = s = subject.apply(that, args)) == null) { return false; }
+	      if ((event$1.subject = s = subject.apply(that, args)) == null) { return false; }
 	      dx = s.x - p[0] || 0;
 	      dy = s.y - p[1] || 0;
 	      return true;
@@ -13163,17 +13163,17 @@
 	var identity$2 = new Transform(1, 0, 0);
 
 	function nopropagation$1() {
-	  event.stopImmediatePropagation();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function noevent$1() {
-	  event.preventDefault();
-	  event.stopImmediatePropagation();
+	  event$1.preventDefault();
+	  event$1.stopImmediatePropagation();
 	}
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter$1() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultExtent() {
@@ -13194,7 +13194,7 @@
 	}
 
 	function defaultWheelDelta() {
-	  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002);
+	  return -event$1.deltaY * (event$1.deltaMode === 1 ? 0.05 : event$1.deltaMode ? 1 : 0.002);
 	}
 
 	function defaultTouchable$1() {
@@ -13413,12 +13413,12 @@
 	  function mousedowned() {
 	    if (touchending || !filter.apply(this, arguments)) { return; }
 	    var g = gesture(this, arguments, true),
-	        v = select(event.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
+	        v = select(event$1.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
 	        p = mouse(this),
-	        x0 = event.clientX,
-	        y0 = event.clientY;
+	        x0 = event$1.clientX,
+	        y0 = event$1.clientY;
 
-	    dragDisable(event.view);
+	    dragDisable(event$1.view);
 	    nopropagation$1();
 	    g.mouse = [p, this.__zoom.invert(p)];
 	    interrupt(this);
@@ -13427,7 +13427,7 @@
 	    function mousemoved() {
 	      noevent$1();
 	      if (!g.moved) {
-	        var dx = event.clientX - x0, dy = event.clientY - y0;
+	        var dx = event$1.clientX - x0, dy = event$1.clientY - y0;
 	        g.moved = dx * dx + dy * dy > clickDistance2;
 	      }
 	      g.zoom("mouse", constrain(translate(g.that.__zoom, g.mouse[0] = mouse(g.that), g.mouse[1]), g.extent, translateExtent));
@@ -13435,7 +13435,7 @@
 
 	    function mouseupped() {
 	      v.on("mousemove.zoom mouseup.zoom", null);
-	      yesdrag(event.view, g.moved);
+	      yesdrag(event$1.view, g.moved);
 	      noevent$1();
 	      g.end();
 	    }
@@ -13446,7 +13446,7 @@
 	    var t0 = this.__zoom,
 	        p0 = mouse(this),
 	        p1 = t0.invert(p0),
-	        k1 = t0.k * (event.shiftKey ? 0.5 : 2),
+	        k1 = t0.k * (event$1.shiftKey ? 0.5 : 2),
 	        t1 = constrain(translate(scale(t0, k1), p0, p1), extent.apply(this, arguments), translateExtent);
 
 	    noevent$1();
@@ -13456,9 +13456,9 @@
 
 	  function touchstarted() {
 	    if (!filter.apply(this, arguments)) { return; }
-	    var touches = event.touches,
+	    var touches = event$1.touches,
 	        n = touches.length,
-	        g = gesture(this, arguments, event.changedTouches.length === n),
+	        g = gesture(this, arguments, event$1.changedTouches.length === n),
 	        started, i, t, p;
 
 	    nopropagation$1();
@@ -13481,7 +13481,7 @@
 	  function touchmoved() {
 	    if (!this.__zooming) { return; }
 	    var g = gesture(this, arguments),
-	        touches = event.changedTouches,
+	        touches = event$1.changedTouches,
 	        n = touches.length, i, t, p, l;
 
 	    noevent$1();
@@ -13510,7 +13510,7 @@
 	  function touchended() {
 	    if (!this.__zooming) { return; }
 	    var g = gesture(this, arguments),
-	        touches = event.changedTouches,
+	        touches = event$1.changedTouches,
 	        n = touches.length, i, t;
 
 	    nopropagation$1();
@@ -18059,22 +18059,22 @@
 
 
 	        function matches(binding, testShift) {
-	            var event$1 = event;
+	            var event = event$1;
 	            var isMatch = false;
 	            var tryKeyCode = true;
 
 	            // Prefer a match on `KeyboardEvent.key`
-	            if (event$1.key !== undefined) {
-	                tryKeyCode = (event$1.key.charCodeAt(0) > 255);  // outside ISO-Latin-1
+	            if (event.key !== undefined) {
+	                tryKeyCode = (event.key.charCodeAt(0) > 255);  // outside ISO-Latin-1
 	                isMatch = true;
 
 	                if (binding.event.key === undefined) {
 	                    isMatch = false;
 	                } else if (Array.isArray(binding.event.key)) {
-	                    if (binding.event.key.map(function(s) { return s.toLowerCase(); }).indexOf(event$1.key.toLowerCase()) === -1)
+	                    if (binding.event.key.map(function(s) { return s.toLowerCase(); }).indexOf(event.key.toLowerCase()) === -1)
 	                        { isMatch = false; }
 	                } else {
-	                    if (event$1.key.toLowerCase() !== binding.event.key.toLowerCase())
+	                    if (event.key.toLowerCase() !== binding.event.key.toLowerCase())
 	                        { isMatch = false; }
 	                }
 	            }
@@ -18083,18 +18083,18 @@
 	            // - browser doesn't support `KeyboardEvent.key`
 	            // - `KeyboardEvent.key` is outside ISO-Latin-1 range (cyrillic?)
 	            if (!isMatch && tryKeyCode) {
-	                isMatch = (event$1.keyCode === binding.event.keyCode);
+	                isMatch = (event.keyCode === binding.event.keyCode);
 	            }
 
 	            if (!isMatch) { return false; }
 
 	            // test modifier keys
-	            if (!(event$1.ctrlKey && event$1.altKey)) {  // if both are set, assume AltGr and skip it - #4096
-	                if (event$1.ctrlKey !== binding.event.modifiers.ctrlKey) { return false; }
-	                if (event$1.altKey !== binding.event.modifiers.altKey) { return false; }
+	            if (!(event.ctrlKey && event.altKey)) {  // if both are set, assume AltGr and skip it - #4096
+	                if (event.ctrlKey !== binding.event.modifiers.ctrlKey) { return false; }
+	                if (event.altKey !== binding.event.modifiers.altKey) { return false; }
 	            }
-	            if (event$1.metaKey !== binding.event.modifiers.metaKey) { return false; }
-	            if (testShift && event$1.shiftKey !== binding.event.modifiers.shiftKey) { return false; }
+	            if (event.metaKey !== binding.event.modifiers.metaKey) { return false; }
+	            if (testShift && event.shiftKey !== binding.event.modifiers.shiftKey) { return false; }
 
 	            return true;
 	        }
@@ -18107,7 +18107,7 @@
 
 
 	    function bubble() {
-	        var tagName = select(event.target).node().tagName;
+	        var tagName = select(event$1.target).node().tagName;
 	        if (tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA') {
 	            return;
 	        }
@@ -27230,7 +27230,7 @@
 
 
 	    function keydown() {
-	        if (_altDisables && event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (_altDisables && event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            _selection.selectAll('.hover')
 	                .classed('hover-suppressed', true)
 	                .classed('hover', false);
@@ -27244,7 +27244,7 @@
 
 
 	    function keyup() {
-	        if (_altDisables && event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (_altDisables && event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            _selection.selectAll('.hover-suppressed')
 	                .classed('hover-suppressed', false)
 	                .classed('hover', true);
@@ -27282,7 +27282,7 @@
 
 
 	        function eventTarget() {
-	            var datum = event.target && event.target.__data__;
+	            var datum = event$1.target && event$1.target.__data__;
 	            if (typeof datum !== 'object') { return null; }
 	            if (!(datum instanceof osmEntity) && datum.properties && (datum.properties.entity instanceof osmEntity)) {
 	                return datum.properties.entity;
@@ -27293,8 +27293,8 @@
 	        function pointerover() {
 	            // ignore mouse hovers with buttons pressed unless dragging
 	            if (context.mode().id.indexOf('drag') === -1 &&
-	                (!event.pointerType || event.pointerType === 'mouse') &&
-	                event.buttons) { return; }
+	                (!event$1.pointerType || event$1.pointerType === 'mouse') &&
+	                event$1.buttons) { return; }
 
 	            var target = eventTarget();
 	            if (target && _targets.indexOf(target) === -1) {
@@ -27378,7 +27378,7 @@
 	                }
 	            }
 
-	            var suppressed = _altDisables && event && event.altKey;
+	            var suppressed = _altDisables && event$1 && event$1.altKey;
 
 	            if (selector.trim().length) {
 	                // remove the first comma
@@ -27466,13 +27466,13 @@
 	    function datum() {
 	        var mode = context.mode();
 	        var isNote = mode && (mode.id.indexOf('note') !== -1);
-	        if (event.altKey || isNote) { return {}; }
+	        if (event$1.altKey || isNote) { return {}; }
 
 	        var element;
-	        if (event.type === 'keydown') {
+	        if (event$1.type === 'keydown') {
 	            element = _lastMouse && _lastMouse.target;
 	        } else {
-	            element = event.target;
+	            element = event$1.target;
 	        }
 
 	        // When drawing, snap only to touch targets..
@@ -27487,10 +27487,10 @@
 
 	        var pointerLocGetter = utilFastMouse(this);
 	        _downPointer = {
-	            id: event.pointerId || 'mouse',
+	            id: event$1.pointerId || 'mouse',
 	            pointerLocGetter: pointerLocGetter,
 	            downTime: +new Date(),
-	            downLoc: pointerLocGetter(event)
+	            downLoc: pointerLocGetter(event$1)
 	        };
 
 	        dispatch$1.call('down', this, datum());
@@ -27498,23 +27498,23 @@
 
 	    function pointerup() {
 
-	        if (!_downPointer || _downPointer.id !== (event.pointerId || 'mouse')) { return; }
+	        if (!_downPointer || _downPointer.id !== (event$1.pointerId || 'mouse')) { return; }
 
 	        var downPointer = _downPointer;
 	        _downPointer = null;
 
-	        _lastPointerUpEvent = event;
+	        _lastPointerUpEvent = event$1;
 
 	        if (downPointer.isCancelled) { return; }
 
 	        var t2 = +new Date();
-	        var p2 = downPointer.pointerLocGetter(event);
+	        var p2 = downPointer.pointerLocGetter(event$1);
 	        var dist = geoVecLength(downPointer.downLoc, p2);
 
 	        if (dist < _closeTolerance || (dist < _tolerance && (t2 - downPointer.downTime) < 500)) {
 	            // Prevent a quick second click
 	            select(window).on('click.draw-block', function() {
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            }, true);
 
 	            context.map().dblclickZoomEnable(false);
@@ -27530,9 +27530,9 @@
 
 	    function pointermove() {
 	        if (_downPointer &&
-	            _downPointer.id === (event.pointerId || 'mouse') &&
+	            _downPointer.id === (event$1.pointerId || 'mouse') &&
 	            !_downPointer.isCancelled) {
-	            var p2 = _downPointer.pointerLocGetter(event);
+	            var p2 = _downPointer.pointerLocGetter(event$1);
 	            var dist = geoVecLength(_downPointer.downLoc, p2);
 	            if (dist >= _closeTolerance) {
 	                _downPointer.isCancelled = true;
@@ -27540,23 +27540,23 @@
 	            }
 	        }
 
-	        if ((event.pointerType && event.pointerType !== 'mouse') ||
-	            event.buttons ||
+	        if ((event$1.pointerType && event$1.pointerType !== 'mouse') ||
+	            event$1.buttons ||
 	            _downPointer) { return; }
 
 	        // HACK: Mobile Safari likes to send one or more `mouse` type pointermove
 	        // events immediately after non-mouse pointerup events; detect and ignore them.
 	        if (_lastPointerUpEvent &&
 	            _lastPointerUpEvent.pointerType !== 'mouse' &&
-	            event.timeStamp - _lastPointerUpEvent.timeStamp < 100) { return; }
+	            event$1.timeStamp - _lastPointerUpEvent.timeStamp < 100) { return; }
 
-	        _lastMouse = event;
+	        _lastMouse = event$1;
 	        dispatch$1.call('move', this, datum());
 	    }
 
 	    function pointercancel() {
 	        if (_downPointer &&
-	            _downPointer.id === (event.pointerId || 'mouse')) {
+	            _downPointer.id === (event$1.pointerId || 'mouse')) {
 
 	            if (!_downPointer.isCancelled) {
 	                dispatch$1.call('downcancel', this);
@@ -27609,8 +27609,8 @@
 
 	    // treat a spacebar press like a click
 	    function space() {
-	        event.preventDefault();
-	        event.stopPropagation();
+	        event$1.preventDefault();
+	        event$1.stopPropagation();
 
 	        var currSpace = context.map().mouse();
 	        if (_disableSpace && _lastSpace) {
@@ -27627,8 +27627,8 @@
 	        _disableSpace = true;
 
 	        select(window).on('keyup.space-block', function() {
-	            event.preventDefault();
-	            event.stopPropagation();
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            _disableSpace = false;
 	            select(window).on('keyup.space-block', null);
 	        });
@@ -27642,19 +27642,19 @@
 
 
 	    function backspace() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('undo');
 	    }
 
 
 	    function del() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('cancel');
 	    }
 
 
 	    function ret() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('finish');
 	    }
 
@@ -28634,7 +28634,7 @@
 
 	        if (_operation.availableForKeypress && !_operation.availableForKeypress()) { return; }
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var disabled = _operation.disabled();
 
@@ -29378,7 +29378,7 @@
 
 
 	    function finish() {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        context.replace(actionNoop(), annotation);
 	        context.enter(modeSelect(context, entityIDs));
 	    }
@@ -29596,7 +29596,7 @@
 
 
 	    function finish() {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        context.replace(actionNoop(), annotation);
 	        context.enter(modeSelect(context, entityIDs));
 	        stopNudge();
@@ -29683,7 +29683,7 @@
 	        // prevent paste during low zoom selection
 	        if (!context.map().withinEditableZoom()) { return; }
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var baseGraph = context.graph();
 	        var mouse = context.map().mouse();
@@ -29801,7 +29801,7 @@
 
 	        if (_pointerId) { return; }
 
-	        _pointerId = event.pointerId || 'mouse';
+	        _pointerId = event$1.pointerId || 'mouse';
 
 	        _target = this;
 	        _event = eventOf(_target, arguments);
@@ -29810,7 +29810,7 @@
 	        var pointerLocGetter = utilFastMouse(_surface || _target.parentNode);
 
 	        var offset;
-	        var startOrigin = pointerLocGetter(event);
+	        var startOrigin = pointerLocGetter(event$1);
 	        var started = false;
 	        var selectEnable = d3_event_userSelectSuppress();
 
@@ -29825,17 +29825,17 @@
 	            offset = [0, 0];
 	        }
 
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 
 	        function pointermove() {
-	            if (_pointerId !== (event.pointerId || 'mouse')) { return; }
+	            if (_pointerId !== (event$1.pointerId || 'mouse')) { return; }
 
-	            var p = pointerLocGetter(event);
+	            var p = pointerLocGetter(event$1);
 
 	            if (!started) {
 	                var dist = geoVecLength(startOrigin,  p);
-	                var tolerance = event.pointerType === 'pen' ? _penTolerancePx : _tolerancePx;
+	                var tolerance = event$1.pointerType === 'pen' ? _penTolerancePx : _tolerancePx;
 	                // don't start until the drag has actually moved somewhat
 	                if (dist < tolerance) { return; }
 
@@ -29847,8 +29847,8 @@
 	            } else {
 
 	                startOrigin = p;
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 
 	                var dx = p[0] - startOrigin[0];
 	                var dy = p[1] - startOrigin[1];
@@ -29862,14 +29862,14 @@
 
 
 	        function pointerup() {
-	            if (_pointerId !== (event.pointerId || 'mouse')) { return; }
+	            if (_pointerId !== (event$1.pointerId || 'mouse')) { return; }
 
 	            _pointerId = null;
 
 	            if (started) {
 	                _event({ type: 'end' });
 
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            }
 
 	            select(window)
@@ -29888,7 +29888,7 @@
 	        if (_selector) {
 	            delegate = function() {
 	                var root = this;
-	                var target = event.target;
+	                var target = event$1.target;
 	                for (; target && target !== root; target = target.parentNode) {
 	                    var datum = target.__data__;
 
@@ -30026,7 +30026,7 @@
 
 
 	    function keydown() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope')) {
 	                context.surface()
 	                    .classed('nope-suppressed', true);
@@ -30039,7 +30039,7 @@
 
 
 	    function keyup() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope-suppressed')) {
 	                context.surface()
 	                    .classed('nope', true);
@@ -30054,7 +30054,7 @@
 	    function start(entity) {
 	        _wasMidpoint = entity.type === 'midpoint';
 	        var hasHidden = context.features().hasHiddenConnections(entity, context.graph());
-	        _isCancelled = !context.editable() || event.sourceEvent.shiftKey || hasHidden;
+	        _isCancelled = !context.editable() || event$1.sourceEvent.shiftKey || hasHidden;
 
 
 	        if (_isCancelled) {
@@ -30094,13 +30094,13 @@
 	    // related code
 	    // - `behavior/draw.js` `datum()`
 	    function datum() {
-	        var event$1 = event && event.sourceEvent;
-	        if (!event$1 || event$1.altKey) {
+	        var event = event$1 && event$1.sourceEvent;
+	        if (!event || event.altKey) {
 	            return {};
 	        } else {
 	            // When dragging, snap only to touch targets..
 	            // (this excludes area fills and active drawing elements)
-	            var d = event$1.target.__data__;
+	            var d = event.target.__data__;
 	            return (d && d.properties && d.properties.target) ? d : {};
 	        }
 	    }
@@ -30109,7 +30109,7 @@
 	    function doMove(entity, nudge) {
 	        nudge = nudge || [0, 0];
 
-	        var currPoint = (event && event.point) || context.projection(_lastLoc);
+	        var currPoint = (event$1 && event$1.point) || context.projection(_lastLoc);
 	        var currMouse = geoVecSubtract(currPoint, nudge);
 	        var loc = context.projection.invert(currMouse);
 
@@ -30272,14 +30272,14 @@
 
 	    function move(entity) {
 	        if (_isCancelled) { return; }
-	        event.sourceEvent.stopPropagation();
+	        event$1.sourceEvent.stopPropagation();
 
-	        context.surface().classed('nope-disabled', event.sourceEvent.altKey);
+	        context.surface().classed('nope-disabled', event$1.sourceEvent.altKey);
 
-	        _lastLoc = context.projection.invert(event.point);
+	        _lastLoc = context.projection.invert(event$1.point);
 
 	        doMove(entity);
-	        var nudge = geoViewportEdge(event.point, context.map().dimensions());
+	        var nudge = geoViewportEdge(event$1.point, context.map().dimensions());
 	        if (nudge) {
 	            startNudge(entity, nudge);
 	        } else {
@@ -36232,7 +36232,7 @@
 
 
 	        function zoomPan() {
-	            var t = event.transform;
+	            var t = event$1.transform;
 	            context.container().select('.photoviewer .osc-image-wrap')
 	                .call(utilSetTransform, t.x, t.y, t.k);
 	        }
@@ -43124,7 +43124,7 @@
 	      .attr('id', hiresDomId)
 	      .property('checked', _hires)
 	      .on('click', function () {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 	        _hires = !_hires;
 	        _resolution = _hires ? 1024 : 512;
@@ -48475,7 +48475,7 @@
 
 	        // fast submit if user presses cmd+enter
 	        function keydown() {
-	            if (!(event.keyCode === 13 && event.metaKey)) { return; }
+	            if (!(event$1.keyCode === 13 && event$1.metaKey)) { return; }
 
 	            var osm = services.osm;
 	            if (!osm) { return; }
@@ -48485,7 +48485,7 @@
 
 	            if (!_note.newComment) { return; }
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            select(this)
 	                .on('keydown.note-input', null);
@@ -48563,7 +48563,7 @@
 	            .append('span')
 	            .text(_t('login'))
 	            .on('click.note-login', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                osm.authenticate();
 	            });
 
@@ -48790,7 +48790,7 @@
 	        if (selection.empty()) {
 	            // Return to browse mode if selected DOM elements have
 	            // disappeared because the user moved them out of view..
-	            var source = event && event.type === 'zoom' && event.sourceEvent;
+	            var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	            if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                context.enter(modeBrowse(context));
 	            }
@@ -48929,11 +48929,11 @@
 
 
 	    function move() {
-	        event.sourceEvent.stopPropagation();
-	        _lastLoc = context.projection.invert(event.point);
+	        event$1.sourceEvent.stopPropagation();
+	        _lastLoc = context.projection.invert(event$1.point);
 
 	        doMove();
-	        var nudge = geoViewportEdge(event.point, context.map().dimensions());
+	        var nudge = geoViewportEdge(event$1.point, context.map().dimensions());
 	        if (nudge) {
 	            startNudge(nudge);
 	        } else {
@@ -48945,7 +48945,7 @@
 	    function doMove(nudge) {
 	        nudge = nudge || [0, 0];
 
-	        var currPoint = (event && event.point) || context.projection(_lastLoc);
+	        var currPoint = (event$1 && event$1.point) || context.projection(_lastLoc);
 	        var currMouse = geoVecSubtract(currPoint, nudge);
 	        var loc = context.projection.invert(currMouse);
 
@@ -49102,19 +49102,19 @@
 	                    .insert('div', function() { return sibling; })
 	                    .attr('class', 'combobox-caret')
 	                    .on('mousedown.combo-caret', function() {
-	                        event.preventDefault(); // don't steal focus from input
+	                        event$1.preventDefault(); // don't steal focus from input
 	                        input.node().focus(); // focus the input as if it was clicked
 	                        mousedown();
 	                    })
 	                    .on('mouseup.combo-caret', function() {
-	                        event.preventDefault(); // don't steal focus from input
+	                        event$1.preventDefault(); // don't steal focus from input
 	                        mouseup();
 	                    });
 	            });
 
 
 	        function mousedown() {
-	            if (event.button !== 0) { return; }    // left click only
+	            if (event$1.button !== 0) { return; }    // left click only
 	            _tDown = +new Date();
 
 	            // clear selection
@@ -49132,7 +49132,7 @@
 
 	        function mouseup() {
 	            input.on('mouseup.combo-input', null);
-	            if (event.button !== 0) { return; }    // left click only
+	            if (event$1.button !== 0) { return; }    // left click only
 	            if (input.node() !== document.activeElement) { return; }   // exit if this input is not focused
 
 	            var start = input.property('selectionStart');
@@ -49179,7 +49179,7 @@
 	                .style('left', '0px')
 	                .on('mousedown.combo-container', function () {
 	                    // prevent moving focus out of the input field
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                });
 
 	            container
@@ -49205,10 +49205,10 @@
 	            var shown = !container.selectAll('.combobox').empty();
 	            var tagName = input.node() ? input.node().tagName.toLowerCase() : '';
 
-	            switch (event.keyCode) {
+	            switch (event$1.keyCode) {
 	                case 8:   // ⌫ Backspace
 	                case 46:  // ⌦ Delete
-	                    event.stopPropagation();
+	                    event$1.stopPropagation();
 	                    _selected = null;
 	                    render();
 	                    input.on('input.combo-input', function() {
@@ -49223,13 +49223,13 @@
 	                    break;
 
 	                case 13:  // ↩ Return
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                    break;
 
 	                case 38:  // ↑ Up arrow
 	                    if (tagName === 'textarea' && !shown) { return; }
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    if (tagName === 'input' && !shown) {
 	                        show();
 	                    }
@@ -49238,7 +49238,7 @@
 
 	                case 40:  // ↓ Down arrow
 	                    if (tagName === 'textarea' && !shown) { return; }
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    if (tagName === 'input' && !shown) {
 	                        show();
 	                    }
@@ -49249,7 +49249,7 @@
 
 
 	        function keyup() {
-	            switch (event.keyCode) {
+	            switch (event$1.keyCode) {
 	                case 27:  // ⎋ Escape
 	                    cancel();
 	                    break;
@@ -49627,7 +49627,7 @@
 
 
 	        function toggle() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            _expanded = !_expanded;
 
@@ -49972,8 +49972,8 @@
 
 	        _button
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                this.blur();    // avoid keeping focus on the button - #4641
 	                if (_showing) {
 	                    hide();
@@ -50370,7 +50370,7 @@
 
 	    function pushMore() {
 	        // if pressing Tab on the last value field with content, add a blank row
-	        if (event.keyCode === 9 && !event.shiftKey &&
+	        if (event$1.keyCode === 9 && !event$1.shiftKey &&
 	            section.selection().selectAll('.tag-list li:last-child input.value').node() === this &&
 	            utilGetSetValue(select(this))) {
 	            addTag();
@@ -50717,7 +50717,7 @@
 	        if (selection.empty()) {
 	            // Return to browse mode if selected DOM elements have
 	            // disappeared because the user moved them out of view..
-	            var source = event && event.type === 'zoom' && event.sourceEvent;
+	            var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	            if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                context.enter(modeBrowse(context));
 	            }
@@ -50936,7 +50936,7 @@
 	            utilHighlightEntities([entityID], false, context);
 	          })
 	          .on('click', function () {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            utilHighlightEntities([entityID], false, context);
 
@@ -51314,7 +51314,7 @@
 	            utilHighlightEntities([entityID], false, context);
 	          })
 	          .on('click', function () {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            utilHighlightEntities([entityID], false, context);
 
@@ -51804,7 +51804,7 @@
 	                  utilHighlightEntities([entityID], false, context);
 	                })
 	                .on('click', function () {
-	                  event.preventDefault();
+	                  event$1.preventDefault();
 
 	                  utilHighlightEntities([entityID], false, context);
 
@@ -52217,7 +52217,7 @@
 	            if (selection.empty()) {
 	                // Return to browse mode if selected DOM elements have
 	                // disappeared because the user moved them out of view..
-	                var source = event && event.type === 'zoom' && event.sourceEvent;
+	                var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	                if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                    context.enter(modeBrowse(context));
 	                }
@@ -52277,28 +52277,28 @@
 
 	    function keydown() {
 
-	        if (event.keyCode === 32) {
+	        if (event$1.keyCode === 32) {
 	            // don't react to spacebar events during text input
 	            var activeNode = document.activeElement;
 	            if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName)) { return; }
 	        }
 
-	        if (event.keyCode === 93 ||  // context menu key
-	            event.keyCode === 32) {  // spacebar
-	            event.preventDefault();
+	        if (event$1.keyCode === 93 ||  // context menu key
+	            event$1.keyCode === 32) {  // spacebar
+	            event$1.preventDefault();
 	        }
 
-	        if (event.repeat) { return; } // ignore repeated events for held keys
+	        if (event$1.repeat) { return; } // ignore repeated events for held keys
 
 	        // if any key is pressed the user is probably doing something other than long-pressing
 	        cancelLongPress();
 
-	        if (event.shiftKey) {
+	        if (event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', true);
 	        }
 
-	        if (event.keyCode === 32) {  // spacebar
+	        if (event$1.keyCode === 32) {  // spacebar
 	            if (!_downPointers.spacebar && _lastMouseEvent) {
 	                cancelLongPress();
 	                _longPressTimeout = window.setTimeout(didLongPress, 500, 'spacebar', 'spacebar');
@@ -52315,23 +52315,23 @@
 	    function keyup() {
 	        cancelLongPress();
 
-	        if (!event.shiftKey) {
+	        if (!event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', false);
 	        }
 
-	        if (event.keyCode === 93) {  // context menu key
-	            event.preventDefault();
+	        if (event$1.keyCode === 93) {  // context menu key
+	            event$1.preventDefault();
 	            _lastInteractionType = 'menukey';
 	            contextmenu();
-	        } else if (event.keyCode === 32) {  // spacebar
+	        } else if (event$1.keyCode === 32) {  // spacebar
 	            var pointer = _downPointers.spacebar;
 	            if (pointer) {
 	                delete _downPointers.spacebar;
 
 	                if (pointer.done) { return; }
 
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                _lastInteractionType = 'spacebar';
 	                click(pointer.firstEvent, pointer.lastEvent, 'spacebar');
 	            }
@@ -52340,19 +52340,19 @@
 
 
 	    function pointerdown() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 
 	        cancelLongPress();
 
-	        if (event.buttons && event.buttons !== 1) { return; }
+	        if (event$1.buttons && event$1.buttons !== 1) { return; }
 
 	        context.ui().closeEditMenu();
 
-	        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (event.pointerType || 'mouse'));
+	        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (event$1.pointerType || 'mouse'));
 
 	        _downPointers[id] = {
-	            firstEvent: event,
-	            lastEvent: event
+	            firstEvent: event$1,
+	            lastEvent: event$1
 	        };
 	    }
 
@@ -52376,21 +52376,21 @@
 
 
 	    function pointermove() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        if (_downPointers[id]) {
-	            _downPointers[id].lastEvent = event;
+	            _downPointers[id].lastEvent = event$1;
 	        }
-	        if (!event.pointerType || event.pointerType === 'mouse') {
-	            _lastMouseEvent = event;
+	        if (!event$1.pointerType || event$1.pointerType === 'mouse') {
+	            _lastMouseEvent = event$1;
 	            if (_downPointers.spacebar) {
-	                _downPointers.spacebar.lastEvent = event;
+	                _downPointers.spacebar.lastEvent = event$1;
 	            }
 	        }
 	    }
 
 
 	    function pointerup() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        var pointer = _downPointers[id];
 	        if (!pointer) { return; }
 
@@ -52402,12 +52402,12 @@
 
 	        if (pointer.done) { return; }
 
-	        click(pointer.firstEvent, event, id);
+	        click(pointer.firstEvent, event$1, id);
 	    }
 
 
 	    function pointercancel() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        if (!_downPointers[id]) { return; }
 
 	        delete _downPointers[id];
@@ -52419,7 +52419,7 @@
 
 
 	    function contextmenu() {
-	        var e = event;
+	        var e = event$1;
 	        e.preventDefault();
 
 	        if (!+e.clientX && !+e.clientY) {
@@ -52429,12 +52429,12 @@
 	                return;
 	            }
 	        } else {
-	            _lastMouseEvent = event;
+	            _lastMouseEvent = event$1;
 	            _lastInteractionType = 'rightclick';
 	        }
 
 	        _showMenu = true;
-	        click(event, event);
+	        click(event$1, event$1);
 	    }
 
 
@@ -52477,7 +52477,7 @@
 	        // support multiselect if data is already selected
 	        var isMultiselect = context.mode().id === 'select' && (
 	            // and shift key is down
-	            (event && event.shiftKey) ||
+	            (event$1 && event$1.shiftKey) ||
 	            // or we're lasso-selecting
 	            context.surface().select('.lasso').node() ||
 	            // or a pointer is down over a selected feature
@@ -52637,9 +52637,9 @@
 	                // Edge and IE really like to show the contextmenu on the
 	                // menubar when user presses a keyboard menu button
 	                // even after we've already preventdefaulted the key event.
-	                var e = event;
+	                var e = event$1;
 	                if (+e.clientX === 0 && +e.clientY === 0) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                }
 	            });
 
@@ -52647,7 +52647,7 @@
 	            .on(_pointerPrefix + 'down.select', pointerdown)
 	            .on('contextmenu.select', contextmenu);
 
-	        if (event && event.shiftKey) {
+	        if (event$1 && event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', true);
 	        }
@@ -52734,7 +52734,7 @@
 
 
 	    function keydown() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope')) {
 	                context.surface()
 	                    .classed('nope-suppressed', true);
@@ -52747,7 +52747,7 @@
 
 
 	    function keyup() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope-suppressed')) {
 	                context.surface()
 	                    .classed('nope', true);
@@ -52774,7 +52774,7 @@
 
 	        if (!_drawNode) { createDrawNode(loc); }
 
-	        context.surface().classed('nope-disabled', event.altKey);
+	        context.surface().classed('nope-disabled', event$1.altKey);
 
 	        var targetLoc = datum && datum.properties && datum.properties.entity &&
 	            allowsVertex(datum.properties.entity) && datum.properties.entity.loc;
@@ -54537,7 +54537,7 @@
 	        function didDoubleUp(loc) {
 	            if (!context.map().withinEditableZoom()) { return; }
 
-	            var target = select(event.target);
+	            var target = select(event$1.target);
 
 	            var datum = target.datum();
 	            var entity = datum && datum.properties && datum.properties.entity;
@@ -54602,7 +54602,7 @@
 
 
 	        function firstVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var entity = singular();
 	            var parent = singularParent();
 	            var way;
@@ -54622,7 +54622,7 @@
 
 
 	        function lastVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var entity = singular();
 	            var parent = singularParent();
 	            var way;
@@ -54642,7 +54642,7 @@
 
 
 	        function previousVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parent = singularParent();
 	            if (!parent) { return; }
 
@@ -54666,7 +54666,7 @@
 
 
 	        function nextVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parent = singularParent();
 	            if (!parent) { return; }
 
@@ -54690,7 +54690,7 @@
 
 
 	        function nextParent() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parents = commonParents();
 	            if (!parents || parents.length < 2) { return; }
 
@@ -54846,14 +54846,14 @@
 
 	        function pointerdown() {
 	            var button = 0;  // left
-	            if (event.button === button && event.shiftKey === true) {
+	            if (event$1.button === button && event$1.shiftKey === true) {
 	                lasso = null;
 
 	                select(window)
 	                    .on(_pointerPrefix + 'move.lasso', pointermove)
 	                    .on(_pointerPrefix + 'up.lasso', pointerup);
 
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            }
 	        }
 
@@ -55740,7 +55740,7 @@
 
 	  if (!blocking) {
 	    shaded.on('click.remove-modal', function () {
-	      if (event.target === this$1) {
+	      if (event$1.target === this$1) {
 	        shaded.close();
 	      }
 	    });
@@ -67372,18 +67372,18 @@
 	        _enabled = true;
 
 	        function over() {
-	            event.stopPropagation();
-	            event.preventDefault();
-	            event.dataTransfer.dropEffect = 'copy';
+	            event$1.stopPropagation();
+	            event$1.preventDefault();
+	            event$1.dataTransfer.dropEffect = 'copy';
 	        }
 
 	        context.container()
 	            .attr('dropzone', 'copy')
 	            .on('drop.svgData', function() {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                if (!detected.filedrop) { return; }
-	                drawData.fileList(event.dataTransfer.files);
+	                drawData.fileList(event$1.dataTransfer.files);
 	            })
 	            .on('dragenter.svgData', over)
 	            .on('dragexit.svgData', over)
@@ -72572,7 +72572,7 @@
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter$2() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultExtent$1() {
@@ -72589,7 +72589,7 @@
 	}
 
 	function defaultWheelDelta$1() {
-	  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002);
+	  return -event$1.deltaY * (event$1.deltaMode === 1 ? 0.05 : event$1.deltaMode ? 1 : 0.002);
 	}
 
 	function defaultConstrain$1(transform, extent, translateExtent) {
@@ -72762,7 +72762,7 @@
 	    var g = gesture(this, arguments),
 	        t = _transform,
 	        k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], t.k * Math.pow(2, wheelDelta.apply(this, arguments)))),
-	        p = utilFastMouse(this)(event);
+	        p = utilFastMouse(this)(event$1);
 
 	    // If the mouse is in the same location as before, reuse it.
 	    // If there were recent wheel events, reset the wheel idle timeout.
@@ -72779,8 +72779,8 @@
 	      g.start();
 	    }
 
-	    event.preventDefault();
-	    event.stopImmediatePropagation();
+	    event$1.preventDefault();
+	    event$1.stopImmediatePropagation();
 	    g.wheel = setTimeout(wheelidled, _wheelDelay);
 	    g.zoom('mouse', constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), g.extent, translateExtent));
 
@@ -72794,17 +72794,17 @@
 	  var _pointerLocGetter;
 
 	  function pointerdown() {
-	    _downPointerIDs.add(event.pointerId);
+	    _downPointerIDs.add(event$1.pointerId);
 
 	    if (!filter.apply(this, arguments)) { return; }
 
 	    var g = gesture(this, arguments, _downPointerIDs.size === 1);
 	    var started;
 
-	    event.stopImmediatePropagation();
+	    event$1.stopImmediatePropagation();
 	    _pointerLocGetter = utilFastMouse(this);
-	    var loc = _pointerLocGetter(event);
-	    var p = [loc, _transform.invert(loc), event.pointerId];
+	    var loc = _pointerLocGetter(event$1);
+	    var p = [loc, _transform.invert(loc), event$1.pointerId];
 	    if (!g.pointer0) {
 	       g.pointer0 = p;
 	       started = true;
@@ -72820,16 +72820,16 @@
 	  }
 
 	  function pointermove() {
-	    if (!_downPointerIDs.has(event.pointerId)) { return; }
+	    if (!_downPointerIDs.has(event$1.pointerId)) { return; }
 
 	    if (!_activeGesture || !_pointerLocGetter) { return; }
 
 	    var g = gesture(this, arguments);
 
-	    var isPointer0 = g.pointer0 && g.pointer0[2] === event.pointerId;
-	    var isPointer1 = !isPointer0 && g.pointer1 && g.pointer1[2] === event.pointerId;
+	    var isPointer0 = g.pointer0 && g.pointer0[2] === event$1.pointerId;
+	    var isPointer1 = !isPointer0 && g.pointer1 && g.pointer1[2] === event$1.pointerId;
 
-	    if ((isPointer0 || isPointer1) && 'buttons' in event && !event.buttons) {
+	    if ((isPointer0 || isPointer1) && 'buttons' in event$1 && !event$1.buttons) {
 	      // The pointer went up without ending the gesture somehow, e.g.
 	      // a down mouse was moved off the map and released. End it here.
 	      if (g.pointer0) { _downPointerIDs.delete(g.pointer0[2]); }
@@ -72838,10 +72838,10 @@
 	      return;
 	    }
 
-	    event.preventDefault();
-	    event.stopImmediatePropagation();
+	    event$1.preventDefault();
+	    event$1.stopImmediatePropagation();
 
-	    var loc = _pointerLocGetter(event);
+	    var loc = _pointerLocGetter(event$1);
 	    var t, p, l;
 
 	    if (isPointer0) { g.pointer0[0] = loc; }
@@ -72865,18 +72865,18 @@
 	  }
 
 	  function pointerup() {
-	    if (!_downPointerIDs.has(event.pointerId)) { return; }
+	    if (!_downPointerIDs.has(event$1.pointerId)) { return; }
 
-	    _downPointerIDs.delete(event.pointerId);
+	    _downPointerIDs.delete(event$1.pointerId);
 
 	    if (!_activeGesture) { return; }
 
 	    var g = gesture(this, arguments);
 
-	    event.stopImmediatePropagation();
+	    event$1.stopImmediatePropagation();
 
-	    if (g.pointer0 && g.pointer0[2] === event.pointerId) { delete g.pointer0; }
-	    else if (g.pointer1 && g.pointer1[2] === event.pointerId) { delete g.pointer1; }
+	    if (g.pointer0 && g.pointer0[2] === event$1.pointerId) { delete g.pointer0; }
+	    else if (g.pointer1 && g.pointer1[2] === event$1.pointerId) { delete g.pointer1; }
 
 	    if (g.pointer1 && !g.pointer0) {
 	      g.pointer0 = g.pointer1;
@@ -72948,9 +72948,9 @@
 	    function pointerdown() {
 
 	        // ignore right-click
-	        if (event.ctrlKey || event.button === 2) { return; }
+	        if (event$1.ctrlKey || event$1.button === 2) { return; }
 
-	        var loc = [event.clientX, event.clientY];
+	        var loc = [event$1.clientX, event$1.clientY];
 
 	        // Don't rely on pointerId here since it can change between pointerdown
 	        // events on touch devices
@@ -72964,26 +72964,26 @@
 	                startLoc: loc,
 	                startTime: new Date().getTime(),
 	                upCount: 0,
-	                pointerId: event.pointerId
+	                pointerId: event$1.pointerId
 	            };
 	        } else { // double down
-	            _pointer.pointerId = event.pointerId;
+	            _pointer.pointerId = event$1.pointerId;
 	        }
 	    }
 
 	    function pointerup() {
 
 	        // ignore right-click
-	        if (event.ctrlKey || event.button === 2) { return; }
+	        if (event$1.ctrlKey || event$1.button === 2) { return; }
 
-	        if (!_pointer || _pointer.pointerId !== event.pointerId) { return; }
+	        if (!_pointer || _pointer.pointerId !== event$1.pointerId) { return; }
 
 	        _pointer.upCount += 1;
 
 	        if (_pointer.upCount === 2) { // double up!
-	            var loc = [event.clientX, event.clientY];
+	            var loc = [event$1.clientX, event$1.clientY];
 	            if (pointerIsValidFor(loc)) {
-	                var locInThis = utilFastMouse(this)(event);
+	                var locInThis = utilFastMouse(this)(event$1);
 	                dispatch$1.call('doubleUp', this, locInThis);
 	            }
 	            // clear the pointer info in any case
@@ -73002,7 +73002,7 @@
 	            // fallback to dblclick
 	            selection
 	                .on('dblclick.doubleUp', function() {
-	                    dispatch$1.call('doubleUp', this, utilFastMouse(this)(event));
+	                    dispatch$1.call('doubleUp', this, utilFastMouse(this)(event$1));
 	                });
 	        }
 	    }
@@ -73077,7 +73077,7 @@
 	        .filter(zoomEventFilter)
 	        .on('zoom.map', zoomPan)
 	        .on('start.map', function() {
-	            _pointerDown = event.sourceEvent && event.sourceEvent.type === 'pointerdown';
+	            _pointerDown = event$1.sourceEvent && event$1.sourceEvent.type === 'pointerdown';
 	        })
 	        .on('end.map', function() {
 	            _pointerDown = false;
@@ -73151,7 +73151,7 @@
 	        selection
 	            .on('wheel.map mousewheel.map', function() {
 	                // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            })
 	            .call(_zoomerPanner)
 	            .call(_zoomerPanner.transform, projection.transform())
@@ -73175,30 +73175,30 @@
 	            .call(drawLabels.observe)
 	            .call(_doubleUpHandler)
 	            .on(_pointerPrefix + 'down.zoom', function() {
-	                _lastPointerEvent = event;
-	                if (event.button === 2) {
-	                    event.stopPropagation();
+	                _lastPointerEvent = event$1;
+	                if (event$1.button === 2) {
+	                    event$1.stopPropagation();
 	                }
 	            }, true)
 	            .on(_pointerPrefix + 'up.zoom', function() {
-	                _lastPointerEvent = event;
+	                _lastPointerEvent = event$1;
 	                if (resetTransform()) {
 	                    immediateRedraw();
 	                }
 	            })
 	            .on(_pointerPrefix + 'move.map', function() {
-	                _lastPointerEvent = event;
+	                _lastPointerEvent = event$1;
 	            })
 	            .on(_pointerPrefix + 'over.vertices', function() {
 	                if (map.editableDataEnabled() && !_isTransformed) {
-	                    var hover = event.target.__data__;
+	                    var hover = event$1.target.__data__;
 	                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
 	                    dispatch$1.call('drawn', this, { full: false });
 	                }
 	            })
 	            .on(_pointerPrefix + 'out.vertices', function() {
 	                if (map.editableDataEnabled() && !_isTransformed) {
-	                    var hover = event.relatedTarget && event.relatedTarget.__data__;
+	                    var hover = event$1.relatedTarget && event$1.relatedTarget.__data__;
 	                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
 	                    dispatch$1.call('drawn', this, { full: false });
 	                }
@@ -73216,7 +73216,7 @@
 	            // We can listen for these and translate them into map zooms.
 	            surface
 	                .on('gesturestart.surface', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    _gestureTransformStart = projection.transform();
 	                })
 	                .on('gesturechange.surface', gestureChange);
@@ -73229,11 +73229,11 @@
 	            if (!_dblClickZoomEnabled) { return; }
 
 	            // don't zoom if targeting something other than the map itself
-	            if (typeof event.target.__data__ === 'object' &&
+	            if (typeof event$1.target.__data__ === 'object' &&
 	                // or area fills
-	                !select(event.target).classed('fill')) { return; }
+	                !select(event$1.target).classed('fill')) { return; }
 
-	            var zoomOut = event.shiftKey;
+	            var zoomOut = event$1.shiftKey;
 
 	            var t = projection.transform();
 
@@ -73291,7 +73291,7 @@
 	        // This can happen if a previous `mousedown` occurred without a `mouseup`.
 	        // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
 	        // so that d3-zoom won't stop propagation of new `mousedown` events.
-	        if (event.type === 'mousedown') {
+	        if (event$1.type === 'mousedown') {
 	            var hasOrphan = false;
 	            var listeners = window.__on;
 	            for (var i = 0; i < listeners.length; i++) {
@@ -73302,20 +73302,20 @@
 	                }
 	            }
 	            if (hasOrphan) {
-	                var event$1 = window.CustomEvent;
-	                if (event$1) {
-	                    event$1 = new event$1('mouseup');
+	                var event = window.CustomEvent;
+	                if (event) {
+	                    event = new event('mouseup');
 	                } else {
-	                    event$1 = window.document.createEvent('Event');
-	                    event$1.initEvent('mouseup', false, false);
+	                    event = window.document.createEvent('Event');
+	                    event.initEvent('mouseup', false, false);
 	                }
 	                // Event needs to be dispatched with an event.view property.
-	                event$1.view = window;
-	                window.dispatchEvent(event$1);
+	                event.view = window;
+	                window.dispatchEvent(event);
 	            }
 	        }
 
-	        return event.button !== 2;   // ignore right clicks
+	        return event$1.button !== 2;   // ignore right clicks
 	    }
 
 
@@ -73434,7 +73434,7 @@
 	        // Remap Safari gesture events to wheel events - #5492
 	        // We want these disabled most places, but enabled for zoom/unzoom on map surface
 	        // https://developer.mozilla.org/en-US/docs/Web/API/GestureEvent
-	        var e = event;
+	        var e = event$1;
 	        e.preventDefault();
 
 	        var props = {
@@ -73457,9 +73457,9 @@
 
 
 	    function zoomPan(manualEvent) {
-	        var event$1 = (manualEvent || event);
-	        var source = event$1.sourceEvent;
-	        var eventTransform = event$1.transform;
+	        var event = (manualEvent || event$1);
+	        var source = event.sourceEvent;
+	        var eventTransform = event.transform;
 	        var x = eventTransform.x;
 	        var y = eventTransform.y;
 	        var k = eventTransform.k;
@@ -73621,7 +73621,7 @@
 	        }
 
 	        if (source) {
-	            _lastPointerEvent = event$1;
+	            _lastPointerEvent = event;
 	        }
 	        _isTransformed = true;
 	        _transformLast = eventTransform;
@@ -73709,11 +73709,11 @@
 
 
 	    map.mouse = function() {
-	        var event$1 = _lastPointerEvent || event;
-	        if (event$1) {
+	        var event = _lastPointerEvent || event$1;
+	        if (event) {
 	            var s;
-	            while ((s = event$1.sourceEvent)) { event$1 = s; }
-	            return _getMouseCoords(event$1);
+	            while ((s = event.sourceEvent)) { event = s; }
+	            return _getMouseCoords(event);
 	        }
 	        return null;
 	    };
@@ -74257,7 +74257,7 @@
 	                .attr('href', '#')
 	                .text(_t('logout'))
 	                .on('click.logout', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    osm.logout();
 	                });
 	        });
@@ -74610,13 +74610,13 @@
 	            var _lastNonMouseEnterTime;
 	            anchor.on(_pointerPrefix + 'enter.popover', function() {
 
-	                if (event.pointerType) {
-	                    if (event.pointerType !== 'mouse') {
-	                        _lastNonMouseEnterTime = event.timeStamp;
+	                if (event$1.pointerType) {
+	                    if (event$1.pointerType !== 'mouse') {
+	                        _lastNonMouseEnterTime = event$1.timeStamp;
 	                        // only allow hover behavior for mouse input
 	                        return;
 	                    } else if (_lastNonMouseEnterTime &&
-	                        event.timeStamp - _lastNonMouseEnterTime < 1500) {
+	                        event$1.timeStamp - _lastNonMouseEnterTime < 1500) {
 	                        // HACK: iOS 13.4 sends an erroneous `mouse` type pointerenter
 	                        // event for non-mouse interactions right after sending
 	                        // the correct type pointerenter event. Workaround by discarding
@@ -74626,7 +74626,7 @@
 	                }
 
 	                // don't show if buttons are pressed, e.g. during click and drag of map
-	                if (event.buttons !== 0) { return; }
+	                if (event$1.buttons !== 0) { return; }
 
 	                show.apply(this, arguments);
 	            });
@@ -74637,12 +74637,12 @@
 	        } else if (display === 'clickFocus') {
 	            anchor
 	                .on(_pointerPrefix + 'down.popover', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                })
 	                .on(_pointerPrefix + 'up.popover', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                })
 	                .on('click.popover', toggle);
 
@@ -74998,7 +74998,7 @@
 	            .on('pointerup', pointerup)
 	            .on('pointerdown mousedown', function pointerdown() {
 	                // don't let button presses also act as map input - #1869
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            });
 
 	        buttonsEnter.each(function(d) {
@@ -75045,11 +75045,11 @@
 	        var lastPointerUpType;
 	        // `pointerup` is always called before `click`
 	        function pointerup() {
-	            lastPointerUpType = event.pointerType;
+	            lastPointerUpType = event$1.pointerType;
 	        }
 
 	        function click(operation) {
-	            event.stopPropagation();
+	            event$1.stopPropagation();
 	            if (operation.disabled()) {
 	                if (lastPointerUpType === 'touch' ||
 	                    lastPointerUpType === 'pen') {
@@ -75240,7 +75240,7 @@
 	                .call(tooltipBehavior)
 	                .on('click', function() {
 	                    tooltipBehavior.hide();
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    // open the Map Data pane
 	                    context.ui().togglePanes(context.container().select('.map-panes .map-data-pane'));
 	                });
@@ -75420,7 +75420,7 @@
 
 
 	    function fullScreen() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (!isFullScreen()) {
 	            // button.classed('active', true);
 	            getFullScreenFn().apply(element);
@@ -75593,7 +75593,7 @@
 	            .attr('href', '#')
 	            .attr('class', 'button button-toggle-tiles')
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.setDebug('tile', !context.getDebug('tile'));
 	                selection.call(redraw);
 	            });
@@ -75609,7 +75609,7 @@
 	                .attr('href', '#')
 	                .attr('class', 'button button-toggle-vintage')
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    context.background().toggleOverlayLayer(sourceVintage);
 	                    selection.call(redraw);
 	                });
@@ -76379,7 +76379,7 @@
 	                .attr('href', '#')
 	                .attr('class', 'button button-toggle-units')
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    isImperial = !isImperial;
 	                    selection.call(redraw);
 	                });
@@ -76493,9 +76493,9 @@
 
 
 	        info.toggle = function(which) {
-	            if (event) {
-	                event.stopImmediatePropagation();
-	                event.preventDefault();
+	            if (event$1) {
+	                event$1.stopImmediatePropagation();
+	                event$1.preventDefault();
 	            }
 
 	            var activeids = ids.filter(function(k) { return active[k]; });
@@ -76901,7 +76901,7 @@
 	                var button = tooltip.selectAll('.button-section .button.action');
 	                button
 	                    .on('click', function() {
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 	                        options.buttonCallback();
 	                    });
 	            }
@@ -77148,8 +77148,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -77692,8 +77692,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -78177,8 +78177,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -78690,8 +78690,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -79744,8 +79744,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -80842,7 +80842,7 @@
 	                chipSelection
 	                    .call(tooltipBehavior)
 	                    .on('click', function() {
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 
 	                        tooltipBehavior.hide(select(this));
 	                        // open the Issues pane
@@ -80916,9 +80916,9 @@
 	        function zoomed() {
 	            if (_skipEvents) { return; }
 
-	            var x = event.transform.x;
-	            var y = event.transform.y;
-	            var k = event.transform.k;
+	            var x = event$1.transform.x;
+	            var y = event$1.transform.y;
+	            var k = event$1.transform.k;
 	            var isZooming = (k !== _tStart.k);
 	            var isPanning = (x !== _tStart.x || y !== _tStart.y);
 
@@ -81125,7 +81125,7 @@
 
 
 	        function toggle() {
-	            if (event) { event.preventDefault(); }
+	            if (event$1) { event$1.preventDefault(); }
 
 	            _isHidden = !_isHidden;
 
@@ -81206,7 +81206,7 @@
 	                context.map().zoomEase(context.minEditableZoom());
 	            })
 	            .on('wheel', function() {   // let wheel events pass through #4482
-	                var e2 = new WheelEvent(event.type, event);
+	                var e2 = new WheelEvent(event$1.type, event$1);
 	                context.surface().node().dispatchEvent(e2);
 	            });
 
@@ -81248,7 +81248,7 @@
 	            .call(svgIcon('#iD-icon-close'));
 
 	        function preventDefault() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	        }
 
 	        selection
@@ -81295,22 +81295,22 @@
 	            var startHeight;
 
 	            function startResize() {
-	                if (pointerId !== (event.pointerId || 'mouse')) { return; }
+	                if (pointerId !== (event$1.pointerId || 'mouse')) { return; }
 
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                var mapSize = context.map().dimensions();
 
 	                if (resizeOnX) {
 	                    var maxWidth = mapSize[0];
-	                    var newWidth = clamp((startWidth + event.clientX - startX), minWidth, maxWidth);
+	                    var newWidth = clamp((startWidth + event$1.clientX - startX), minWidth, maxWidth);
 	                    target.style('width', newWidth + 'px');
 	                }
 
 	                if (resizeOnY) {
 	                    var maxHeight = mapSize[1] - 90;  // preserve space at top/bottom of map
-	                    var newHeight = clamp((startHeight + startY - event.clientY), minHeight, maxHeight);
+	                    var newHeight = clamp((startHeight + startY - event$1.clientY), minHeight, maxHeight);
 	                    target.style('height', newHeight + 'px');
 	                }
 
@@ -81322,10 +81322,10 @@
 	            }
 
 	            function stopResize() {
-	                if (pointerId !== (event.pointerId || 'mouse')) { return; }
+	                if (pointerId !== (event$1.pointerId || 'mouse')) { return; }
 
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                // remove all the listeners we added
 	                select(window)
@@ -81333,13 +81333,13 @@
 	            }
 
 	            return function initResize() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
-	                pointerId = event.pointerId || 'mouse';
+	                pointerId = event$1.pointerId || 'mouse';
 
-	                startX = event.clientX;
-	                startY = event.clientY;
+	                startX = event$1.clientX;
+	                startY = event$1.clientY;
 	                var targetRect = target.node().getBoundingClientRect();
 	                startWidth = targetRect.width;
 	                startHeight = targetRect.height;
@@ -81906,13 +81906,13 @@
 	            var mode = context.mode() && context.mode().id;
 	            if (mode !== 'browse') { return; }
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            search.node().focus();
 	        }
 
 
 	        function keydown() {
-	            if (event.keyCode === 27) {  // escape
+	            if (event$1.keyCode === 27) {  // escape
 	                search.node().blur();
 	            }
 	        }
@@ -81921,7 +81921,7 @@
 	        function keypress() {
 	            var q = search.property('value'),
 	                items = list.selectAll('.feature-list-item');
-	            if (event.keyCode === 13 && q.length && items.size()) {  // return
+	            if (event$1.keyCode === 13 && q.length && items.size()) {  // return
 	                click(items.datum());
 	            }
 	        }
@@ -82168,7 +82168,7 @@
 
 
 	        function click(d) {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            if (d.location) {
 	                context.map().centerZoomEase([d.location[1], d.location[0]], 19);
@@ -82310,8 +82310,8 @@
 
 	        infoButton
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                this.blur();    // avoid keeping focus on the button - #4641
 
 	                var container = select(this.parentNode.parentNode.parentNode);
@@ -82936,8 +82936,8 @@
 	                 dispatch$1.call('choose', this, _presets);
 	            })
 	            .on('pointerdown pointerup mousedown mouseup', function() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	            });
 
 	        var geometries = entityGeometries();
@@ -83148,8 +83148,8 @@
 	            .call(svgIcon('#iD-icon-help'))
 	            .merge(button)
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                if (_body.classed('hide')) {
 	                    show();
 	                } else {
@@ -83199,8 +83199,8 @@
 	            .append('button')
 	            .attr('class', 'fr close')
 	            .on('click', function() {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                hide();
 	            })
 	            .call(svgIcon('#iD-icon-close'));
@@ -83217,8 +83217,8 @@
 	            .attr('class', 'field-help-nav-item')
 	            .text(function(d) { return d; })
 	            .on('click', function(d, i) {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                clickHelp(i);
 	            });
 
@@ -83347,7 +83347,7 @@
 
 	        input
 	            .on('click', function() {
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	                var t = {};
 
 	                if (Array.isArray(_tags[field.key])) {
@@ -83375,8 +83375,8 @@
 	            reverser
 	                .call(reverserSetText)
 	                .on('click', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                    context.perform(
 	                        function(graph) {
 	                            for (var i in _entityIDs) {
@@ -83753,7 +83753,7 @@
 
 
 	    function removeMultikey(d) {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        var t = {};
 	        if (isMulti) {
 	            t[d.key] = undefined;
@@ -83835,10 +83835,10 @@
 
 	        input
 	            .on('keydown.field', function() {
-	                switch (event.keyCode) {
+	                switch (event$1.keyCode) {
 	                    case 13: // ↩ Return
 	                        input.node().blur(); // blurring also enters the value
-	                        event.stopPropagation();
+	                        event$1.stopPropagation();
 	                        break;
 	                }
 	            });
@@ -84000,14 +84000,14 @@
 	        selection.call(d3_drag()
 	            .on('start', function() {
 	                dragOrigin = {
-	                    x: event.x,
-	                    y: event.y
+	                    x: event$1.x,
+	                    y: event$1.y
 	                };
 	                targetIndex = null;
 	            })
 	            .on('drag', function(d, index) {
-	                var x = event.x - dragOrigin.x,
-	                    y = event.y - dragOrigin.y;
+	                var x = event$1.x - dragOrigin.x,
+	                    y = event$1.y - dragOrigin.y;
 
 	                if (!select(this).classed('dragging') &&
 	                    // don't display drag until dragging beyond a distance threshold
@@ -84028,13 +84028,13 @@
 	                            if (index === index2) {
 	                                return 'translate(' + x + 'px, ' + y + 'px)';
 	                            // move the dragged tag up the order
-	                            } else if (index2 > index && event.y > node.offsetTop) {
+	                            } else if (index2 > index && event$1.y > node.offsetTop) {
 	                                if (targetIndex === null || index2 > targetIndex) {
 	                                    targetIndex = index2;
 	                                }
 	                                return 'translateY(-100%)';
 	                            // move the dragged tag down the order
-	                            } else if (index2 < index && event.y < node.offsetTop + node.offsetHeight) {
+	                            } else if (index2 < index && event$1.y < node.offsetTop + node.offsetHeight) {
 	                                if (targetIndex === null || index2 < targetIndex) {
 	                                    targetIndex = index2;
 	                                }
@@ -84050,10 +84050,10 @@
 	                            // check the cursor is in the bounding box
 	                            if (
 	                                index !== index2 &&
-	                                event.x < node.offsetLeft + node.offsetWidth + 5 &&
-	                                event.x > node.offsetLeft &&
-	                                event.y < node.offsetTop + node.offsetHeight &&
-	                                event.y > node.offsetTop
+	                                event$1.x < node.offsetLeft + node.offsetWidth + 5 &&
+	                                event$1.x > node.offsetLeft &&
+	                                event$1.y < node.offsetTop + node.offsetHeight &&
+	                                event$1.y > node.offsetTop
 	                            ) {
 	                                targetIndex = index2;
 	                                targetIndexOffsetTop = node.offsetTop;
@@ -84178,10 +84178,11 @@
 	        input
 	            .classed('disabled', !!isLocked)
 	            .attr('readonly', isLocked || null)
-	            .on('input', change(true))
-	            .on('blur', change())
 	            .on('change', change());
 
+	        selection.on('keydown', function () {
+	            if (event.key == 'Tab') { change()(); }
+	        });
 
 	        if (field.type === 'tel') {
 	            updatePhonePlaceholder();
@@ -84203,7 +84204,7 @@
 	                })
 	                .merge(buttons)
 	                .on('click', function(d) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    var raw_vals = input.node().value || '0';
 	                    var vals = raw_vals.split(';');
 	                    vals = vals.map(function(v) {
@@ -84234,7 +84235,7 @@
 	                    return '';
 	                })
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 
 	                    var value = validIdentifierValueForLink();
 	                    if (value) {
@@ -84301,6 +84302,40 @@
 	                }
 	                utilGetSetValue(input, val);
 	            }
+
+	            // validation: fill in an errmsg if we find a problem
+	            // onerr = alert & clear the value
+	            if (!onInput) {
+	                var errmsg;
+	                if (val && (field.key == 'start_date' || field.key == 'end_date')) {
+	                    // start_date and end_date, a proper ISO date or partial date, or blank
+	                    // also, detect integer-looking and coerce to 4 digits e.g. "23" to "0023" as side effect
+	                    var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
+	                    var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
+	                    var dates_regex3 = /^\-?\d\d\d\d$/;
+	                    var anyinteger = /^\-?\d+$/;
+
+	                    if (! val.match(dates_regex1) && ! val.match(dates_regex2) && ! val.match(dates_regex3)) {
+	                        var isinteger = val.match(anyinteger);
+	                        if (isinteger) {
+	                            val = parseInt(val).toLocaleString('en', {minimumIntegerDigits: 4, useGrouping: false});
+	                            utilGetSetValue(input, val);
+	                        }
+	                        else {
+	                            var label = field.label();
+	                            errmsg = label + ': Accepted date formats: YYYY-MM-DD YYYY-MM YYYY';
+	                        }
+	                    }
+	                }
+
+	                if (errmsg) {
+	                    alert(errmsg);
+	                    val = '';
+	                    utilGetSetValue(input, val);
+	                }
+	            }
+
+	            // pass it on down the chain
 	            t[field.key] = val || undefined;
 	            dispatch$1.call('change', this, t, onInput);
 	        };
@@ -85551,7 +85586,7 @@
 
 
 	        function addNew() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            if (field.locked()) { return; }
 
 	            var defaultLang = _mainLocalizer.languageCode().toLowerCase();
@@ -85575,7 +85610,7 @@
 	        function change(onInput) {
 	            return function() {
 	                if (field.locked()) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    return;
 	                }
 
@@ -85719,7 +85754,7 @@
 	                    .attr('class', 'remove-icon-multilingual')
 	                    .on('click', function(d, index) {
 	                        if (field.locked()) { return; }
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 
 	                        if (!d.lang || !d.value) {
 	                            _multilingual.splice(index, 1);
@@ -86616,7 +86651,7 @@
 	                .call(breathe.off)
 	                .call(breathe);
 
-	            var datum = event.target.__data__;
+	            var datum = event$1.target.__data__;
 	            var entity = datum && datum.properties && datum.properties.entity;
 	            if (entity) {
 	                datum = entity;
@@ -86704,7 +86739,7 @@
 
 
 	        function mouseover() {
-	            var datum = event.target.__data__;
+	            var datum = event$1.target.__data__;
 	            updateHints(datum);
 	        }
 
@@ -87094,7 +87129,7 @@
 	            .attr('tabindex', -1)
 	            .call(svgIcon('#iD-icon-out-link'))
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (_wikiURL) { window.open(_wikiURL, '_blank'); }
 	            });
 
@@ -87131,7 +87166,7 @@
 	            .attr('tabindex', -1)
 	            .call(svgIcon('#iD-operation-copy'))
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                select(this.parentNode)
 	                    .select('input')
 	                    .node()
@@ -87511,7 +87546,7 @@
 
 	    link
 	      .on('click', function () {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (_wikiURL) { window.open(_wikiURL, '_blank'); }
 	      });
 	  }
@@ -87806,8 +87841,8 @@
 
 
 	    function revert(d) {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	        if (!entityIDs || _locked) { return; }
 
 	        dispatch$1.call('revert', d, d.keys);
@@ -87815,8 +87850,8 @@
 
 
 	    function remove(d) {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	        if (_locked) { return; }
 
 	        var t = {};
@@ -88346,7 +88381,7 @@
 	        selection.selectAll('.wrap-form-field input')
 	            .on('keydown', function() {
 	                // if user presses enter, and combobox is not active, accept edits..
-	                if (event.keyCode === 13 && context.container().select('.combobox').empty()) {
+	                if (event$1.keyCode === 13 && context.container().select('.combobox').empty()) {
 	                    context.enter(modeBrowse(context));
 	                }
 	            });
@@ -88410,7 +88445,7 @@
 	    var _maxMembers = 1000;
 
 	    function downloadMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // display the loading indicator
 	        select(this.parentNode).classed('tag-reference-loading', true);
@@ -88420,7 +88455,7 @@
 	    }
 
 	    function zoomToMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var entity = context.entity(d.id);
 	        context.map().zoomToEase(entity);
@@ -88431,7 +88466,7 @@
 
 
 	    function selectMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // remove the hover-highlight styling
 	        utilHighlightEntities([d.id], false, context);
@@ -88632,14 +88667,14 @@
 	        items.call(d3_drag()
 	            .on('start', function() {
 	                dragOrigin = {
-	                    x: event.x,
-	                    y: event.y
+	                    x: event$1.x,
+	                    y: event$1.y
 	                };
 	                targetIndex = null;
 	            })
 	            .on('drag', function(d, index) {
-	                var x = event.x - dragOrigin.x,
-	                    y = event.y - dragOrigin.y;
+	                var x = event$1.x - dragOrigin.x,
+	                    y = event$1.y - dragOrigin.y;
 
 	                if (!select(this).classed('dragging') &&
 	                    // don't display drag until dragging beyond a distance threshold
@@ -88655,12 +88690,12 @@
 	                        var node = select(this).node();
 	                        if (index === index2) {
 	                            return 'translate(' + x + 'px, ' + y + 'px)';
-	                        } else if (index2 > index && event.y > node.offsetTop) {
+	                        } else if (index2 > index && event$1.y > node.offsetTop) {
 	                            if (targetIndex === null || index2 > targetIndex) {
 	                                targetIndex = index2;
 	                            }
 	                            return 'translateY(-100%)';
-	                        } else if (index2 < index && event.y < node.offsetTop + node.offsetHeight) {
+	                        } else if (index2 < index && event$1.y < node.offsetTop + node.offsetHeight) {
 	                            if (targetIndex === null || index2 < targetIndex) {
 	                                targetIndex = index2;
 	                            }
@@ -88796,7 +88831,7 @@
 	    var _maxMemberships = 1000;
 
 	    function selectRelation(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // remove the hover-highlight styling
 	        utilHighlightEntities([d.relation.id], false, context);
@@ -88805,7 +88840,7 @@
 	    }
 
 	    function zoomToRelation(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var entity = context.entity(d.relation.id);
 	        context.map().zoomToEase(entity);
@@ -89252,7 +89287,7 @@
 	    }
 
 	    function deselectEntity(entity) {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 	        var selectedIDs = _selectedIDs.slice();
 	        var index = selectedIDs.indexOf(entity.id);
@@ -89451,8 +89486,8 @@
 	            .on('keydown.key-trap', function() {
 	                // On tabbing, send focus back to the first field on the inspector-body
 	                // (probably the `name` field) #4159
-	                if (event.keyCode === 9 && !event.shiftKey) {
-	                    event.preventDefault();
+	                if (event$1.keyCode === 9 && !event$1.shiftKey) {
+	                    event$1.preventDefault();
 	                    body.select('input').node().focus();
 	                }
 	            });
@@ -89714,20 +89749,20 @@
 	        function initialKeydown() {
 	            // hack to let delete shortcut work when search is autofocused
 	            if (search.property('value').length === 0 &&
-	                (event.keyCode === utilKeybinding.keyCodes['⌫'] ||
-	                 event.keyCode === utilKeybinding.keyCodes['⌦'])) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                (event$1.keyCode === utilKeybinding.keyCodes['⌫'] ||
+	                 event$1.keyCode === utilKeybinding.keyCodes['⌦'])) {
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                operationDelete(context, _entityIDs)();
 
 	            // hack to let undo work when search is autofocused
 	            } else if (search.property('value').length === 0 &&
-	                (event.ctrlKey || event.metaKey) &&
-	                event.keyCode === utilKeybinding.keyCodes.z) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                (event$1.ctrlKey || event$1.metaKey) &&
+	                event$1.keyCode === utilKeybinding.keyCodes.z) {
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                context.undo();
-	            } else if (!event.ctrlKey && !event.metaKey) {
+	            } else if (!event$1.ctrlKey && !event$1.metaKey) {
 	                // don't check for delete/undo hack on future keydown events
 	                select(this).on('keydown', keydown);
 	                keydown.call(this);
@@ -89736,11 +89771,11 @@
 
 	        function keydown() {
 	            // down arrow
-	            if (event.keyCode === utilKeybinding.keyCodes['↓'] &&
+	            if (event$1.keyCode === utilKeybinding.keyCodes['↓'] &&
 	                // if insertion point is at the end of the string
 	                search.node().selectionStart === search.property('value').length) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                // move focus to the first item in the preset list
 	                var buttons = list.selectAll('.preset-list-button');
 	                if (!buttons.empty()) { buttons.nodes()[0].focus(); }
@@ -89750,7 +89785,7 @@
 	        function keypress() {
 	            // enter
 	            var value = search.property('value');
-	            if (event.keyCode === 13 && value.length) {
+	            if (event$1.keyCode === 13 && value.length) {
 	                list.selectAll('.preset-list-item:first-child')
 	                    .each(function(d) { d.choose.call(this); });
 	            }
@@ -89855,9 +89890,9 @@
 	        var parentItem = select(item.node().parentNode.closest('.preset-list-item'));
 
 	        // arrow down, move focus to the next, lower item
-	        if (event.keyCode === utilKeybinding.keyCodes['↓']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        if (event$1.keyCode === utilKeybinding.keyCodes['↓']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // the next item in the list at the same level
 	            var nextItem = select(item.node().nextElementSibling);
 	            // if there is no next item in this list
@@ -89879,9 +89914,9 @@
 	            }
 
 	        // arrow up, move focus to the previous, higher item
-	        } else if (event.keyCode === utilKeybinding.keyCodes['↑']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes['↑']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // the previous item in the list at the same level
 	            var previousItem = select(item.node().previousElementSibling);
 
@@ -89908,18 +89943,18 @@
 	            }
 
 	        // arrow left, move focus to the parent item if there is one
-	        } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // if there is a parent item, focus on the parent item
 	            if (!parentItem.empty()) {
 	                parentItem.select('.preset-list-button').node().focus();
 	            }
 
 	        // arrow right, choose this item
-	        } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            item.datum().choose.call(select(this).node());
 	        }
 	    }
@@ -89955,18 +89990,18 @@
 	                .on('click', click)
 	                .on('keydown', function() {
 	                    // right arrow, expand the focused item
-	                    if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
-	                        event.preventDefault();
-	                        event.stopPropagation();
+	                    if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
+	                        event$1.preventDefault();
+	                        event$1.stopPropagation();
 	                        // if the item isn't expanded
 	                        if (!select(this).classed('expanded')) {
 	                            // toggle expansion (expand the item)
 	                            click.call(this);
 	                        }
 	                    // left arrow, collapse the focused item
-	                    } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
-	                        event.preventDefault();
-	                        event.stopPropagation();
+	                    } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
+	                        event$1.preventDefault();
+	                        event$1.stopPropagation();
 	                        // if the item is expanded
 	                        if (select(this).classed('expanded')) {
 	                            // toggle expansion (collapse the item)
@@ -90085,7 +90120,7 @@
 	        };
 
 	        item.help = function() {
-	            event.stopPropagation();
+	            event$1.stopPropagation();
 	            item.reference.toggle();
 	        };
 
@@ -90386,16 +90421,16 @@
 	        function pointerdown() {
 	            if (downPointerId) { return; }
 
-	            if ('button' in event && event.button !== 0) { return; }
+	            if ('button' in event$1 && event$1.button !== 0) { return; }
 
-	            downPointerId = event.pointerId || 'mouse';
+	            downPointerId = event$1.pointerId || 'mouse';
 
-	            lastClientX = event.clientX;
+	            lastClientX = event$1.clientX;
 
 	            containerLocGetter = utilFastMouse(container.node());
 
 	            // offset from edge of sidebar-resizer
-	            dragOffset = utilFastMouse(resizer.node())(event)[0] - 1;
+	            dragOffset = utilFastMouse(resizer.node())(event$1)[0] - 1;
 
 	            sidebarWidth = selection.node().getBoundingClientRect().width;
 	            containerWidth = container.node().getBoundingClientRect().width;
@@ -90409,7 +90444,7 @@
 	            select(window)
 	                .on('touchmove.sidebar-resizer', function() {
 	                    // disable page scrolling while resizing on touch input
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                }, { passive: false })
 	                .on(_pointerPrefix + 'move.sidebar-resizer', pointermove)
 	                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
@@ -90417,19 +90452,19 @@
 
 	        function pointermove() {
 
-	            if (downPointerId !== (event.pointerId || 'mouse')) { return; }
+	            if (downPointerId !== (event$1.pointerId || 'mouse')) { return; }
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 
-	            var dx = event.clientX - lastClientX;
+	            var dx = event$1.clientX - lastClientX;
 
-	            lastClientX = event.clientX;
+	            lastClientX = event$1.clientX;
 
 	            var isRTL = (_mainLocalizer.textDirection() === 'rtl');
 	            var scaleX = isRTL ? 0 : 1;
 	            var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
-	            var x = containerLocGetter(event)[0] - dragOffset;
+	            var x = containerLocGetter(event$1)[0] - dragOffset;
 	            sidebarWidth = isRTL ? containerWidth - x : x;
 
 	            var isCollapsed = selection.classed('collapsed');
@@ -90461,7 +90496,7 @@
 	        }
 
 	        function pointerup() {
-	            if (downPointerId !== (event.pointerId || 'mouse')) { return; }
+	            if (downPointerId !== (event$1.pointerId || 'mouse')) { return; }
 
 	            downPointerId = null;
 
@@ -90683,7 +90718,7 @@
 
 
 	        sidebar.toggle = function(moveMap) {
-	            var e = event;
+	            var e = event$1;
 	            if (e && e.sourceEvent) {
 	                e.sourceEvent.preventDefault();
 	            } else if (e) {
@@ -90767,7 +90802,7 @@
 
 
 	    function click() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var osm = context.connection();
 	        if (!osm) { return; }
@@ -90964,7 +90999,7 @@
 	                        .append('span')
 	                        .text(_t('login'))
 	                        .on('click.login', function() {
-	                            event.preventDefault();
+	                            event$1.preventDefault();
 	                            osm.authenticate();
 	                        });
 	                } else {
@@ -90985,7 +91020,7 @@
 	                        // let the user manually retry their connection directly
 	                        .text(_t('osm_api_status.retry'))
 	                        .on('click.retry', function() {
-	                            event.preventDefault();
+	                            event$1.preventDefault();
 	                            throttledRetry();
 	                        });
 	                }
@@ -91488,7 +91523,7 @@
 	            .attr('href', '#')
 	            .text(function(d) { return d.name; })
 	            .on('click', function(d) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                zoomToEntity(d.id);
 	            });
 
@@ -91525,7 +91560,7 @@
 	                    (i === 1 && index === _conflictList.length - 1) || null;
 	            })
 	            .on('click', function(d, i) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var container = parent.selectAll('.conflict-container');
 	                var sign = (i === 0 ? -1 : 1);
@@ -91583,7 +91618,7 @@
 
 
 	    function choose(ul, datum) {
-	        if (event) { event.preventDefault(); }
+	        if (event$1) { event$1.preventDefault(); }
 
 	        select(ul)
 	            .selectAll('li')
@@ -113165,7 +113200,7 @@
 	            .classed('hide-toggle', true)
 	            .text(function(d) { return d.msg || _t('save.unknown_error_details'); })
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var error = select(this);
 	                var detail = select(this.nextElementSibling);
@@ -113565,7 +113600,7 @@
 	    }
 
 	    function save() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (!context.inIntro() && !isSaving() && history.hasChanges()) {
 	            context.enter(modeSave(context));
 	        }
@@ -113606,27 +113641,6 @@
 	        }
 	    }
 
-	    function customFieldValidation() {
-	        // return a list of invalidities: field name other other such message
-	        var invalid_fields = [];
-
-	        var start_date = context.container().select('div.wrap-form-field.wrap-form-field-start_date input[type="text"]').node();
-	        var end_date = context.container().select('div.wrap-form-field.wrap-form-field-end_date input[type="text"]').node();
-	        start_date = start_date ? start_date.value : null;
-	        end_date = end_date ? end_date.value : null;
-	        var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
-	        var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
-	        var dates_regex3 = /^\-?\d\d\d\d$/;
-
-	        if (start_date && ! start_date.match(dates_regex1) && ! start_date.match(dates_regex2) && ! start_date.match(dates_regex3)) {
-	                invalid_fields.push("Start Date: YYYY-MM-DD, YYYY-MM, or YYYY");
-	        }
-	        if (end_date && ! end_date.match(dates_regex1) && ! end_date.match(dates_regex2) && ! end_date.match(dates_regex3)) {
-	                invalid_fields.push("End Date: YYYY-MM-DD, YYYY-MM, or YYYY");
-	        }
-
-	        return invalid_fields;
-	    }
 
 	    tool.render = function(selection) {
 	        tooltipBehavior = uiTooltip()
@@ -113641,16 +113655,10 @@
 	            .append('button')
 	            .attr('class', 'save disabled bar-button')
 	            .on('pointerup', function() {
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click', function() {
-	                var invalids = customFieldValidation();
-	                if (invalids && invalids.length) {
-	                    var errmsg = _t('save.error') + "\n" + invalids.join("\n");
-	                    return alert(errmsg);
-	                }
-
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                save();
 
@@ -113802,10 +113810,10 @@
 	            .attr('class', function(d) { return 'disabled ' + d.id + '-button bar-button'; })
 	            .on('pointerup', function() {
 	                // `pointerup` is always called before `click`
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click', function(d) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var annotation = d.annotation();
 
@@ -113839,11 +113847,11 @@
 
 	        context.keybinding()
 	            .on(commands[0].cmd, function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (editable()) { commands[0].action(); }
 	            })
 	            .on(commands[1].cmd, function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (editable()) { commands[1].action(); }
 	            });
 
@@ -113912,10 +113920,10 @@
 	    function topToolbar(bar) {
 
 	        bar.on('wheel.topToolbar', function() {
-	            if (!event.deltaX) {
+	            if (!event$1.deltaX) {
 	                // translate vertical scrolling into horizontal scrolling in case
 	                // the user doesn't have an input device that can scroll horizontally
-	                bar.node().scrollLeft += event.deltaY;
+	                bar.node().scrollLeft += event$1.deltaY;
 	            }
 	        });
 
@@ -114057,22 +114065,22 @@
 	    }];
 
 	    function zoomIn() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomIn();
 	    }
 
 	    function zoomOut() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomOut();
 	    }
 
 	    function zoomInFurther() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomInFurther();
 	    }
 
 	    function zoomOutFurther() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomOutFurther();
 	    }
 
@@ -114097,7 +114105,7 @@
 	            .append('button')
 	            .attr('class', function(d) { return d.id; })
 	            .on('pointerup.editor', function() {
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click.editor', function(d) {
 	                if (!d.disabled()) {
@@ -114157,11 +114165,11 @@
 	    var _lastPointerUpType;
 
 	    function pointerup() {
-	        _lastPointerUpType = event.pointerType;
+	        _lastPointerUpType = event$1.pointerType;
 	    }
 
 	    function click() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        if (isDisabled()) {
 	            if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
@@ -114268,7 +114276,7 @@
 	    }
 
 	    pane.togglePane = function() {
-	        if (event) { event.preventDefault(); }
+	        if (event$1) { event$1.preventDefault(); }
 	        _paneTooltip.hide();
 	        context.ui().togglePanes(!_paneSelection.classed('shown') ? _paneSelection : undefined);
 	    };
@@ -114361,8 +114369,8 @@
 	    }
 
 	    function updateValue(d, val) {
-	        if (!val && event && event.target) {
-	            val = event.target.value;
+	        if (!val && event$1 && event$1.target) {
+	            val = event$1.target.value;
 	        }
 
 	        val = clamp(val, _minVal, _maxVal);
@@ -114415,7 +114423,7 @@
 	            .attr('title', _t('background.reset'))
 	            .attr('class', function(d) { return 'display-option-reset display-option-reset-' + d; })
 	            .on('click', function(d) {
-	                if (event.button !== 0) { return; }
+	                if (event$1.button !== 0) { return; }
 	                updateValue(d, 1);
 	            })
 	            .call(svgIcon('#iD-icon-' + (_mainLocalizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
@@ -114605,7 +114613,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                uiMapInMap.toggle();
 	            });
 
@@ -114628,7 +114636,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('background');
 	            });
 
@@ -114650,7 +114658,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('location');
 	            });
 
@@ -114784,7 +114792,7 @@
 	            return editCustom();
 	        }
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        var previousBackground = context.background().baseLayerSource();
 	        corePreferences('background-last-used-toggle', previousBackground.id);
 	        corePreferences('background-last-used', d.id);
@@ -114805,7 +114813,7 @@
 
 
 	    function editCustom() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.container()
 	            .call(_settingsCustomBackground);
 	    }
@@ -114845,8 +114853,8 @@
 
 
 	    function cancelEvent() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -114923,11 +114931,11 @@
 
 
 	    function dragOffset() {
-	        if (event.button !== 0) { return; }
+	        if (event$1.button !== 0) { return; }
 
-	        var origin = [event.clientX, event.clientY];
+	        var origin = [event$1.clientX, event$1.clientY];
 
-	        var pointerId = event.pointerId || 'mouse';
+	        var pointerId = event$1.pointerId || 'mouse';
 
 	        context.container()
 	            .append('div')
@@ -114943,9 +114951,9 @@
 	        }
 
 	        function pointermove() {
-	            if (pointerId !== (event.pointerId || 'mouse')) { return; }
+	            if (pointerId !== (event$1.pointerId || 'mouse')) { return; }
 
-	            var latest = [event.clientX, event.clientY];
+	            var latest = [event$1.clientX, event$1.clientY];
 	            var d = [
 	                -(origin[0] - latest[0]) / 4,
 	                -(origin[1] - latest[1]) / 4
@@ -114956,8 +114964,8 @@
 	        }
 
 	        function pointerup() {
-	            if (pointerId !== (event.pointerId || 'mouse')) { return; }
-	            if (event.button !== 0) { return; }
+	            if (pointerId !== (event$1.pointerId || 'mouse')) { return; }
+	            if (event$1.button !== 0) { return; }
 
 	            context.container().selectAll('.nudge-surface')
 	                .remove();
@@ -115000,7 +115008,7 @@
 	            .attr('class', function(d) { return d[0] + ' nudge'; })
 	            .on('contextmenu', cancelEvent)
 	            .on(_pointerPrefix + 'down', function(d) {
-	                if (event.button !== 0) { return; }
+	                if (event$1.button !== 0) { return; }
 	                pointerdownNudgeButton(d[1]);
 	            });
 
@@ -115010,8 +115018,8 @@
 	            .attr('class', 'nudge-reset disabled')
 	            .on('contextmenu', cancelEvent)
 	            .on('click', function() {
-	                event.preventDefault();
-	                if (event.button !== 0) { return; }
+	                event$1.preventDefault();
+	                if (event$1.button !== 0) { return; }
 	                resetOffset();
 	            })
 	            .call(svgIcon('#iD-icon-' + (_mainLocalizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
@@ -115066,7 +115074,7 @@
 
 
 	    function chooseOverlay(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.background().toggleOverlayLayer(d);
 	        _overlayList.call(updateLayerSelections);
 	        document.activeElement.blur();
@@ -115819,8 +115827,8 @@
 	    }
 
 	    function updateOptionValue(d, val) {
-	        if (!val && event && event.target) {
-	            val = event.target.value;
+	        if (!val && event$1 && event$1.target) {
+	            val = event$1.target.value;
 	        }
 
 	        corePreferences('validate-' + d, val);
@@ -115960,12 +115968,12 @@
 	            .attr('class', 'square-degrees-input')
 	            .call(utilNoAuto)
 	            .on('click', function () {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                this.select();
 	            })
 	            .on('keyup', function () {
-	                if (event.keyCode === 13) { // enter
+	                if (event$1.keyCode === 13) { // enter
 	                    this.blur();
 	                    this.select();
 	                }
@@ -116241,7 +116249,7 @@
 	            .attr('type', 'file')
 	            .property('files', _currSettings.fileList)  // works for all except IE11
 	            .on('change', function() {
-	                var files = event.target.files;
+	                var files = event$1.target.files;
 	                if (files && files.length) {
 	                    _currSettings.url = '';
 	                    textSection.select('.field-url').property('value', '');
@@ -116646,8 +116654,8 @@
 	                .placement((_mainLocalizer.textDirection() === 'rtl') ? 'right' : 'left')
 	            )
 	            .on('click', function() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                dataLayer.fitZoom();
 	            })
 	            .call(svgIcon('#iD-icon-framed-dot'));
@@ -116666,7 +116674,7 @@
 	    }
 
 	    function editCustom() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.container()
 	            .call(settingsCustomData);
 	    }
@@ -116704,7 +116712,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('history');
 	            });
 
@@ -116726,7 +116734,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('measurement');
 	            });
 
@@ -116952,7 +116960,7 @@
 	    }
 
 	    function toggleHighlightEdited() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().toggleHighlightEdited();
 	    }
 
@@ -117400,7 +117408,7 @@
 	        .append('input')
 	        .attr('type', 'checkbox')
 	        .on('change', function () {
-	          event.preventDefault();
+	          event$1.preventDefault();
 	          _showThirdPartyIcons = (_showThirdPartyIcons === 'true') ? 'false' : 'true';
 	          corePreferences('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
 	          update();
@@ -117464,12 +117472,12 @@
 	        container
 	            .on('click.ui', function() {
 	                // we're only concerned with the primary mouse button
-	                if (event.button !== 0) { return; }
+	                if (event$1.button !== 0) { return; }
 
-	                if (!event.composedPath) { return; }
+	                if (!event$1.composedPath) { return; }
 
 	                // some targets have default click events we don't want to override
-	                var isOkayTarget = event.composedPath().some(function(node) {
+	                var isOkayTarget = event$1.composedPath().some(function(node) {
 	                    // we only care about element nodes
 	                    return node.nodeType === 1 &&
 	                        // clicking <input> focuses it and/or changes a value
@@ -117482,7 +117490,7 @@
 	                if (isOkayTarget) { return; }
 
 	                // disable double-tap-to-zoom on touchscreens
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            });
 
 	        var detected = utilDetect();
@@ -117498,14 +117506,14 @@
 	            // default gesture events.
 	            container.on('gesturestart.ui gesturechange.ui gestureend.ui', function() {
 	                // disable pinch-to-zoom of the UI via multitouch trackpads on macOS Safari
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            });
 	        }
 
 	        if ('PointerEvent' in window) {
 	            select(window)
 	                .on('pointerdown.ui pointerup.ui', function() {
-	                    var pointerType = event.pointerType || 'mouse';
+	                    var pointerType = event$1.pointerType || 'mouse';
 	                    if (_lastPointerType !== pointerType) {
 	                        _lastPointerType = pointerType;
 	                        container
@@ -117755,7 +117763,7 @@
 
 	        var panPixels = 80;
 	        context.keybinding()
-	            .on('⌫', function() { event.preventDefault(); })
+	            .on('⌫', function() { event$1.preventDefault(); })
 	            .on([_t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
 	            .on('←', pan([panPixels, 0]))
 	            .on('↑', pan([0, panPixels]))
@@ -117766,9 +117774,9 @@
 	            .on(uiCmd('⌘→'), pan([-map.dimensions()[0], 0]))
 	            .on(uiCmd('⌘↓'), pan([0, -map.dimensions()[1]]))
 	            .on(uiCmd('⌘' + _t('background.key')), function quickSwitch() {
-	                if (event) {
-	                    event.stopImmediatePropagation();
-	                    event.preventDefault();
+	                if (event$1) {
+	                    event$1.stopImmediatePropagation();
+	                    event$1.preventDefault();
 	                }
 	                var previousBackground = context.background().findSource(corePreferences('background-last-used-toggle'));
 	                if (previousBackground) {
@@ -117779,13 +117787,13 @@
 	                }
 	            })
 	            .on(_t('area_fill.wireframe.key'), function toggleWireframe() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                context.map().toggleWireframe();
 	            })
 	            .on(uiCmd('⌥' + _t('area_fill.wireframe.key')), function toggleOsmData() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                // Don't allow layer changes while drawing - #6584
 	                var mode = context.mode();
@@ -117800,7 +117808,7 @@
 	                }
 	            })
 	            .on(_t('map_data.highlight_edits.key'), function toggleHighlightEdited() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.map().toggleHighlightEdited();
 	            });
 
@@ -117851,9 +117859,9 @@
 
 	        function pan(d) {
 	            return function() {
-	                if (event.shiftKey) { return; }
+	                if (event$1.shiftKey) { return; }
 	                if (context.container().select('.combobox').size()) { return; }
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.map().pan(d, 100);
 	            };
 	        }
@@ -118629,7 +118637,7 @@
 	var d3 = {
 	  customEvent: customEvent,
 	  dispatch:  dispatch,
-	  event:  event,
+	  event:  event$1,
 	  geoMercator: mercator,
 	  geoProjection: projection,
 	  polygonArea: d3_polygonArea,
