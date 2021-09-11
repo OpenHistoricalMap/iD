@@ -2097,14 +2097,20 @@
 
 	var functionBind = Function.prototype.bind || implementation$2;
 
-	/* globals
-		Atomics,
-		SharedArrayBuffer,
-	*/
+	var src = functionBind.call(Function.call, Object.prototype.hasOwnProperty);
 
 	var undefined$1;
 
+	var $SyntaxError = SyntaxError;
+	var $Function = Function;
 	var $TypeError = TypeError;
+
+	// eslint-disable-next-line consistent-return
+	var getEvalledConstructor = function (expressionSyntax) {
+		try {
+			return $Function('"use strict"; return (' + expressionSyntax + ').constructor;')();
+		} catch (e) {}
+	};
 
 	var $gOPD = Object.getOwnPropertyDescriptor;
 	if ($gOPD) {
@@ -2115,7 +2121,9 @@
 		}
 	}
 
-	var throwTypeError = function () { throw new $TypeError(); };
+	var throwTypeError = function () {
+		throw new $TypeError();
+	};
 	var ThrowTypeError = $gOPD
 		? (function () {
 			try {
@@ -2136,170 +2144,265 @@
 	var hasSymbols$2 = hasSymbols$1();
 
 	var getProto = Object.getPrototypeOf || function (x) { return x.__proto__; }; // eslint-disable-line no-proto
-	var generatorFunction =  undefined$1;
-	var asyncFunction =  undefined$1;
-	var asyncGenFunction =  undefined$1;
+
+	var needsEval = {};
 
 	var TypedArray = typeof Uint8Array === 'undefined' ? undefined$1 : getProto(Uint8Array);
 
 	var INTRINSICS = {
+		'%AggregateError%': typeof AggregateError === 'undefined' ? undefined$1 : AggregateError,
 		'%Array%': Array,
 		'%ArrayBuffer%': typeof ArrayBuffer === 'undefined' ? undefined$1 : ArrayBuffer,
-		'%ArrayBufferPrototype%': typeof ArrayBuffer === 'undefined' ? undefined$1 : ArrayBuffer.prototype,
 		'%ArrayIteratorPrototype%': hasSymbols$2 ? getProto([][Symbol.iterator]()) : undefined$1,
-		'%ArrayPrototype%': Array.prototype,
-		'%ArrayProto_entries%': Array.prototype.entries,
-		'%ArrayProto_forEach%': Array.prototype.forEach,
-		'%ArrayProto_keys%': Array.prototype.keys,
-		'%ArrayProto_values%': Array.prototype.values,
 		'%AsyncFromSyncIteratorPrototype%': undefined$1,
-		'%AsyncFunction%': asyncFunction,
-		'%AsyncFunctionPrototype%':  undefined$1,
-		'%AsyncGenerator%':  undefined$1,
-		'%AsyncGeneratorFunction%': asyncGenFunction,
-		'%AsyncGeneratorPrototype%':  undefined$1,
-		'%AsyncIteratorPrototype%':  undefined$1,
+		'%AsyncFunction%': needsEval,
+		'%AsyncGenerator%': needsEval,
+		'%AsyncGeneratorFunction%': needsEval,
+		'%AsyncIteratorPrototype%': needsEval,
 		'%Atomics%': typeof Atomics === 'undefined' ? undefined$1 : Atomics,
+		'%BigInt%': typeof BigInt === 'undefined' ? undefined$1 : BigInt,
 		'%Boolean%': Boolean,
-		'%BooleanPrototype%': Boolean.prototype,
 		'%DataView%': typeof DataView === 'undefined' ? undefined$1 : DataView,
-		'%DataViewPrototype%': typeof DataView === 'undefined' ? undefined$1 : DataView.prototype,
 		'%Date%': Date,
-		'%DatePrototype%': Date.prototype,
 		'%decodeURI%': decodeURI,
 		'%decodeURIComponent%': decodeURIComponent,
 		'%encodeURI%': encodeURI,
 		'%encodeURIComponent%': encodeURIComponent,
 		'%Error%': Error,
-		'%ErrorPrototype%': Error.prototype,
 		'%eval%': eval, // eslint-disable-line no-eval
 		'%EvalError%': EvalError,
-		'%EvalErrorPrototype%': EvalError.prototype,
 		'%Float32Array%': typeof Float32Array === 'undefined' ? undefined$1 : Float32Array,
-		'%Float32ArrayPrototype%': typeof Float32Array === 'undefined' ? undefined$1 : Float32Array.prototype,
 		'%Float64Array%': typeof Float64Array === 'undefined' ? undefined$1 : Float64Array,
-		'%Float64ArrayPrototype%': typeof Float64Array === 'undefined' ? undefined$1 : Float64Array.prototype,
-		'%Function%': Function,
-		'%FunctionPrototype%': Function.prototype,
-		'%Generator%':  undefined$1,
-		'%GeneratorFunction%': generatorFunction,
-		'%GeneratorPrototype%':  undefined$1,
+		'%FinalizationRegistry%': typeof FinalizationRegistry === 'undefined' ? undefined$1 : FinalizationRegistry,
+		'%Function%': $Function,
+		'%GeneratorFunction%': needsEval,
 		'%Int8Array%': typeof Int8Array === 'undefined' ? undefined$1 : Int8Array,
-		'%Int8ArrayPrototype%': typeof Int8Array === 'undefined' ? undefined$1 : Int8Array.prototype,
 		'%Int16Array%': typeof Int16Array === 'undefined' ? undefined$1 : Int16Array,
-		'%Int16ArrayPrototype%': typeof Int16Array === 'undefined' ? undefined$1 : Int8Array.prototype,
 		'%Int32Array%': typeof Int32Array === 'undefined' ? undefined$1 : Int32Array,
-		'%Int32ArrayPrototype%': typeof Int32Array === 'undefined' ? undefined$1 : Int32Array.prototype,
 		'%isFinite%': isFinite,
 		'%isNaN%': isNaN,
 		'%IteratorPrototype%': hasSymbols$2 ? getProto(getProto([][Symbol.iterator]())) : undefined$1,
 		'%JSON%': typeof JSON === 'object' ? JSON : undefined$1,
-		'%JSONParse%': typeof JSON === 'object' ? JSON.parse : undefined$1,
 		'%Map%': typeof Map === 'undefined' ? undefined$1 : Map,
 		'%MapIteratorPrototype%': typeof Map === 'undefined' || !hasSymbols$2 ? undefined$1 : getProto(new Map()[Symbol.iterator]()),
-		'%MapPrototype%': typeof Map === 'undefined' ? undefined$1 : Map.prototype,
 		'%Math%': Math,
 		'%Number%': Number,
-		'%NumberPrototype%': Number.prototype,
 		'%Object%': Object,
-		'%ObjectPrototype%': Object.prototype,
-		'%ObjProto_toString%': Object.prototype.toString,
-		'%ObjProto_valueOf%': Object.prototype.valueOf,
 		'%parseFloat%': parseFloat,
 		'%parseInt%': parseInt,
 		'%Promise%': typeof Promise === 'undefined' ? undefined$1 : Promise,
-		'%PromisePrototype%': typeof Promise === 'undefined' ? undefined$1 : Promise.prototype,
-		'%PromiseProto_then%': typeof Promise === 'undefined' ? undefined$1 : Promise.prototype.then,
-		'%Promise_all%': typeof Promise === 'undefined' ? undefined$1 : Promise.all,
-		'%Promise_reject%': typeof Promise === 'undefined' ? undefined$1 : Promise.reject,
-		'%Promise_resolve%': typeof Promise === 'undefined' ? undefined$1 : Promise.resolve,
 		'%Proxy%': typeof Proxy === 'undefined' ? undefined$1 : Proxy,
 		'%RangeError%': RangeError,
-		'%RangeErrorPrototype%': RangeError.prototype,
 		'%ReferenceError%': ReferenceError,
-		'%ReferenceErrorPrototype%': ReferenceError.prototype,
 		'%Reflect%': typeof Reflect === 'undefined' ? undefined$1 : Reflect,
 		'%RegExp%': RegExp,
-		'%RegExpPrototype%': RegExp.prototype,
 		'%Set%': typeof Set === 'undefined' ? undefined$1 : Set,
 		'%SetIteratorPrototype%': typeof Set === 'undefined' || !hasSymbols$2 ? undefined$1 : getProto(new Set()[Symbol.iterator]()),
-		'%SetPrototype%': typeof Set === 'undefined' ? undefined$1 : Set.prototype,
 		'%SharedArrayBuffer%': typeof SharedArrayBuffer === 'undefined' ? undefined$1 : SharedArrayBuffer,
-		'%SharedArrayBufferPrototype%': typeof SharedArrayBuffer === 'undefined' ? undefined$1 : SharedArrayBuffer.prototype,
 		'%String%': String,
 		'%StringIteratorPrototype%': hasSymbols$2 ? getProto(''[Symbol.iterator]()) : undefined$1,
-		'%StringPrototype%': String.prototype,
 		'%Symbol%': hasSymbols$2 ? Symbol : undefined$1,
-		'%SymbolPrototype%': hasSymbols$2 ? Symbol.prototype : undefined$1,
-		'%SyntaxError%': SyntaxError,
-		'%SyntaxErrorPrototype%': SyntaxError.prototype,
+		'%SyntaxError%': $SyntaxError,
 		'%ThrowTypeError%': ThrowTypeError,
 		'%TypedArray%': TypedArray,
-		'%TypedArrayPrototype%': TypedArray ? TypedArray.prototype : undefined$1,
 		'%TypeError%': $TypeError,
-		'%TypeErrorPrototype%': $TypeError.prototype,
 		'%Uint8Array%': typeof Uint8Array === 'undefined' ? undefined$1 : Uint8Array,
-		'%Uint8ArrayPrototype%': typeof Uint8Array === 'undefined' ? undefined$1 : Uint8Array.prototype,
 		'%Uint8ClampedArray%': typeof Uint8ClampedArray === 'undefined' ? undefined$1 : Uint8ClampedArray,
-		'%Uint8ClampedArrayPrototype%': typeof Uint8ClampedArray === 'undefined' ? undefined$1 : Uint8ClampedArray.prototype,
 		'%Uint16Array%': typeof Uint16Array === 'undefined' ? undefined$1 : Uint16Array,
-		'%Uint16ArrayPrototype%': typeof Uint16Array === 'undefined' ? undefined$1 : Uint16Array.prototype,
 		'%Uint32Array%': typeof Uint32Array === 'undefined' ? undefined$1 : Uint32Array,
-		'%Uint32ArrayPrototype%': typeof Uint32Array === 'undefined' ? undefined$1 : Uint32Array.prototype,
 		'%URIError%': URIError,
-		'%URIErrorPrototype%': URIError.prototype,
 		'%WeakMap%': typeof WeakMap === 'undefined' ? undefined$1 : WeakMap,
-		'%WeakMapPrototype%': typeof WeakMap === 'undefined' ? undefined$1 : WeakMap.prototype,
-		'%WeakSet%': typeof WeakSet === 'undefined' ? undefined$1 : WeakSet,
-		'%WeakSetPrototype%': typeof WeakSet === 'undefined' ? undefined$1 : WeakSet.prototype
+		'%WeakRef%': typeof WeakRef === 'undefined' ? undefined$1 : WeakRef,
+		'%WeakSet%': typeof WeakSet === 'undefined' ? undefined$1 : WeakSet
+	};
+
+	var doEval = function doEval(name) {
+		var value;
+		if (name === '%AsyncFunction%') {
+			value = getEvalledConstructor('async function () {}');
+		} else if (name === '%GeneratorFunction%') {
+			value = getEvalledConstructor('function* () {}');
+		} else if (name === '%AsyncGeneratorFunction%') {
+			value = getEvalledConstructor('async function* () {}');
+		} else if (name === '%AsyncGenerator%') {
+			var fn = doEval('%AsyncGeneratorFunction%');
+			if (fn) {
+				value = fn.prototype;
+			}
+		} else if (name === '%AsyncIteratorPrototype%') {
+			var gen = doEval('%AsyncGenerator%');
+			if (gen) {
+				value = getProto(gen.prototype);
+			}
+		}
+
+		INTRINSICS[name] = value;
+
+		return value;
+	};
+
+	var LEGACY_ALIASES = {
+		'%ArrayBufferPrototype%': ['ArrayBuffer', 'prototype'],
+		'%ArrayPrototype%': ['Array', 'prototype'],
+		'%ArrayProto_entries%': ['Array', 'prototype', 'entries'],
+		'%ArrayProto_forEach%': ['Array', 'prototype', 'forEach'],
+		'%ArrayProto_keys%': ['Array', 'prototype', 'keys'],
+		'%ArrayProto_values%': ['Array', 'prototype', 'values'],
+		'%AsyncFunctionPrototype%': ['AsyncFunction', 'prototype'],
+		'%AsyncGenerator%': ['AsyncGeneratorFunction', 'prototype'],
+		'%AsyncGeneratorPrototype%': ['AsyncGeneratorFunction', 'prototype', 'prototype'],
+		'%BooleanPrototype%': ['Boolean', 'prototype'],
+		'%DataViewPrototype%': ['DataView', 'prototype'],
+		'%DatePrototype%': ['Date', 'prototype'],
+		'%ErrorPrototype%': ['Error', 'prototype'],
+		'%EvalErrorPrototype%': ['EvalError', 'prototype'],
+		'%Float32ArrayPrototype%': ['Float32Array', 'prototype'],
+		'%Float64ArrayPrototype%': ['Float64Array', 'prototype'],
+		'%FunctionPrototype%': ['Function', 'prototype'],
+		'%Generator%': ['GeneratorFunction', 'prototype'],
+		'%GeneratorPrototype%': ['GeneratorFunction', 'prototype', 'prototype'],
+		'%Int8ArrayPrototype%': ['Int8Array', 'prototype'],
+		'%Int16ArrayPrototype%': ['Int16Array', 'prototype'],
+		'%Int32ArrayPrototype%': ['Int32Array', 'prototype'],
+		'%JSONParse%': ['JSON', 'parse'],
+		'%JSONStringify%': ['JSON', 'stringify'],
+		'%MapPrototype%': ['Map', 'prototype'],
+		'%NumberPrototype%': ['Number', 'prototype'],
+		'%ObjectPrototype%': ['Object', 'prototype'],
+		'%ObjProto_toString%': ['Object', 'prototype', 'toString'],
+		'%ObjProto_valueOf%': ['Object', 'prototype', 'valueOf'],
+		'%PromisePrototype%': ['Promise', 'prototype'],
+		'%PromiseProto_then%': ['Promise', 'prototype', 'then'],
+		'%Promise_all%': ['Promise', 'all'],
+		'%Promise_reject%': ['Promise', 'reject'],
+		'%Promise_resolve%': ['Promise', 'resolve'],
+		'%RangeErrorPrototype%': ['RangeError', 'prototype'],
+		'%ReferenceErrorPrototype%': ['ReferenceError', 'prototype'],
+		'%RegExpPrototype%': ['RegExp', 'prototype'],
+		'%SetPrototype%': ['Set', 'prototype'],
+		'%SharedArrayBufferPrototype%': ['SharedArrayBuffer', 'prototype'],
+		'%StringPrototype%': ['String', 'prototype'],
+		'%SymbolPrototype%': ['Symbol', 'prototype'],
+		'%SyntaxErrorPrototype%': ['SyntaxError', 'prototype'],
+		'%TypedArrayPrototype%': ['TypedArray', 'prototype'],
+		'%TypeErrorPrototype%': ['TypeError', 'prototype'],
+		'%Uint8ArrayPrototype%': ['Uint8Array', 'prototype'],
+		'%Uint8ClampedArrayPrototype%': ['Uint8ClampedArray', 'prototype'],
+		'%Uint16ArrayPrototype%': ['Uint16Array', 'prototype'],
+		'%Uint32ArrayPrototype%': ['Uint32Array', 'prototype'],
+		'%URIErrorPrototype%': ['URIError', 'prototype'],
+		'%WeakMapPrototype%': ['WeakMap', 'prototype'],
+		'%WeakSetPrototype%': ['WeakSet', 'prototype']
 	};
 
 
+
+	var $concat = functionBind.call(Function.call, Array.prototype.concat);
+	var $spliceApply = functionBind.call(Function.apply, Array.prototype.splice);
 	var $replace = functionBind.call(Function.call, String.prototype.replace);
+	var $strSlice = functionBind.call(Function.call, String.prototype.slice);
 
 	/* adapted from https://github.com/lodash/lodash/blob/4.17.15/dist/lodash.js#L6735-L6744 */
 	var rePropName = /[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/g;
 	var reEscapeChar = /\\(\\)?/g; /** Used to match backslashes in property paths. */
 	var stringToPath = function stringToPath(string) {
+		var first = $strSlice(string, 0, 1);
+		var last = $strSlice(string, -1);
+		if (first === '%' && last !== '%') {
+			throw new $SyntaxError('invalid intrinsic syntax, expected closing `%`');
+		} else if (last === '%' && first !== '%') {
+			throw new $SyntaxError('invalid intrinsic syntax, expected opening `%`');
+		}
 		var result = [];
 		$replace(string, rePropName, function (match, number, quote, subString) {
-			result[result.length] = quote ? $replace(subString, reEscapeChar, '$1') : (number || match);
+			result[result.length] = quote ? $replace(subString, reEscapeChar, '$1') : number || match;
 		});
 		return result;
 	};
 	/* end adaptation */
 
 	var getBaseIntrinsic = function getBaseIntrinsic(name, allowMissing) {
-		if (!(name in INTRINSICS)) {
-			throw new SyntaxError('intrinsic ' + name + ' does not exist!');
+		var intrinsicName = name;
+		var alias;
+		if (src(LEGACY_ALIASES, intrinsicName)) {
+			alias = LEGACY_ALIASES[intrinsicName];
+			intrinsicName = '%' + alias[0] + '%';
 		}
 
-		// istanbul ignore if // hopefully this is impossible to test :-)
-		if (typeof INTRINSICS[name] === 'undefined' && !allowMissing) {
-			throw new $TypeError('intrinsic ' + name + ' exists, but is not available. Please file an issue!');
+		if (src(INTRINSICS, intrinsicName)) {
+			var value = INTRINSICS[intrinsicName];
+			if (value === needsEval) {
+				value = doEval(intrinsicName);
+			}
+			if (typeof value === 'undefined' && !allowMissing) {
+				throw new $TypeError('intrinsic ' + name + ' exists, but is not available. Please file an issue!');
+			}
+
+			return {
+				alias: alias,
+				name: intrinsicName,
+				value: value
+			};
 		}
 
-		return INTRINSICS[name];
+		throw new $SyntaxError('intrinsic ' + name + ' does not exist!');
 	};
 
-	var GetIntrinsic = function GetIntrinsic(name, allowMissing) {
+	var getIntrinsic = function GetIntrinsic(name, allowMissing) {
 		if (typeof name !== 'string' || name.length === 0) {
-			throw new TypeError('intrinsic name must be a non-empty string');
+			throw new $TypeError('intrinsic name must be a non-empty string');
 		}
 		if (arguments.length > 1 && typeof allowMissing !== 'boolean') {
-			throw new TypeError('"allowMissing" argument must be a boolean');
+			throw new $TypeError('"allowMissing" argument must be a boolean');
 		}
 
 		var parts = stringToPath(name);
+		var intrinsicBaseName = parts.length > 0 ? parts[0] : '';
 
-		var value = getBaseIntrinsic('%' + (parts.length > 0 ? parts[0] : '') + '%', allowMissing);
-		for (var i = 1; i < parts.length; i += 1) {
-			if (value != null) {
-				if ($gOPD && (i + 1) >= parts.length) {
-					var desc = $gOPD(value, parts[i]);
-					if (!allowMissing && !(parts[i] in value)) {
+		var intrinsic = getBaseIntrinsic('%' + intrinsicBaseName + '%', allowMissing);
+		var intrinsicRealName = intrinsic.name;
+		var value = intrinsic.value;
+		var skipFurtherCaching = false;
+
+		var alias = intrinsic.alias;
+		if (alias) {
+			intrinsicBaseName = alias[0];
+			$spliceApply(parts, $concat([0, 1], alias));
+		}
+
+		for (var i = 1, isOwn = true; i < parts.length; i += 1) {
+			var part = parts[i];
+			var first = $strSlice(part, 0, 1);
+			var last = $strSlice(part, -1);
+			if (
+				(
+					(first === '"' || first === "'" || first === '`')
+					|| (last === '"' || last === "'" || last === '`')
+				)
+				&& first !== last
+			) {
+				throw new $SyntaxError('property names with quotes must have matching quotes');
+			}
+			if (part === 'constructor' || !isOwn) {
+				skipFurtherCaching = true;
+			}
+
+			intrinsicBaseName += '.' + part;
+			intrinsicRealName = '%' + intrinsicBaseName + '%';
+
+			if (src(INTRINSICS, intrinsicRealName)) {
+				value = INTRINSICS[intrinsicRealName];
+			} else if (value != null) {
+				if (!(part in value)) {
+					if (!allowMissing) {
 						throw new $TypeError('base intrinsic for ' + name + ' exists, but the property is not available.');
 					}
+					return void undefined$1;
+				}
+				if ($gOPD && (i + 1) >= parts.length) {
+					var desc = $gOPD(value, part);
+					isOwn = !!desc;
+
 					// By convention, when a data property is converted to an accessor
 					// property to emulate a data property that does not suffer from
 					// the override mistake, that accessor's getter is marked with
@@ -2307,18 +2410,27 @@
 					// uphold the illusion by pretending to see that original data
 					// property, i.e., returning the value rather than the getter
 					// itself.
-					value = desc && 'get' in desc && !('originalValue' in desc.get) ? desc.get : value[parts[i]];
+					if (isOwn && 'get' in desc && !('originalValue' in desc.get)) {
+						value = desc.get;
+					} else {
+						value = value[part];
+					}
 				} else {
-					value = value[parts[i]];
+					isOwn = src(value, part);
+					value = value[part];
+				}
+
+				if (isOwn && !skipFurtherCaching) {
+					INTRINSICS[intrinsicRealName] = value;
 				}
 			}
 		}
 		return value;
 	};
 
-	var $TypeError$1 = GetIntrinsic('%TypeError%');
+	var $TypeError$1 = getIntrinsic('%TypeError%');
 
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.10
+	// http://262.ecma-international.org/5.1/#sec-9.10
 
 	var CheckObjectCoercible = function CheckObjectCoercible(value, optMessage) {
 		if (value == null) {
@@ -2329,118 +2441,41 @@
 
 	var RequireObjectCoercible = CheckObjectCoercible;
 
-	var $Object = GetIntrinsic('%Object%');
+	var $Object = getIntrinsic('%Object%');
 
 
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-toobject
+	// https://ecma-international.org/ecma-262/6.0/#sec-toobject
 
 	var ToObject = function ToObject(value) {
 		RequireObjectCoercible(value);
 		return $Object(value);
 	};
 
-	var $Math = GetIntrinsic('%Math%');
-	var $Number = GetIntrinsic('%Number%');
+	var $Math = getIntrinsic('%Math%');
+	var $Number = getIntrinsic('%Number%');
 
 	var maxSafeInteger = $Number.MAX_SAFE_INTEGER || $Math.pow(2, 53) - 1;
 
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.3
+	var $abs = getIntrinsic('%Math.abs%');
 
-	var ToNumber = function ToNumber(value) {
-		return +value; // eslint-disable-line no-implicit-coercion
+	// http://262.ecma-international.org/5.1/#sec-5.2
+
+	var abs$2 = function abs(x) {
+		return $abs(x);
 	};
 
-	var _isNaN = Number.isNaN || function isNaN(a) {
-		return a !== a;
-	};
+	// var modulo = require('./modulo');
+	var $floor = Math.floor;
 
-	var $isNaN = Number.isNaN || function (a) { return a !== a; };
+	// http://262.ecma-international.org/5.1/#sec-5.2
 
-	var _isFinite = Number.isFinite || function (x) { return typeof x === 'number' && !$isNaN(x) && x !== Infinity && x !== -Infinity; };
-
-	var sign$1 = function sign(number) {
-		return number >= 0 ? 1 : -1;
-	};
-
-	var $Math$1 = GetIntrinsic('%Math%');
-
-
-
-
-
-
-	var $floor = $Math$1.floor;
-	var $abs = $Math$1.abs;
-
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.4
-
-	var ToInteger = function ToInteger(value) {
-		var number = ToNumber(value);
-		if (_isNaN(number)) { return 0; }
-		if (number === 0 || !_isFinite(number)) { return number; }
-		return sign$1(number) * $floor($abs(number));
-	};
-
-	var callBind = createCommonjsModule(function (module) {
-
-
-
-
-
-	var $apply = GetIntrinsic('%Function.prototype.apply%');
-	var $call = GetIntrinsic('%Function.prototype.call%');
-	var $reflectApply = GetIntrinsic('%Reflect.apply%', true) || functionBind.call($call, $apply);
-
-	var $defineProperty = GetIntrinsic('%Object.defineProperty%', true);
-
-	if ($defineProperty) {
-		try {
-			$defineProperty({}, 'a', { value: 1 });
-		} catch (e) {
-			// IE 8 has a broken defineProperty
-			$defineProperty = null;
-		}
-	}
-
-	module.exports = function callBind() {
-		return $reflectApply(functionBind, $call, arguments);
-	};
-
-	var applyBind = function applyBind() {
-		return $reflectApply(functionBind, $apply, arguments);
-	};
-
-	if ($defineProperty) {
-		$defineProperty(module.exports, 'apply', { value: applyBind });
-	} else {
-		module.exports.apply = applyBind;
-	}
-	});
-
-	var $indexOf = callBind(GetIntrinsic('String.prototype.indexOf'));
-
-	var callBound = function callBoundIntrinsic(name, allowMissing) {
-		var intrinsic = GetIntrinsic(name, !!allowMissing);
-		if (typeof intrinsic === 'function' && $indexOf(name, '.prototype.')) {
-			return callBind(intrinsic);
-		}
-		return intrinsic;
-	};
-
-	var $test = GetIntrinsic('RegExp.prototype.test');
-
-
-
-	var regexTester = function regexTester(regex) {
-		return callBind($test, regex);
+	var floor$2 = function floor(x) {
+		// return x - modulo(x, 1);
+		return $floor(x);
 	};
 
 	var isPrimitive = function isPrimitive(value) {
-		return value === null || (typeof value !== 'function' && typeof value !== 'object');
-	};
-
-	var isPrimitive$1 = function isPrimitive(value) {
 		return value === null || (typeof value !== 'function' && typeof value !== 'object');
 	};
 
@@ -2517,6 +2552,163 @@
 			return strClass === fnClass || strClass === genClass;
 		};
 
+	var toStr$5 = Object.prototype.toString;
+
+
+
+
+
+	// http://ecma-international.org/ecma-262/5.1/#sec-8.12.8
+	var ES5internalSlots = {
+		'[[DefaultValue]]': function (O) {
+			var actualHint;
+			if (arguments.length > 1) {
+				actualHint = arguments[1];
+			} else {
+				actualHint = toStr$5.call(O) === '[object Date]' ? String : Number;
+			}
+
+			if (actualHint === String || actualHint === Number) {
+				var methods = actualHint === String ? ['toString', 'valueOf'] : ['valueOf', 'toString'];
+				var value, i;
+				for (i = 0; i < methods.length; ++i) {
+					if (isCallable(O[methods[i]])) {
+						value = O[methods[i]]();
+						if (isPrimitive(value)) {
+							return value;
+						}
+					}
+				}
+				throw new TypeError('No default value');
+			}
+			throw new TypeError('invalid [[DefaultValue]] hint supplied');
+		}
+	};
+
+	// http://ecma-international.org/ecma-262/5.1/#sec-9.1
+	var es5 = function ToPrimitive(input) {
+		if (isPrimitive(input)) {
+			return input;
+		}
+		if (arguments.length > 1) {
+			return ES5internalSlots['[[DefaultValue]]'](input, arguments[1]);
+		}
+		return ES5internalSlots['[[DefaultValue]]'](input);
+	};
+
+	// http://262.ecma-international.org/5.1/#sec-9.1
+
+	var ToPrimitive = es5;
+
+	// http://262.ecma-international.org/5.1/#sec-9.3
+
+	var ToNumber = function ToNumber(value) {
+		var prim = ToPrimitive(value, Number);
+		if (typeof prim !== 'string') {
+			return +prim; // eslint-disable-line no-implicit-coercion
+		}
+
+		// eslint-disable-next-line no-control-regex
+		var trimmed = prim.replace(/^[ \t\x0b\f\xa0\ufeff\n\r\u2028\u2029\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u0085]+|[ \t\x0b\f\xa0\ufeff\n\r\u2028\u2029\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u0085]+$/g, '');
+		if ((/^0[ob]|^[+-]0x/).test(trimmed)) {
+			return NaN;
+		}
+
+		return +trimmed; // eslint-disable-line no-implicit-coercion
+	};
+
+	var _isNaN = Number.isNaN || function isNaN(a) {
+		return a !== a;
+	};
+
+	var $isNaN = Number.isNaN || function (a) { return a !== a; };
+
+	var _isFinite = Number.isFinite || function (x) { return typeof x === 'number' && !$isNaN(x) && x !== Infinity && x !== -Infinity; };
+
+	var sign$1 = function sign(number) {
+		return number >= 0 ? 1 : -1;
+	};
+
+	// http://262.ecma-international.org/5.1/#sec-9.4
+
+	var ToInteger = function ToInteger(value) {
+		var number = ToNumber(value);
+		if (_isNaN(number)) { return 0; }
+		if (number === 0 || !_isFinite(number)) { return number; }
+		return sign$1(number) * floor$2(abs$2(number));
+	};
+
+	var callBind = createCommonjsModule(function (module) {
+
+
+
+
+	var $apply = getIntrinsic('%Function.prototype.apply%');
+	var $call = getIntrinsic('%Function.prototype.call%');
+	var $reflectApply = getIntrinsic('%Reflect.apply%', true) || functionBind.call($call, $apply);
+
+	var $gOPD = getIntrinsic('%Object.getOwnPropertyDescriptor%', true);
+	var $defineProperty = getIntrinsic('%Object.defineProperty%', true);
+	var $max = getIntrinsic('%Math.max%');
+
+	if ($defineProperty) {
+		try {
+			$defineProperty({}, 'a', { value: 1 });
+		} catch (e) {
+			// IE 8 has a broken defineProperty
+			$defineProperty = null;
+		}
+	}
+
+	module.exports = function callBind(originalFunction) {
+		var func = $reflectApply(functionBind, $call, arguments);
+		if ($gOPD && $defineProperty) {
+			var desc = $gOPD(func, 'length');
+			if (desc.configurable) {
+				// original length, plus the receiver, minus any additional arguments (after the receiver)
+				$defineProperty(
+					func,
+					'length',
+					{ value: 1 + $max(0, originalFunction.length - (arguments.length - 1)) }
+				);
+			}
+		}
+		return func;
+	};
+
+	var applyBind = function applyBind() {
+		return $reflectApply(functionBind, $apply, arguments);
+	};
+
+	if ($defineProperty) {
+		$defineProperty(module.exports, 'apply', { value: applyBind });
+	} else {
+		module.exports.apply = applyBind;
+	}
+	});
+
+	var $indexOf = callBind(getIntrinsic('String.prototype.indexOf'));
+
+	var callBound = function callBoundIntrinsic(name, allowMissing) {
+		var intrinsic = getIntrinsic(name, !!allowMissing);
+		if (typeof intrinsic === 'function' && $indexOf(name, '.prototype.') > -1) {
+			return callBind(intrinsic);
+		}
+		return intrinsic;
+	};
+
+	var $test = getIntrinsic('RegExp.prototype.test');
+
+
+
+	var regexTester = function regexTester(regex) {
+		return callBind($test, regex);
+	};
+
+	var isPrimitive$1 = function isPrimitive(value) {
+		return value === null || (typeof value !== 'function' && typeof value !== 'object');
+	};
+
 	var getDay = Date.prototype.getDay;
 	var tryDateObject = function tryDateGetDayCall(value) {
 		try {
@@ -2527,7 +2719,7 @@
 		}
 	};
 
-	var toStr$5 = Object.prototype.toString;
+	var toStr$6 = Object.prototype.toString;
 	var dateClass = '[object Date]';
 	var hasToStringTag$1 = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
@@ -2535,7 +2727,7 @@
 		if (typeof value !== 'object' || value === null) {
 			return false;
 		}
-		return hasToStringTag$1 ? tryDateObject(value) : toStr$5.call(value) === dateClass;
+		return hasToStringTag$1 ? tryDateObject(value) : toStr$6.call(value) === dateClass;
 	};
 
 	var isSymbol$2 = createCommonjsModule(function (module) {
@@ -2595,7 +2787,7 @@
 			method = O[methodNames[i]];
 			if (isCallable(method)) {
 				result = method.call(O);
-				if (isPrimitive$1(result)) {
+				if (isPrimitive(result)) {
 					return result;
 				}
 			}
@@ -2616,7 +2808,7 @@
 
 	// http://www.ecma-international.org/ecma-262/6.0/#sec-toprimitive
 	var es2015 = function ToPrimitive(input) {
-		if (isPrimitive$1(input)) {
+		if (isPrimitive(input)) {
 			return input;
 		}
 		var hint = 'default';
@@ -2638,7 +2830,7 @@
 		}
 		if (typeof exoticToPrim !== 'undefined') {
 			var result = exoticToPrim.call(input, hint);
-			if (isPrimitive$1(result)) {
+			if (isPrimitive(result)) {
 				return result;
 			}
 			throw new TypeError('unable to convert exotic object to primitive');
@@ -2649,25 +2841,25 @@
 		return ordinaryToPrimitive(input, hint === 'default' ? 'number' : hint);
 	};
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-toprimitive
+	// https://ecma-international.org/ecma-262/6.0/#sec-toprimitive
 
-	var ToPrimitive = function ToPrimitive(input) {
+	var ToPrimitive$1 = function ToPrimitive(input) {
 		if (arguments.length > 1) {
 			return es2015(input, arguments[1]);
 		}
 		return es2015(input);
 	};
 
-	var $TypeError$2 = GetIntrinsic('%TypeError%');
-	var $Number$1 = GetIntrinsic('%Number%');
-	var $RegExp = GetIntrinsic('%RegExp%');
-	var $parseInteger = GetIntrinsic('%parseInt%');
+	var $TypeError$2 = getIntrinsic('%TypeError%');
+	var $Number$1 = getIntrinsic('%Number%');
+	var $RegExp = getIntrinsic('%RegExp%');
+	var $parseInteger = getIntrinsic('%parseInt%');
 
 
 
 
 
-	var $strSlice = callBound('String.prototype.slice');
+	var $strSlice$1 = callBound('String.prototype.slice');
 	var isBinary = regexTester(/^0b[01]+$/i);
 	var isOctal = regexTester(/^0o[0-7]+$/i);
 	var isInvalidHexLiteral = regexTester(/^[-+]0x[0-9a-f]+$/i);
@@ -2690,18 +2882,18 @@
 
 
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-tonumber
+	// https://ecma-international.org/ecma-262/6.0/#sec-tonumber
 
 	var ToNumber$1 = function ToNumber(argument) {
-		var value = isPrimitive(argument) ? argument : ToPrimitive(argument, $Number$1);
+		var value = isPrimitive$1(argument) ? argument : ToPrimitive$1(argument, $Number$1);
 		if (typeof value === 'symbol') {
 			throw new $TypeError$2('Cannot convert a Symbol value to a number');
 		}
 		if (typeof value === 'string') {
 			if (isBinary(value)) {
-				return ToNumber($parseInteger($strSlice(value, 2), 2));
+				return ToNumber($parseInteger($strSlice$1(value, 2), 2));
 			} else if (isOctal(value)) {
-				return ToNumber($parseInteger($strSlice(value, 2), 8));
+				return ToNumber($parseInteger($strSlice$1(value, 2), 8));
 			} else if (hasNonWS(value) || isInvalidHexLiteral(value)) {
 				return NaN;
 			} else {
@@ -2714,7 +2906,7 @@
 		return $Number$1(value);
 	};
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-tointeger
+	// https://ecma-international.org/ecma-262/6.0/#sec-tointeger
 
 	var ToInteger$1 = function ToInteger$1(value) {
 		var number = ToNumber$1(value);
@@ -2728,7 +2920,7 @@
 		return len;
 	};
 
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.11
+	// http://262.ecma-international.org/5.1/#sec-9.11
 
 	var IsCallable = isCallable;
 
@@ -2866,16 +3058,34 @@
 
 	var array_prototype_findindex = boundShim;
 
-	var $apply = GetIntrinsic('%Reflect.apply%', true) || callBound('%Function.prototype.apply%');
+	var $Array = getIntrinsic('%Array%');
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-call
+	// eslint-disable-next-line global-require
+	var toStr$7 = !$Array.isArray && callBound('Object.prototype.toString');
 
-	var Call = function Call(F, V) {
-		var args = arguments.length > 2 ? arguments[2] : [];
-		return $apply(F, V, args);
+	// https://ecma-international.org/ecma-262/6.0/#sec-isarray
+
+	var IsArray = $Array.isArray || function IsArray(argument) {
+		return toStr$7(argument) === '[object Array]';
 	};
 
-	var $defineProperty = GetIntrinsic('%Object.defineProperty%', true);
+	var $TypeError$3 = getIntrinsic('%TypeError%');
+
+
+
+	var $apply = getIntrinsic('%Reflect.apply%', true) || callBound('%Function.prototype.apply%');
+
+	// https://ecma-international.org/ecma-262/6.0/#sec-call
+
+	var Call = function Call(F, V) {
+		var argumentsList = arguments.length > 2 ? arguments[2] : [];
+		if (!IsArray(argumentsList)) {
+			throw new $TypeError$3('Assertion failed: optional `argumentsList`, if provided, must be a List');
+		}
+		return $apply(F, V, argumentsList);
+	};
+
+	var $defineProperty = getIntrinsic('%Object.defineProperty%', true);
 
 	if ($defineProperty) {
 		try {
@@ -2917,15 +3127,13 @@
 		return true;
 	};
 
-	var src = functionBind.call(Function.call, Object.prototype.hasOwnProperty);
-
-	var $TypeError$3 = GetIntrinsic('%TypeError%');
-	var $SyntaxError = GetIntrinsic('%SyntaxError%');
+	var $TypeError$4 = getIntrinsic('%TypeError%');
+	var $SyntaxError$1 = getIntrinsic('%SyntaxError%');
 
 
 
 	var predicates = {
-		// https://ecma-international.org/ecma-262/6.0/#sec-property-descriptor-specification-type
+		// https://262.ecma-international.org/6.0/#sec-property-descriptor-specification-type
 		'Property Descriptor': function isPropertyDescriptor(Type, Desc) {
 			if (Type(Desc) !== 'Object') {
 				return false;
@@ -2948,7 +3156,7 @@
 			var isData = src(Desc, '[[Value]]');
 			var IsAccessor = src(Desc, '[[Get]]') || src(Desc, '[[Set]]');
 			if (isData && IsAccessor) {
-				throw new $TypeError$3('Property Descriptors may not be both accessor and data descriptors');
+				throw new $TypeError$4('Property Descriptors may not be both accessor and data descriptors');
 			}
 			return true;
 		}
@@ -2957,14 +3165,14 @@
 	var assertRecord = function assertRecord(Type, recordType, argumentName, value) {
 		var predicate = predicates[recordType];
 		if (typeof predicate !== 'function') {
-			throw new $SyntaxError('unknown record type: ' + recordType);
+			throw new $SyntaxError$1('unknown record type: ' + recordType);
 		}
 		if (!predicate(Type, value)) {
-			throw new $TypeError$3(argumentName + ' must be a ' + recordType);
+			throw new $TypeError$4(argumentName + ' must be a ' + recordType);
 		}
 	};
 
-	// https://www.ecma-international.org/ecma-262/5.1/#sec-8
+	// https://262.ecma-international.org/5.1/#sec-8
 
 	var Type = function Type(x) {
 		if (x === null) {
@@ -2996,7 +3204,7 @@
 		return Type(x);
 	};
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-frompropertydescriptor
+	// https://ecma-international.org/ecma-262/6.0/#sec-frompropertydescriptor
 
 	var FromPropertyDescriptor = function FromPropertyDescriptor(Desc) {
 		if (typeof Desc === 'undefined') {
@@ -3027,7 +3235,7 @@
 		return obj;
 	};
 
-	var $gOPD$1 = GetIntrinsic('%Object.getOwnPropertyDescriptor%');
+	var $gOPD$1 = getIntrinsic('%Object.getOwnPropertyDescriptor%');
 	if ($gOPD$1) {
 		try {
 			$gOPD$1([], 'length');
@@ -3039,421 +3247,22 @@
 
 	var getOwnPropertyDescriptor = $gOPD$1;
 
-	var $Array = GetIntrinsic('%Array%');
-
-	// eslint-disable-next-line global-require
-	var toStr$6 = !$Array.isArray && callBound('Object.prototype.toString');
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isarray
-
-	var IsArray = $Array.isArray || function IsArray(argument) {
-		return toStr$6(argument) === '[object Array]';
-	};
-
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ispropertykey
+	// https://ecma-international.org/ecma-262/6.0/#sec-ispropertykey
 
 	var IsPropertyKey = function IsPropertyKey(argument) {
 		return typeof argument === 'string' || typeof argument === 'symbol';
 	};
 
-	var undefined$2;
-
-	var $SyntaxError$1 = SyntaxError;
-	var $Function = Function;
-	var $TypeError$4 = TypeError;
-
-	// eslint-disable-next-line consistent-return
-	var getEvalledConstructor = function (expressionSyntax) {
-		try {
-			return $Function('"use strict"; return (' + expressionSyntax + ').constructor;')();
-		} catch (e) {}
-	};
-
-	var $gOPD$2 = Object.getOwnPropertyDescriptor;
-	if ($gOPD$2) {
-		try {
-			$gOPD$2({}, '');
-		} catch (e) {
-			$gOPD$2 = null; // this is IE 8, which has a broken gOPD
-		}
-	}
-
-	var throwTypeError$1 = function () {
-		throw new $TypeError$4();
-	};
-	var ThrowTypeError$1 = $gOPD$2
-		? (function () {
-			try {
-				// eslint-disable-next-line no-unused-expressions, no-caller, no-restricted-properties
-				arguments.callee; // IE 8 does not throw here
-				return throwTypeError$1;
-			} catch (calleeThrows) {
-				try {
-					// IE 8 throws on Object.getOwnPropertyDescriptor(arguments, '')
-					return $gOPD$2(arguments, 'callee').get;
-				} catch (gOPDthrows) {
-					return throwTypeError$1;
-				}
-			}
-		}())
-		: throwTypeError$1;
-
 	var hasSymbols$4 = hasSymbols$1();
-
-	var getProto$1 = Object.getPrototypeOf || function (x) { return x.__proto__; }; // eslint-disable-line no-proto
-
-	var needsEval = {};
-
-	var TypedArray$1 = typeof Uint8Array === 'undefined' ? undefined$2 : getProto$1(Uint8Array);
-
-	var INTRINSICS$1 = {
-		'%AggregateError%': typeof AggregateError === 'undefined' ? undefined$2 : AggregateError,
-		'%Array%': Array,
-		'%ArrayBuffer%': typeof ArrayBuffer === 'undefined' ? undefined$2 : ArrayBuffer,
-		'%ArrayIteratorPrototype%': hasSymbols$4 ? getProto$1([][Symbol.iterator]()) : undefined$2,
-		'%AsyncFromSyncIteratorPrototype%': undefined$2,
-		'%AsyncFunction%': needsEval,
-		'%AsyncGenerator%': needsEval,
-		'%AsyncGeneratorFunction%': needsEval,
-		'%AsyncIteratorPrototype%': needsEval,
-		'%Atomics%': typeof Atomics === 'undefined' ? undefined$2 : Atomics,
-		'%BigInt%': typeof BigInt === 'undefined' ? undefined$2 : BigInt,
-		'%Boolean%': Boolean,
-		'%DataView%': typeof DataView === 'undefined' ? undefined$2 : DataView,
-		'%Date%': Date,
-		'%decodeURI%': decodeURI,
-		'%decodeURIComponent%': decodeURIComponent,
-		'%encodeURI%': encodeURI,
-		'%encodeURIComponent%': encodeURIComponent,
-		'%Error%': Error,
-		'%eval%': eval, // eslint-disable-line no-eval
-		'%EvalError%': EvalError,
-		'%Float32Array%': typeof Float32Array === 'undefined' ? undefined$2 : Float32Array,
-		'%Float64Array%': typeof Float64Array === 'undefined' ? undefined$2 : Float64Array,
-		'%FinalizationRegistry%': typeof FinalizationRegistry === 'undefined' ? undefined$2 : FinalizationRegistry,
-		'%Function%': $Function,
-		'%GeneratorFunction%': needsEval,
-		'%Int8Array%': typeof Int8Array === 'undefined' ? undefined$2 : Int8Array,
-		'%Int16Array%': typeof Int16Array === 'undefined' ? undefined$2 : Int16Array,
-		'%Int32Array%': typeof Int32Array === 'undefined' ? undefined$2 : Int32Array,
-		'%isFinite%': isFinite,
-		'%isNaN%': isNaN,
-		'%IteratorPrototype%': hasSymbols$4 ? getProto$1(getProto$1([][Symbol.iterator]())) : undefined$2,
-		'%JSON%': typeof JSON === 'object' ? JSON : undefined$2,
-		'%Map%': typeof Map === 'undefined' ? undefined$2 : Map,
-		'%MapIteratorPrototype%': typeof Map === 'undefined' || !hasSymbols$4 ? undefined$2 : getProto$1(new Map()[Symbol.iterator]()),
-		'%Math%': Math,
-		'%Number%': Number,
-		'%Object%': Object,
-		'%parseFloat%': parseFloat,
-		'%parseInt%': parseInt,
-		'%Promise%': typeof Promise === 'undefined' ? undefined$2 : Promise,
-		'%Proxy%': typeof Proxy === 'undefined' ? undefined$2 : Proxy,
-		'%RangeError%': RangeError,
-		'%ReferenceError%': ReferenceError,
-		'%Reflect%': typeof Reflect === 'undefined' ? undefined$2 : Reflect,
-		'%RegExp%': RegExp,
-		'%Set%': typeof Set === 'undefined' ? undefined$2 : Set,
-		'%SetIteratorPrototype%': typeof Set === 'undefined' || !hasSymbols$4 ? undefined$2 : getProto$1(new Set()[Symbol.iterator]()),
-		'%SharedArrayBuffer%': typeof SharedArrayBuffer === 'undefined' ? undefined$2 : SharedArrayBuffer,
-		'%String%': String,
-		'%StringIteratorPrototype%': hasSymbols$4 ? getProto$1(''[Symbol.iterator]()) : undefined$2,
-		'%Symbol%': hasSymbols$4 ? Symbol : undefined$2,
-		'%SyntaxError%': $SyntaxError$1,
-		'%ThrowTypeError%': ThrowTypeError$1,
-		'%TypedArray%': TypedArray$1,
-		'%TypeError%': $TypeError$4,
-		'%Uint8Array%': typeof Uint8Array === 'undefined' ? undefined$2 : Uint8Array,
-		'%Uint8ClampedArray%': typeof Uint8ClampedArray === 'undefined' ? undefined$2 : Uint8ClampedArray,
-		'%Uint16Array%': typeof Uint16Array === 'undefined' ? undefined$2 : Uint16Array,
-		'%Uint32Array%': typeof Uint32Array === 'undefined' ? undefined$2 : Uint32Array,
-		'%URIError%': URIError,
-		'%WeakMap%': typeof WeakMap === 'undefined' ? undefined$2 : WeakMap,
-		'%WeakRef%': typeof WeakRef === 'undefined' ? undefined$2 : WeakRef,
-		'%WeakSet%': typeof WeakSet === 'undefined' ? undefined$2 : WeakSet
-	};
-
-	var doEval = function doEval(name) {
-		var value;
-		if (name === '%AsyncFunction%') {
-			value = getEvalledConstructor('async function () {}');
-		} else if (name === '%GeneratorFunction%') {
-			value = getEvalledConstructor('function* () {}');
-		} else if (name === '%AsyncGeneratorFunction%') {
-			value = getEvalledConstructor('async function* () {}');
-		} else if (name === '%AsyncGenerator%') {
-			var fn = doEval('%AsyncGeneratorFunction%');
-			if (fn) {
-				value = fn.prototype;
-			}
-		} else if (name === '%AsyncIteratorPrototype%') {
-			var gen = doEval('%AsyncGenerator%');
-			if (gen) {
-				value = getProto$1(gen.prototype);
-			}
-		}
-
-		INTRINSICS$1[name] = value;
-
-		return value;
-	};
-
-	var LEGACY_ALIASES = {
-		'%ArrayBufferPrototype%': ['ArrayBuffer', 'prototype'],
-		'%ArrayPrototype%': ['Array', 'prototype'],
-		'%ArrayProto_entries%': ['Array', 'prototype', 'entries'],
-		'%ArrayProto_forEach%': ['Array', 'prototype', 'forEach'],
-		'%ArrayProto_keys%': ['Array', 'prototype', 'keys'],
-		'%ArrayProto_values%': ['Array', 'prototype', 'values'],
-		'%AsyncFunctionPrototype%': ['AsyncFunction', 'prototype'],
-		'%AsyncGenerator%': ['AsyncGeneratorFunction', 'prototype'],
-		'%AsyncGeneratorPrototype%': ['AsyncGeneratorFunction', 'prototype', 'prototype'],
-		'%BooleanPrototype%': ['Boolean', 'prototype'],
-		'%DataViewPrototype%': ['DataView', 'prototype'],
-		'%DatePrototype%': ['Date', 'prototype'],
-		'%ErrorPrototype%': ['Error', 'prototype'],
-		'%EvalErrorPrototype%': ['EvalError', 'prototype'],
-		'%Float32ArrayPrototype%': ['Float32Array', 'prototype'],
-		'%Float64ArrayPrototype%': ['Float64Array', 'prototype'],
-		'%FunctionPrototype%': ['Function', 'prototype'],
-		'%Generator%': ['GeneratorFunction', 'prototype'],
-		'%GeneratorPrototype%': ['GeneratorFunction', 'prototype', 'prototype'],
-		'%Int8ArrayPrototype%': ['Int8Array', 'prototype'],
-		'%Int16ArrayPrototype%': ['Int16Array', 'prototype'],
-		'%Int32ArrayPrototype%': ['Int32Array', 'prototype'],
-		'%JSONParse%': ['JSON', 'parse'],
-		'%JSONStringify%': ['JSON', 'stringify'],
-		'%MapPrototype%': ['Map', 'prototype'],
-		'%NumberPrototype%': ['Number', 'prototype'],
-		'%ObjectPrototype%': ['Object', 'prototype'],
-		'%ObjProto_toString%': ['Object', 'prototype', 'toString'],
-		'%ObjProto_valueOf%': ['Object', 'prototype', 'valueOf'],
-		'%PromisePrototype%': ['Promise', 'prototype'],
-		'%PromiseProto_then%': ['Promise', 'prototype', 'then'],
-		'%Promise_all%': ['Promise', 'all'],
-		'%Promise_reject%': ['Promise', 'reject'],
-		'%Promise_resolve%': ['Promise', 'resolve'],
-		'%RangeErrorPrototype%': ['RangeError', 'prototype'],
-		'%ReferenceErrorPrototype%': ['ReferenceError', 'prototype'],
-		'%RegExpPrototype%': ['RegExp', 'prototype'],
-		'%SetPrototype%': ['Set', 'prototype'],
-		'%SharedArrayBufferPrototype%': ['SharedArrayBuffer', 'prototype'],
-		'%StringPrototype%': ['String', 'prototype'],
-		'%SymbolPrototype%': ['Symbol', 'prototype'],
-		'%SyntaxErrorPrototype%': ['SyntaxError', 'prototype'],
-		'%TypedArrayPrototype%': ['TypedArray', 'prototype'],
-		'%TypeErrorPrototype%': ['TypeError', 'prototype'],
-		'%Uint8ArrayPrototype%': ['Uint8Array', 'prototype'],
-		'%Uint8ClampedArrayPrototype%': ['Uint8ClampedArray', 'prototype'],
-		'%Uint16ArrayPrototype%': ['Uint16Array', 'prototype'],
-		'%Uint32ArrayPrototype%': ['Uint32Array', 'prototype'],
-		'%URIErrorPrototype%': ['URIError', 'prototype'],
-		'%WeakMapPrototype%': ['WeakMap', 'prototype'],
-		'%WeakSetPrototype%': ['WeakSet', 'prototype']
-	};
-
-
-
-	var $concat = functionBind.call(Function.call, Array.prototype.concat);
-	var $spliceApply = functionBind.call(Function.apply, Array.prototype.splice);
-	var $replace$2 = functionBind.call(Function.call, String.prototype.replace);
-	var $strSlice$1 = functionBind.call(Function.call, String.prototype.slice);
-
-	/* adapted from https://github.com/lodash/lodash/blob/4.17.15/dist/lodash.js#L6735-L6744 */
-	var rePropName$1 = /[^%.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|%$))/g;
-	var reEscapeChar$1 = /\\(\\)?/g; /** Used to match backslashes in property paths. */
-	var stringToPath$1 = function stringToPath(string) {
-		var first = $strSlice$1(string, 0, 1);
-		var last = $strSlice$1(string, -1);
-		if (first === '%' && last !== '%') {
-			throw new $SyntaxError$1('invalid intrinsic syntax, expected closing `%`');
-		} else if (last === '%' && first !== '%') {
-			throw new $SyntaxError$1('invalid intrinsic syntax, expected opening `%`');
-		}
-		var result = [];
-		$replace$2(string, rePropName$1, function (match, number, quote, subString) {
-			result[result.length] = quote ? $replace$2(subString, reEscapeChar$1, '$1') : number || match;
-		});
-		return result;
-	};
-	/* end adaptation */
-
-	var getBaseIntrinsic$1 = function getBaseIntrinsic(name, allowMissing) {
-		var intrinsicName = name;
-		var alias;
-		if (src(LEGACY_ALIASES, intrinsicName)) {
-			alias = LEGACY_ALIASES[intrinsicName];
-			intrinsicName = '%' + alias[0] + '%';
-		}
-
-		if (src(INTRINSICS$1, intrinsicName)) {
-			var value = INTRINSICS$1[intrinsicName];
-			if (value === needsEval) {
-				value = doEval(intrinsicName);
-			}
-			if (typeof value === 'undefined' && !allowMissing) {
-				throw new $TypeError$4('intrinsic ' + name + ' exists, but is not available. Please file an issue!');
-			}
-
-			return {
-				alias: alias,
-				name: intrinsicName,
-				value: value
-			};
-		}
-
-		throw new $SyntaxError$1('intrinsic ' + name + ' does not exist!');
-	};
-
-	var getIntrinsic = function GetIntrinsic(name, allowMissing) {
-		if (typeof name !== 'string' || name.length === 0) {
-			throw new $TypeError$4('intrinsic name must be a non-empty string');
-		}
-		if (arguments.length > 1 && typeof allowMissing !== 'boolean') {
-			throw new $TypeError$4('"allowMissing" argument must be a boolean');
-		}
-
-		var parts = stringToPath$1(name);
-		var intrinsicBaseName = parts.length > 0 ? parts[0] : '';
-
-		var intrinsic = getBaseIntrinsic$1('%' + intrinsicBaseName + '%', allowMissing);
-		var intrinsicRealName = intrinsic.name;
-		var value = intrinsic.value;
-		var skipFurtherCaching = false;
-
-		var alias = intrinsic.alias;
-		if (alias) {
-			intrinsicBaseName = alias[0];
-			$spliceApply(parts, $concat([0, 1], alias));
-		}
-
-		for (var i = 1, isOwn = true; i < parts.length; i += 1) {
-			var part = parts[i];
-			var first = $strSlice$1(part, 0, 1);
-			var last = $strSlice$1(part, -1);
-			if (
-				(
-					(first === '"' || first === "'" || first === '`')
-					|| (last === '"' || last === "'" || last === '`')
-				)
-				&& first !== last
-			) {
-				throw new $SyntaxError$1('property names with quotes must have matching quotes');
-			}
-			if (part === 'constructor' || !isOwn) {
-				skipFurtherCaching = true;
-			}
-
-			intrinsicBaseName += '.' + part;
-			intrinsicRealName = '%' + intrinsicBaseName + '%';
-
-			if (src(INTRINSICS$1, intrinsicRealName)) {
-				value = INTRINSICS$1[intrinsicRealName];
-			} else if (value != null) {
-				if (!(part in value)) {
-					if (!allowMissing) {
-						throw new $TypeError$4('base intrinsic for ' + name + ' exists, but the property is not available.');
-					}
-					return void undefined$2;
-				}
-				if ($gOPD$2 && (i + 1) >= parts.length) {
-					var desc = $gOPD$2(value, part);
-					isOwn = !!desc;
-
-					// By convention, when a data property is converted to an accessor
-					// property to emulate a data property that does not suffer from
-					// the override mistake, that accessor's getter is marked with
-					// an `originalValue` property. Here, when we detect this, we
-					// uphold the illusion by pretending to see that original data
-					// property, i.e., returning the value rather than the getter
-					// itself.
-					if (isOwn && 'get' in desc && !('originalValue' in desc.get)) {
-						value = desc.get;
-					} else {
-						value = value[part];
-					}
-				} else {
-					isOwn = src(value, part);
-					value = value[part];
-				}
-
-				if (isOwn && !skipFurtherCaching) {
-					INTRINSICS$1[intrinsicRealName] = value;
-				}
-			}
-		}
-		return value;
-	};
-
-	var callBind$1 = createCommonjsModule(function (module) {
-
-
-
-
-	var $apply = getIntrinsic('%Function.prototype.apply%');
-	var $call = getIntrinsic('%Function.prototype.call%');
-	var $reflectApply = getIntrinsic('%Reflect.apply%', true) || functionBind.call($call, $apply);
-
-	var $gOPD = getIntrinsic('%Object.getOwnPropertyDescriptor%', true);
-	var $defineProperty = getIntrinsic('%Object.defineProperty%', true);
-	var $max = getIntrinsic('%Math.max%');
-
-	if ($defineProperty) {
-		try {
-			$defineProperty({}, 'a', { value: 1 });
-		} catch (e) {
-			// IE 8 has a broken defineProperty
-			$defineProperty = null;
-		}
-	}
-
-	module.exports = function callBind(originalFunction) {
-		var func = $reflectApply(functionBind, $call, arguments);
-		if ($gOPD && $defineProperty) {
-			var desc = $gOPD(func, 'length');
-			if (desc.configurable) {
-				// original length, plus the receiver, minus any additional arguments (after the receiver)
-				$defineProperty(
-					func,
-					'length',
-					{ value: 1 + $max(0, originalFunction.length - (arguments.length - 1)) }
-				);
-			}
-		}
-		return func;
-	};
-
-	var applyBind = function applyBind() {
-		return $reflectApply(functionBind, $apply, arguments);
-	};
-
-	if ($defineProperty) {
-		$defineProperty(module.exports, 'apply', { value: applyBind });
-	} else {
-		module.exports.apply = applyBind;
-	}
-	});
-
-	var $indexOf$1 = callBind$1(getIntrinsic('String.prototype.indexOf'));
-
-	var callBound$1 = function callBoundIntrinsic(name, allowMissing) {
-		var intrinsic = getIntrinsic(name, !!allowMissing);
-		if (typeof intrinsic === 'function' && $indexOf$1(name, '.prototype.') > -1) {
-			return callBind$1(intrinsic);
-		}
-		return intrinsic;
-	};
-
-	var hasSymbols$5 = hasSymbols$1();
-	var hasToStringTag$2 = hasSymbols$5 && typeof Symbol.toStringTag === 'symbol';
+	var hasToStringTag$2 = hasSymbols$4 && typeof Symbol.toStringTag === 'symbol';
 	var has$1;
 	var $exec;
 	var isRegexMarker;
 	var badStringifier;
 
 	if (hasToStringTag$2) {
-		has$1 = callBound$1('Object.prototype.hasOwnProperty');
-		$exec = callBound$1('RegExp.prototype.exec');
+		has$1 = callBound('Object.prototype.hasOwnProperty');
+		$exec = callBound('RegExp.prototype.exec');
 		isRegexMarker = {};
 
 		var throwRegexMarker = function () {
@@ -3469,7 +3278,7 @@
 		}
 	}
 
-	var $toString = callBound$1('Object.prototype.toString');
+	var $toString = callBound('Object.prototype.toString');
 	var gOPD = Object.getOwnPropertyDescriptor;
 	var regexClass = '[object RegExp]';
 
@@ -3501,11 +3310,11 @@
 			return $toString(value) === regexClass;
 		};
 
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.2
+	// http://262.ecma-international.org/5.1/#sec-9.2
 
 	var ToBoolean = function ToBoolean(value) { return !!value; };
 
-	var $match = GetIntrinsic('%Symbol.match%', true);
+	var $match = getIntrinsic('%Symbol.match%', true);
 
 
 
@@ -3526,13 +3335,13 @@
 		return isRegex(argument);
 	};
 
-	var $TypeError$5 = GetIntrinsic('%TypeError%');
+	var $TypeError$5 = getIntrinsic('%TypeError%');
 
 
 
 
 
-	// https://ecma-international.org/ecma-262/5.1/#sec-8.10.5
+	// https://262.ecma-international.org/5.1/#sec-8.10.5
 
 	var ToPropertyDescriptor = function ToPropertyDescriptor(Obj) {
 		if (Type$1(Obj) !== 'Object') {
@@ -3573,7 +3382,7 @@
 		return desc;
 	};
 
-	var $TypeError$6 = GetIntrinsic('%TypeError%');
+	var $TypeError$6 = getIntrinsic('%TypeError%');
 
 
 
@@ -3587,7 +3396,7 @@
 
 
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-ordinarygetownproperty
+	// https://ecma-international.org/ecma-262/6.0/#sec-ordinarygetownproperty
 
 	var OrdinaryGetOwnProperty = function OrdinaryGetOwnProperty(O, P) {
 		if (Type$1(O) !== 'Object') {
@@ -3613,7 +3422,7 @@
 		return ToPropertyDescriptor(getOwnPropertyDescriptor(O, P));
 	};
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isdatadescriptor
+	// https://ecma-international.org/ecma-262/6.0/#sec-isdatadescriptor
 
 	var IsDataDescriptor = function IsDataDescriptor(Desc) {
 		if (typeof Desc === 'undefined') {
@@ -3629,24 +3438,24 @@
 		return true;
 	};
 
-	var $Object$1 = GetIntrinsic('%Object%');
+	var $Object$1 = getIntrinsic('%Object%');
 
 
 
 	var $preventExtensions = $Object$1.preventExtensions;
 	var $isExtensible = $Object$1.isExtensible;
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isextensible-o
+	// https://ecma-international.org/ecma-262/6.0/#sec-isextensible-o
 
 	var IsExtensible = $preventExtensions
 		? function IsExtensible(obj) {
-			return !isPrimitive(obj) && $isExtensible(obj);
+			return !isPrimitive$1(obj) && $isExtensible(obj);
 		}
 		: function IsExtensible(obj) {
-			return !isPrimitive(obj);
+			return !isPrimitive$1(obj);
 		};
 
-	// http://www.ecma-international.org/ecma-262/5.1/#sec-9.12
+	// http://262.ecma-international.org/5.1/#sec-9.12
 
 	var SameValue = function SameValue(x, y) {
 		if (x === y) { // 0 === -0, but they are not identical.
@@ -3656,7 +3465,7 @@
 		return _isNaN(x) && _isNaN(y);
 	};
 
-	var $TypeError$7 = GetIntrinsic('%TypeError%');
+	var $TypeError$7 = getIntrinsic('%TypeError%');
 
 
 
@@ -3668,7 +3477,7 @@
 
 
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-createdataproperty
+	// https://ecma-international.org/ecma-262/6.0/#sec-createdataproperty
 
 	var CreateDataProperty = function CreateDataProperty(O, P, V) {
 		if (Type$1(O) !== 'Object') {
@@ -3698,7 +3507,7 @@
 		);
 	};
 
-	var $TypeError$8 = GetIntrinsic('%TypeError%');
+	var $TypeError$8 = getIntrinsic('%TypeError%');
 
 
 
@@ -3838,21 +3647,21 @@
 	    return String(s).replace(/"/g, '&quot;');
 	}
 
-	function isArray$3 (obj) { return toStr$7(obj) === '[object Array]' }
-	function isDate (obj) { return toStr$7(obj) === '[object Date]' }
-	function isRegExp (obj) { return toStr$7(obj) === '[object RegExp]' }
-	function isError (obj) { return toStr$7(obj) === '[object Error]' }
-	function isSymbol$3 (obj) { return toStr$7(obj) === '[object Symbol]' }
-	function isString$1 (obj) { return toStr$7(obj) === '[object String]' }
-	function isNumber (obj) { return toStr$7(obj) === '[object Number]' }
-	function isBoolean (obj) { return toStr$7(obj) === '[object Boolean]' }
+	function isArray$3 (obj) { return toStr$8(obj) === '[object Array]' }
+	function isDate (obj) { return toStr$8(obj) === '[object Date]' }
+	function isRegExp (obj) { return toStr$8(obj) === '[object RegExp]' }
+	function isError (obj) { return toStr$8(obj) === '[object Error]' }
+	function isSymbol$3 (obj) { return toStr$8(obj) === '[object Symbol]' }
+	function isString$1 (obj) { return toStr$8(obj) === '[object String]' }
+	function isNumber (obj) { return toStr$8(obj) === '[object Number]' }
+	function isBoolean (obj) { return toStr$8(obj) === '[object Boolean]' }
 
 	var hasOwn = Object.prototype.hasOwnProperty || function (key) { return key in this; };
 	function has$2 (obj, key) {
 	    return hasOwn.call(obj, key);
 	}
 
-	function toStr$7 (obj) {
+	function toStr$8 (obj) {
 	    return objectToString$1.call(obj);
 	}
 
@@ -3953,7 +3762,7 @@
 	    return xs;
 	}
 
-	var $TypeError$9 = GetIntrinsic('%TypeError%');
+	var $TypeError$9 = getIntrinsic('%TypeError%');
 
 
 
@@ -3980,7 +3789,11 @@
 		return O[P];
 	};
 
-	var $TypeError$a = GetIntrinsic('%TypeError%');
+	// TODO: remove, semver-major
+
+	var GetIntrinsic = getIntrinsic;
+
+	var $TypeError$a = getIntrinsic('%TypeError%');
 
 	var isPropertyDescriptor = function IsPropertyDescriptor(ES, Desc) {
 		if (ES.Type(Desc) !== 'Object') {
@@ -4007,7 +3820,7 @@
 		return true;
 	};
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isaccessordescriptor
+	// https://ecma-international.org/ecma-262/6.0/#sec-isaccessordescriptor
 
 	var IsAccessorDescriptor = function IsAccessorDescriptor(Desc) {
 		if (typeof Desc === 'undefined') {
@@ -4023,7 +3836,7 @@
 		return true;
 	};
 
-	var $TypeError$b = GetIntrinsic('%TypeError%');
+	var $TypeError$b = getIntrinsic('%TypeError%');
 
 
 
@@ -4036,7 +3849,7 @@
 
 
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-definepropertyorthrow
+	// https://ecma-international.org/ecma-262/6.0/#sec-definepropertyorthrow
 
 	var DefinePropertyOrThrow = function DefinePropertyOrThrow(O, P, desc) {
 		if (Type$1(O) !== 'Object') {
@@ -4084,7 +3897,7 @@
 		DefinePropertyOrThrow$1 = null;
 	}
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isconstructor
+	// https://ecma-international.org/ecma-262/6.0/#sec-isconstructor
 
 	if (DefinePropertyOrThrow$1 && $construct) {
 		var isConstructorMarker = {};
@@ -4112,10 +3925,10 @@
 	}
 	});
 
-	var $String = GetIntrinsic('%String%');
-	var $TypeError$c = GetIntrinsic('%TypeError%');
+	var $String = getIntrinsic('%String%');
+	var $TypeError$c = getIntrinsic('%TypeError%');
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-tostring
+	// https://ecma-international.org/ecma-262/6.0/#sec-tostring
 
 	var ToString = function ToString(argument) {
 		if (typeof argument === 'symbol') {
@@ -4127,7 +3940,7 @@
 	var hasToStringTag$3 = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
 
-	var $toString$1 = callBound$1('Object.prototype.toString');
+	var $toString$1 = callBound('Object.prototype.toString');
 
 	var isStandardArguments = function isArguments(value) {
 		if (hasToStringTag$3 && value && typeof value === 'object' && Symbol.toStringTag in value) {
@@ -4171,7 +3984,7 @@
 			return false;
 		}
 	};
-	var toStr$8 = Object.prototype.toString;
+	var toStr$9 = Object.prototype.toString;
 	var strClass = '[object String]';
 	var hasToStringTag$4 = typeof Symbol === 'function' && typeof Symbol.toStringTag === 'symbol';
 
@@ -4182,7 +3995,7 @@
 		if (typeof value !== 'object') {
 			return false;
 		}
-		return hasToStringTag$4 ? tryStringObject(value) : toStr$8.call(value) === strClass;
+		return hasToStringTag$4 ? tryStringObject(value) : toStr$9.call(value) === strClass;
 	};
 
 	var $Map = typeof Map === 'function' && Map.prototype ? Map : null;
@@ -4307,10 +4120,10 @@
 		var GetIntrinsic = getIntrinsic;
 		var $Map = GetIntrinsic('%Map%', true);
 		var $Set = GetIntrinsic('%Set%', true);
-		var callBound = callBound$1;
-		var $arrayPush = callBound('Array.prototype.push');
-		var $charCodeAt = callBound('String.prototype.charCodeAt');
-		var $stringSlice = callBound('String.prototype.slice');
+		var callBound$1 = callBound;
+		var $arrayPush = callBound$1('Array.prototype.push');
+		var $charCodeAt = callBound$1('String.prototype.charCodeAt');
+		var $stringSlice = callBound$1('String.prototype.slice');
 
 		var advanceStringIndex = function advanceStringIndex(S, index) {
 			var length = S.length;
@@ -4401,15 +4214,15 @@
 			var isSet = isSet$1;
 
 			// Firefox >= 27, IE 11, Safari 6.2 - 9, Edge 11, es6-shim in older envs, all have forEach
-			var $mapForEach = callBound('Map.prototype.forEach', true);
-			var $setForEach = callBound('Set.prototype.forEach', true);
+			var $mapForEach = callBound$1('Map.prototype.forEach', true);
+			var $setForEach = callBound$1('Set.prototype.forEach', true);
 			if (typeof process === 'undefined' || !process.versions || !process.versions.node) { // "if is not node"
 
 				// Firefox 17 - 26 has `.iterator()`, whose iterator `.next()` either
 				// returns a value, or throws a StopIteration object. These browsers
 				// do not have any other mechanism for iteration.
-				var $mapIterator = callBound('Map.prototype.iterator', true);
-				var $setIterator = callBound('Set.prototype.iterator', true);
+				var $mapIterator = callBound$1('Map.prototype.iterator', true);
+				var $setIterator = callBound$1('Set.prototype.iterator', true);
 				var getStopIterationIterator = function (iterator) {
 					var done = false;
 					return {
@@ -4433,8 +4246,8 @@
 			// Firefox 27-35, and some older es6-shim versions, use a string "@@iterator" property
 			// this returns a proper iterator object, so we should use it instead of forEach.
 			// newer es6-shim versions use a string "_es6-shim iterator_" property.
-			var $mapAtAtIterator = callBound('Map.prototype.@@iterator', true) || callBound('Map.prototype._es6-shim iterator_', true);
-			var $setAtAtIterator = callBound('Set.prototype.@@iterator', true) || callBound('Set.prototype._es6-shim iterator_', true);
+			var $mapAtAtIterator = callBound$1('Map.prototype.@@iterator', true) || callBound$1('Map.prototype._es6-shim iterator_', true);
+			var $setAtAtIterator = callBound$1('Set.prototype.@@iterator', true) || callBound$1('Set.prototype._es6-shim iterator_', true);
 
 			var getCollectionIterator = function getCollectionIterator(iterable) {
 				if (isMap(iterable)) {
@@ -4636,20 +4449,9 @@
 
 	var array_from = boundFromShim;
 
-	var $TypeError$f = getIntrinsic('%TypeError%');
+	var RequireObjectCoercible$1 = CheckObjectCoercible;
 
-	// http://262.ecma-international.org/5.1/#sec-9.10
-
-	var CheckObjectCoercible$1 = function CheckObjectCoercible(value, optMessage) {
-		if (value == null) {
-			throw new $TypeError$f(optMessage || ('Cannot call method on ' + value));
-		}
-		return value;
-	};
-
-	var RequireObjectCoercible$1 = CheckObjectCoercible$1;
-
-	var $isEnumerable$2 = callBound$1('Object.prototype.propertyIsEnumerable');
+	var $isEnumerable$2 = callBound('Object.prototype.propertyIsEnumerable');
 
 	var implementation$6 = function values(O) {
 		var obj = RequireObjectCoercible$1(O);
@@ -4676,7 +4478,7 @@
 		return polyfill;
 	};
 
-	var polyfill$b = callBind$1(polyfill$a(), Object);
+	var polyfill$b = callBind(polyfill$a(), Object);
 
 	defineProperties_1(polyfill$b, {
 		getPolyfill: polyfill$a,
@@ -4691,12 +4493,12 @@
 	var canBeObject = function (obj) {
 		return typeof obj !== 'undefined' && obj !== null;
 	};
-	var hasSymbols$6 = shams();
+	var hasSymbols$5 = shams();
 
 	var toObject = Object;
-	var $push = callBound$1('Array.prototype.push');
-	var $propIsEnumerable = callBound$1('Object.prototype.propertyIsEnumerable');
-	var originalGetSymbols = hasSymbols$6 ? Object.getOwnPropertySymbols : null;
+	var $push = callBound('Array.prototype.push');
+	var $propIsEnumerable = callBound('Object.prototype.propertyIsEnumerable');
+	var originalGetSymbols = hasSymbols$5 ? Object.getOwnPropertySymbols : null;
 
 	// eslint-disable-next-line no-unused-vars
 	var implementation$7 = function assign(target, source1) {
@@ -4706,7 +4508,7 @@
 		for (s = 1; s < arguments.length; ++s) {
 			source = toObject(arguments[s]);
 			props = objectKeys(source);
-			var getSymbols = hasSymbols$6 && (Object.getOwnPropertySymbols || originalGetSymbols);
+			var getSymbols = hasSymbols$5 && (Object.getOwnPropertySymbols || originalGetSymbols);
 			if (getSymbols) {
 				syms = getSymbols(source);
 				for (i = 0; i < syms.length; ++i) {
@@ -4789,7 +4591,7 @@
 		return polyfill;
 	};
 
-	var polyfill$d = callBind$1.apply(polyfill$c());
+	var polyfill$d = callBind.apply(polyfill$c());
 	// eslint-disable-next-line no-unused-vars
 	var bound = function assign(target, source1) {
 		return polyfill$d(Object, arguments);
@@ -6024,26 +5826,44 @@
 	};
 	});
 
-	var $Math$2 = GetIntrinsic('%Math%');
+	var $abs$1 = getIntrinsic('%Math.abs%');
 
-	var $floor$1 = $Math$2.floor;
-	var $abs$1 = $Math$2.abs;
+	// http://262.ecma-international.org/5.1/#sec-5.2
 
+	var abs$3 = function abs(x) {
+		return $abs$1(x);
+	};
 
+	// var modulo = require('./modulo');
+	var $floor$1 = Math.floor;
 
+	// http://262.ecma-international.org/5.1/#sec-5.2
 
-	// https://www.ecma-international.org/ecma-262/6.0/#sec-isinteger
+	var floor$3 = function floor(x) {
+		// return x - modulo(x, 1);
+		return $floor$1(x);
+	};
+
+	// https://ecma-international.org/ecma-262/6.0/#sec-isinteger
 
 	var IsInteger = function IsInteger(argument) {
 		if (typeof argument !== 'number' || _isNaN(argument) || !_isFinite(argument)) {
 			return false;
 		}
-		var abs = $abs$1(argument);
-		return $floor$1(abs) === abs;
+		var absValue = abs$3(argument);
+		return floor$3(absValue) === absValue;
 	};
 
-	var ArrayPush = callBound('Array.prototype.push');
-	var StringFromCharCodeSpread = callBind.apply(String.fromCharCode, null);
+	// TODO; semver-major: remove
+
+	var callBound$1 = callBound;
+
+	// TODO; semver-major: remove
+
+	var callBind$1 = callBind;
+
+	var ArrayPush = callBound$1('Array.prototype.push');
+	var StringFromCharCodeSpread = callBind$1.apply(String.fromCharCode, null);
 
 	var implementation$8 = function fromCodePoint(_ /* fromCodePoint.length is 1 */) {
 		var MAX_SIZE = 0x4000;
@@ -7046,7 +6866,7 @@
 	var degrees = 180 / pi;
 	var radians = pi / 180;
 
-	var abs$2 = Math.abs;
+	var abs$4 = Math.abs;
 	var atan = Math.atan;
 	var atan2 = Math.atan2;
 	var cos = Math.cos;
@@ -7291,7 +7111,7 @@
 	        sign = delta > 0 ? 1 : -1,
 	        lambdai = inflection[0] * degrees * sign,
 	        phii,
-	        antimeridian = abs$2(delta) > 180;
+	        antimeridian = abs$4(delta) > 180;
 	    if (antimeridian ^ (sign * lambda2 < lambdai && lambdai < sign * lambda)) {
 	      phii = inflection[1] * degrees;
 	      if (phii > phi1) phi1 = phii;
@@ -7341,7 +7161,7 @@
 	function boundsRingPoint(lambda, phi) {
 	  if (p0) {
 	    var delta = lambda - lambda2;
-	    deltaSum.add(abs$2(delta) > 180 ? delta + (delta > 0 ? 360 : -360) : delta);
+	    deltaSum.add(abs$4(delta) > 180 ? delta + (delta > 0 ? 360 : -360) : delta);
 	  } else {
 	    lambda00$1 = lambda, phi00$1 = phi;
 	  }
@@ -7356,7 +7176,7 @@
 	function boundsRingEnd() {
 	  boundsRingPoint(lambda00$1, phi00$1);
 	  areaStream.lineEnd();
-	  if (abs$2(deltaSum) > epsilon) lambda0$1 = -(lambda1 = 180);
+	  if (abs$4(deltaSum) > epsilon) lambda0$1 = -(lambda1 = 180);
 	  range[0] = lambda0$1, range[1] = lambda1;
 	  p0 = null;
 	}
@@ -7564,7 +7384,7 @@
 	}
 
 	function rotationIdentity(lambda, phi) {
-	  return [abs$2(lambda) > pi ? lambda + Math.round(-lambda / tau) * tau : lambda, phi];
+	  return [abs$4(lambda) > pi ? lambda + Math.round(-lambda / tau) * tau : lambda, phi];
 	}
 
 	rotationIdentity.invert = rotationIdentity;
@@ -7689,7 +7509,7 @@
 	}
 
 	function pointEqual(a, b) {
-	  return abs$2(a[0] - b[0]) < epsilon && abs$2(a[1] - b[1]) < epsilon;
+	  return abs$4(a[0] - b[0]) < epsilon && abs$4(a[1] - b[1]) < epsilon;
 	}
 
 	function Intersection(point, points, other, entry) {
@@ -7796,10 +7616,10 @@
 	var sum = adder();
 
 	function longitude(point) {
-	  if (abs$2(point[0]) <= pi)
+	  if (abs$4(point[0]) <= pi)
 	    return point[0];
 	  else
-	    return sign$2(point[0]) * ((abs$2(point[0]) + pi) % tau - pi);
+	    return sign$2(point[0]) * ((abs$4(point[0]) + pi) % tau - pi);
 	}
 
 	function polygonContains(polygon, point) {
@@ -8191,8 +8011,8 @@
 	    },
 	    point: function(lambda1, phi1) {
 	      var sign1 = lambda1 > 0 ? pi : -pi,
-	          delta = abs$2(lambda1 - lambda0);
-	      if (abs$2(delta - pi) < epsilon) { // line crosses a pole
+	          delta = abs$4(lambda1 - lambda0);
+	      if (abs$4(delta - pi) < epsilon) { // line crosses a pole
 	        stream.point(lambda0, phi0 = (phi0 + phi1) / 2 > 0 ? halfPi : -halfPi);
 	        stream.point(sign0, phi0);
 	        stream.lineEnd();
@@ -8201,8 +8021,8 @@
 	        stream.point(lambda1, phi0);
 	        clean = 0;
 	      } else if (sign0 !== sign1 && delta >= pi) { // line crosses antimeridian
-	        if (abs$2(lambda0 - sign0) < epsilon) lambda0 -= sign0 * epsilon; // handle degeneracies
-	        if (abs$2(lambda1 - sign1) < epsilon) lambda1 -= sign1 * epsilon;
+	        if (abs$4(lambda0 - sign0) < epsilon) lambda0 -= sign0 * epsilon; // handle degeneracies
+	        if (abs$4(lambda1 - sign1) < epsilon) lambda1 -= sign1 * epsilon;
 	        phi0 = clipAntimeridianIntersect(lambda0, phi0, lambda1, phi1);
 	        stream.point(sign0, phi0);
 	        stream.lineEnd();
@@ -8227,7 +8047,7 @@
 	  var cosPhi0,
 	      cosPhi1,
 	      sinLambda0Lambda1 = sin(lambda0 - lambda1);
-	  return abs$2(sinLambda0Lambda1) > epsilon
+	  return abs$4(sinLambda0Lambda1) > epsilon
 	      ? atan((sin(phi0) * (cosPhi1 = cos(phi1)) * sin(lambda1)
 	          - sin(phi1) * (cosPhi0 = cos(phi0)) * sin(lambda0))
 	          / (cosPhi0 * cosPhi1 * sinLambda0Lambda1))
@@ -8247,7 +8067,7 @@
 	    stream.point(-pi, -phi);
 	    stream.point(-pi, 0);
 	    stream.point(-pi, phi);
-	  } else if (abs$2(from[0] - to[0]) > epsilon) {
+	  } else if (abs$4(from[0] - to[0]) > epsilon) {
 	    var lambda = from[0] < to[0] ? pi : -pi;
 	    phi = direction * lambda / 2;
 	    stream.point(-lambda, phi);
@@ -8262,7 +8082,7 @@
 	  var cr = cos(radius),
 	      delta = 6 * radians,
 	      smallRadius = cr > 0,
-	      notHemisphere = abs$2(cr) > epsilon; // TODO optimise for this common case
+	      notHemisphere = abs$4(cr) > epsilon; // TODO optimise for this common case
 
 	  function interpolate(from, to, direction, stream) {
 	    circleStream(stream, radius, delta, direction, from, to);
@@ -8398,7 +8218,7 @@
 	    if (lambda1 < lambda0) z = lambda0, lambda0 = lambda1, lambda1 = z;
 
 	    var delta = lambda1 - lambda0,
-	        polar = abs$2(delta - pi) < epsilon,
+	        polar = abs$4(delta - pi) < epsilon,
 	        meridian = polar || delta < epsilon;
 
 	    if (!polar && phi1 < phi0) z = phi0, phi0 = phi1, phi1 = z;
@@ -8406,7 +8226,7 @@
 	    // Check that the first point is between a and b.
 	    if (meridian
 	        ? polar
-	          ? phi0 + phi1 > 0 ^ q[1] < (abs$2(q[0] - lambda0) < epsilon ? phi0 : phi1)
+	          ? phi0 + phi1 > 0 ^ q[1] < (abs$4(q[0] - lambda0) < epsilon ? phi0 : phi1)
 	          : phi0 <= q[1] && q[1] <= phi1
 	        : delta > pi ^ (lambda0 <= q[0] && q[0] <= lambda1)) {
 	      var q1 = cartesianScale(u, (-w + t) / uu);
@@ -8514,9 +8334,9 @@
 	  }
 
 	  function corner(p, direction) {
-	    return abs$2(p[0] - x0) < epsilon ? direction > 0 ? 0 : 3
-	        : abs$2(p[0] - x1) < epsilon ? direction > 0 ? 2 : 1
-	        : abs$2(p[1] - y0) < epsilon ? direction > 0 ? 1 : 0
+	    return abs$4(p[0] - x0) < epsilon ? direction > 0 ? 0 : 3
+	        : abs$4(p[0] - x1) < epsilon ? direction > 0 ? 2 : 1
+	        : abs$4(p[1] - y0) < epsilon ? direction > 0 ? 1 : 0
 	        : direction > 0 ? 3 : 2; // abs(p[1] - y1) < epsilon
 	  }
 
@@ -8686,7 +8506,7 @@
 	  lambda *= radians, phi *= radians;
 	  var sinPhi = sin(phi),
 	      cosPhi = cos(phi),
-	      delta = abs$2(lambda - lambda0$2),
+	      delta = abs$4(lambda - lambda0$2),
 	      cosDelta = cos(delta),
 	      sinDelta = sin(delta),
 	      x = cosPhi * sinDelta,
@@ -8723,7 +8543,7 @@
 	  },
 	  polygonEnd: function() {
 	    areaStream$1.lineStart = areaStream$1.lineEnd = areaStream$1.point = noop$2;
-	    areaSum$1.add(abs$2(areaRingSum$1));
+	    areaSum$1.add(abs$4(areaRingSum$1));
 	    areaRingSum$1.reset();
 	  },
 	  result: function() {
@@ -9169,7 +8989,7 @@
 	          c = c0 + c1,
 	          m = sqrt(a * a + b * b + c * c),
 	          phi2 = asin(c /= m),
-	          lambda2 = abs$2(abs$2(c) - 1) < epsilon || abs$2(lambda0 - lambda1) < epsilon ? (lambda0 + lambda1) / 2 : atan2(b, a),
+	          lambda2 = abs$4(abs$4(c) - 1) < epsilon || abs$4(lambda0 - lambda1) < epsilon ? (lambda0 + lambda1) / 2 : atan2(b, a),
 	          p = project(lambda2, phi2),
 	          x2 = p[0],
 	          y2 = p[1],
@@ -9177,7 +8997,7 @@
 	          dy2 = y2 - y0,
 	          dz = dy * dx2 - dx * dy2;
 	      if (dz * dz / d2 > delta2 // perpendicular projected distance
-	          || abs$2((dx * dx2 + dy * dy2) / d2 - 0.5) > 0.3 // midpoint close to an end
+	          || abs$4((dx * dx2 + dy * dy2) / d2 - 0.5) > 0.3 // midpoint close to an end
 	          || a0 * a1 + b0 * b1 + c0 * c1 < cosMinDistance) { // angular distance
 	        resampleLineTo(x0, y0, lambda0, a0, b0, c0, x2, y2, lambda2, a /= m, b /= m, c, depth, stream);
 	        stream.point(x2, y2);
@@ -11077,7 +10897,7 @@
 
 	var filterEvents = {};
 
-	var event = null;
+	var event$1 = null;
 
 	if (typeof document !== "undefined") {
 	  var element = document.documentElement;
@@ -11098,12 +10918,12 @@
 
 	function contextListener(listener, index, group) {
 	  return function(event1) {
-	    var event0 = event; // Events can be reentrant (e.g., focus).
-	    event = event1;
+	    var event0 = event$1; // Events can be reentrant (e.g., focus).
+	    event$1 = event1;
 	    try {
 	      listener.call(this, this.__data__, index, group);
 	    } finally {
-	      event = event0;
+	      event$1 = event0;
 	    }
 	  };
 	}
@@ -11173,13 +10993,13 @@
 	}
 
 	function customEvent(event1, listener, that, args) {
-	  var event0 = event;
-	  event1.sourceEvent = event;
-	  event = event1;
+	  var event0 = event$1;
+	  event1.sourceEvent = event$1;
+	  event$1 = event1;
 	  try {
 	    return listener.apply(that, args);
 	  } finally {
-	    event = event0;
+	    event$1 = event0;
 	  }
 	}
 
@@ -11269,7 +11089,7 @@
 	}
 
 	function sourceEvent() {
-	  var current = event, source;
+	  var current = event$1, source;
 	  while (source = current.sourceEvent) current = source;
 	  return current;
 	}
@@ -11313,12 +11133,12 @@
 	}
 
 	function nopropagation() {
-	  event.stopImmediatePropagation();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function noevent() {
-	  event.preventDefault();
-	  event.stopImmediatePropagation();
+	  event$1.preventDefault();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function dragDisable(view) {
@@ -11373,7 +11193,7 @@
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultContainer() {
@@ -11381,7 +11201,7 @@
 	}
 
 	function defaultSubject(d) {
-	  return d == null ? {x: event.x, y: event.y} : d;
+	  return d == null ? {x: event$1.x, y: event$1.y} : d;
 	}
 
 	function defaultTouchable() {
@@ -11417,34 +11237,34 @@
 	    if (touchending || !filter.apply(this, arguments)) return;
 	    var gesture = beforestart("mouse", container.apply(this, arguments), mouse, this, arguments);
 	    if (!gesture) return;
-	    select(event.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
-	    dragDisable(event.view);
+	    select(event$1.view).on("mousemove.drag", mousemoved, true).on("mouseup.drag", mouseupped, true);
+	    dragDisable(event$1.view);
 	    nopropagation();
 	    mousemoving = false;
-	    mousedownx = event.clientX;
-	    mousedowny = event.clientY;
+	    mousedownx = event$1.clientX;
+	    mousedowny = event$1.clientY;
 	    gesture("start");
 	  }
 
 	  function mousemoved() {
 	    noevent();
 	    if (!mousemoving) {
-	      var dx = event.clientX - mousedownx, dy = event.clientY - mousedowny;
+	      var dx = event$1.clientX - mousedownx, dy = event$1.clientY - mousedowny;
 	      mousemoving = dx * dx + dy * dy > clickDistance2;
 	    }
 	    gestures.mouse("drag");
 	  }
 
 	  function mouseupped() {
-	    select(event.view).on("mousemove.drag mouseup.drag", null);
-	    yesdrag(event.view, mousemoving);
+	    select(event$1.view).on("mousemove.drag mouseup.drag", null);
+	    yesdrag(event$1.view, mousemoving);
 	    noevent();
 	    gestures.mouse("end");
 	  }
 
 	  function touchstarted() {
 	    if (!filter.apply(this, arguments)) return;
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        c = container.apply(this, arguments),
 	        n = touches.length, i, gesture;
 
@@ -11457,7 +11277,7 @@
 	  }
 
 	  function touchmoved() {
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        n = touches.length, i, gesture;
 
 	    for (i = 0; i < n; ++i) {
@@ -11469,7 +11289,7 @@
 	  }
 
 	  function touchended() {
-	    var touches = event.changedTouches,
+	    var touches = event$1.changedTouches,
 	        n = touches.length, i, gesture;
 
 	    if (touchending) clearTimeout(touchending);
@@ -11487,7 +11307,7 @@
 	        sublisteners = listeners.copy();
 
 	    if (!customEvent(new DragEvent(drag, "beforestart", s, id, active, p[0], p[1], 0, 0, sublisteners), function() {
-	      if ((event.subject = s = subject.apply(that, args)) == null) return false;
+	      if ((event$1.subject = s = subject.apply(that, args)) == null) return false;
 	      dx = s.x - p[0] || 0;
 	      dy = s.y - p[1] || 0;
 	      return true;
@@ -13329,17 +13149,17 @@
 	var identity$2 = new Transform(1, 0, 0);
 
 	function nopropagation$1() {
-	  event.stopImmediatePropagation();
+	  event$1.stopImmediatePropagation();
 	}
 
 	function noevent$1() {
-	  event.preventDefault();
-	  event.stopImmediatePropagation();
+	  event$1.preventDefault();
+	  event$1.stopImmediatePropagation();
 	}
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter$1() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultExtent() {
@@ -13360,7 +13180,7 @@
 	}
 
 	function defaultWheelDelta() {
-	  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002);
+	  return -event$1.deltaY * (event$1.deltaMode === 1 ? 0.05 : event$1.deltaMode ? 1 : 0.002);
 	}
 
 	function defaultTouchable$1() {
@@ -13579,12 +13399,12 @@
 	  function mousedowned() {
 	    if (touchending || !filter.apply(this, arguments)) return;
 	    var g = gesture(this, arguments, true),
-	        v = select(event.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
+	        v = select(event$1.view).on("mousemove.zoom", mousemoved, true).on("mouseup.zoom", mouseupped, true),
 	        p = mouse(this),
-	        x0 = event.clientX,
-	        y0 = event.clientY;
+	        x0 = event$1.clientX,
+	        y0 = event$1.clientY;
 
-	    dragDisable(event.view);
+	    dragDisable(event$1.view);
 	    nopropagation$1();
 	    g.mouse = [p, this.__zoom.invert(p)];
 	    interrupt(this);
@@ -13593,7 +13413,7 @@
 	    function mousemoved() {
 	      noevent$1();
 	      if (!g.moved) {
-	        var dx = event.clientX - x0, dy = event.clientY - y0;
+	        var dx = event$1.clientX - x0, dy = event$1.clientY - y0;
 	        g.moved = dx * dx + dy * dy > clickDistance2;
 	      }
 	      g.zoom("mouse", constrain(translate(g.that.__zoom, g.mouse[0] = mouse(g.that), g.mouse[1]), g.extent, translateExtent));
@@ -13601,7 +13421,7 @@
 
 	    function mouseupped() {
 	      v.on("mousemove.zoom mouseup.zoom", null);
-	      yesdrag(event.view, g.moved);
+	      yesdrag(event$1.view, g.moved);
 	      noevent$1();
 	      g.end();
 	    }
@@ -13612,7 +13432,7 @@
 	    var t0 = this.__zoom,
 	        p0 = mouse(this),
 	        p1 = t0.invert(p0),
-	        k1 = t0.k * (event.shiftKey ? 0.5 : 2),
+	        k1 = t0.k * (event$1.shiftKey ? 0.5 : 2),
 	        t1 = constrain(translate(scale(t0, k1), p0, p1), extent.apply(this, arguments), translateExtent);
 
 	    noevent$1();
@@ -13622,9 +13442,9 @@
 
 	  function touchstarted() {
 	    if (!filter.apply(this, arguments)) return;
-	    var touches = event.touches,
+	    var touches = event$1.touches,
 	        n = touches.length,
-	        g = gesture(this, arguments, event.changedTouches.length === n),
+	        g = gesture(this, arguments, event$1.changedTouches.length === n),
 	        started, i, t, p;
 
 	    nopropagation$1();
@@ -13647,7 +13467,7 @@
 	  function touchmoved() {
 	    if (!this.__zooming) return;
 	    var g = gesture(this, arguments),
-	        touches = event.changedTouches,
+	        touches = event$1.changedTouches,
 	        n = touches.length, i, t, p, l;
 
 	    noevent$1();
@@ -13676,7 +13496,7 @@
 	  function touchended() {
 	    if (!this.__zooming) return;
 	    var g = gesture(this, arguments),
-	        touches = event.changedTouches,
+	        touches = event$1.changedTouches,
 	        n = touches.length, i, t;
 
 	    nopropagation$1();
@@ -18225,22 +18045,22 @@
 
 
 	        function matches(binding, testShift) {
-	            var event$1 = event;
+	            var event = event$1;
 	            var isMatch = false;
 	            var tryKeyCode = true;
 
 	            // Prefer a match on `KeyboardEvent.key`
-	            if (event$1.key !== undefined) {
-	                tryKeyCode = (event$1.key.charCodeAt(0) > 255);  // outside ISO-Latin-1
+	            if (event.key !== undefined) {
+	                tryKeyCode = (event.key.charCodeAt(0) > 255);  // outside ISO-Latin-1
 	                isMatch = true;
 
 	                if (binding.event.key === undefined) {
 	                    isMatch = false;
 	                } else if (Array.isArray(binding.event.key)) {
-	                    if (binding.event.key.map(function(s) { return s.toLowerCase(); }).indexOf(event$1.key.toLowerCase()) === -1)
+	                    if (binding.event.key.map(function(s) { return s.toLowerCase(); }).indexOf(event.key.toLowerCase()) === -1)
 	                        isMatch = false;
 	                } else {
-	                    if (event$1.key.toLowerCase() !== binding.event.key.toLowerCase())
+	                    if (event.key.toLowerCase() !== binding.event.key.toLowerCase())
 	                        isMatch = false;
 	                }
 	            }
@@ -18249,18 +18069,18 @@
 	            // - browser doesn't support `KeyboardEvent.key`
 	            // - `KeyboardEvent.key` is outside ISO-Latin-1 range (cyrillic?)
 	            if (!isMatch && tryKeyCode) {
-	                isMatch = (event$1.keyCode === binding.event.keyCode);
+	                isMatch = (event.keyCode === binding.event.keyCode);
 	            }
 
 	            if (!isMatch) return false;
 
 	            // test modifier keys
-	            if (!(event$1.ctrlKey && event$1.altKey)) {  // if both are set, assume AltGr and skip it - #4096
-	                if (event$1.ctrlKey !== binding.event.modifiers.ctrlKey) return false;
-	                if (event$1.altKey !== binding.event.modifiers.altKey) return false;
+	            if (!(event.ctrlKey && event.altKey)) {  // if both are set, assume AltGr and skip it - #4096
+	                if (event.ctrlKey !== binding.event.modifiers.ctrlKey) return false;
+	                if (event.altKey !== binding.event.modifiers.altKey) return false;
 	            }
-	            if (event$1.metaKey !== binding.event.modifiers.metaKey) return false;
-	            if (testShift && event$1.shiftKey !== binding.event.modifiers.shiftKey) return false;
+	            if (event.metaKey !== binding.event.modifiers.metaKey) return false;
+	            if (testShift && event.shiftKey !== binding.event.modifiers.shiftKey) return false;
 
 	            return true;
 	        }
@@ -18273,7 +18093,7 @@
 
 
 	    function bubble() {
-	        var tagName = select(event.target).node().tagName;
+	        var tagName = select(event$1.target).node().tagName;
 	        if (tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA') {
 	            return;
 	        }
@@ -27382,7 +27202,7 @@
 
 
 	    function keydown() {
-	        if (_altDisables && event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (_altDisables && event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            _selection.selectAll('.hover')
 	                .classed('hover-suppressed', true)
 	                .classed('hover', false);
@@ -27396,7 +27216,7 @@
 
 
 	    function keyup() {
-	        if (_altDisables && event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (_altDisables && event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            _selection.selectAll('.hover-suppressed')
 	                .classed('hover-suppressed', false)
 	                .classed('hover', true);
@@ -27434,7 +27254,7 @@
 
 
 	        function eventTarget() {
-	            var datum = event.target && event.target.__data__;
+	            var datum = event$1.target && event$1.target.__data__;
 	            if (typeof datum !== 'object') return null;
 	            if (!(datum instanceof osmEntity) && datum.properties && (datum.properties.entity instanceof osmEntity)) {
 	                return datum.properties.entity;
@@ -27445,8 +27265,8 @@
 	        function pointerover() {
 	            // ignore mouse hovers with buttons pressed unless dragging
 	            if (context.mode().id.indexOf('drag') === -1 &&
-	                (!event.pointerType || event.pointerType === 'mouse') &&
-	                event.buttons) return;
+	                (!event$1.pointerType || event$1.pointerType === 'mouse') &&
+	                event$1.buttons) return;
 
 	            var target = eventTarget();
 	            if (target && _targets.indexOf(target) === -1) {
@@ -27530,7 +27350,7 @@
 	                }
 	            }
 
-	            var suppressed = _altDisables && event && event.altKey;
+	            var suppressed = _altDisables && event$1 && event$1.altKey;
 
 	            if (selector.trim().length) {
 	                // remove the first comma
@@ -27618,13 +27438,13 @@
 	    function datum() {
 	        var mode = context.mode();
 	        var isNote = mode && (mode.id.indexOf('note') !== -1);
-	        if (event.altKey || isNote) return {};
+	        if (event$1.altKey || isNote) return {};
 
 	        var element;
-	        if (event.type === 'keydown') {
+	        if (event$1.type === 'keydown') {
 	            element = _lastMouse && _lastMouse.target;
 	        } else {
-	            element = event.target;
+	            element = event$1.target;
 	        }
 
 	        // When drawing, snap only to touch targets..
@@ -27639,10 +27459,10 @@
 
 	        var pointerLocGetter = utilFastMouse(this);
 	        _downPointer = {
-	            id: event.pointerId || 'mouse',
+	            id: event$1.pointerId || 'mouse',
 	            pointerLocGetter: pointerLocGetter,
 	            downTime: +new Date(),
-	            downLoc: pointerLocGetter(event)
+	            downLoc: pointerLocGetter(event$1)
 	        };
 
 	        dispatch$1.call('down', this, datum());
@@ -27650,23 +27470,23 @@
 
 	    function pointerup() {
 
-	        if (!_downPointer || _downPointer.id !== (event.pointerId || 'mouse')) return;
+	        if (!_downPointer || _downPointer.id !== (event$1.pointerId || 'mouse')) return;
 
 	        var downPointer = _downPointer;
 	        _downPointer = null;
 
-	        _lastPointerUpEvent = event;
+	        _lastPointerUpEvent = event$1;
 
 	        if (downPointer.isCancelled) return;
 
 	        var t2 = +new Date();
-	        var p2 = downPointer.pointerLocGetter(event);
+	        var p2 = downPointer.pointerLocGetter(event$1);
 	        var dist = geoVecLength(downPointer.downLoc, p2);
 
 	        if (dist < _closeTolerance || (dist < _tolerance && (t2 - downPointer.downTime) < 500)) {
 	            // Prevent a quick second click
 	            select(window).on('click.draw-block', function() {
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            }, true);
 
 	            context.map().dblclickZoomEnable(false);
@@ -27682,9 +27502,9 @@
 
 	    function pointermove() {
 	        if (_downPointer &&
-	            _downPointer.id === (event.pointerId || 'mouse') &&
+	            _downPointer.id === (event$1.pointerId || 'mouse') &&
 	            !_downPointer.isCancelled) {
-	            var p2 = _downPointer.pointerLocGetter(event);
+	            var p2 = _downPointer.pointerLocGetter(event$1);
 	            var dist = geoVecLength(_downPointer.downLoc, p2);
 	            if (dist >= _closeTolerance) {
 	                _downPointer.isCancelled = true;
@@ -27692,23 +27512,23 @@
 	            }
 	        }
 
-	        if ((event.pointerType && event.pointerType !== 'mouse') ||
-	            event.buttons ||
+	        if ((event$1.pointerType && event$1.pointerType !== 'mouse') ||
+	            event$1.buttons ||
 	            _downPointer) return;
 
 	        // HACK: Mobile Safari likes to send one or more `mouse` type pointermove
 	        // events immediately after non-mouse pointerup events; detect and ignore them.
 	        if (_lastPointerUpEvent &&
 	            _lastPointerUpEvent.pointerType !== 'mouse' &&
-	            event.timeStamp - _lastPointerUpEvent.timeStamp < 100) return;
+	            event$1.timeStamp - _lastPointerUpEvent.timeStamp < 100) return;
 
-	        _lastMouse = event;
+	        _lastMouse = event$1;
 	        dispatch$1.call('move', this, datum());
 	    }
 
 	    function pointercancel() {
 	        if (_downPointer &&
-	            _downPointer.id === (event.pointerId || 'mouse')) {
+	            _downPointer.id === (event$1.pointerId || 'mouse')) {
 
 	            if (!_downPointer.isCancelled) {
 	                dispatch$1.call('downcancel', this);
@@ -27761,8 +27581,8 @@
 
 	    // treat a spacebar press like a click
 	    function space() {
-	        event.preventDefault();
-	        event.stopPropagation();
+	        event$1.preventDefault();
+	        event$1.stopPropagation();
 
 	        var currSpace = context.map().mouse();
 	        if (_disableSpace && _lastSpace) {
@@ -27779,8 +27599,8 @@
 	        _disableSpace = true;
 
 	        select(window).on('keyup.space-block', function() {
-	            event.preventDefault();
-	            event.stopPropagation();
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            _disableSpace = false;
 	            select(window).on('keyup.space-block', null);
 	        });
@@ -27794,19 +27614,19 @@
 
 
 	    function backspace() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('undo');
 	    }
 
 
 	    function del() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('cancel');
 	    }
 
 
 	    function ret() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        dispatch$1.call('finish');
 	    }
 
@@ -28786,7 +28606,7 @@
 
 	        if (_operation.availableForKeypress && !_operation.availableForKeypress()) return;
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var disabled = _operation.disabled();
 
@@ -29530,7 +29350,7 @@
 
 
 	    function finish() {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        context.replace(actionNoop(), annotation);
 	        context.enter(modeSelect(context, entityIDs));
 	    }
@@ -29748,7 +29568,7 @@
 
 
 	    function finish() {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        context.replace(actionNoop(), annotation);
 	        context.enter(modeSelect(context, entityIDs));
 	        stopNudge();
@@ -29835,7 +29655,7 @@
 	        // prevent paste during low zoom selection
 	        if (!context.map().withinEditableZoom()) return;
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var baseGraph = context.graph();
 	        var mouse = context.map().mouse();
@@ -29953,7 +29773,7 @@
 
 	        if (_pointerId) return;
 
-	        _pointerId = event.pointerId || 'mouse';
+	        _pointerId = event$1.pointerId || 'mouse';
 
 	        _target = this;
 	        _event = eventOf(_target, arguments);
@@ -29962,7 +29782,7 @@
 	        var pointerLocGetter = utilFastMouse(_surface || _target.parentNode);
 
 	        var offset;
-	        var startOrigin = pointerLocGetter(event);
+	        var startOrigin = pointerLocGetter(event$1);
 	        var started = false;
 	        var selectEnable = d3_event_userSelectSuppress();
 
@@ -29977,17 +29797,17 @@
 	            offset = [0, 0];
 	        }
 
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 
 	        function pointermove() {
-	            if (_pointerId !== (event.pointerId || 'mouse')) return;
+	            if (_pointerId !== (event$1.pointerId || 'mouse')) return;
 
-	            var p = pointerLocGetter(event);
+	            var p = pointerLocGetter(event$1);
 
 	            if (!started) {
 	                var dist = geoVecLength(startOrigin,  p);
-	                var tolerance = event.pointerType === 'pen' ? _penTolerancePx : _tolerancePx;
+	                var tolerance = event$1.pointerType === 'pen' ? _penTolerancePx : _tolerancePx;
 	                // don't start until the drag has actually moved somewhat
 	                if (dist < tolerance) return;
 
@@ -29999,8 +29819,8 @@
 	            } else {
 
 	                startOrigin = p;
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 
 	                var dx = p[0] - startOrigin[0];
 	                var dy = p[1] - startOrigin[1];
@@ -30014,14 +29834,14 @@
 
 
 	        function pointerup() {
-	            if (_pointerId !== (event.pointerId || 'mouse')) return;
+	            if (_pointerId !== (event$1.pointerId || 'mouse')) return;
 
 	            _pointerId = null;
 
 	            if (started) {
 	                _event({ type: 'end' });
 
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            }
 
 	            select(window)
@@ -30040,7 +29860,7 @@
 	        if (_selector) {
 	            delegate = function() {
 	                var root = this;
-	                var target = event.target;
+	                var target = event$1.target;
 	                for (; target && target !== root; target = target.parentNode) {
 	                    var datum = target.__data__;
 
@@ -30178,7 +29998,7 @@
 
 
 	    function keydown() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope')) {
 	                context.surface()
 	                    .classed('nope-suppressed', true);
@@ -30191,7 +30011,7 @@
 
 
 	    function keyup() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope-suppressed')) {
 	                context.surface()
 	                    .classed('nope', true);
@@ -30206,7 +30026,7 @@
 	    function start(entity) {
 	        _wasMidpoint = entity.type === 'midpoint';
 	        var hasHidden = context.features().hasHiddenConnections(entity, context.graph());
-	        _isCancelled = !context.editable() || event.sourceEvent.shiftKey || hasHidden;
+	        _isCancelled = !context.editable() || event$1.sourceEvent.shiftKey || hasHidden;
 
 
 	        if (_isCancelled) {
@@ -30246,13 +30066,13 @@
 	    // related code
 	    // - `behavior/draw.js` `datum()`
 	    function datum() {
-	        var event$1 = event && event.sourceEvent;
-	        if (!event$1 || event$1.altKey) {
+	        var event = event$1 && event$1.sourceEvent;
+	        if (!event || event.altKey) {
 	            return {};
 	        } else {
 	            // When dragging, snap only to touch targets..
 	            // (this excludes area fills and active drawing elements)
-	            var d = event$1.target.__data__;
+	            var d = event.target.__data__;
 	            return (d && d.properties && d.properties.target) ? d : {};
 	        }
 	    }
@@ -30261,7 +30081,7 @@
 	    function doMove(entity, nudge) {
 	        nudge = nudge || [0, 0];
 
-	        var currPoint = (event && event.point) || context.projection(_lastLoc);
+	        var currPoint = (event$1 && event$1.point) || context.projection(_lastLoc);
 	        var currMouse = geoVecSubtract(currPoint, nudge);
 	        var loc = context.projection.invert(currMouse);
 
@@ -30424,14 +30244,14 @@
 
 	    function move(entity) {
 	        if (_isCancelled) return;
-	        event.sourceEvent.stopPropagation();
+	        event$1.sourceEvent.stopPropagation();
 
-	        context.surface().classed('nope-disabled', event.sourceEvent.altKey);
+	        context.surface().classed('nope-disabled', event$1.sourceEvent.altKey);
 
-	        _lastLoc = context.projection.invert(event.point);
+	        _lastLoc = context.projection.invert(event$1.point);
 
 	        doMove(entity);
-	        var nudge = geoViewportEdge(event.point, context.map().dimensions());
+	        var nudge = geoViewportEdge(event$1.point, context.map().dimensions());
 	        if (nudge) {
 	            startNudge(entity, nudge);
 	        } else {
@@ -36307,7 +36127,7 @@
 
 
 	        function zoomPan() {
-	            var t = event.transform;
+	            var t = event$1.transform;
 	            context.container().select('.photoviewer .osc-image-wrap')
 	                .call(utilSetTransform, t.x, t.y, t.k);
 	        }
@@ -43193,7 +43013,7 @@
 	      .attr('id', hiresDomId)
 	      .property('checked', _hires)
 	      .on('click', () => {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 	        _hires = !_hires;
 	        _resolution = _hires ? 1024 : 512;
@@ -48549,7 +48369,7 @@
 
 	        // fast submit if user presses cmd+enter
 	        function keydown() {
-	            if (!(event.keyCode === 13 && event.metaKey)) return;
+	            if (!(event$1.keyCode === 13 && event$1.metaKey)) return;
 
 	            var osm = services.osm;
 	            if (!osm) return;
@@ -48559,7 +48379,7 @@
 
 	            if (!_note.newComment) return;
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            select(this)
 	                .on('keydown.note-input', null);
@@ -48637,7 +48457,7 @@
 	            .append('span')
 	            .text(_t('login'))
 	            .on('click.note-login', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                osm.authenticate();
 	            });
 
@@ -48864,7 +48684,7 @@
 	        if (selection.empty()) {
 	            // Return to browse mode if selected DOM elements have
 	            // disappeared because the user moved them out of view..
-	            var source = event && event.type === 'zoom' && event.sourceEvent;
+	            var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	            if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                context.enter(modeBrowse(context));
 	            }
@@ -49003,11 +48823,11 @@
 
 
 	    function move() {
-	        event.sourceEvent.stopPropagation();
-	        _lastLoc = context.projection.invert(event.point);
+	        event$1.sourceEvent.stopPropagation();
+	        _lastLoc = context.projection.invert(event$1.point);
 
 	        doMove();
-	        var nudge = geoViewportEdge(event.point, context.map().dimensions());
+	        var nudge = geoViewportEdge(event$1.point, context.map().dimensions());
 	        if (nudge) {
 	            startNudge(nudge);
 	        } else {
@@ -49019,7 +48839,7 @@
 	    function doMove(nudge) {
 	        nudge = nudge || [0, 0];
 
-	        var currPoint = (event && event.point) || context.projection(_lastLoc);
+	        var currPoint = (event$1 && event$1.point) || context.projection(_lastLoc);
 	        var currMouse = geoVecSubtract(currPoint, nudge);
 	        var loc = context.projection.invert(currMouse);
 
@@ -49176,19 +48996,19 @@
 	                    .insert('div', function() { return sibling; })
 	                    .attr('class', 'combobox-caret')
 	                    .on('mousedown.combo-caret', function() {
-	                        event.preventDefault(); // don't steal focus from input
+	                        event$1.preventDefault(); // don't steal focus from input
 	                        input.node().focus(); // focus the input as if it was clicked
 	                        mousedown();
 	                    })
 	                    .on('mouseup.combo-caret', function() {
-	                        event.preventDefault(); // don't steal focus from input
+	                        event$1.preventDefault(); // don't steal focus from input
 	                        mouseup();
 	                    });
 	            });
 
 
 	        function mousedown() {
-	            if (event.button !== 0) return;    // left click only
+	            if (event$1.button !== 0) return;    // left click only
 	            _tDown = +new Date();
 
 	            // clear selection
@@ -49206,7 +49026,7 @@
 
 	        function mouseup() {
 	            input.on('mouseup.combo-input', null);
-	            if (event.button !== 0) return;    // left click only
+	            if (event$1.button !== 0) return;    // left click only
 	            if (input.node() !== document.activeElement) return;   // exit if this input is not focused
 
 	            var start = input.property('selectionStart');
@@ -49253,7 +49073,7 @@
 	                .style('left', '0px')
 	                .on('mousedown.combo-container', function () {
 	                    // prevent moving focus out of the input field
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                });
 
 	            container
@@ -49279,10 +49099,10 @@
 	            var shown = !container.selectAll('.combobox').empty();
 	            var tagName = input.node() ? input.node().tagName.toLowerCase() : '';
 
-	            switch (event.keyCode) {
+	            switch (event$1.keyCode) {
 	                case 8:   // ⌫ Backspace
 	                case 46:  // ⌦ Delete
-	                    event.stopPropagation();
+	                    event$1.stopPropagation();
 	                    _selected = null;
 	                    render();
 	                    input.on('input.combo-input', function() {
@@ -49297,13 +49117,13 @@
 	                    break;
 
 	                case 13:  // ↩ Return
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                    break;
 
 	                case 38:  // ↑ Up arrow
 	                    if (tagName === 'textarea' && !shown) return;
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    if (tagName === 'input' && !shown) {
 	                        show();
 	                    }
@@ -49312,7 +49132,7 @@
 
 	                case 40:  // ↓ Down arrow
 	                    if (tagName === 'textarea' && !shown) return;
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    if (tagName === 'input' && !shown) {
 	                        show();
 	                    }
@@ -49323,7 +49143,7 @@
 
 
 	        function keyup() {
-	            switch (event.keyCode) {
+	            switch (event$1.keyCode) {
 	                case 27:  // ⎋ Escape
 	                    cancel();
 	                    break;
@@ -49701,7 +49521,7 @@
 
 
 	        function toggle() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            _expanded = !_expanded;
 
@@ -50046,8 +49866,8 @@
 
 	        _button
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                this.blur();    // avoid keeping focus on the button - #4641
 	                if (_showing) {
 	                    hide();
@@ -50444,7 +50264,7 @@
 
 	    function pushMore() {
 	        // if pressing Tab on the last value field with content, add a blank row
-	        if (event.keyCode === 9 && !event.shiftKey &&
+	        if (event$1.keyCode === 9 && !event$1.shiftKey &&
 	            section.selection().selectAll('.tag-list li:last-child input.value').node() === this &&
 	            utilGetSetValue(select(this))) {
 	            addTag();
@@ -50791,7 +50611,7 @@
 	        if (selection.empty()) {
 	            // Return to browse mode if selected DOM elements have
 	            // disappeared because the user moved them out of view..
-	            var source = event && event.type === 'zoom' && event.sourceEvent;
+	            var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	            if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                context.enter(modeBrowse(context));
 	            }
@@ -51010,7 +50830,7 @@
 	            utilHighlightEntities([entityID], false, context);
 	          })
 	          .on('click', () => {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            utilHighlightEntities([entityID], false, context);
 
@@ -51387,7 +51207,7 @@
 	            utilHighlightEntities([entityID], false, context);
 	          })
 	          .on('click', () => {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            utilHighlightEntities([entityID], false, context);
 
@@ -51876,7 +51696,7 @@
 	                  utilHighlightEntities([entityID], false, context);
 	                })
 	                .on('click', () => {
-	                  event.preventDefault();
+	                  event$1.preventDefault();
 
 	                  utilHighlightEntities([entityID], false, context);
 
@@ -52289,7 +52109,7 @@
 	            if (selection.empty()) {
 	                // Return to browse mode if selected DOM elements have
 	                // disappeared because the user moved them out of view..
-	                var source = event && event.type === 'zoom' && event.sourceEvent;
+	                var source = event$1 && event$1.type === 'zoom' && event$1.sourceEvent;
 	                if (drawn && source && (source.type === 'pointermove' || source.type === 'mousemove' || source.type === 'touchmove')) {
 	                    context.enter(modeBrowse(context));
 	                }
@@ -52349,28 +52169,28 @@
 
 	    function keydown() {
 
-	        if (event.keyCode === 32) {
+	        if (event$1.keyCode === 32) {
 	            // don't react to spacebar events during text input
 	            var activeNode = document.activeElement;
 	            if (activeNode && new Set(['INPUT', 'TEXTAREA']).has(activeNode.nodeName)) return;
 	        }
 
-	        if (event.keyCode === 93 ||  // context menu key
-	            event.keyCode === 32) {  // spacebar
-	            event.preventDefault();
+	        if (event$1.keyCode === 93 ||  // context menu key
+	            event$1.keyCode === 32) {  // spacebar
+	            event$1.preventDefault();
 	        }
 
-	        if (event.repeat) return; // ignore repeated events for held keys
+	        if (event$1.repeat) return; // ignore repeated events for held keys
 
 	        // if any key is pressed the user is probably doing something other than long-pressing
 	        cancelLongPress();
 
-	        if (event.shiftKey) {
+	        if (event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', true);
 	        }
 
-	        if (event.keyCode === 32) {  // spacebar
+	        if (event$1.keyCode === 32) {  // spacebar
 	            if (!_downPointers.spacebar && _lastMouseEvent) {
 	                cancelLongPress();
 	                _longPressTimeout = window.setTimeout(didLongPress, 500, 'spacebar', 'spacebar');
@@ -52387,23 +52207,23 @@
 	    function keyup() {
 	        cancelLongPress();
 
-	        if (!event.shiftKey) {
+	        if (!event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', false);
 	        }
 
-	        if (event.keyCode === 93) {  // context menu key
-	            event.preventDefault();
+	        if (event$1.keyCode === 93) {  // context menu key
+	            event$1.preventDefault();
 	            _lastInteractionType = 'menukey';
 	            contextmenu();
-	        } else if (event.keyCode === 32) {  // spacebar
+	        } else if (event$1.keyCode === 32) {  // spacebar
 	            var pointer = _downPointers.spacebar;
 	            if (pointer) {
 	                delete _downPointers.spacebar;
 
 	                if (pointer.done) return;
 
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                _lastInteractionType = 'spacebar';
 	                click(pointer.firstEvent, pointer.lastEvent, 'spacebar');
 	            }
@@ -52412,19 +52232,19 @@
 
 
 	    function pointerdown() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 
 	        cancelLongPress();
 
-	        if (event.buttons && event.buttons !== 1) return;
+	        if (event$1.buttons && event$1.buttons !== 1) return;
 
 	        context.ui().closeEditMenu();
 
-	        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (event.pointerType || 'mouse'));
+	        _longPressTimeout = window.setTimeout(didLongPress, 500, id, 'longdown-' + (event$1.pointerType || 'mouse'));
 
 	        _downPointers[id] = {
-	            firstEvent: event,
-	            lastEvent: event
+	            firstEvent: event$1,
+	            lastEvent: event$1
 	        };
 	    }
 
@@ -52448,21 +52268,21 @@
 
 
 	    function pointermove() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        if (_downPointers[id]) {
-	            _downPointers[id].lastEvent = event;
+	            _downPointers[id].lastEvent = event$1;
 	        }
-	        if (!event.pointerType || event.pointerType === 'mouse') {
-	            _lastMouseEvent = event;
+	        if (!event$1.pointerType || event$1.pointerType === 'mouse') {
+	            _lastMouseEvent = event$1;
 	            if (_downPointers.spacebar) {
-	                _downPointers.spacebar.lastEvent = event;
+	                _downPointers.spacebar.lastEvent = event$1;
 	            }
 	        }
 	    }
 
 
 	    function pointerup() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        var pointer = _downPointers[id];
 	        if (!pointer) return;
 
@@ -52474,12 +52294,12 @@
 
 	        if (pointer.done) return;
 
-	        click(pointer.firstEvent, event, id);
+	        click(pointer.firstEvent, event$1, id);
 	    }
 
 
 	    function pointercancel() {
-	        var id = (event.pointerId || 'mouse').toString();
+	        var id = (event$1.pointerId || 'mouse').toString();
 	        if (!_downPointers[id]) return;
 
 	        delete _downPointers[id];
@@ -52491,7 +52311,7 @@
 
 
 	    function contextmenu() {
-	        var e = event;
+	        var e = event$1;
 	        e.preventDefault();
 
 	        if (!+e.clientX && !+e.clientY) {
@@ -52501,12 +52321,12 @@
 	                return;
 	            }
 	        } else {
-	            _lastMouseEvent = event;
+	            _lastMouseEvent = event$1;
 	            _lastInteractionType = 'rightclick';
 	        }
 
 	        _showMenu = true;
-	        click(event, event);
+	        click(event$1, event$1);
 	    }
 
 
@@ -52549,7 +52369,7 @@
 	        // support multiselect if data is already selected
 	        var isMultiselect = context.mode().id === 'select' && (
 	            // and shift key is down
-	            (event && event.shiftKey) ||
+	            (event$1 && event$1.shiftKey) ||
 	            // or we're lasso-selecting
 	            context.surface().select('.lasso').node() ||
 	            // or a pointer is down over a selected feature
@@ -52709,9 +52529,9 @@
 	                // Edge and IE really like to show the contextmenu on the
 	                // menubar when user presses a keyboard menu button
 	                // even after we've already preventdefaulted the key event.
-	                var e = event;
+	                var e = event$1;
 	                if (+e.clientX === 0 && +e.clientY === 0) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                }
 	            });
 
@@ -52719,7 +52539,7 @@
 	            .on(_pointerPrefix + 'down.select', pointerdown)
 	            .on('contextmenu.select', contextmenu);
 
-	        if (event && event.shiftKey) {
+	        if (event$1 && event$1.shiftKey) {
 	            context.surface()
 	                .classed('behavior-multiselect', true);
 	        }
@@ -52806,7 +52626,7 @@
 
 
 	    function keydown() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope')) {
 	                context.surface()
 	                    .classed('nope-suppressed', true);
@@ -52819,7 +52639,7 @@
 
 
 	    function keyup() {
-	        if (event.keyCode === utilKeybinding.modifierCodes.alt) {
+	        if (event$1.keyCode === utilKeybinding.modifierCodes.alt) {
 	            if (context.surface().classed('nope-suppressed')) {
 	                context.surface()
 	                    .classed('nope', true);
@@ -52846,7 +52666,7 @@
 
 	        if (!_drawNode) createDrawNode(loc);
 
-	        context.surface().classed('nope-disabled', event.altKey);
+	        context.surface().classed('nope-disabled', event$1.altKey);
 
 	        var targetLoc = datum && datum.properties && datum.properties.entity &&
 	            allowsVertex(datum.properties.entity) && datum.properties.entity.loc;
@@ -54609,7 +54429,7 @@
 	        function didDoubleUp(loc) {
 	            if (!context.map().withinEditableZoom()) return;
 
-	            var target = select(event.target);
+	            var target = select(event$1.target);
 
 	            var datum = target.datum();
 	            var entity = datum && datum.properties && datum.properties.entity;
@@ -54674,7 +54494,7 @@
 
 
 	        function firstVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var entity = singular();
 	            var parent = singularParent();
 	            var way;
@@ -54694,7 +54514,7 @@
 
 
 	        function lastVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var entity = singular();
 	            var parent = singularParent();
 	            var way;
@@ -54714,7 +54534,7 @@
 
 
 	        function previousVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parent = singularParent();
 	            if (!parent) return;
 
@@ -54738,7 +54558,7 @@
 
 
 	        function nextVertex() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parent = singularParent();
 	            if (!parent) return;
 
@@ -54762,7 +54582,7 @@
 
 
 	        function nextParent() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            var parents = commonParents();
 	            if (!parents || parents.length < 2) return;
 
@@ -54918,14 +54738,14 @@
 
 	        function pointerdown() {
 	            var button = 0;  // left
-	            if (event.button === button && event.shiftKey === true) {
+	            if (event$1.button === button && event$1.shiftKey === true) {
 	                lasso = null;
 
 	                select(window)
 	                    .on(_pointerPrefix + 'move.lasso', pointermove)
 	                    .on(_pointerPrefix + 'up.lasso', pointerup);
 
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            }
 	        }
 
@@ -55810,7 +55630,7 @@
 
 	  if (!blocking) {
 	    shaded.on('click.remove-modal', () => {
-	      if (event.target === this) {
+	      if (event$1.target === this) {
 	        shaded.close();
 	      }
 	    });
@@ -67467,18 +67287,18 @@
 	        _enabled = true;
 
 	        function over() {
-	            event.stopPropagation();
-	            event.preventDefault();
-	            event.dataTransfer.dropEffect = 'copy';
+	            event$1.stopPropagation();
+	            event$1.preventDefault();
+	            event$1.dataTransfer.dropEffect = 'copy';
 	        }
 
 	        context.container()
 	            .attr('dropzone', 'copy')
 	            .on('drop.svgData', function() {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                if (!detected.filedrop) return;
-	                drawData.fileList(event.dataTransfer.files);
+	                drawData.fileList(event$1.dataTransfer.files);
 	            })
 	            .on('dragenter.svgData', over)
 	            .on('dragexit.svgData', over)
@@ -72667,7 +72487,7 @@
 
 	// Ignore right-click, since that should open the context menu.
 	function defaultFilter$2() {
-	  return !event.ctrlKey && !event.button;
+	  return !event$1.ctrlKey && !event$1.button;
 	}
 
 	function defaultExtent$1() {
@@ -72684,7 +72504,7 @@
 	}
 
 	function defaultWheelDelta$1() {
-	  return -event.deltaY * (event.deltaMode === 1 ? 0.05 : event.deltaMode ? 1 : 0.002);
+	  return -event$1.deltaY * (event$1.deltaMode === 1 ? 0.05 : event$1.deltaMode ? 1 : 0.002);
 	}
 
 	function defaultConstrain$1(transform, extent, translateExtent) {
@@ -72857,7 +72677,7 @@
 	    var g = gesture(this, arguments),
 	        t = _transform,
 	        k = Math.max(scaleExtent[0], Math.min(scaleExtent[1], t.k * Math.pow(2, wheelDelta.apply(this, arguments)))),
-	        p = utilFastMouse(this)(event);
+	        p = utilFastMouse(this)(event$1);
 
 	    // If the mouse is in the same location as before, reuse it.
 	    // If there were recent wheel events, reset the wheel idle timeout.
@@ -72874,8 +72694,8 @@
 	      g.start();
 	    }
 
-	    event.preventDefault();
-	    event.stopImmediatePropagation();
+	    event$1.preventDefault();
+	    event$1.stopImmediatePropagation();
 	    g.wheel = setTimeout(wheelidled, _wheelDelay);
 	    g.zoom('mouse', constrain(translate(scale(t, k), g.mouse[0], g.mouse[1]), g.extent, translateExtent));
 
@@ -72889,17 +72709,17 @@
 	  var _pointerLocGetter;
 
 	  function pointerdown() {
-	    _downPointerIDs.add(event.pointerId);
+	    _downPointerIDs.add(event$1.pointerId);
 
 	    if (!filter.apply(this, arguments)) return;
 
 	    var g = gesture(this, arguments, _downPointerIDs.size === 1);
 	    var started;
 
-	    event.stopImmediatePropagation();
+	    event$1.stopImmediatePropagation();
 	    _pointerLocGetter = utilFastMouse(this);
-	    var loc = _pointerLocGetter(event);
-	    var p = [loc, _transform.invert(loc), event.pointerId];
+	    var loc = _pointerLocGetter(event$1);
+	    var p = [loc, _transform.invert(loc), event$1.pointerId];
 	    if (!g.pointer0) {
 	       g.pointer0 = p;
 	       started = true;
@@ -72915,16 +72735,16 @@
 	  }
 
 	  function pointermove() {
-	    if (!_downPointerIDs.has(event.pointerId)) return;
+	    if (!_downPointerIDs.has(event$1.pointerId)) return;
 
 	    if (!_activeGesture || !_pointerLocGetter) return;
 
 	    var g = gesture(this, arguments);
 
-	    var isPointer0 = g.pointer0 && g.pointer0[2] === event.pointerId;
-	    var isPointer1 = !isPointer0 && g.pointer1 && g.pointer1[2] === event.pointerId;
+	    var isPointer0 = g.pointer0 && g.pointer0[2] === event$1.pointerId;
+	    var isPointer1 = !isPointer0 && g.pointer1 && g.pointer1[2] === event$1.pointerId;
 
-	    if ((isPointer0 || isPointer1) && 'buttons' in event && !event.buttons) {
+	    if ((isPointer0 || isPointer1) && 'buttons' in event$1 && !event$1.buttons) {
 	      // The pointer went up without ending the gesture somehow, e.g.
 	      // a down mouse was moved off the map and released. End it here.
 	      if (g.pointer0) _downPointerIDs.delete(g.pointer0[2]);
@@ -72933,10 +72753,10 @@
 	      return;
 	    }
 
-	    event.preventDefault();
-	    event.stopImmediatePropagation();
+	    event$1.preventDefault();
+	    event$1.stopImmediatePropagation();
 
-	    var loc = _pointerLocGetter(event);
+	    var loc = _pointerLocGetter(event$1);
 	    var t, p, l;
 
 	    if (isPointer0) g.pointer0[0] = loc;
@@ -72960,18 +72780,18 @@
 	  }
 
 	  function pointerup() {
-	    if (!_downPointerIDs.has(event.pointerId)) return;
+	    if (!_downPointerIDs.has(event$1.pointerId)) return;
 
-	    _downPointerIDs.delete(event.pointerId);
+	    _downPointerIDs.delete(event$1.pointerId);
 
 	    if (!_activeGesture) return;
 
 	    var g = gesture(this, arguments);
 
-	    event.stopImmediatePropagation();
+	    event$1.stopImmediatePropagation();
 
-	    if (g.pointer0 && g.pointer0[2] === event.pointerId) delete g.pointer0;
-	    else if (g.pointer1 && g.pointer1[2] === event.pointerId) delete g.pointer1;
+	    if (g.pointer0 && g.pointer0[2] === event$1.pointerId) delete g.pointer0;
+	    else if (g.pointer1 && g.pointer1[2] === event$1.pointerId) delete g.pointer1;
 
 	    if (g.pointer1 && !g.pointer0) {
 	      g.pointer0 = g.pointer1;
@@ -73043,9 +72863,9 @@
 	    function pointerdown() {
 
 	        // ignore right-click
-	        if (event.ctrlKey || event.button === 2) return;
+	        if (event$1.ctrlKey || event$1.button === 2) return;
 
-	        var loc = [event.clientX, event.clientY];
+	        var loc = [event$1.clientX, event$1.clientY];
 
 	        // Don't rely on pointerId here since it can change between pointerdown
 	        // events on touch devices
@@ -73059,26 +72879,26 @@
 	                startLoc: loc,
 	                startTime: new Date().getTime(),
 	                upCount: 0,
-	                pointerId: event.pointerId
+	                pointerId: event$1.pointerId
 	            };
 	        } else { // double down
-	            _pointer.pointerId = event.pointerId;
+	            _pointer.pointerId = event$1.pointerId;
 	        }
 	    }
 
 	    function pointerup() {
 
 	        // ignore right-click
-	        if (event.ctrlKey || event.button === 2) return;
+	        if (event$1.ctrlKey || event$1.button === 2) return;
 
-	        if (!_pointer || _pointer.pointerId !== event.pointerId) return;
+	        if (!_pointer || _pointer.pointerId !== event$1.pointerId) return;
 
 	        _pointer.upCount += 1;
 
 	        if (_pointer.upCount === 2) { // double up!
-	            var loc = [event.clientX, event.clientY];
+	            var loc = [event$1.clientX, event$1.clientY];
 	            if (pointerIsValidFor(loc)) {
-	                var locInThis = utilFastMouse(this)(event);
+	                var locInThis = utilFastMouse(this)(event$1);
 	                dispatch$1.call('doubleUp', this, locInThis);
 	            }
 	            // clear the pointer info in any case
@@ -73097,7 +72917,7 @@
 	            // fallback to dblclick
 	            selection
 	                .on('dblclick.doubleUp', function() {
-	                    dispatch$1.call('doubleUp', this, utilFastMouse(this)(event));
+	                    dispatch$1.call('doubleUp', this, utilFastMouse(this)(event$1));
 	                });
 	        }
 	    }
@@ -73172,7 +72992,7 @@
 	        .filter(zoomEventFilter)
 	        .on('zoom.map', zoomPan)
 	        .on('start.map', function() {
-	            _pointerDown = event.sourceEvent && event.sourceEvent.type === 'pointerdown';
+	            _pointerDown = event$1.sourceEvent && event$1.sourceEvent.type === 'pointerdown';
 	        })
 	        .on('end.map', function() {
 	            _pointerDown = false;
@@ -73246,7 +73066,7 @@
 	        selection
 	            .on('wheel.map mousewheel.map', function() {
 	                // disable swipe-to-navigate browser pages on trackpad/magic mouse – #5552
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            })
 	            .call(_zoomerPanner)
 	            .call(_zoomerPanner.transform, projection.transform())
@@ -73270,30 +73090,30 @@
 	            .call(drawLabels.observe)
 	            .call(_doubleUpHandler)
 	            .on(_pointerPrefix + 'down.zoom', function() {
-	                _lastPointerEvent = event;
-	                if (event.button === 2) {
-	                    event.stopPropagation();
+	                _lastPointerEvent = event$1;
+	                if (event$1.button === 2) {
+	                    event$1.stopPropagation();
 	                }
 	            }, true)
 	            .on(_pointerPrefix + 'up.zoom', function() {
-	                _lastPointerEvent = event;
+	                _lastPointerEvent = event$1;
 	                if (resetTransform()) {
 	                    immediateRedraw();
 	                }
 	            })
 	            .on(_pointerPrefix + 'move.map', function() {
-	                _lastPointerEvent = event;
+	                _lastPointerEvent = event$1;
 	            })
 	            .on(_pointerPrefix + 'over.vertices', function() {
 	                if (map.editableDataEnabled() && !_isTransformed) {
-	                    var hover = event.target.__data__;
+	                    var hover = event$1.target.__data__;
 	                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
 	                    dispatch$1.call('drawn', this, { full: false });
 	                }
 	            })
 	            .on(_pointerPrefix + 'out.vertices', function() {
 	                if (map.editableDataEnabled() && !_isTransformed) {
-	                    var hover = event.relatedTarget && event.relatedTarget.__data__;
+	                    var hover = event$1.relatedTarget && event$1.relatedTarget.__data__;
 	                    surface.call(drawVertices.drawHover, context.graph(), hover, map.extent());
 	                    dispatch$1.call('drawn', this, { full: false });
 	                }
@@ -73311,7 +73131,7 @@
 	            // We can listen for these and translate them into map zooms.
 	            surface
 	                .on('gesturestart.surface', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    _gestureTransformStart = projection.transform();
 	                })
 	                .on('gesturechange.surface', gestureChange);
@@ -73324,11 +73144,11 @@
 	            if (!_dblClickZoomEnabled) return;
 
 	            // don't zoom if targeting something other than the map itself
-	            if (typeof event.target.__data__ === 'object' &&
+	            if (typeof event$1.target.__data__ === 'object' &&
 	                // or area fills
-	                !select(event.target).classed('fill')) return;
+	                !select(event$1.target).classed('fill')) return;
 
-	            var zoomOut = event.shiftKey;
+	            var zoomOut = event$1.shiftKey;
 
 	            var t = projection.transform();
 
@@ -73386,7 +73206,7 @@
 	        // This can happen if a previous `mousedown` occurred without a `mouseup`.
 	        // If we detect this, dispatch `mouseup` to complete the orphaned gesture,
 	        // so that d3-zoom won't stop propagation of new `mousedown` events.
-	        if (event.type === 'mousedown') {
+	        if (event$1.type === 'mousedown') {
 	            var hasOrphan = false;
 	            var listeners = window.__on;
 	            for (var i = 0; i < listeners.length; i++) {
@@ -73397,20 +73217,20 @@
 	                }
 	            }
 	            if (hasOrphan) {
-	                var event$1 = window.CustomEvent;
-	                if (event$1) {
-	                    event$1 = new event$1('mouseup');
+	                var event = window.CustomEvent;
+	                if (event) {
+	                    event = new event('mouseup');
 	                } else {
-	                    event$1 = window.document.createEvent('Event');
-	                    event$1.initEvent('mouseup', false, false);
+	                    event = window.document.createEvent('Event');
+	                    event.initEvent('mouseup', false, false);
 	                }
 	                // Event needs to be dispatched with an event.view property.
-	                event$1.view = window;
-	                window.dispatchEvent(event$1);
+	                event.view = window;
+	                window.dispatchEvent(event);
 	            }
 	        }
 
-	        return event.button !== 2;   // ignore right clicks
+	        return event$1.button !== 2;   // ignore right clicks
 	    }
 
 
@@ -73529,7 +73349,7 @@
 	        // Remap Safari gesture events to wheel events - #5492
 	        // We want these disabled most places, but enabled for zoom/unzoom on map surface
 	        // https://developer.mozilla.org/en-US/docs/Web/API/GestureEvent
-	        var e = event;
+	        var e = event$1;
 	        e.preventDefault();
 
 	        var props = {
@@ -73552,9 +73372,9 @@
 
 
 	    function zoomPan(manualEvent) {
-	        var event$1 = (manualEvent || event);
-	        var source = event$1.sourceEvent;
-	        var eventTransform = event$1.transform;
+	        var event = (manualEvent || event$1);
+	        var source = event.sourceEvent;
+	        var eventTransform = event.transform;
 	        var x = eventTransform.x;
 	        var y = eventTransform.y;
 	        var k = eventTransform.k;
@@ -73716,7 +73536,7 @@
 	        }
 
 	        if (source) {
-	            _lastPointerEvent = event$1;
+	            _lastPointerEvent = event;
 	        }
 	        _isTransformed = true;
 	        _transformLast = eventTransform;
@@ -73804,11 +73624,11 @@
 
 
 	    map.mouse = function() {
-	        var event$1 = _lastPointerEvent || event;
-	        if (event$1) {
+	        var event = _lastPointerEvent || event$1;
+	        if (event) {
 	            var s;
-	            while ((s = event$1.sourceEvent)) { event$1 = s; }
-	            return _getMouseCoords(event$1);
+	            while ((s = event.sourceEvent)) { event = s; }
+	            return _getMouseCoords(event);
 	        }
 	        return null;
 	    };
@@ -74352,7 +74172,7 @@
 	                .attr('href', '#')
 	                .text(_t('logout'))
 	                .on('click.logout', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    osm.logout();
 	                });
 	        });
@@ -74705,13 +74525,13 @@
 	            var _lastNonMouseEnterTime;
 	            anchor.on(_pointerPrefix + 'enter.popover', function() {
 
-	                if (event.pointerType) {
-	                    if (event.pointerType !== 'mouse') {
-	                        _lastNonMouseEnterTime = event.timeStamp;
+	                if (event$1.pointerType) {
+	                    if (event$1.pointerType !== 'mouse') {
+	                        _lastNonMouseEnterTime = event$1.timeStamp;
 	                        // only allow hover behavior for mouse input
 	                        return;
 	                    } else if (_lastNonMouseEnterTime &&
-	                        event.timeStamp - _lastNonMouseEnterTime < 1500) {
+	                        event$1.timeStamp - _lastNonMouseEnterTime < 1500) {
 	                        // HACK: iOS 13.4 sends an erroneous `mouse` type pointerenter
 	                        // event for non-mouse interactions right after sending
 	                        // the correct type pointerenter event. Workaround by discarding
@@ -74721,7 +74541,7 @@
 	                }
 
 	                // don't show if buttons are pressed, e.g. during click and drag of map
-	                if (event.buttons !== 0) return;
+	                if (event$1.buttons !== 0) return;
 
 	                show.apply(this, arguments);
 	            });
@@ -74732,12 +74552,12 @@
 	        } else if (display === 'clickFocus') {
 	            anchor
 	                .on(_pointerPrefix + 'down.popover', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                })
 	                .on(_pointerPrefix + 'up.popover', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                })
 	                .on('click.popover', toggle);
 
@@ -75093,7 +74913,7 @@
 	            .on('pointerup', pointerup)
 	            .on('pointerdown mousedown', function pointerdown() {
 	                // don't let button presses also act as map input - #1869
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	            });
 
 	        buttonsEnter.each(function(d) {
@@ -75140,11 +74960,11 @@
 	        var lastPointerUpType;
 	        // `pointerup` is always called before `click`
 	        function pointerup() {
-	            lastPointerUpType = event.pointerType;
+	            lastPointerUpType = event$1.pointerType;
 	        }
 
 	        function click(operation) {
-	            event.stopPropagation();
+	            event$1.stopPropagation();
 	            if (operation.disabled()) {
 	                if (lastPointerUpType === 'touch' ||
 	                    lastPointerUpType === 'pen') {
@@ -75335,7 +75155,7 @@
 	                .call(tooltipBehavior)
 	                .on('click', function() {
 	                    tooltipBehavior.hide();
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    // open the Map Data pane
 	                    context.ui().togglePanes(context.container().select('.map-panes .map-data-pane'));
 	                });
@@ -75515,7 +75335,7 @@
 
 
 	    function fullScreen() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (!isFullScreen()) {
 	            // button.classed('active', true);
 	            getFullScreenFn().apply(element);
@@ -75688,7 +75508,7 @@
 	            .attr('href', '#')
 	            .attr('class', 'button button-toggle-tiles')
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.setDebug('tile', !context.getDebug('tile'));
 	                selection.call(redraw);
 	            });
@@ -75704,7 +75524,7 @@
 	                .attr('href', '#')
 	                .attr('class', 'button button-toggle-vintage')
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    context.background().toggleOverlayLayer(sourceVintage);
 	                    selection.call(redraw);
 	                });
@@ -76474,7 +76294,7 @@
 	                .attr('href', '#')
 	                .attr('class', 'button button-toggle-units')
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    isImperial = !isImperial;
 	                    selection.call(redraw);
 	                });
@@ -76588,9 +76408,9 @@
 
 
 	        info.toggle = function(which) {
-	            if (event) {
-	                event.stopImmediatePropagation();
-	                event.preventDefault();
+	            if (event$1) {
+	                event$1.stopImmediatePropagation();
+	                event$1.preventDefault();
 	            }
 
 	            var activeids = ids.filter(function(k) { return active[k]; });
@@ -76996,7 +76816,7 @@
 	                var button = tooltip.selectAll('.button-section .button.action');
 	                button
 	                    .on('click', function() {
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 	                        options.buttonCallback();
 	                    });
 	            }
@@ -77243,8 +77063,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -77787,8 +77607,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -78272,8 +78092,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -78785,8 +78605,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -79839,8 +79659,8 @@
 
 
 	    function eventCancel() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -80937,7 +80757,7 @@
 	                chipSelection
 	                    .call(tooltipBehavior)
 	                    .on('click', function() {
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 
 	                        tooltipBehavior.hide(select(this));
 	                        // open the Issues pane
@@ -81011,9 +80831,9 @@
 	        function zoomed() {
 	            if (_skipEvents) return;
 
-	            var x = event.transform.x;
-	            var y = event.transform.y;
-	            var k = event.transform.k;
+	            var x = event$1.transform.x;
+	            var y = event$1.transform.y;
+	            var k = event$1.transform.k;
 	            var isZooming = (k !== _tStart.k);
 	            var isPanning = (x !== _tStart.x || y !== _tStart.y);
 
@@ -81220,7 +81040,7 @@
 
 
 	        function toggle() {
-	            if (event) event.preventDefault();
+	            if (event$1) event$1.preventDefault();
 
 	            _isHidden = !_isHidden;
 
@@ -81301,7 +81121,7 @@
 	                context.map().zoomEase(context.minEditableZoom());
 	            })
 	            .on('wheel', function() {   // let wheel events pass through #4482
-	                var e2 = new WheelEvent(event.type, event);
+	                var e2 = new WheelEvent(event$1.type, event$1);
 	                context.surface().node().dispatchEvent(e2);
 	            });
 
@@ -81343,7 +81163,7 @@
 	            .call(svgIcon('#iD-icon-close'));
 
 	        function preventDefault() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	        }
 
 	        selection
@@ -81390,22 +81210,22 @@
 	            var startHeight;
 
 	            function startResize() {
-	                if (pointerId !== (event.pointerId || 'mouse')) return;
+	                if (pointerId !== (event$1.pointerId || 'mouse')) return;
 
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                var mapSize = context.map().dimensions();
 
 	                if (resizeOnX) {
 	                    var maxWidth = mapSize[0];
-	                    var newWidth = clamp((startWidth + event.clientX - startX), minWidth, maxWidth);
+	                    var newWidth = clamp((startWidth + event$1.clientX - startX), minWidth, maxWidth);
 	                    target.style('width', newWidth + 'px');
 	                }
 
 	                if (resizeOnY) {
 	                    var maxHeight = mapSize[1] - 90;  // preserve space at top/bottom of map
-	                    var newHeight = clamp((startHeight + startY - event.clientY), minHeight, maxHeight);
+	                    var newHeight = clamp((startHeight + startY - event$1.clientY), minHeight, maxHeight);
 	                    target.style('height', newHeight + 'px');
 	                }
 
@@ -81417,10 +81237,10 @@
 	            }
 
 	            function stopResize() {
-	                if (pointerId !== (event.pointerId || 'mouse')) return;
+	                if (pointerId !== (event$1.pointerId || 'mouse')) return;
 
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                // remove all the listeners we added
 	                select(window)
@@ -81428,13 +81248,13 @@
 	            }
 
 	            return function initResize() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
-	                pointerId = event.pointerId || 'mouse';
+	                pointerId = event$1.pointerId || 'mouse';
 
-	                startX = event.clientX;
-	                startY = event.clientY;
+	                startX = event$1.clientX;
+	                startY = event$1.clientY;
 	                var targetRect = target.node().getBoundingClientRect();
 	                startWidth = targetRect.width;
 	                startHeight = targetRect.height;
@@ -82002,13 +81822,13 @@
 	            var mode = context.mode() && context.mode().id;
 	            if (mode !== 'browse') return;
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            search.node().focus();
 	        }
 
 
 	        function keydown() {
-	            if (event.keyCode === 27) {  // escape
+	            if (event$1.keyCode === 27) {  // escape
 	                search.node().blur();
 	            }
 	        }
@@ -82017,7 +81837,7 @@
 	        function keypress() {
 	            var q = search.property('value'),
 	                items = list.selectAll('.feature-list-item');
-	            if (event.keyCode === 13 && q.length && items.size()) {  // return
+	            if (event$1.keyCode === 13 && q.length && items.size()) {  // return
 	                click(items.datum());
 	            }
 	        }
@@ -82264,7 +82084,7 @@
 
 
 	        function click(d) {
-	            event.preventDefault();
+	            event$1.preventDefault();
 
 	            if (d.location) {
 	                context.map().centerZoomEase([d.location[1], d.location[0]], 19);
@@ -82406,8 +82226,8 @@
 
 	        infoButton
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                this.blur();    // avoid keeping focus on the button - #4641
 
 	                var container = select(this.parentNode.parentNode.parentNode);
@@ -83032,8 +82852,8 @@
 	                 dispatch$1.call('choose', this, _presets);
 	            })
 	            .on('pointerdown pointerup mousedown mouseup', function() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	            });
 
 	        var geometries = entityGeometries();
@@ -83244,8 +83064,8 @@
 	            .call(svgIcon('#iD-icon-help'))
 	            .merge(button)
 	            .on('click', function () {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                if (_body.classed('hide')) {
 	                    show();
 	                } else {
@@ -83295,8 +83115,8 @@
 	            .append('button')
 	            .attr('class', 'fr close')
 	            .on('click', function() {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                hide();
 	            })
 	            .call(svgIcon('#iD-icon-close'));
@@ -83313,8 +83133,8 @@
 	            .attr('class', 'field-help-nav-item')
 	            .text(function(d) { return d; })
 	            .on('click', function(d, i) {
-	                event.stopPropagation();
-	                event.preventDefault();
+	                event$1.stopPropagation();
+	                event$1.preventDefault();
 	                clickHelp(i);
 	            });
 
@@ -83443,7 +83263,7 @@
 
 	        input
 	            .on('click', function() {
-	                event.stopPropagation();
+	                event$1.stopPropagation();
 	                var t = {};
 
 	                if (Array.isArray(_tags[field.key])) {
@@ -83471,8 +83291,8 @@
 	            reverser
 	                .call(reverserSetText)
 	                .on('click', function() {
-	                    event.preventDefault();
-	                    event.stopPropagation();
+	                    event$1.preventDefault();
+	                    event$1.stopPropagation();
 	                    context.perform(
 	                        function(graph) {
 	                            for (var i in _entityIDs) {
@@ -83849,7 +83669,7 @@
 
 
 	    function removeMultikey(d) {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 	        var t = {};
 	        if (isMulti) {
 	            t[d.key] = undefined;
@@ -83931,10 +83751,10 @@
 
 	        input
 	            .on('keydown.field', function() {
-	                switch (event.keyCode) {
+	                switch (event$1.keyCode) {
 	                    case 13: // ↩ Return
 	                        input.node().blur(); // blurring also enters the value
-	                        event.stopPropagation();
+	                        event$1.stopPropagation();
 	                        break;
 	                }
 	            });
@@ -84096,14 +83916,14 @@
 	        selection.call(d3_drag()
 	            .on('start', function() {
 	                dragOrigin = {
-	                    x: event.x,
-	                    y: event.y
+	                    x: event$1.x,
+	                    y: event$1.y
 	                };
 	                targetIndex = null;
 	            })
 	            .on('drag', function(d, index) {
-	                var x = event.x - dragOrigin.x,
-	                    y = event.y - dragOrigin.y;
+	                var x = event$1.x - dragOrigin.x,
+	                    y = event$1.y - dragOrigin.y;
 
 	                if (!select(this).classed('dragging') &&
 	                    // don't display drag until dragging beyond a distance threshold
@@ -84124,13 +83944,13 @@
 	                            if (index === index2) {
 	                                return 'translate(' + x + 'px, ' + y + 'px)';
 	                            // move the dragged tag up the order
-	                            } else if (index2 > index && event.y > node.offsetTop) {
+	                            } else if (index2 > index && event$1.y > node.offsetTop) {
 	                                if (targetIndex === null || index2 > targetIndex) {
 	                                    targetIndex = index2;
 	                                }
 	                                return 'translateY(-100%)';
 	                            // move the dragged tag down the order
-	                            } else if (index2 < index && event.y < node.offsetTop + node.offsetHeight) {
+	                            } else if (index2 < index && event$1.y < node.offsetTop + node.offsetHeight) {
 	                                if (targetIndex === null || index2 < targetIndex) {
 	                                    targetIndex = index2;
 	                                }
@@ -84146,10 +83966,10 @@
 	                            // check the cursor is in the bounding box
 	                            if (
 	                                index !== index2 &&
-	                                event.x < node.offsetLeft + node.offsetWidth + 5 &&
-	                                event.x > node.offsetLeft &&
-	                                event.y < node.offsetTop + node.offsetHeight &&
-	                                event.y > node.offsetTop
+	                                event$1.x < node.offsetLeft + node.offsetWidth + 5 &&
+	                                event$1.x > node.offsetLeft &&
+	                                event$1.y < node.offsetTop + node.offsetHeight &&
+	                                event$1.y > node.offsetTop
 	                            ) {
 	                                targetIndex = index2;
 	                                targetIndexOffsetTop = node.offsetTop;
@@ -84278,6 +84098,9 @@
 	            .on('blur', change())
 	            .on('change', change());
 
+	        selection.on('keydown', function () {
+	            if (event.key == 'Tab') change()();
+	        });
 
 	        if (field.type === 'tel') {
 	            updatePhonePlaceholder();
@@ -84299,7 +84122,7 @@
 	                })
 	                .merge(buttons)
 	                .on('click', function(d) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    var raw_vals = input.node().value || '0';
 	                    var vals = raw_vals.split(';');
 	                    vals = vals.map(function(v) {
@@ -84330,7 +84153,7 @@
 	                    return '';
 	                })
 	                .on('click', function() {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 
 	                    var value = validIdentifierValueForLink();
 	                    if (value) {
@@ -84397,6 +84220,40 @@
 	                }
 	                utilGetSetValue(input, val);
 	            }
+
+	            // validation: fill in an errmsg if we find a problem
+	            // onerr = alert & clear the value
+	            if (!onInput) {
+	                var errmsg;
+	                if (val && (field.key == 'start_date' || field.key == 'end_date')) {
+	                    // start_date and end_date, a proper ISO date or partial date, or blank
+	                    // also, detect integer-looking and coerce to 4 digits e.g. "23" to "0023" as side effect
+	                    var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
+	                    var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
+	                    var dates_regex3 = /^\-?\d\d\d\d$/;
+	                    var anyinteger = /^\-?\d+$/;
+
+	                    if (! val.match(dates_regex1) && ! val.match(dates_regex2) && ! val.match(dates_regex3)) {
+	                        var isinteger = val.match(anyinteger);
+	                        if (isinteger) {
+	                            val = parseInt(val).toLocaleString('en', {minimumIntegerDigits: 4, useGrouping: false});
+	                            utilGetSetValue(input, val);
+	                        }
+	                        else {
+	                            var label = field.label();
+	                            errmsg = label + ': Accepted date formats: YYYY-MM-DD YYYY-MM YYYY';
+	                        }
+	                    }
+	                }
+
+	                if (errmsg) {
+	                    alert(errmsg);
+	                    val = '';
+	                    utilGetSetValue(input, val);
+	                }
+	            }
+
+	            // pass it on down the chain
 	            t[field.key] = val || undefined;
 	            dispatch$1.call('change', this, t, onInput);
 	        };
@@ -85647,7 +85504,7 @@
 
 
 	        function addNew() {
-	            event.preventDefault();
+	            event$1.preventDefault();
 	            if (field.locked()) return;
 
 	            var defaultLang = _mainLocalizer.languageCode().toLowerCase();
@@ -85671,7 +85528,7 @@
 	        function change(onInput) {
 	            return function() {
 	                if (field.locked()) {
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                    return;
 	                }
 
@@ -85815,7 +85672,7 @@
 	                    .attr('class', 'remove-icon-multilingual')
 	                    .on('click', function(d, index) {
 	                        if (field.locked()) return;
-	                        event.preventDefault();
+	                        event$1.preventDefault();
 
 	                        if (!d.lang || !d.value) {
 	                            _multilingual.splice(index, 1);
@@ -86712,7 +86569,7 @@
 	                .call(breathe.off)
 	                .call(breathe);
 
-	            var datum = event.target.__data__;
+	            var datum = event$1.target.__data__;
 	            var entity = datum && datum.properties && datum.properties.entity;
 	            if (entity) {
 	                datum = entity;
@@ -86800,7 +86657,7 @@
 
 
 	        function mouseover() {
-	            var datum = event.target.__data__;
+	            var datum = event$1.target.__data__;
 	            updateHints(datum);
 	        }
 
@@ -87190,7 +87047,7 @@
 	            .attr('tabindex', -1)
 	            .call(svgIcon('#iD-icon-out-link'))
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (_wikiURL) window.open(_wikiURL, '_blank');
 	            });
 
@@ -87227,7 +87084,7 @@
 	            .attr('tabindex', -1)
 	            .call(svgIcon('#iD-operation-copy'))
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                select(this.parentNode)
 	                    .select('input')
 	                    .node()
@@ -87605,7 +87462,7 @@
 
 	    link
 	      .on('click', () => {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (_wikiURL) window.open(_wikiURL, '_blank');
 	      });
 	  }
@@ -87900,8 +87757,8 @@
 
 
 	    function revert(d) {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	        if (!entityIDs || _locked) return;
 
 	        dispatch$1.call('revert', d, d.keys);
@@ -87909,8 +87766,8 @@
 
 
 	    function remove(d) {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	        if (_locked) return;
 
 	        var t = {};
@@ -88440,7 +88297,7 @@
 	        selection.selectAll('.wrap-form-field input')
 	            .on('keydown', function() {
 	                // if user presses enter, and combobox is not active, accept edits..
-	                if (event.keyCode === 13 && context.container().select('.combobox').empty()) {
+	                if (event$1.keyCode === 13 && context.container().select('.combobox').empty()) {
 	                    context.enter(modeBrowse(context));
 	                }
 	            });
@@ -88504,7 +88361,7 @@
 	    var _maxMembers = 1000;
 
 	    function downloadMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // display the loading indicator
 	        select(this.parentNode).classed('tag-reference-loading', true);
@@ -88514,7 +88371,7 @@
 	    }
 
 	    function zoomToMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var entity = context.entity(d.id);
 	        context.map().zoomToEase(entity);
@@ -88525,7 +88382,7 @@
 
 
 	    function selectMember(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // remove the hover-highlight styling
 	        utilHighlightEntities([d.id], false, context);
@@ -88726,14 +88583,14 @@
 	        items.call(d3_drag()
 	            .on('start', function() {
 	                dragOrigin = {
-	                    x: event.x,
-	                    y: event.y
+	                    x: event$1.x,
+	                    y: event$1.y
 	                };
 	                targetIndex = null;
 	            })
 	            .on('drag', function(d, index) {
-	                var x = event.x - dragOrigin.x,
-	                    y = event.y - dragOrigin.y;
+	                var x = event$1.x - dragOrigin.x,
+	                    y = event$1.y - dragOrigin.y;
 
 	                if (!select(this).classed('dragging') &&
 	                    // don't display drag until dragging beyond a distance threshold
@@ -88749,12 +88606,12 @@
 	                        var node = select(this).node();
 	                        if (index === index2) {
 	                            return 'translate(' + x + 'px, ' + y + 'px)';
-	                        } else if (index2 > index && event.y > node.offsetTop) {
+	                        } else if (index2 > index && event$1.y > node.offsetTop) {
 	                            if (targetIndex === null || index2 > targetIndex) {
 	                                targetIndex = index2;
 	                            }
 	                            return 'translateY(-100%)';
-	                        } else if (index2 < index && event.y < node.offsetTop + node.offsetHeight) {
+	                        } else if (index2 < index && event$1.y < node.offsetTop + node.offsetHeight) {
 	                            if (targetIndex === null || index2 < targetIndex) {
 	                                targetIndex = index2;
 	                            }
@@ -88890,7 +88747,7 @@
 	    var _maxMemberships = 1000;
 
 	    function selectRelation(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        // remove the hover-highlight styling
 	        utilHighlightEntities([d.relation.id], false, context);
@@ -88899,7 +88756,7 @@
 	    }
 
 	    function zoomToRelation(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var entity = context.entity(d.relation.id);
 	        context.map().zoomToEase(entity);
@@ -89346,7 +89203,7 @@
 	    }
 
 	    function deselectEntity(entity) {
-	        event.stopPropagation();
+	        event$1.stopPropagation();
 
 	        var selectedIDs = _selectedIDs.slice();
 	        var index = selectedIDs.indexOf(entity.id);
@@ -89545,8 +89402,8 @@
 	            .on('keydown.key-trap', function() {
 	                // On tabbing, send focus back to the first field on the inspector-body
 	                // (probably the `name` field) #4159
-	                if (event.keyCode === 9 && !event.shiftKey) {
-	                    event.preventDefault();
+	                if (event$1.keyCode === 9 && !event$1.shiftKey) {
+	                    event$1.preventDefault();
 	                    body.select('input').node().focus();
 	                }
 	            });
@@ -89808,20 +89665,20 @@
 	        function initialKeydown() {
 	            // hack to let delete shortcut work when search is autofocused
 	            if (search.property('value').length === 0 &&
-	                (event.keyCode === utilKeybinding.keyCodes['⌫'] ||
-	                 event.keyCode === utilKeybinding.keyCodes['⌦'])) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                (event$1.keyCode === utilKeybinding.keyCodes['⌫'] ||
+	                 event$1.keyCode === utilKeybinding.keyCodes['⌦'])) {
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                operationDelete(context, _entityIDs)();
 
 	            // hack to let undo work when search is autofocused
 	            } else if (search.property('value').length === 0 &&
-	                (event.ctrlKey || event.metaKey) &&
-	                event.keyCode === utilKeybinding.keyCodes.z) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                (event$1.ctrlKey || event$1.metaKey) &&
+	                event$1.keyCode === utilKeybinding.keyCodes.z) {
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                context.undo();
-	            } else if (!event.ctrlKey && !event.metaKey) {
+	            } else if (!event$1.ctrlKey && !event$1.metaKey) {
 	                // don't check for delete/undo hack on future keydown events
 	                select(this).on('keydown', keydown);
 	                keydown.call(this);
@@ -89830,11 +89687,11 @@
 
 	        function keydown() {
 	            // down arrow
-	            if (event.keyCode === utilKeybinding.keyCodes['↓'] &&
+	            if (event$1.keyCode === utilKeybinding.keyCodes['↓'] &&
 	                // if insertion point is at the end of the string
 	                search.node().selectionStart === search.property('value').length) {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                // move focus to the first item in the preset list
 	                var buttons = list.selectAll('.preset-list-button');
 	                if (!buttons.empty()) buttons.nodes()[0].focus();
@@ -89844,7 +89701,7 @@
 	        function keypress() {
 	            // enter
 	            var value = search.property('value');
-	            if (event.keyCode === 13 && value.length) {
+	            if (event$1.keyCode === 13 && value.length) {
 	                list.selectAll('.preset-list-item:first-child')
 	                    .each(function(d) { d.choose.call(this); });
 	            }
@@ -89949,9 +89806,9 @@
 	        var parentItem = select(item.node().parentNode.closest('.preset-list-item'));
 
 	        // arrow down, move focus to the next, lower item
-	        if (event.keyCode === utilKeybinding.keyCodes['↓']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        if (event$1.keyCode === utilKeybinding.keyCodes['↓']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // the next item in the list at the same level
 	            var nextItem = select(item.node().nextElementSibling);
 	            // if there is no next item in this list
@@ -89973,9 +89830,9 @@
 	            }
 
 	        // arrow up, move focus to the previous, higher item
-	        } else if (event.keyCode === utilKeybinding.keyCodes['↑']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes['↑']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // the previous item in the list at the same level
 	            var previousItem = select(item.node().previousElementSibling);
 
@@ -90002,18 +89859,18 @@
 	            }
 
 	        // arrow left, move focus to the parent item if there is one
-	        } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            // if there is a parent item, focus on the parent item
 	            if (!parentItem.empty()) {
 	                parentItem.select('.preset-list-button').node().focus();
 	            }
 
 	        // arrow right, choose this item
-	        } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
-	            event.preventDefault();
-	            event.stopPropagation();
+	        } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
+	            event$1.preventDefault();
+	            event$1.stopPropagation();
 	            item.datum().choose.call(select(this).node());
 	        }
 	    }
@@ -90049,18 +89906,18 @@
 	                .on('click', click)
 	                .on('keydown', function() {
 	                    // right arrow, expand the focused item
-	                    if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
-	                        event.preventDefault();
-	                        event.stopPropagation();
+	                    if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '←' : '→']) {
+	                        event$1.preventDefault();
+	                        event$1.stopPropagation();
 	                        // if the item isn't expanded
 	                        if (!select(this).classed('expanded')) {
 	                            // toggle expansion (expand the item)
 	                            click.call(this);
 	                        }
 	                    // left arrow, collapse the focused item
-	                    } else if (event.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
-	                        event.preventDefault();
-	                        event.stopPropagation();
+	                    } else if (event$1.keyCode === utilKeybinding.keyCodes[(_mainLocalizer.textDirection() === 'rtl') ? '→' : '←']) {
+	                        event$1.preventDefault();
+	                        event$1.stopPropagation();
 	                        // if the item is expanded
 	                        if (select(this).classed('expanded')) {
 	                            // toggle expansion (collapse the item)
@@ -90179,7 +90036,7 @@
 	        };
 
 	        item.help = function() {
-	            event.stopPropagation();
+	            event$1.stopPropagation();
 	            item.reference.toggle();
 	        };
 
@@ -90480,16 +90337,16 @@
 	        function pointerdown() {
 	            if (downPointerId) return;
 
-	            if ('button' in event && event.button !== 0) return;
+	            if ('button' in event$1 && event$1.button !== 0) return;
 
-	            downPointerId = event.pointerId || 'mouse';
+	            downPointerId = event$1.pointerId || 'mouse';
 
-	            lastClientX = event.clientX;
+	            lastClientX = event$1.clientX;
 
 	            containerLocGetter = utilFastMouse(container.node());
 
 	            // offset from edge of sidebar-resizer
-	            dragOffset = utilFastMouse(resizer.node())(event)[0] - 1;
+	            dragOffset = utilFastMouse(resizer.node())(event$1)[0] - 1;
 
 	            sidebarWidth = selection.node().getBoundingClientRect().width;
 	            containerWidth = container.node().getBoundingClientRect().width;
@@ -90503,7 +90360,7 @@
 	            select(window)
 	                .on('touchmove.sidebar-resizer', function() {
 	                    // disable page scrolling while resizing on touch input
-	                    event.preventDefault();
+	                    event$1.preventDefault();
 	                }, { passive: false })
 	                .on(_pointerPrefix + 'move.sidebar-resizer', pointermove)
 	                .on(_pointerPrefix + 'up.sidebar-resizer pointercancel.sidebar-resizer', pointerup);
@@ -90511,19 +90368,19 @@
 
 	        function pointermove() {
 
-	            if (downPointerId !== (event.pointerId || 'mouse')) return;
+	            if (downPointerId !== (event$1.pointerId || 'mouse')) return;
 
-	            event.preventDefault();
+	            event$1.preventDefault();
 
-	            var dx = event.clientX - lastClientX;
+	            var dx = event$1.clientX - lastClientX;
 
-	            lastClientX = event.clientX;
+	            lastClientX = event$1.clientX;
 
 	            var isRTL = (_mainLocalizer.textDirection() === 'rtl');
 	            var scaleX = isRTL ? 0 : 1;
 	            var xMarginProperty = isRTL ? 'margin-right' : 'margin-left';
 
-	            var x = containerLocGetter(event)[0] - dragOffset;
+	            var x = containerLocGetter(event$1)[0] - dragOffset;
 	            sidebarWidth = isRTL ? containerWidth - x : x;
 
 	            var isCollapsed = selection.classed('collapsed');
@@ -90555,7 +90412,7 @@
 	        }
 
 	        function pointerup() {
-	            if (downPointerId !== (event.pointerId || 'mouse')) return;
+	            if (downPointerId !== (event$1.pointerId || 'mouse')) return;
 
 	            downPointerId = null;
 
@@ -90777,7 +90634,7 @@
 
 
 	        sidebar.toggle = function(moveMap) {
-	            var e = event;
+	            var e = event$1;
 	            if (e && e.sourceEvent) {
 	                e.sourceEvent.preventDefault();
 	            } else if (e) {
@@ -90861,7 +90718,7 @@
 
 
 	    function click() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        var osm = context.connection();
 	        if (!osm) return;
@@ -91058,7 +90915,7 @@
 	                        .append('span')
 	                        .text(_t('login'))
 	                        .on('click.login', function() {
-	                            event.preventDefault();
+	                            event$1.preventDefault();
 	                            osm.authenticate();
 	                        });
 	                } else {
@@ -91079,7 +90936,7 @@
 	                        // let the user manually retry their connection directly
 	                        .text(_t('osm_api_status.retry'))
 	                        .on('click.retry', function() {
-	                            event.preventDefault();
+	                            event$1.preventDefault();
 	                            throttledRetry();
 	                        });
 	                }
@@ -91582,7 +91439,7 @@
 	            .attr('href', '#')
 	            .text(function(d) { return d.name; })
 	            .on('click', function(d) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                zoomToEntity(d.id);
 	            });
 
@@ -91619,7 +91476,7 @@
 	                    (i === 1 && index === _conflictList.length - 1) || null;
 	            })
 	            .on('click', function(d, i) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var container = parent.selectAll('.conflict-container');
 	                var sign = (i === 0 ? -1 : 1);
@@ -91677,7 +91534,7 @@
 
 
 	    function choose(ul, datum) {
-	        if (event) event.preventDefault();
+	        if (event$1) event$1.preventDefault();
 
 	        select(ul)
 	            .selectAll('li')
@@ -113268,7 +113125,7 @@
 	            .classed('hide-toggle', true)
 	            .text(function(d) { return d.msg || _t('save.unknown_error_details'); })
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var error = select(this);
 	                var detail = select(this.nextElementSibling);
@@ -113668,7 +113525,7 @@
 	    }
 
 	    function save() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        if (!context.inIntro() && !isSaving() && history.hasChanges()) {
 	            context.enter(modeSave(context));
 	        }
@@ -113723,10 +113580,10 @@
 	            .append('button')
 	            .attr('class', 'save disabled bar-button')
 	            .on('pointerup', function() {
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                save();
 
@@ -113878,10 +113735,10 @@
 	            .attr('class', function(d) { return 'disabled ' + d.id + '-button bar-button'; })
 	            .on('pointerup', function() {
 	                // `pointerup` is always called before `click`
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click', function(d) {
-	                event.preventDefault();
+	                event$1.preventDefault();
 
 	                var annotation = d.annotation();
 
@@ -113915,11 +113772,11 @@
 
 	        context.keybinding()
 	            .on(commands[0].cmd, function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (editable()) commands[0].action();
 	            })
 	            .on(commands[1].cmd, function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                if (editable()) commands[1].action();
 	            });
 
@@ -113988,10 +113845,10 @@
 	    function topToolbar(bar) {
 
 	        bar.on('wheel.topToolbar', function() {
-	            if (!event.deltaX) {
+	            if (!event$1.deltaX) {
 	                // translate vertical scrolling into horizontal scrolling in case
 	                // the user doesn't have an input device that can scroll horizontally
-	                bar.node().scrollLeft += event.deltaY;
+	                bar.node().scrollLeft += event$1.deltaY;
 	            }
 	        });
 
@@ -114133,22 +113990,22 @@
 	    }];
 
 	    function zoomIn() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomIn();
 	    }
 
 	    function zoomOut() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomOut();
 	    }
 
 	    function zoomInFurther() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomInFurther();
 	    }
 
 	    function zoomOutFurther() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().zoomOutFurther();
 	    }
 
@@ -114173,7 +114030,7 @@
 	            .append('button')
 	            .attr('class', function(d) { return d.id; })
 	            .on('pointerup.editor', function() {
-	                lastPointerUpType = event.pointerType;
+	                lastPointerUpType = event$1.pointerType;
 	            })
 	            .on('click.editor', function(d) {
 	                if (!d.disabled()) {
@@ -114233,11 +114090,11 @@
 	    var _lastPointerUpType;
 
 	    function pointerup() {
-	        _lastPointerUpType = event.pointerType;
+	        _lastPointerUpType = event$1.pointerType;
 	    }
 
 	    function click() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 
 	        if (isDisabled()) {
 	            if (_lastPointerUpType === 'touch' || _lastPointerUpType === 'pen') {
@@ -114344,7 +114201,7 @@
 	    }
 
 	    pane.togglePane = function() {
-	        if (event) event.preventDefault();
+	        if (event$1) event$1.preventDefault();
 	        _paneTooltip.hide();
 	        context.ui().togglePanes(!_paneSelection.classed('shown') ? _paneSelection : undefined);
 	    };
@@ -114437,8 +114294,8 @@
 	    }
 
 	    function updateValue(d, val) {
-	        if (!val && event && event.target) {
-	            val = event.target.value;
+	        if (!val && event$1 && event$1.target) {
+	            val = event$1.target.value;
 	        }
 
 	        val = clamp(val, _minVal, _maxVal);
@@ -114491,7 +114348,7 @@
 	            .attr('title', _t('background.reset'))
 	            .attr('class', function(d) { return 'display-option-reset display-option-reset-' + d; })
 	            .on('click', function(d) {
-	                if (event.button !== 0) return;
+	                if (event$1.button !== 0) return;
 	                updateValue(d, 1);
 	            })
 	            .call(svgIcon('#iD-icon-' + (_mainLocalizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
@@ -114681,7 +114538,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                uiMapInMap.toggle();
 	            });
 
@@ -114704,7 +114561,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('background');
 	            });
 
@@ -114726,7 +114583,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('location');
 	            });
 
@@ -114860,7 +114717,7 @@
 	            return editCustom();
 	        }
 
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        var previousBackground = context.background().baseLayerSource();
 	        corePreferences('background-last-used-toggle', previousBackground.id);
 	        corePreferences('background-last-used', d.id);
@@ -114881,7 +114738,7 @@
 
 
 	    function editCustom() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.container()
 	            .call(_settingsCustomBackground);
 	    }
@@ -114921,8 +114778,8 @@
 
 
 	    function cancelEvent() {
-	        event.stopPropagation();
-	        event.preventDefault();
+	        event$1.stopPropagation();
+	        event$1.preventDefault();
 	    }
 
 
@@ -114999,11 +114856,11 @@
 
 
 	    function dragOffset() {
-	        if (event.button !== 0) return;
+	        if (event$1.button !== 0) return;
 
-	        var origin = [event.clientX, event.clientY];
+	        var origin = [event$1.clientX, event$1.clientY];
 
-	        var pointerId = event.pointerId || 'mouse';
+	        var pointerId = event$1.pointerId || 'mouse';
 
 	        context.container()
 	            .append('div')
@@ -115019,9 +114876,9 @@
 	        }
 
 	        function pointermove() {
-	            if (pointerId !== (event.pointerId || 'mouse')) return;
+	            if (pointerId !== (event$1.pointerId || 'mouse')) return;
 
-	            var latest = [event.clientX, event.clientY];
+	            var latest = [event$1.clientX, event$1.clientY];
 	            var d = [
 	                -(origin[0] - latest[0]) / 4,
 	                -(origin[1] - latest[1]) / 4
@@ -115032,8 +114889,8 @@
 	        }
 
 	        function pointerup() {
-	            if (pointerId !== (event.pointerId || 'mouse')) return;
-	            if (event.button !== 0) return;
+	            if (pointerId !== (event$1.pointerId || 'mouse')) return;
+	            if (event$1.button !== 0) return;
 
 	            context.container().selectAll('.nudge-surface')
 	                .remove();
@@ -115076,7 +114933,7 @@
 	            .attr('class', function(d) { return d[0] + ' nudge'; })
 	            .on('contextmenu', cancelEvent)
 	            .on(_pointerPrefix + 'down', function(d) {
-	                if (event.button !== 0) return;
+	                if (event$1.button !== 0) return;
 	                pointerdownNudgeButton(d[1]);
 	            });
 
@@ -115086,8 +114943,8 @@
 	            .attr('class', 'nudge-reset disabled')
 	            .on('contextmenu', cancelEvent)
 	            .on('click', function() {
-	                event.preventDefault();
-	                if (event.button !== 0) return;
+	                event$1.preventDefault();
+	                if (event$1.button !== 0) return;
 	                resetOffset();
 	            })
 	            .call(svgIcon('#iD-icon-' + (_mainLocalizer.textDirection() === 'rtl' ? 'redo' : 'undo')));
@@ -115142,7 +114999,7 @@
 
 
 	    function chooseOverlay(d) {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.background().toggleOverlayLayer(d);
 	        _overlayList.call(updateLayerSelections);
 	        document.activeElement.blur();
@@ -115895,8 +115752,8 @@
 	    }
 
 	    function updateOptionValue(d, val) {
-	        if (!val && event && event.target) {
-	            val = event.target.value;
+	        if (!val && event$1 && event$1.target) {
+	            val = event$1.target.value;
 	        }
 
 	        corePreferences('validate-' + d, val);
@@ -116036,12 +115893,12 @@
 	            .attr('class', 'square-degrees-input')
 	            .call(utilNoAuto)
 	            .on('click', function () {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                this.select();
 	            })
 	            .on('keyup', function () {
-	                if (event.keyCode === 13) { // enter
+	                if (event$1.keyCode === 13) { // enter
 	                    this.blur();
 	                    this.select();
 	                }
@@ -116317,7 +116174,7 @@
 	            .attr('type', 'file')
 	            .property('files', _currSettings.fileList)  // works for all except IE11
 	            .on('change', function() {
-	                var files = event.target.files;
+	                var files = event$1.target.files;
 	                if (files && files.length) {
 	                    _currSettings.url = '';
 	                    textSection.select('.field-url').property('value', '');
@@ -116722,8 +116579,8 @@
 	                .placement((_mainLocalizer.textDirection() === 'rtl') ? 'right' : 'left')
 	            )
 	            .on('click', function() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                dataLayer.fitZoom();
 	            })
 	            .call(svgIcon('#iD-icon-framed-dot'));
@@ -116742,7 +116599,7 @@
 	    }
 
 	    function editCustom() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.container()
 	            .call(settingsCustomData);
 	    }
@@ -116780,7 +116637,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('history');
 	            });
 
@@ -116802,7 +116659,7 @@
 	            .append('input')
 	            .attr('type', 'checkbox')
 	            .on('change', function() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.ui().info.toggle('measurement');
 	            });
 
@@ -117028,7 +116885,7 @@
 	    }
 
 	    function toggleHighlightEdited() {
-	        event.preventDefault();
+	        event$1.preventDefault();
 	        context.map().toggleHighlightEdited();
 	    }
 
@@ -117479,7 +117336,7 @@
 	        .append('input')
 	        .attr('type', 'checkbox')
 	        .on('change', () => {
-	          event.preventDefault();
+	          event$1.preventDefault();
 	          _showThirdPartyIcons = (_showThirdPartyIcons === 'true') ? 'false' : 'true';
 	          corePreferences('preferences.privacy.thirdpartyicons', _showThirdPartyIcons);
 	          update();
@@ -117543,12 +117400,12 @@
 	        container
 	            .on('click.ui', function() {
 	                // we're only concerned with the primary mouse button
-	                if (event.button !== 0) return;
+	                if (event$1.button !== 0) return;
 
-	                if (!event.composedPath) return;
+	                if (!event$1.composedPath) return;
 
 	                // some targets have default click events we don't want to override
-	                var isOkayTarget = event.composedPath().some(function(node) {
+	                var isOkayTarget = event$1.composedPath().some(function(node) {
 	                    // we only care about element nodes
 	                    return node.nodeType === 1 &&
 	                        // clicking <input> focuses it and/or changes a value
@@ -117561,7 +117418,7 @@
 	                if (isOkayTarget) return;
 
 	                // disable double-tap-to-zoom on touchscreens
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            });
 
 	        var detected = utilDetect();
@@ -117577,14 +117434,14 @@
 	            // default gesture events.
 	            container.on('gesturestart.ui gesturechange.ui gestureend.ui', function() {
 	                // disable pinch-to-zoom of the UI via multitouch trackpads on macOS Safari
-	                event.preventDefault();
+	                event$1.preventDefault();
 	            });
 	        }
 
 	        if ('PointerEvent' in window) {
 	            select(window)
 	                .on('pointerdown.ui pointerup.ui', function() {
-	                    var pointerType = event.pointerType || 'mouse';
+	                    var pointerType = event$1.pointerType || 'mouse';
 	                    if (_lastPointerType !== pointerType) {
 	                        _lastPointerType = pointerType;
 	                        container
@@ -117834,7 +117691,7 @@
 
 	        var panPixels = 80;
 	        context.keybinding()
-	            .on('⌫', function() { event.preventDefault(); })
+	            .on('⌫', function() { event$1.preventDefault(); })
 	            .on([_t('sidebar.key'), '`', '²', '@'], ui.sidebar.toggle)   // #5663, #6864 - common QWERTY, AZERTY
 	            .on('←', pan([panPixels, 0]))
 	            .on('↑', pan([0, panPixels]))
@@ -117845,9 +117702,9 @@
 	            .on(uiCmd('⌘→'), pan([-map.dimensions()[0], 0]))
 	            .on(uiCmd('⌘↓'), pan([0, -map.dimensions()[1]]))
 	            .on(uiCmd('⌘' + _t('background.key')), function quickSwitch() {
-	                if (event) {
-	                    event.stopImmediatePropagation();
-	                    event.preventDefault();
+	                if (event$1) {
+	                    event$1.stopImmediatePropagation();
+	                    event$1.preventDefault();
 	                }
 	                var previousBackground = context.background().findSource(corePreferences('background-last-used-toggle'));
 	                if (previousBackground) {
@@ -117858,13 +117715,13 @@
 	                }
 	            })
 	            .on(_t('area_fill.wireframe.key'), function toggleWireframe() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 	                context.map().toggleWireframe();
 	            })
 	            .on(uiCmd('⌥' + _t('area_fill.wireframe.key')), function toggleOsmData() {
-	                event.preventDefault();
-	                event.stopPropagation();
+	                event$1.preventDefault();
+	                event$1.stopPropagation();
 
 	                // Don't allow layer changes while drawing - #6584
 	                var mode = context.mode();
@@ -117879,7 +117736,7 @@
 	                }
 	            })
 	            .on(_t('map_data.highlight_edits.key'), function toggleHighlightEdited() {
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.map().toggleHighlightEdited();
 	            });
 
@@ -117930,9 +117787,9 @@
 
 	        function pan(d) {
 	            return function() {
-	                if (event.shiftKey) return;
+	                if (event$1.shiftKey) return;
 	                if (context.container().select('.combobox').size()) return;
-	                event.preventDefault();
+	                event$1.preventDefault();
 	                context.map().pan(d, 100);
 	            };
 	        }
@@ -118706,7 +118563,7 @@
 	let d3 = {
 	  customEvent: customEvent,
 	  dispatch:  dispatch,
-	  event:  event,
+	  event:  event$1,
 	  geoMercator: mercator,
 	  geoProjection: projection,
 	  polygonArea: d3_polygonArea,

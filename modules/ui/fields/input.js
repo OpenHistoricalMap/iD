@@ -67,6 +67,9 @@ export function uiFieldText(field, context) {
             .on('blur', change())
             .on('change', change());
 
+        selection.on('keydown', function () {
+            if (event.key == 'Tab') change()();
+        });
 
         if (field.type === 'tel') {
             updatePhonePlaceholder();
@@ -186,6 +189,40 @@ export function uiFieldText(field, context) {
                 }
                 utilGetSetValue(input, val);
             }
+
+            // validation: fill in an errmsg if we find a problem
+            // onerr = alert & clear the value
+            if (!onInput) {
+                var errmsg;
+                if (val && (field.key == 'start_date' || field.key == 'end_date')) {
+                    // start_date and end_date, a proper ISO date or partial date, or blank
+                    // also, detect integer-looking and coerce to 4 digits e.g. "23" to "0023" as side effect
+                    var dates_regex1 = /^\-?\d\d\d\d\-\d\d\-\d\d$/;
+                    var dates_regex2 = /^\-?\d\d\d\d\-\d\d$/;
+                    var dates_regex3 = /^\-?\d\d\d\d$/;
+                    var anyinteger = /^\-?\d+$/;
+
+                    if (! val.match(dates_regex1) && ! val.match(dates_regex2) && ! val.match(dates_regex3)) {
+                        var isinteger = val.match(anyinteger);
+                        if (isinteger) {
+                            val = parseInt(val).toLocaleString('en', {minimumIntegerDigits: 4, useGrouping: false});
+                            utilGetSetValue(input, val);
+                        }
+                        else {
+                            var label = field.label();
+                            errmsg = label + ': Accepted date formats: YYYY-MM-DD YYYY-MM YYYY';
+                        }
+                    }
+                }
+
+                if (errmsg) {
+                    alert(errmsg);
+                    val = '';
+                    utilGetSetValue(input, val);
+                }
+            }
+
+            // pass it on down the chain
             t[field.key] = val || undefined;
             dispatch.call('change', this, t, onInput);
         };
