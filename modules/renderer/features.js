@@ -5,8 +5,6 @@ import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
 import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
 
-const decimaldate = require('./decimaldate');
-
 
 export function rendererFeatures(context) {
     var dispatch = d3_dispatch('change', 'redraw');
@@ -97,40 +95,19 @@ export function rendererFeatures(context) {
     }
 
     defineRule('date_range', function isWithinRange(tags) {
-      // dates a are a mix of yyyy-mm-dd yyyy-mm and yyyy, so pad them out
-      // then use DecimalDate JS https://github.com/OpenHistoricalMap/decimaldate-javascript/ to properly handle negative BCE dates
-      var dateToNumber = function(date) {
-        if (! date) return NaN;
-
-        let paddeddate;
-        if (date.match(/^\-?\d\d\d\d\-\d\d\-\d\d$/)) {
-          paddeddate = date; // perfect yyyy-mm-dd
-        } else if (date.match(/^\-?\d\d\d\d\-\d\d$/)) {
-          const ym = date.match(/^\-?(\d\d\d\d)\-(\d\d)$/);
-          const d = (new Date(parseInt(ym[1]), parseInt(ym[2]), 0)).getDate();
-          paddeddate = date + `-${String(d).padStart(2, '0')}`; // yyyy-mm, add -dd
-        } else if (date.match(/^\-?\d\d\d\d$/)) {
-          paddeddate = date + '-12-31'; // yyyy, add -mm-dd
-        } else if (date.match(/^\-?\d{1,3}$/)) {
-          paddeddate = date.padStart(4, '0') + '-12-31';
-        }
-
-        return decimaldate.iso2dec(paddeddate);
-      };
-
       // entity's start & end date
       // filtering date range from the on-screen controls
       const entityRange = {
-        'start_date': dateToNumber(tags.start_date),
-        'end_date': dateToNumber(tags.end_date)
+        'start_date': tags.start_date ? iD.utilNormalizeDateString(tags.start_date).value : iD.utilNormalizeDateString('-9999-12-31').value,
+        'end_date': tags.end_date ? iD.utilNormalizeDateString(tags.end_date).value : iD.utilNormalizeDateString('9999-12-31').value
       };
       const selectedRange = {
-        'start_date': dateToNumber(context.features().dateRange[0]),
-        'end_date': dateToNumber(context.features().dateRange[1])
+        'start_date': iD.utilNormalizeDateString(context.features().dateRange[0]).value,
+        'end_date': iD.utilNormalizeDateString(context.features().dateRange[1]).value
       };
 
       // out of range = feature started after range ends, or feature ends before range starts
-      const withinrange = !(selectedRange.start_date > entityRange.end_date) && !(selectedRange.end_date < entityRange.start_date);
+      const withinrange = iD.utilDatesOverlap(selectedRange, entityRange);
       // console.debug(['rule date_range', entityRange , selectedRange , withinrange ]);
       return withinrange;
     });

@@ -26,7 +26,7 @@ export function uiSectionDateRange(context) {
     // see modules/renderer/features.js update() which updates URL params
 
     const section = uiSection('date_ranges', context)
-        .label(t('date_ranges.title'))
+        .label(() => t.append('date_ranges.title'))
         .disclosureContent(renderDisclosureContent)
         .expandedByDefault(false);
 
@@ -42,8 +42,8 @@ export function uiSectionDateRange(context) {
             .append('input')
             .attr('type', 'text')
             .attr('value', DEFAULT_MIN_DATE)
-            .attr('title', t('date_ranges.start_date.tooltip'))
-            .attr('placeholder', t('date_ranges.start_date.placeholder'))
+            .attr('title', () => t.append('date_ranges.start_date.tooltip'))
+            .attr('placeholder', () => t.append('date_ranges.start_date.placeholder'))
             .merge(container);
 
         // line break
@@ -60,8 +60,8 @@ export function uiSectionDateRange(context) {
             .append('input')
             .attr('type', 'text')
             .attr('value', DEFAULT_MAX_DATE)
-            .attr('title', t('date_ranges.end_date.tooltip'))
-            .attr('placeholder', t('date_ranges.end_date.placeholder'))
+            .attr('title', () => t.append('date_ranges.end_date.tooltip'))
+            .attr('placeholder', () => t.append('date_ranges.end_date.placeholder'))
             .merge(container);
 
         // apply styles
