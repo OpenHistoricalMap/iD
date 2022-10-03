@@ -94,6 +94,33 @@ export function rendererFeatures(context) {
         };
     }
 
+    defineRule('date_range', function isWithinRange(tags) {
+      // parseInt() on a date string (yyyy, yyyy-mm, yyyy-mm-dd) will effectively strip to year, and will return NaN if date is blank
+      // to to really compare yyyy-mm-dd dates including negatives and partials, rework this to use decimaldate
+      function dateToNumber (value) {
+        return parseInt(value);
+      };
+
+      // entity's start & end date
+      // filtering date range from the on-screen controls
+      const entityRange = {
+        'start_date': dateToNumber(tags.start_date),
+        'end_date': dateToNumber(tags.end_date)
+      };
+      const selectedRange = {
+        'start_date': -Infinity,
+        'end_date': Infinity
+      };
+      if (context.features().dateRange) {
+        selectedRange.start_date = dateToNumber(context.features().dateRange[0]);
+        selectedRange.end_date = dateToNumber(context.features().dateRange[1]);
+      }
+
+      // out of range = feature started after range ends, or feature ends before range starts
+      const withinrange = !(selectedRange.start_date > entityRange.end_date) && !(selectedRange.end_date < entityRange.start_date);
+      // console.debug(['rule date_range', entityRange , selectedRange , withinrange ]);
+      return withinrange;
+    });
 
     defineRule('points', function isPoint(tags, geometry) {
         return geometry === 'point';
@@ -438,7 +465,6 @@ export function rendererFeatures(context) {
 
         return _cache[ent].matches;
     };
-
 
     features.getParents = function(entity, resolver, geometry) {
         if (geometry === 'point') return [];
