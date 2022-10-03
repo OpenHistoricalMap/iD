@@ -946,13 +946,13 @@ en:
   date_ranges:
     title: Date Range
     start_date:
-      description: Start Year
-      tooltip: The start year, as an integer, negatives OK
-      placeholder: e.g. 1487
+      description: Start Date
+      tooltip: The start date YYYY-MM-DD format. Negatives years OK.
+      placeholder: e.g. 1215-06-15
     end_date:
-      description: End Year
-      tooltip: The end year, as an integer, negatives OK
-      placeholder: e.g. 1976
+      description: End Date
+      tooltip: The end date YYYY-MM-DD format. Negatives years OK.
+      placeholder: e.g. 1969-07-16
   settings:
     custom_background:
       tooltip: Edit custom background
