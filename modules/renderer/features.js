@@ -4,6 +4,7 @@ import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
 import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
+import { utilNormalizeDateString, utilDatesOverlap } from '../util';
 
 
 export function rendererFeatures(context) {
@@ -93,24 +94,6 @@ export function rendererFeatures(context) {
             autoHidden: function() { return this.hidden() && this.currentMax > 0; }
         };
     }
-
-    defineRule('date_range', function isWithinRange(tags) {
-      // entity's start & end date
-      // filtering date range from the on-screen controls
-      const entityRange = {
-        'start_date': tags.start_date ? iD.utilNormalizeDateString(tags.start_date).value : iD.utilNormalizeDateString('-9999-12-31').value,
-        'end_date': tags.end_date ? iD.utilNormalizeDateString(tags.end_date).value : iD.utilNormalizeDateString('9999-12-31').value
-      };
-      const selectedRange = {
-        'start_date': iD.utilNormalizeDateString(context.features().dateRange[0]).value,
-        'end_date': iD.utilNormalizeDateString(context.features().dateRange[1]).value
-      };
-
-      // out of range = feature started after range ends, or feature ends before range starts
-      const withinrange = iD.utilDatesOverlap(selectedRange, entityRange);
-      // console.debug(['rule date_range', entityRange , selectedRange , withinrange ]);
-      return withinrange;
-    });
 
     defineRule('points', function isPoint(tags, geometry) {
         return geometry === 'point';
@@ -327,6 +310,11 @@ export function rendererFeatures(context) {
     };
 
 
+    features.redraw = function() {
+        update();
+    };
+
+
     features.resetStats = function() {
         for (var i = 0; i < _keys.length; i++) {
             _rules[_keys[i]].count = 0;
@@ -479,7 +467,6 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenPreset = function(preset, geometry) {
-        if (!_hidden.length) return false;
         if (!preset.tags) return false;
 
         var test = preset.setTags({}, geometry);
@@ -496,9 +483,10 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenFeature = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version) return false;
         if (_forceVisible[entity.id]) return false;
+
+        if (! features.featureFitsDateRange(entity)) return true;
 
         var matches = Object.keys(features.getMatches(entity, resolver, geometry));
         return matches.length && matches.every(function(k) { return features.hidden(k); });
@@ -506,7 +494,6 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenChild = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version || geometry === 'point') return false;
         if (_forceVisible[entity.id]) return false;
 
@@ -523,8 +510,6 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
-        if (!_hidden.length) return false;
-
         var childNodes, connections;
         if (entity.type === 'midpoint') {
             childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -546,17 +531,36 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
-        if (!entity.version) return false;
-
+        // wrapper function to either isHiddenChild() or isHiddenFeature()
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
     };
 
 
-    features.filter = function(d, resolver) {
-        if (!_hidden.length) return d;
+    features.featureFitsDateRange = function (entity) {
+        // entity's start & end date
+        // filtering date range from the on-screen controls
+        const entityRange = {
+            'start_date': utilNormalizeDateString(entity.tags.start_date),
+            'end_date': utilNormalizeDateString(entity.tags.end_date)
+        };
+        const selectedRange = {
+            'start_date': utilNormalizeDateString(context.features().dateRange[0]),
+            'end_date': utilNormalizeDateString(context.features().dateRange[1])
+        };
+        if (entityRange.start_date) entityRange.start_date = entityRange.start_date.value; // may be null, may be a normalized date structure
+        if (entityRange.end_date) entityRange.end_date = entityRange.end_date.value;
+        if (selectedRange.start_date) selectedRange.start_date = selectedRange.start_date.value;
+        if (selectedRange.end_date) selectedRange.end_date = selectedRange.end_date.value;
 
+        // out of range = feature started after range ends, or feature ends before range starts
+        const withinrange = utilDatesOverlap(selectedRange, entityRange);
+        // console.debug(['rule date_range', entityRange , selectedRange , withinrange ]);
+        return withinrange;
+    };
+
+
+    features.filter = function(d, resolver) {
         var result = [];
         for (var i = 0; i < d.length; i++) {
             var entity = d[i];

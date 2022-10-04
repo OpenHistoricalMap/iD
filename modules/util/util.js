@@ -676,6 +676,8 @@ export function utilDatesOverlap(tags1, tags2) {
 // Date components are padded for compatibility with tagging conventions.
 // Dates such as January 0, February 31, and Duodecember 1 are wrapped to make more sense.
 export function utilNormalizeDateString(raw) {
+    if (! raw) return null;
+
     var date;
 
     // Enforce the same date formats supported by DateFunctions-plpgsql and decimaldate-python.

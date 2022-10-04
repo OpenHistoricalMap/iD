@@ -5,6 +5,7 @@ import { t } from '../../core/localizer';
 import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
 import { utilQsString, utilStringQs } from '../../util';
+import { utilNormalizeDateString } from '../../util';
 
 const DEFAULT_MIN_DATE = '-4000-01-01';
 const DEFAULT_MAX_DATE = (new Date()).getFullYear() + '-12-31';
@@ -82,45 +83,22 @@ export function uiSectionDateRange(context) {
             const maxdate = maxdate_input.property('value');
 
             context.features().dateRange = [mindate, maxdate];
-            context.flush();
+            context.features().redraw();
 
             updateUrlParam();
         }
 
         function ensureValidInputs() {
-            let mindate = mindate_input.property('value');
-            let maxdate = maxdate_input.property('value');
+            // if utilNormalizeDateString() can make sense of it, so can "date_range" in renderer/features.js
+            // if not, then complain and reset to the starting value
+            const mindate = mindate_input.property('value');
+            const maxdate = maxdate_input.property('value');
 
-            if (mindate.match(/^\-?\d\d\d\d\-\d\d\-\d\d$/)) {
-                // perfect yyyy-mm-dd
-            } else if (mindate.match(/^\-?\d\d\d\d\-\d\d$/)) {
-                mindate += '-01'; // yyyy-mm, add -dd
-                mindate_input.property('value', mindate);
-            } else if (mindate.match(/^\-?\d\d\d\d$/)) {
-                mindate += '-01-01'; // yyyy, add -mm-dd
-                mindate_input.property('value', mindate);
-            } else if (mindate.match(/^\-?\d{1,3}$/)) {
-                mindate = mindate.padStart(4, '0') + '-01-01';
-                mindate_input.property('value', mindate);
-            } else {
-                mindate = DEFAULT_MIN_DATE;
+            if (! utilNormalizeDateString(mindate)) {
+                mindate_input.property('value', DEFAULT_MIN_DATE);
             }
-
-            if (maxdate.match(/^\-?\d\d\d\d\-\d\d\-\d\d$/)) {
-                // perfect yyyy-mm-dd
-            } else if (maxdate.match(/^\-?\d\d\d\d\-\d\d$/)) {
-                const ym = maxdate.match(/^\-?(\d\d\d\d)\-(\d\d)$/);
-                const d = (new Date(parseInt(ym[1]), parseInt(ym[2]), 0)).getDate();
-                maxdate += `-${String(d).padStart(2, '0')}`; // yyyy-mm, add -dd
-                maxdate_input.property('value', maxdate);
-            } else if (maxdate.match(/^\-?\d\d\d\d$/)) {
-                maxdate += '-12-31'; // yyyy, add -mm-dd
-                maxdate_input.property('value', maxdate);
-            } else if (maxdate.match(/^\-?\d{1,3}$/)) {
-                maxdate = maxdate.padStart(4, '0') + '-12-31';
-                maxdate_input.property('value', maxdate);
-            } else {
-                maxdate = DEFAULT_MAX_DATE;
+            if (! utilNormalizeDateString(maxdate)) {
+                maxdate_input.property('value', DEFAULT_MAX_DATE);
             }
         }
 
@@ -154,7 +132,7 @@ export function uiSectionDateRange(context) {
         let startingdaterange = utilStringQs(window.location.hash).daterange;
         if (startingdaterange) {
             startingdaterange = startingdaterange.split(',');
-            const isvalid =startingdaterange[0].match(/^\-?\d\d\d\d\-\d\d\-\d\d$/) && startingdaterange[1].match(/^\-?\d\d\d\d\-\d\d\-\d\d$/);
+            const isvalid =startingdaterange[0].match(/^\-?[\d\-]+/) && startingdaterange[1].match(/^\-?[\d\-]+/);
             if (isvalid) {
                 mindate_input.property('value', startingdaterange[0]);
                 maxdate_input.property('value', startingdaterange[1]);

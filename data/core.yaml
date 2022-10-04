@@ -881,9 +881,6 @@ en:
       title: "Username"
       tooltip: "Show only photos by this user"
   feature:
-    date_range:
-      description: Show features from all dates
-      tooltip: "When selected, shows all feature dates, when unselected only shows the specified dates"
     points:
       description: Points
       tooltip: "Points of Interest"
@@ -947,11 +944,11 @@ en:
     title: Date Range
     start_date:
       description: Start Date
-      tooltip: The start date YYYY-MM-DD format. Negatives years OK.
+      tooltip: The start date YYYY-MM-DD format. Negative years OK.
       placeholder: e.g. 1215-06-15
     end_date:
       description: End Date
-      tooltip: The end date YYYY-MM-DD format. Negatives years OK.
+      tooltip: The end date YYYY-MM-DD format. Negative years OK.
       placeholder: e.g. 1969-07-16
   settings:
     custom_background:
