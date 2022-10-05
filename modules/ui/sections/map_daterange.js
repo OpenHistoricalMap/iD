@@ -1,11 +1,6 @@
-import { dispatch as d3_dispatch } from 'd3-dispatch';
-import { select as d3_select } from 'd3-selection';
-
 import { t } from '../../core/localizer';
-import { uiTooltip } from '../tooltip';
 import { uiSection } from '../section';
-import { utilQsString, utilStringQs } from '../../util';
-import { utilNormalizeDateString } from '../../util';
+import { utilQsString, utilStringQs, utilNormalizeDateString } from '../../util';
 
 const DEFAULT_MIN_DATE = '-4000-01-01';
 const DEFAULT_MAX_DATE = (new Date()).getFullYear() + '-12-31';
@@ -94,10 +89,10 @@ export function uiSectionDateRange(context) {
             const mindate = mindate_input.property('value');
             const maxdate = maxdate_input.property('value');
 
-            if (! utilNormalizeDateString(mindate)) {
+            if (!utilNormalizeDateString(mindate)) {
                 mindate_input.property('value', DEFAULT_MIN_DATE);
             }
-            if (! utilNormalizeDateString(maxdate)) {
+            if (!utilNormalizeDateString(maxdate)) {
                 maxdate_input.property('value', DEFAULT_MAX_DATE);
             }
         }

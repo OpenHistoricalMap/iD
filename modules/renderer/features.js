@@ -3,8 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
-import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
-import { utilNormalizeDateString, utilDatesOverlap } from '../util';
+import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs, utilNormalizeDateString, utilDatesOverlap } from '../util';
 
 
 export function rendererFeatures(context) {
@@ -94,6 +93,7 @@ export function rendererFeatures(context) {
             autoHidden: function() { return this.hidden() && this.currentMax > 0; }
         };
     }
+
 
     defineRule('points', function isPoint(tags, geometry) {
         return geometry === 'point';
@@ -467,6 +467,7 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenPreset = function(preset, geometry) {
+        if (!_hidden.length) return false;
         if (!preset.tags) return false;
 
         var test = preset.setTags({}, geometry);
@@ -484,9 +485,9 @@ export function rendererFeatures(context) {
 
     features.isHiddenFeature = function(entity, resolver, geometry) {
         if (!entity.version) return false;
+        if (!features.featureFitsDateRange(entity)) return true;
+        if (!_hidden.length) return false;
         if (_forceVisible[entity.id]) return false;
-
-        if (! features.featureFitsDateRange(entity)) return true;
 
         var matches = Object.keys(features.getMatches(entity, resolver, geometry));
         return matches.length && matches.every(function(k) { return features.hidden(k); });
@@ -495,6 +496,8 @@ export function rendererFeatures(context) {
 
     features.isHiddenChild = function(entity, resolver, geometry) {
         if (!entity.version || geometry === 'point') return false;
+        if (!features.featureFitsDateRange(entity)) return true;
+        if (!_hidden.length) return false;
         if (_forceVisible[entity.id]) return false;
 
         var parents = features.getParents(entity, resolver, geometry);
@@ -510,6 +513,9 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
+        if (!features.featureFitsDateRange(entity)) return true;
+        if (!_hidden.length) return false;
+
         var childNodes, connections;
         if (entity.type === 'midpoint') {
             childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -531,13 +537,17 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        // wrapper function to either isHiddenChild() or isHiddenFeature()
+        if (!entity.version) return false;
+        if (!features.featureFitsDateRange(entity)) return true;
+        if (!_hidden.length) return false;
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
     };
 
 
     features.featureFitsDateRange = function (entity) {
+        if (!context.features().dateRange) return true; // no Date Range e.g. unit tests
+
         // entity's start & end date
         // filtering date range from the on-screen controls
         const entityRange = {
@@ -555,7 +565,6 @@ export function rendererFeatures(context) {
 
         // out of range = feature started after range ends, or feature ends before range starts
         const withinrange = utilDatesOverlap(selectedRange, entityRange);
-        // console.debug(['rule date_range', entityRange , selectedRange , withinrange ]);
         return withinrange;
     };
 
