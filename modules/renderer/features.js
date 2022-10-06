@@ -513,8 +513,6 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
-        if (!_hidden.length) return false;
-
         var childNodes, connections;
         if (entity.type === 'midpoint') {
             childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
