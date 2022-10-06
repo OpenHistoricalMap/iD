@@ -513,7 +513,6 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
-        if (!features.featureFitsDateRange(entity)) return true;
         if (!_hidden.length) return false;
 
         var childNodes, connections;
@@ -548,20 +547,18 @@ export function rendererFeatures(context) {
     features.featureFitsDateRange = function (entity) {
         if (!context.features().dateRange) return true; // no Date Range e.g. unit tests
 
-        // entity's start & end date
-        // filtering date range from the on-screen controls
+        // entity's start & end date + the Date Range from the on-screen controls
+        // utilDatesOverlap() treats malformed start_date/end_date as 9999/-9999
+        // uiSectionDateRange already standardizes the dateRange inputs
+        // so we don't need much validation here
         const entityRange = {
-            'start_date': utilNormalizeDateString(entity.tags.start_date),
-            'end_date': utilNormalizeDateString(entity.tags.end_date)
+            'start_date': entity.tags.start_date,
+            'end_date': entity.tags.end_date
         };
         const selectedRange = {
-            'start_date': utilNormalizeDateString(context.features().dateRange[0]),
-            'end_date': utilNormalizeDateString(context.features().dateRange[1])
+            'start_date': context.features().dateRange[0],
+            'end_date': context.features().dateRange[1]
         };
-        if (entityRange.start_date) entityRange.start_date = entityRange.start_date.value; // may be null, may be a normalized date structure
-        if (entityRange.end_date) entityRange.end_date = entityRange.end_date.value;
-        if (selectedRange.start_date) selectedRange.start_date = selectedRange.start_date.value;
-        if (selectedRange.end_date) selectedRange.end_date = selectedRange.end_date.value;
 
         // out of range = feature started after range ends, or feature ends before range starts
         const withinrange = utilDatesOverlap(selectedRange, entityRange);

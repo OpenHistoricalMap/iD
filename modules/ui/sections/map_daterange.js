@@ -84,17 +84,16 @@ export function uiSectionDateRange(context) {
         }
 
         function ensureValidInputs() {
-            // if utilNormalizeDateString() can make sense of it, so can "date_range" in renderer/features.js
-            // if not, then complain and reset to the starting value
+            // if utilNormalizeDateString() can make sense of it, so can utilDatesOverlap()
+            // replace with cleaned-up value for visual feedback e.g. 5/10/2022 visibly changes to 2022-10-05
+            // if not, then reset to the starting value
             const mindate = mindate_input.property('value');
             const maxdate = maxdate_input.property('value');
 
-            if (!utilNormalizeDateString(mindate)) {
-                mindate_input.property('value', DEFAULT_MIN_DATE);
-            }
-            if (!utilNormalizeDateString(maxdate)) {
-                maxdate_input.property('value', DEFAULT_MAX_DATE);
-            }
+            const mindate_clean = utilNormalizeDateString(mindate);
+            const maxdate_clean = utilNormalizeDateString(maxdate);
+            mindate_input.property('value', mindate_clean ? mindate_clean.value : DEFAULT_MIN_DATE);
+            maxdate_input.property('value', maxdate_clean ? maxdate_clean.value : DEFAULT_MAX_DATE);
         }
 
         function updateUrlParam() {
