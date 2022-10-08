@@ -45,6 +45,7 @@ export function rendererFeatures(context) {
     var _cullFactor = 1;
     var _cache = {};
     var _rules = {};
+    var _dateMatchCount = 0;
     var _stats = {};
     var _keys = [];
     var _hidden = [];
@@ -319,6 +320,7 @@ export function rendererFeatures(context) {
         for (var i = 0; i < _keys.length; i++) {
             _rules[_keys[i]].count = 0;
         }
+        _dateMatchCount = 0;
         dispatch.call('change');
     };
 
@@ -332,6 +334,7 @@ export function rendererFeatures(context) {
         for (i = 0; i < _keys.length; i++) {
             _rules[_keys[i]].count = 0;
         }
+        _dateMatchCount = 0;
 
         // adjust the threshold for point/building culling based on viewport size..
         // a _cullFactor of 1 corresponds to a 1000x1000px viewport..
@@ -343,6 +346,7 @@ export function rendererFeatures(context) {
             for (j = 0; j < matches.length; j++) {
                 _rules[matches[j]].count++;
             }
+            if (!features.featureFitsDateRange(entities[i])) _dateMatchCount++;
         }
 
         currHidden = features.hidden();
@@ -363,6 +367,9 @@ export function rendererFeatures(context) {
 
         return _stats;
     };
+
+
+    features.dateMatchCount = () => _dateMatchCount;
 
 
     features.clear = function(d) {

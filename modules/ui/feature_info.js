@@ -5,6 +5,7 @@ export function uiFeatureInfo(context) {
     function update(selection) {
         var features = context.features();
         var stats = features.stats();
+        var dateMatchCount = features.dateMatchCount();
         var count = 0;
         var hiddenList = features.hidden().map(function(k) {
             if (stats[k]) {
@@ -16,10 +17,11 @@ export function uiFeatureInfo(context) {
             }
             return null;
         }).filter(Boolean);
+        count += dateMatchCount;
 
         selection.text('');
 
-        if (hiddenList.length) {
+        if (hiddenList.length || dateMatchCount > 0) {
             var tooltipBehavior = uiTooltip()
                 .placement('top')
                 .title(function() {
@@ -44,7 +46,7 @@ export function uiFeatureInfo(context) {
         }
 
         selection
-            .classed('hide', !hiddenList.length);
+            .classed('hide', !hiddenList.length && !dateMatchCount);
     }
 
 
