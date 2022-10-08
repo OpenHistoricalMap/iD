@@ -505,7 +505,6 @@ export function rendererFeatures(context) {
         if (!entity.version || geometry === 'point') return false;
         if (_forceVisible[entity.id]) return false;
         if (!features.featureFitsDateRange(entity)) return true;
-        if (!_hidden.length) return false;
 
         var parents = features.getParents(entity, resolver, geometry);
         if (!parents.length) return false;
@@ -541,7 +540,6 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version) return false;
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
