@@ -559,7 +559,7 @@ export function rendererFeatures(context) {
         };
 
         // out of range = feature started after range ends, or feature ends before range starts
-        const withinrange = utilDatesOverlap(selectedRange, entityRange);
+        const withinrange = utilDatesOverlap(selectedRange, entityRange, true);
         return withinrange;
     };
 

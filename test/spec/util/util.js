@@ -310,8 +310,6 @@ describe('iD.util', function() {
         it('compares years', function() {
             expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
                                        {start_date: '1970', end_date: '2000'})).to.eql(true);
-            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
-                                       {start_date: '2000', end_date: '2038'})).to.eql(false);
             expect(iD.utilDatesOverlap({start_date: '2000', end_date: '2038'},
                                        {start_date: '1970', end_date: '2000'})).to.eql(false);
             expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
@@ -324,6 +322,22 @@ describe('iD.util', function() {
                                        {start_date: '2000-01-01', end_date: '2038-01-01'})).to.eql(false);
             expect(iD.utilDatesOverlap({start_date: '2000-01-01', end_date: '2038-01-01'},
                                        {start_date: '1970-01-01', end_date: '2000-01-01'})).to.eql(false);
+        });
+        it('treats touches as overlaps', function() {
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2001', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2001', end_date: '2038'}, true)).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000', end_date: '2038'}, true)).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000-01'},
+                                       {start_date: '2000', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000-01'},
+                                       {start_date: '2000', end_date: '2038'}, true)).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000-01', end_date: '2038'}, true)).to.eql(true);
         });
     });
 
