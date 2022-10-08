@@ -549,7 +549,7 @@ export function rendererFeatures(context) {
 
 
     features.featureFitsDateRange = function (entity) {
-        if (!context.features().dateRange) return true; // no Date Range e.g. unit tests
+        if (!features.dateRange) return true; // no Date Range e.g. unit tests
 
         // entity's start & end date + the Date Range from the on-screen controls
         // utilDatesOverlap() treats malformed start_date/end_date as 9999/-9999
@@ -560,8 +560,8 @@ export function rendererFeatures(context) {
             'end_date': entity.tags.end_date
         };
         const selectedRange = {
-            'start_date': context.features().dateRange[0],
-            'end_date': context.features().dateRange[1]
+            'start_date': features.dateRange[0],
+            'end_date': features.dateRange[1]
         };
 
         // out of range = feature started after range ends, or feature ends before range starts
