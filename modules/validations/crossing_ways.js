@@ -118,7 +118,7 @@ export function validationCrossingWays(context) {
         if ((tags1.start_date || tags1.end_date) && (tags2.start_date || tags2.end_date)) {
             if (!utilDatesOverlap(tags1, tags2)) return true;
         }
-        
+
         return false;
     }
 

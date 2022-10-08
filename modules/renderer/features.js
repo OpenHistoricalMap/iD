@@ -3,7 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
-import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs, utilNormalizeDateString, utilDatesOverlap } from '../util';
+import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs, utilDatesOverlap } from '../util';
 
 
 export function rendererFeatures(context) {
