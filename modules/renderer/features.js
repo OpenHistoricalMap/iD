@@ -492,9 +492,9 @@ export function rendererFeatures(context) {
 
     features.isHiddenFeature = function(entity, resolver, geometry) {
         if (!entity.version) return false;
+        if (_forceVisible[entity.id]) return false;
         if (!features.featureFitsDateRange(entity)) return true;
         if (!_hidden.length) return false;
-        if (_forceVisible[entity.id]) return false;
 
         var matches = Object.keys(features.getMatches(entity, resolver, geometry));
         return matches.length && matches.every(function(k) { return features.hidden(k); });
@@ -503,9 +503,9 @@ export function rendererFeatures(context) {
 
     features.isHiddenChild = function(entity, resolver, geometry) {
         if (!entity.version || geometry === 'point') return false;
+        if (_forceVisible[entity.id]) return false;
         if (!features.featureFitsDateRange(entity)) return true;
         if (!_hidden.length) return false;
-        if (_forceVisible[entity.id]) return false;
 
         var parents = features.getParents(entity, resolver, geometry);
         if (!parents.length) return false;
@@ -541,9 +541,8 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        if (!entity.version) return false;
-        if (!features.featureFitsDateRange(entity)) return true;
         if (!_hidden.length) return false;
+        if (!entity.version) return false;
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
     };
