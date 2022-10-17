@@ -25,7 +25,7 @@ export function coreContext() {
   let context = utilRebind({}, dispatch, 'on');
   let _deferred = new Set();
 
-  context.version = '2.22.0-dev';
+  context.version = '2.23.0-dev';
   context.privacyVersion = '20201202';
 
   // iD will alter the hash so cache the parameters intended to setup the session
@@ -100,14 +100,6 @@ export function coreContext() {
     if (_connection) {
       _connection.switch(options);
     }
-    return context;
-  };
-
-  /* connection options for source switcher (optional) */
-  let _apiConnections;
-  context.apiConnections = function(val) {
-    if (!arguments.length) return _apiConnections;
-    _apiConnections = val;
     return context;
   };
 
