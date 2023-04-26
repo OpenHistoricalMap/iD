@@ -52,7 +52,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 * Fix bug which made it impossible to change an object's preset from a sub-preset to the respective parents preset (e.g. from Driveway to Service Road) ([#9372])
 * Fix corruption of (directional) `cycleway` tags when editing a multi-selection ([#9423])
 * Fix unintended splitting of tag values in `semiCombo` fields into two values when the description contains a comma ([#9471])
-* Fix rendering of imagery tile vintage when it is unknown ([#9458], thanks [@furkanmutlu-tomtom)
+* Fix rendering of imagery tile vintage when it is unknown ([#9458], thanks [@furkanmutlu-tomtom])
 #### :hourglass: Performance
 * Speed up "outdated tags" validation by optimizing order of operations ([#9434], thanks [@Zaczero])
 #### :rocket: Presets
@@ -87,6 +87,7 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 [@Zaczero]: https://github.com/Zaczero
 [@Dimitar5555]: https://github.com/Dimitar5555
 [@furkanmutlu-tomtom]: https://github.com/furkanmutlu-tomtom
+[@arch0345]: https://github.com/arch0345
 
 
 # 2.23.2
