@@ -1,12 +1,75 @@
-import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
-import { validationIssue } from '../core/validation';
+import { actionChangeTags } from '../actions/change_tags';
+import { localizer, t } from '../core/localizer';
+import { utilDisplayLabel, utilNormalizeDateString } from '../util';
+import { validationIssue, validationIssueFix } from '../core/validation';
 
 export function validationFormatting() {
     var type = 'invalid_format';
 
     var validation = function(entity) {
         var issues = [];
+
+        function showReferenceDate(selection) {
+            selection.selectAll('.issue-reference')
+                .data([0])
+                .enter()
+                .append('div')
+                .attr('class', 'issue-reference')
+                .text(t.append('issues.invalid_format.date.reference'));
+        }
+
+        function validateDate(key, msgKey) {
+            if (!entity.tags[key]) return;
+            var normalized = utilNormalizeDateString(entity.tags[key]);
+            if (normalized !== null && entity.tags[key] === normalized.value) return;
+            issues.push(new validationIssue({
+                type: type,
+                subtype: 'date',
+                severity: 'error',
+                message: function(context) {
+                    var entity = context.hasEntity(this.entityIds[0]);
+                    return entity ? t.append('issues.invalid_format.date.message_' + msgKey,
+                        { feature: utilDisplayLabel(entity, context.graph()) }) : '';
+                },
+                reference: showReferenceDate,
+                entityIds: [entity.id],
+                hash: key + entity.tags[key],
+                dynamicFixes: function() {
+                    var fixes = [];
+                    if (normalized !== null) {
+                        var localeDateString = normalized.date.toLocaleDateString(localizer.languageCode(), normalized.localeOptions);
+                        fixes.push(new validationIssueFix({
+                            title: t.append('issues.fix.reformat_date.title', { date: localeDateString }),
+                            onClick: function(context) {
+                                context.perform(function(graph) {
+                                    var entityInGraph = graph.hasEntity(entity.id);
+                                    if (!entityInGraph) return graph;
+                                    var newTags = Object.assign({}, entityInGraph.tags);
+                                    newTags[key] = normalized.value;
+                                    return actionChangeTags(entityInGraph.id, newTags)(graph);
+                                }, t.append('issues.fix.reformat_date.annotation'));
+                            }
+                        }));
+                    }
+                    fixes.push(new validationIssueFix({
+                        icon: 'iD-operation-delete',
+                        title: t.append('issues.fix.remove_tag.title'),
+                        onClick: function(context) {
+                            context.perform(function(graph) {
+                                var entityInGraph = graph.hasEntity(entity.id);
+                                if (!entityInGraph) return graph;
+                                var newTags = Object.assign({}, entityInGraph.tags);
+                                delete newTags[key];
+                                return actionChangeTags(entityInGraph.id, newTags)(graph);
+                            }, t.append('issues.fix.remove_tag.annotation'));
+                        }
+                    }));
+                    return fixes;
+                }
+            }));
+        }
+        validateDate('start_date', 'start');
+        validateDate('end_date', 'end');
 
         function isValidEmail(email) {
             // Emails in OSM are going to be official so they should be pretty simple

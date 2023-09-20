@@ -261,7 +261,7 @@ describe('iD.validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes(context)).to.have.lengthOf(3);
+        expect(issue.fixes(context)).to.have.lengthOf(4);
         issue.fixes(context)[0].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);
@@ -291,7 +291,7 @@ describe('iD.validations.almost_junction', function () {
         expect(issue.data.cross_loc[0]).to.eql(22.42356);
         expect(issue.data.cross_loc[1]).to.eql(0);
 
-        expect(issue.fixes(context)).to.have.lengthOf(3);
+        expect(issue.fixes(context)).to.have.lengthOf(4);
         issue.fixes(context)[1].onClick(context);
         issues = validate();
         expect(issues).to.have.lengthOf(0);

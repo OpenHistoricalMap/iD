@@ -202,6 +202,12 @@ describe('iD.validations.crossing_ways', function () {
         expect(issues).to.have.lengthOf(0);
     });
 
+    it('ignores buildings that overlap spatially but not temporally', function() {
+        createWaysWithOneCrossingPoint({ building: 'yes', end_date: '1970-01-01' }, { building: 'yes', start_date: '1970-01-01' });
+        var issues = validate();
+        expect(issues).to.have.lengthOf(0);
+    });
+
     // warning crossing cases between ways
     it('flags road crossing road', function() {
         createWaysWithOneCrossingPoint({ highway: 'residential' }, { highway: 'residential' });
@@ -327,6 +333,11 @@ describe('iD.validations.crossing_ways', function () {
     it('flags railway bridge crossing road bridge on the same layer', function() {
         createWaysWithOneCrossingPoint({ highway: 'residential', bridge: 'yes' }, { railway: 'rail', bridge: 'yes' });
         verifySingleCrossingIssue(validate(), { railway: 'level_crossing' });
+    });
+
+    it('flags buildings that overlap spatially and temporally', function() {
+        createWaysWithOneCrossingPoint({ building: 'yes', start_date: '1970-01-01', end_date: '1971' }, { building: 'yes', start_date: '1970-01-01' });
+        verifySingleCrossingIssue(validate(), null);
     });
 
     it('flags railway crossing building', function() {

@@ -21,10 +21,14 @@ export function presetField(fieldID, field, allFields) {
     return !_this.geometry || geometries.every(geom => _this.geometry.indexOf(geom) !== -1);
   };
 
-  _this.t = (scope, options) => t(`_tagging.presets.fields.${fieldID}.${scope}`, options);
-  _this.t.html = (scope, options) => t.html(`_tagging.presets.fields.${fieldID}.${scope}`, options);
-  _this.t.append = (scope, options) => t.append(`_tagging.presets.fields.${fieldID}.${scope}`, options);
-  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
+  _this.t = (scope, options) => t(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                               `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.t.html = (scope, options) => t.html(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                                         `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.t.append = (scope, options) => t.append(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                                             `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`custom_presets.fields.${fieldID}.${scope}`) ||
+    localizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
 
   _this.resolveReference = which => {
     const referenceRegex = /^\{(.*)\}$/;

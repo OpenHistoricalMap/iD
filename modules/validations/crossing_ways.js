@@ -10,7 +10,7 @@ import { geoAngle, geoExtent, geoLatToMeters, geoLonToMeters, geoLineIntersectio
 import { osmNode } from '../osm/node';
 import { osmFlowingWaterwayTagValues, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmRoutableHighwayTagValues } from '../osm/tags';
 import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
+import { utilDisplayLabel, utilDatesOverlap } from '../util';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 
@@ -75,7 +75,6 @@ export function validationCrossingWays(context) {
         return null;
     }
 
-
     function isLegitCrossing(tags1, featureType1, tags2, featureType2) {
 
         // assume 0 by default
@@ -116,6 +115,12 @@ export function validationCrossingWays(context) {
             // for building crossings, different layers are enough
             if (layer1 !== layer2) return true;
         }
+
+        // allow features to overlap spatially if they don't overlap temporally
+        if ((tags1.start_date || tags1.end_date) && (tags2.start_date || tags2.end_date)) {
+            if (!utilDatesOverlap(tags1, tags2)) return true;
+        }
+
         return false;
     }
 
@@ -477,6 +482,12 @@ export function validationCrossingWays(context) {
                         fixes.push(makeAddBridgeOrTunnelFix('add_a_tunnel', 'temaki-tunnel', 'tunnel'));
                     }
                 }
+
+                // changing the date range is always an option
+                fixes.push(new validationIssueFix({
+                    icon: 'iD-operation-change-date-range',
+                    title: t.append('issues.fix.change_date_range.title')
+                }));
 
                 // repositioning the features is always an option
                 fixes.push(new validationIssueFix({

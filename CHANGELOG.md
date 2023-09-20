@@ -204,9 +204,9 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 
 #### :mega: Release Highlights
 * Upgrade to tagging schema v6 ([#9477]):
-  * Add new `date` field for tags like `check_date`
-  * Add [Röntgen icon set](https://github.com/enzet/map-machine#r%C3%B6ntgen-icon-set)
-  * Combo fields can now specify arbitrary icons for individual tag values
+    * Add new `date` field for tags like `check_date`
+    * Add [Röntgen icon set](https://github.com/enzet/map-machine#r%C3%B6ntgen-icon-set)
+    * Combo fields can now specify arbitrary icons for individual tag values
 #### :bug: Bugfixes
 * Fix context "edit" menu on touchscreens: render labels properly and always open the touch-specific edit menu ([#9425])
 #### :hammer: Development
@@ -228,6 +228,12 @@ _Breaking developer changes, which may affect downstream projects or sites that 
 ##### 2023-Jan-25
 
 * Rotate _Mapbox Satellite_ imagery access token
+
+
+# 2.24.1
+##### 2023-Jan-25
+
+* Rotate Mapbox Satellite imagery access token
 
 
 # 2.24.0

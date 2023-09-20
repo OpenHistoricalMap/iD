@@ -1,5 +1,5 @@
 import { actionMergeNodes } from '../actions/merge_nodes';
-import { utilDisplayLabel } from '../util';
+import { utilDisplayLabel, utilDatesOverlap } from '../util';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
@@ -165,6 +165,11 @@ export function validationCloseNodes(context) {
                     }
                     if (zAxisDifferentiates) continue;
 
+                    // allow features to overlap spatially if they don't overlap temporally
+                    if ((node.tags.start_date || node.tags.end_date) && (nearby.tags.start_date || nearby.tags.end_date)) {
+                        if (!utilDatesOverlap(node.tags, nearby.tags)) continue;
+                    }
+
                     issues.push(new validationIssue({
                         type: type,
                         subtype: 'detached',
@@ -188,6 +193,10 @@ export function validationCloseNodes(context) {
                                 new validationIssueFix({
                                     icon: 'iD-icon-layers',
                                     title: t.append('issues.fix.use_different_layers_or_levels.title')
+                                }),
+                                new validationIssueFix({
+                                    icon: 'iD-operation-change-date-range',
+                                    title: t.append('issues.fix.change_date_range.title')
                                 })
                             ];
                         }

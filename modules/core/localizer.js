@@ -353,6 +353,8 @@ export function coreLocalizer() {
         return !!localizer.tInfo(stringId, { default: 'nothing found'}).locale;
     };
 
+    localizer.coalesceStringIds = stringIds => stringIds.find(id => localizer.hasTextForStringId(id)) || stringIds[stringIds.length - 1];
+
     // Returns only the localized text, discarding the locale info
     localizer.t = function(stringId, replacements, locale) {
         return localizer.tInfo(stringId, replacements, locale).text;

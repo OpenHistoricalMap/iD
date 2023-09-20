@@ -305,4 +305,74 @@ describe('iD.util', function() {
             expect(iD.utilOldestID(['z', 'a', 'A', 'Z'])).to.eql('z');
         });
     });
+
+    describe('utilDatesOverlap', function() {
+        it('compares years', function() {
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '1970', end_date: '2000'})).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '2000', end_date: '2038'},
+                                       {start_date: '1970', end_date: '2000'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000-01', end_date: '2038'})).to.eql(false);
+        });
+        it('compares full dates', function() {
+            expect(iD.utilDatesOverlap({start_date: '1970-01-01', end_date: '2000-01-01'},
+                                       {start_date: '1970-01-01', end_date: '2000-01-01'})).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '1970-01-01', end_date: '2000-01-01'},
+                                       {start_date: '2000-01-01', end_date: '2038-01-01'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '2000-01-01', end_date: '2038-01-01'},
+                                       {start_date: '1970-01-01', end_date: '2000-01-01'})).to.eql(false);
+        });
+        it('treats touches as overlaps', function() {
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2001', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2001', end_date: '2038'}, true)).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000', end_date: '2038'}, true)).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000-01'},
+                                       {start_date: '2000', end_date: '2038'})).to.eql(false);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000-01'},
+                                       {start_date: '2000', end_date: '2038'}, true)).to.eql(true);
+            expect(iD.utilDatesOverlap({start_date: '1970', end_date: '2000'},
+                                       {start_date: '2000-01', end_date: '2038'}, true)).to.eql(true);
+        });
+    });
+
+    describe('utilNormalizeDateString', function() {
+        it('pads dates', function() {
+            expect(iD.utilNormalizeDateString('1970-01-01').value).to.eql('1970-01-01');
+            expect(iD.utilNormalizeDateString('1970-01-1').value).to.eql('1970-01-01');
+            expect(iD.utilNormalizeDateString('1970-1-01').value).to.eql('1970-01-01');
+            expect(iD.utilNormalizeDateString('-1-1-01').value).to.eql('-0001-01-01');
+            expect(iD.utilNormalizeDateString('123').value).to.eql('0123');
+            expect(iD.utilNormalizeDateString('-4003').value).to.eql('-4003'); // beyond displayable year range but still valid
+            expect(iD.utilNormalizeDateString('31337').value).to.eql('31337');
+            expect(iD.utilNormalizeDateString('-31337').value).to.eql('-31337');
+        });
+        it('wraps dates', function() {
+            expect(iD.utilNormalizeDateString('1970-01-00').value).to.eql('1969-12-31');
+            expect(iD.utilNormalizeDateString('1970-12-32').value).to.eql('1971-01-01');
+            expect(iD.utilNormalizeDateString('1970-02-29').value).to.eql('1970-03-01');
+            expect(iD.utilNormalizeDateString('1970-00').value).to.eql('1969-12');
+            expect(iD.utilNormalizeDateString('1970-23').value).to.eql('1971-11'); // no EDTF for now
+        });
+        it('rejects malformed dates', function() {
+            expect(iD.utilNormalizeDateString('1970-01--1')).to.eql(null);
+            expect(iD.utilNormalizeDateString('197X')).to.eql(null); // no EDTF for now
+        });
+        it('respects the original precision', function() {
+            expect(iD.utilNormalizeDateString('123').value).to.eql('0123');
+            expect(iD.utilNormalizeDateString('2000-06').value).to.eql('2000-06');
+            expect(iD.utilNormalizeDateString('2000-06').localeOptions.month).to.eql('long');
+            expect(iD.utilNormalizeDateString('2000-06').localeOptions.day).to.eql(undefined);
+        });
+        it('displays era before common era', function() {
+            expect(iD.utilNormalizeDateString('1').localeOptions.era).to.eql(undefined);
+            expect(iD.utilNormalizeDateString('0').localeOptions.era).to.eql('short');
+            expect(iD.utilNormalizeDateString('-1').localeOptions.era).to.eql('short');
+        });
+    });
 });

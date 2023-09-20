@@ -8,7 +8,7 @@ import { actionAddMidpoint } from '../actions/add_midpoint';
 import { actionChangeTags } from '../actions/change_tags';
 import { actionMergeNodes } from '../actions/merge_nodes';
 import { t } from '../core/localizer';
-import { utilDisplayLabel } from '../util';
+import { utilDisplayLabel, utilDatesOverlap } from '../util';
 import { osmRoutableHighwayTagValues } from '../osm/tags';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { services } from '../services';
@@ -148,6 +148,12 @@ export function validationAlmostJunction(context) {
         }));
       }
 
+      // changing the date range is always an option
+      fixes.push(new validationIssueFix({
+        icon: 'iD-operation-change-date-range',
+        title: t.append('issues.fix.change_date_range.title')
+      }));
+
       return fixes;
     }
 
@@ -268,6 +274,11 @@ export function validationAlmostJunction(context) {
       const level1 = way.tags.level || '0',
         level2 = way2.tags.level || '0';
       if (level1 !== level2) return false;
+
+      // must have overlapping date ranges
+      if ((way.tags.start_date || way.tags.end_date) && (way2.tags.start_date || way2.tags.end_date)) {
+          if (!utilDatesOverlap(way.tags, way2.tags)) return false;
+      }
 
       return true;
     }

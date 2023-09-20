@@ -78,7 +78,7 @@ iD also bundles portions of the following open source software.
 
 * [D3.js (BSD-3-Clause)](https://github.com/d3/d3)
 * [CLDR (Unicode Consortium Terms of Use)](https://github.com/unicode-cldr/cldr-json)
-* [editor-layer-index (CC-BY-SA 3.0)](https://github.com/osmlab/editor-layer-index)
+* [ohm-editor-layer-index (CC-BY-SA 3.0)](https://github.com/openhistoricalmap/ohm-editor-layer-index)
 * [Font Awesome (CC-BY 4.0)](https://fontawesome.com/license)
 * [Maki (CC0 1.0)](https://github.com/mapbox/maki)
 * [Temaki (CC0 1.0)](https://github.com/ideditor/temaki)

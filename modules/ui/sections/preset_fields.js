@@ -69,8 +69,17 @@ export function uiSectionPresetFields(context) {
 
             _fieldsArr = [];
 
+            // Ideally, everything in OpenHistoricalMap is dated and sourced.
+            let coreKeys = ['start_date', 'end_date', 'source'];
+            coreKeys.forEach(key => {
+                let field = presetsManager.field(key);
+                if (field) {
+                    _fieldsArr.push(uiField(context, field, _entityIDs));
+                }
+            });
+
             sharedFields.forEach(function(field) {
-                if (field.matchAllGeometry(geometries)) {
+                if (!coreKeys.includes(field.id) && field.matchAllGeometry(geometries)) {
                     _fieldsArr.push(
                         uiField(context, field, _entityIDs)
                     );
@@ -91,6 +100,7 @@ export function uiSectionPresetFields(context) {
 
             additionalFields.forEach(function(field) {
                 if (sharedFields.indexOf(field) === -1 &&
+                    !coreKeys.includes(field.id) &&
                     field.matchAllGeometry(geometries)) {
                     _fieldsArr.push(
                         uiField(context, field, _entityIDs, { show: false })

@@ -42,14 +42,6 @@ export function uiPanelHistory(context) {
                 .attr('target', '_blank')
                 .call(t.append('info_panels.history.profile_link'));
         }
-
-        links
-            .append('a')
-            .attr('class', 'user-hdyc-link')
-            .attr('href', 'https://hdyc.neis-one.org/?' + userName)
-            .attr('target', '_blank')
-            .attr('tabindex', -1)
-            .text('HDYC');
     }
 
 
@@ -78,20 +70,6 @@ export function uiPanelHistory(context) {
                 .attr('target', '_blank')
                 .call(t.append('info_panels.history.changeset_link'));
         }
-
-        links
-            .append('a')
-            .attr('class', 'changeset-osmcha-link')
-            .attr('href', 'https://osmcha.org/changesets/' + changeset)
-            .attr('target', '_blank')
-            .text('OSMCha');
-
-        links
-            .append('a')
-            .attr('class', 'changeset-achavi-link')
-            .attr('href', 'https://overpass-api.de/achavi/?changeset=' + changeset)
-            .attr('target', '_blank')
-            .text('Achavi');
     }
 
 
@@ -199,13 +177,6 @@ export function uiPanelHistory(context) {
                 .attr('target', '_blank')
                 .call(t.append('info_panels.history.history_link'));
         }
-        links
-            .append('a')
-            .attr('class', 'pewu-history-viewer-link')
-            .attr('href', 'https://pewu.github.io/osm-history/#/' + entity.type + '/' + entity.osmId())
-            .attr('target', '_blank')
-            .attr('tabindex', -1)
-            .text('PeWu');
 
         var list = selection
             .append('ul');

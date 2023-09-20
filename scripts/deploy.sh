@@ -30,9 +30,9 @@ if [[ "${rev}" != "${orig}" ]] ; then
 fi
 
 # pull latest imagery
-rm -rf node_modules/editor-layer-index/
-git clone https://github.com/osmlab/editor-layer-index.git node_modules/editor-layer-index > /dev/null 2>&1
-rm -rf node_modules/editor-layer-index/.git/
+rm -rf node_modules/ohm-editor-layer-index/
+git clone https://github.com/openhistoricalmap/ohm-editor-layer-index.git node_modules/ohm-editor-layer-index > /dev/null 2>&1
+rm -rf node_modules/ohm-editor-layer-index/.git/
 
 # build everything
 npm run imagery

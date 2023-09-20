@@ -3,7 +3,7 @@ import { dispatch as d3_dispatch } from 'd3-dispatch';
 import { prefs } from '../core/preferences';
 import { osmEntity, osmLifecyclePrefixes } from '../osm';
 import { utilRebind } from '../util/rebind';
-import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs } from '../util';
+import { utilArrayGroupBy, utilArrayUnion, utilQsString, utilStringQs, utilDatesOverlap } from '../util';
 
 
 export function rendererFeatures(context) {
@@ -46,6 +46,7 @@ export function rendererFeatures(context) {
     var _cullFactor = 1;
     var _cache = {};
     var _rules = {};
+    var _dateMatchCount = 0;
     var _stats = {};
     var _keys = [];
     var _hidden = [];
@@ -311,10 +312,16 @@ export function rendererFeatures(context) {
     };
 
 
+    features.redraw = function() {
+        update();
+    };
+
+
     features.resetStats = function() {
         for (var i = 0; i < _keys.length; i++) {
             _rules[_keys[i]].count = 0;
         }
+        _dateMatchCount = 0;
         dispatch.call('change');
     };
 
@@ -328,6 +335,7 @@ export function rendererFeatures(context) {
         for (i = 0; i < _keys.length; i++) {
             _rules[_keys[i]].count = 0;
         }
+        _dateMatchCount = 0;
 
         // adjust the threshold for point/building culling based on viewport size..
         // a _cullFactor of 1 corresponds to a 1000x1000px viewport..
@@ -339,6 +347,7 @@ export function rendererFeatures(context) {
             for (j = 0; j < matches.length; j++) {
                 _rules[matches[j]].count++;
             }
+            if (!features.featureFitsDateRange(entities[i])) _dateMatchCount++;
         }
 
         currHidden = features.hidden();
@@ -359,6 +368,9 @@ export function rendererFeatures(context) {
 
         return _stats;
     };
+
+
+    features.dateMatchCount = () => _dateMatchCount;
 
 
     features.clear = function(d) {
@@ -480,9 +492,10 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenFeature = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version) return false;
         if (_forceVisible[entity.id]) return false;
+        if (!features.featureFitsDateRange(entity)) return true;
+        if (!_hidden.length) return false;
 
         var matches = Object.keys(features.getMatches(entity, resolver, geometry));
         return matches.length && matches.every(function(k) { return features.hidden(k); });
@@ -490,9 +503,9 @@ export function rendererFeatures(context) {
 
 
     features.isHiddenChild = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version || geometry === 'point') return false;
         if (_forceVisible[entity.id]) return false;
+        if (!features.featureFitsDateRange(entity)) return true;
 
         var parents = features.getParents(entity, resolver, geometry);
         if (!parents.length) return false;
@@ -507,8 +520,6 @@ export function rendererFeatures(context) {
 
 
     features.hasHiddenConnections = function(entity, resolver) {
-        if (!_hidden.length) return false;
-
         var childNodes, connections;
         if (entity.type === 'midpoint') {
             childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -530,17 +541,35 @@ export function rendererFeatures(context) {
 
 
     features.isHidden = function(entity, resolver, geometry) {
-        if (!_hidden.length) return false;
         if (!entity.version) return false;
-
         var fn = (geometry === 'vertex' ? features.isHiddenChild : features.isHiddenFeature);
         return fn(entity, resolver, geometry);
     };
 
 
-    features.filter = function(d, resolver) {
-        if (!_hidden.length) return d;
+    features.featureFitsDateRange = function (entity) {
+        if (!features.dateRange) return true; // no Date Range e.g. unit tests
 
+        // entity's start & end date + the Date Range from the on-screen controls
+        // utilDatesOverlap() treats malformed start_date/end_date as 9999/-9999
+        // uiSectionDateRange already standardizes the dateRange inputs
+        // so we don't need much validation here
+        const entityRange = {
+            'start_date': entity.tags.start_date,
+            'end_date': entity.tags.end_date
+        };
+        const selectedRange = {
+            'start_date': features.dateRange[0],
+            'end_date': features.dateRange[1]
+        };
+
+        // out of range = feature started after range ends, or feature ends before range starts
+        const withinrange = utilDatesOverlap(selectedRange, entityRange, true);
+        return withinrange;
+    };
+
+
+    features.filter = function(d, resolver) {
         var result = [];
         for (var i = 0; i < d.length; i++) {
             var entity = d[i];
