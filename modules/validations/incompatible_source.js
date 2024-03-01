@@ -30,6 +30,12 @@ export function validationIncompatibleSource() {
 
     return entitySources
       .map(source => {
+        try {
+          const sourceURL = new URL(source);
+          source = sourceURL.hostname;
+        } catch (e) {
+          // Source string is not a url
+        }
         const matchRule = incompatibleRules.find(rule => {
           if (!rule.regex.test(source)) return false;
           if (rule.exceptRegex && rule.exceptRegex.test(source)) return false;

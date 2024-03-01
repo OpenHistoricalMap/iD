@@ -63,6 +63,22 @@ describe('iD.validations.incompatible_source', function () {
         expect(issue.entityIds[0]).to.eql('w-1');
     });
 
+    it('flags way with incompatible URL source tag', function() {
+        createWay({ amenity: 'cafe', building: 'yes', name: 'Key Largo Café', source: 'https://www.google.com/maps'});
+        var issues = validate();
+        expect(issues).to.have.lengthOf(1);
+        var issue = issues[0];
+        expect(issue.type).to.eql('incompatible_source');
+        expect(issue.entityIds).to.have.lengthOf(1);
+        expect(issue.entityIds[0]).to.eql('w-1');
+    });
+
+    it('ignores way with incompatible string outside of URL hostname', function() {
+        createWay({ amenity: 'cafe', building: 'yes', name: 'Key Largo Café', source: 'https://www.mercurynews.com/2019/10/03/new-office-tower-gets-underway-downtown-san-jose-google-adobe-tech/'});
+        var issues = validate();
+        expect(issues).to.have.lengthOf(0);
+    });
+
     it('does not flag buildings in the google-africa-buildings dataset', function() {
         createWay({ building: 'yes', source: 'esri/Google_Africa_Buildings' });
         var issues = validate();
