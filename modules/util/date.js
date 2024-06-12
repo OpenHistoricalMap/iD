@@ -70,6 +70,9 @@ export function utilNormalizeDateString(raw) {
         date.setUTCFullYear(parseInt((match[1] || '') + match[2], 10));
         if (match[3]) date.setUTCMonth(parseInt(match[3], 10) - 1); // 0-based
         if (match[4]) date.setUTCDate(parseInt(match[4], 10));
+        if (isNaN(date.getDate())) {
+            return null;
+        }
     } else {
         // Fall back on whatever the browser can parse into a date.
         date = new Date(raw);

@@ -55,6 +55,8 @@ describe('iD.date', function() {
         it('rejects malformed dates', function() {
             expect(iD.utilNormalizeDateString('1970-01--1')).to.eql(null);
             expect(iD.utilNormalizeDateString('197X')).to.eql(null); // no EDTF for now
+            // https://github.com/OpenHistoricalMap/issues/issues/826
+            expect(iD.utilNormalizeDateString('1912091095')).to.eql(null);
         });
         it('respects the original precision', function() {
             expect(iD.utilNormalizeDateString('123').value).to.eql('0123');
