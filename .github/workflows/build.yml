@@ -5,9 +5,10 @@ name: build
 
 on:
   push:
-    branches: [ staging, 742-automate-id-upstream-catchup ]
+    branches: [ staging ]
   pull_request:
     branches: [ staging ]
+  workflow_dispatch:
 
 permissions:
   contents: read
