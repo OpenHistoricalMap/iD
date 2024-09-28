@@ -1067,11 +1067,11 @@ en:
     view_on_osm: "View Changes on OHM"
     changeset_id: "Your changeset #: {changeset_id}"
     supporting:
-      title: "OpenHistoricalMap is free to use, but not free to run"
-      details: "Its stability, quality, independence, and strength depend on donations from people like you."
+      title: "More ways to help"
+      details: "OpenHistoricalMap can only exist because of people like you. Here are some other ways you can support the project:"
       donation:
-        title: "Support the map"
-        details: "Any donation will go directly towards keeping OpenStreetMap running."
+        title: "Donate to OpenHistoricalMap"
+        details: "OpenHistoricalMap accepts donations through OpenStreetMap U.S., a 501(c)(3) nonprofit organization based in the United States. Your generous donation will go directly toward keeping OpenHistoricalMap running smoothly for everyone."
     like_osm: "Like OpenHistoricalMap? Connect with others:"
     more: More
     events: Events
