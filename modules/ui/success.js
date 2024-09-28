@@ -189,7 +189,7 @@ export function uiSuccess(context) {
 
     if (showDonationMessage !== false) {
       // support ask
-      const donationUrl = 'https://supporting.openstreetmap.org/';
+      const donationUrl = 'https://openstreetmap.app.neoncrm.com/forms/ohm';
       let supporting = body
         .append('div')
         .attr('class', 'save-supporting');
