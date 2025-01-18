@@ -1063,7 +1063,7 @@ en:
       separator: ", "
     help_html: Your changes should appear on OpenHistoricalMap within a few minutes. It may take longer for maps elsewhere to receive updates.
     help_link_text: Details
-    help_link_url: "https://wiki.openstreetmap.org/wiki/FAQ#I_have_just_made_some_changes_to_the_map._How_do_I_get_to_see_my_changes.3F"
+    help_link_url: "https://wiki.openstreetmap.org/wiki/OpenHistoricalMap/Contributing#Replication"
     view_on_osm: "View Changes on OHM"
     changeset_id: "Your changeset #: {changeset_id}"
     supporting:
