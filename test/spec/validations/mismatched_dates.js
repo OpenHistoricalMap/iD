@@ -41,6 +41,12 @@ describe('iD.validations.mismatched_dates', function () {
         expect(issues).to.have.lengthOf(0);
     });
 
+    it('ignores way with identical EDTF date', function() {
+        createNode({ shop: 'mall', name: 'Forest Fair Mall', start_date: '1988-07-11', 'start_date:edtf': '1988-07-11', end_date: '2003-06-10', 'end_date:edtf': '2003-06-10' });
+        let issues = validate();
+        expect(issues).to.have.lengthOf(0);
+    });
+
     it('flags way with date outside of EDTF range', function() {
         createNode({ natural: 'tree', name: 'The Tree That Owns Itself', start_date: '1901', 'start_date:edtf': '1550~/1900~', end_date: '1942' });
         let issues = validate();
