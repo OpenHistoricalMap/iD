@@ -102,7 +102,7 @@ export function validationFormatting() {
 
         function showReferenceEDTF(selection, parserError) {
             let message;
-            if (parserError.offset && parserError.token) {
+            if (typeof parserError.offset === 'number' && parserError.token) {
                 message = t.append('issues.invalid_format.edtf.reference', {
                     token: parserError.token.value,
                     position: (parserError.offset + 1).toLocaleString(localizer.localeCodes()),
