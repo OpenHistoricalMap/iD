@@ -106,14 +106,16 @@ export function validationMismatchedDates() {
         function validateEDTF(key, msgKey) {
             if (!entity.tags[key] || !entity.tags[key + ':edtf']) return;
             let basic = entity.tags[key];
-            // start_date and end_date disallow time precision. Transform the basic date into a daylong range in EDTF to allow a comparison to an EDTF date with time precision.
-            // https://github.com/OpenHistoricalMap/issues/issues/764
-            if (basic.match('^-?[0-9]+-[0-9]{2}-[0-9]{2}$')) {
-                basic = `${basic}T00:00:00/${basic}T24:00:00`;
-            }
             let basicAsEDTF = parseEDTF(basic);
             let parsed = parseEDTF(entity.tags[key + ':edtf']);
             if (!basicAsEDTF || !parsed || parsed.covers(basicAsEDTF) || basicAsEDTF.covers(parsed)) return;
+
+            // start_date and end_date disallow time precision. Transform the basic date into a daylong range in EDTF to allow a comparison to an EDTF date with time precision.
+            // https://github.com/OpenHistoricalMap/issues/issues/764
+            if (basic.match('^-?[0-9]+-[0-9]{2}-[0-9]{2}$')) {
+                let basicTime = parseEDTF(`${basic}T00:00:00/${basic}T24:00:00`);
+                if (basicTime && (parsed.covers(basicTime) || basicTime.covers(parsed))) return;
+            }
 
             issues.push(new validationIssue({
                 type: type,
