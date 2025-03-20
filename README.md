@@ -1,10 +1,12 @@
-# iD - friendly JavaScript editor for [OpenStreetMap](https://www.openstreetmap.org/)
+# iD - friendly JavaScript editor for [OpenHistoricalMap](https://www.openhistoricalmap.org/)
 
-[![build](https://github.com/openstreetmap/iD/workflows/build/badge.svg)](https://github.com/openstreetmap/iD/actions?query=workflow%3A%22build%22)
+[![build](https://github.com/OpenHistoricalMap/iD/workflows/build/badge.svg)](https://github.com/OpenHistoricalMap/iD/actions?query=workflow%3A%22build%22)
+
+This is OpenHistoricalMap’s fork of [iD](https://github.com/openstreetmap/iD/), [OpenStreetMap](https://www.openstreetmap.org/)’s beginner-friendly browser-based editor. We’ve customized this fork to facilitate mapping dates and sources according to [OHM’s tagging conventions](https://wiki.openstreetmap.org/wiki/OpenHistoricalMap/Tags) and tracing off of archived aerial imagery.
 
 ## Basics
 
-* iD is a JavaScript [OpenStreetMap](https://www.openstreetmap.org/) editor.
+* iD is a JavaScript [OpenHistoricalMap](https://www.openhistoricalmap.org/) editor forked from OpenStreetMap’s editor.
 * It's intentionally simple. It lets you do the most basic tasks while not breaking other people's data.
 * It supports all popular modern desktop browsers: Chrome, Firefox, Safari, Opera, and Edge.
 * iD is not yet designed for mobile browsers, but this is something we hope to add!
@@ -14,18 +16,15 @@
 
 * Read the project [Code of Conduct](CODE_OF_CONDUCT.md) and remember to be nice to one another.
 * Read up on [Contributing and the code style of iD](CONTRIBUTING.md).
-* See [open issues in the issue tracker](https://github.com/openstreetmap/iD/issues?state=open)
+* See [open issues in the issue tracker](https://github.com/OpenHistoricalMap/issues/labels/iD)
 if you're looking for something to do.
 * [Translate!](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating)
-* Test a prerelease version of iD:
-  * Stable mirror of `release` branch: https://ideditor-release.netlify.app
-  * Development mirror of `develop` branch + latest translations: https://ideditor.netlify.app
+* [Test a prerelease version](https://staging.openhistoricalmap.org/) of the `staging` branch
 
-Come on in, the water's lovely. More help? Ping `Martin Raifer`/`tyr_asd` or `bhousel` on:
-* [OpenStreetMap US Slack](https://slack.openstreetmap.us/) (`#id` channel)
-* [OpenStreetMap Discord](https://discord.gg/openstreetmap) (`#id` channel)
-* [OpenStreetMap IRC](https://wiki.openstreetmap.org/wiki/IRC) (`irc.oftc.net`, in `#osm-dev`)
-* [OpenStreetMap `dev` mailing list](https://wiki.openstreetmap.org/wiki/Mailing_lists)
+Come on in, the water's lovely. More help? Ping @1ec5 (Minh Nguyen) on:
+* [OpenStreetMap U.S. Slack](https://slack.openstreetmap.us/) (`#openhistoricalmap` channel)
+* [OpenStreetMap World Discord](https://discord.gg/openstreetmap) (`#openhistoricalmap` channel)
+* [OpenHistoricalMap Forum Chat](https://forum.openhistoricalmap.org/chat/c/general/2) (use your openhistoricalmap.org account)
 
 ## Prerequisites
 
@@ -46,13 +45,13 @@ To run the current development version of iD on your own computer:
 The repository is reasonably large, and it's unlikely that you need the full history (~200 MB). If you are happy to wait for it all to download, run:
 
 ```
-git clone https://github.com/openstreetmap/iD.git
+git clone https://github.com/OpenHistoricalMap/iD.git
 ```
 
 To clone only the most recent version, instead use a 'shallow clone':
 
 ```
-git clone --depth=1 https://github.com/openstreetmap/iD.git
+git clone --depth=1 https://github.com/OpenHistoricalMap/iD.git
 ```
 
 If you want to add in the full history later on, perhaps to run `git blame` or `git log`, run `git fetch --depth=1000000`
