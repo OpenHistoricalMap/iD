@@ -5,7 +5,7 @@
   "main": "dist/iD.min.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OpenHistoricalMap/iD"
+    "url": "git+https://github.com/OpenHistoricalMap/iD.git"
   },
   "homepage": "https://github.com/OpenHistoricalMap/iD",
   "bugs": "https://github.com/OpenHistoricalMap/issues/issues",
