@@ -216,12 +216,7 @@ export function utilDisplayName(entity) {
     var localizedNameKey = 'name:' + localizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || '';
     if (name) {
-        /* eslint-disable-next-line no-warning-comments */
-        // FIXME: Make this localizable again once we're set up for translation.
-        // https://github.com/OpenHistoricalMap/issues/issues/652
-        // https://github.com/OpenHistoricalMap/issues/issues/470
-        //return dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
-        return dateRange ? `${name} [${dateRange}]` : name;
+        return dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
     }
 
     var tags = {
@@ -258,12 +253,7 @@ export function utilDisplayName(entity) {
         name = t('inspector.display_name.' + keyComponents.join('_'), tags);
     }
 
-    /* eslint-disable-next-line no-warning-comments */
-    // FIXME: Make this localizable again once we're set up for translation.
-    // https://github.com/OpenHistoricalMap/issues/issues/652
-    // https://github.com/OpenHistoricalMap/issues/issues/470
-    //return name && dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
-    return dateRange ? `${name} [${dateRange}]` : name;
+    return name && dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
 }
 
 
