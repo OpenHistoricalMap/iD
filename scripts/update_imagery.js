@@ -1,7 +1,13 @@
-/* eslint-disable no-console */
-const fs = require('fs');
-let sources = require('ohm-editor-layer-index/imagery.json');
-const prettyStringify = require('json-stringify-pretty-compact');
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import prettyStringify from 'json-stringify-pretty-compact';
+
+const require = createRequire(import.meta.url);
+
+/** @type {import("geojson").FeatureCollection} */
+const sources = JSON.parse(
+  fs.readFileSync(require.resolve('ohm-editor-layer-index/imagery.json'), 'utf8')
+);
 
 if (fs.existsSync('./data/manual_imagery.json')) {
   /** @type {any[]} */

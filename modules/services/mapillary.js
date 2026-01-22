@@ -8,6 +8,7 @@ import { VectorTile } from '@mapbox/vector-tile';
 
 import { geoExtent, geoScaleToZoom } from '../geo';
 import { utilQsString, utilRebind, utilTiler, utilStringQs } from '../util';
+import { services } from './';
 
 const accessToken = 'MLY|4100327730013843|5bb78b81720791946a9a7b956c57b7cf';
 const apiUrl = 'https://graph.mapillary.com/';
@@ -30,6 +31,7 @@ let _mlyShowFeatureDetections = false;
 let _mlyShowSignDetections = false;
 let _mlyViewer;
 let _mlyViewerFilter = ['all'];
+let _isViewerOpen = false;
 
 
 // Load all data for the specified type from Mapillary vector tiles
@@ -104,6 +106,7 @@ function loadTileDataToCache(data, tile, which) {
             feature = layer.feature(i).toGeoJSON(tile.xyz[0], tile.xyz[1], tile.xyz[2]);
             loc = feature.geometry.coordinates;
             d = {
+                service: 'photo',
                 loc: loc,
                 captured_at: feature.properties.captured_at,
                 ca: feature.properties.compass_angle,
@@ -146,6 +149,7 @@ function loadTileDataToCache(data, tile, which) {
             loc = feature.geometry.coordinates;
 
             d = {
+                service: 'photo',
                 loc: loc,
                 id: feature.properties.id,
                 first_seen_at: feature.properties.first_seen_at,
@@ -171,6 +175,7 @@ function loadTileDataToCache(data, tile, which) {
             loc = feature.geometry.coordinates;
 
             d = {
+                service: 'photo',
                 loc: loc,
                 id: feature.properties.id,
                 first_seen_at: feature.properties.first_seen_at,
@@ -461,23 +466,25 @@ export default {
 
     // Make the image viewer visible
     showViewer: function(context) {
-        const wrap = context.container().select('.photoviewer')
-            .classed('hide', false);
-
+        const wrap = context.container().select('.photoviewer');
         const isHidden = wrap.selectAll('.photo-wrapper.mly-wrapper.hide').size();
 
         if (isHidden && _mlyViewer) {
-            wrap
-                .selectAll('.photo-wrapper:not(.mly-wrapper)')
-                .classed('hide', true);
+            for (const service of Object.values(services)) {
+                if (service === this) continue;
+                if (typeof service.hideViewer === 'function') {
+                    service.hideViewer(context);
+                }
+            }
 
-            wrap
+            wrap.classed('hide', false)
                 .selectAll('.photo-wrapper.mly-wrapper')
                 .classed('hide', false);
 
             _mlyViewer.resize();
         }
 
+        _isViewerOpen = true;
         return this;
     },
 
@@ -504,21 +511,27 @@ export default {
         dispatch.call('loadedMapFeatures');
         dispatch.call('loadedSigns');
 
+        _isViewerOpen = false;
+
         return this.setStyles(context, null);
+    },
+
+
+    // Get viewer status
+    isViewerOpen: function() {
+            return _isViewerOpen;
     },
 
 
     // Update the URL with current image id
     updateUrlImage: function(imageId) {
-        if (!window.mocha) {
-            const hash = utilStringQs(window.location.hash);
-            if (imageId) {
-                hash.photo = 'mapillary/' + imageId;
-            } else {
-                delete hash.photo;
-            }
-            window.location.replace('#' + utilQsString(hash, true));
+        const hash = utilStringQs(window.location.hash);
+        if (imageId) {
+            hash.photo = 'mapillary/' + imageId;
+        } else {
+            delete hash.photo;
         }
+        window.history.replaceState(null, '', '#' + utilQsString(hash, true));
     },
 
 
@@ -534,7 +547,6 @@ export default {
 
     // Initialize image viewer (Mapillar JS)
     initViewer: function(context) {
-        const that = this;
         if (!window.mapillary) return;
 
         const opts = {
@@ -564,7 +576,7 @@ export default {
         }
 
         _mlyViewer = new mapillary.Viewer(opts);
-        _mlyViewer.on('image', imageChanged);
+        _mlyViewer.on('image', imageChanged.bind(this));
         _mlyViewer.on('bearing', bearingChanged);
 
         if (_mlyViewerFilter) {
@@ -577,17 +589,17 @@ export default {
         });
 
         // imageChanged: called after the viewer has changed images and is ready.
-        function imageChanged(node) {
-            that.resetTags();
-            const image = node.image;
-            that.setActiveImage(image);
-            that.setStyles(context, null);
+        function imageChanged(photo) {
+            this.resetTags();
+            const image = photo.image;
+            this.setActiveImage(image);
+            this.setStyles(context, null);
             const loc = [image.originalLngLat.lng, image.originalLngLat.lat];
             context.map().centerEase(loc);
-            that.updateUrlImage(image.id);
+            this.updateUrlImage(image.id);
 
             if (_mlyShowFeatureDetections || _mlyShowSignDetections) {
-                that.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
+                this.updateDetections(image.id, `${apiUrl}/${image.id}/detections?access_token=${accessToken}&fields=id,image,geometry,value`);
             }
             dispatch.call('imageChanged');
         }
@@ -604,6 +616,7 @@ export default {
     selectImage: function(context, imageId) {
         if (_mlyViewer && imageId) {
             _mlyViewer.moveTo(imageId)
+                .then(image => this.setActiveImage(image))
                 .catch(function(e) {
                     console.error('mly3', e); // eslint-disable-line no-console
                 });

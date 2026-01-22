@@ -84,6 +84,9 @@ export function uiCombobox(context, klass) {
             if (input.classed('disabled')) return;
             _tDown = +new Date();
 
+            // mousedown should never bubble up (see #10481)
+            d3_event.stopPropagation();
+
             // clear selection
             var start = input.property('selectionStart');
             var end = input.property('selectionEnd');
@@ -154,18 +157,8 @@ export function uiCombobox(context, klass) {
                 .on('scroll.combo-scroll', render, true);
         }
 
-
         function hide() {
-            if (_comboHideTimerID) {
-                window.clearTimeout(_comboHideTimerID);
-                _comboHideTimerID = undefined;
-            }
-
-            container.selectAll('.combobox')
-                .remove();
-
-            container
-                .on('scroll.combo-scroll', null);
+            _hide(container);
         }
 
 
@@ -298,7 +291,7 @@ export function uiCombobox(context, klass) {
             // https://stackoverflow.com/questions/11039885/scrollintoview-causing-the-whole-page-to-move
             var selected = combo.selectAll('.combobox-option.selected').node();
             if (selected) {
-                selected.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                selected.scrollIntoView?.({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
@@ -439,7 +432,9 @@ export function uiCombobox(context, klass) {
             var val = utilGetSetValue(input);
             thiz.setSelectionRange(val.length, val.length);
 
-            d = _fetched[val];
+            if (!d) {
+                d = _fetched[val];
+            }
             dispatch.call('accept', thiz, d, val);
             hide();
         }
@@ -513,7 +508,22 @@ export function uiCombobox(context, klass) {
 }
 
 
+function _hide(container) {
+    if (_comboHideTimerID) {
+        window.clearTimeout(_comboHideTimerID);
+        _comboHideTimerID = undefined;
+    }
+
+    container.selectAll('.combobox')
+        .remove();
+
+    container
+        .on('scroll.combo-scroll', null);
+}
+
+
 uiCombobox.off = function(input, context) {
+    _hide(context.container());
     input
         .on('focus.combo-input', null)
         .on('blur.combo-input', null)

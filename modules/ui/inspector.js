@@ -77,7 +77,7 @@ export function uiInspector(context) {
             if (context.validator().getEntityIssues(entityID).length) return false;
 
             // show turn restriction editor for junction vertices
-            if (entity.isHighwayIntersection(context.graph())) return false;
+            if (entity.type === 'node' && entity.isHighwayIntersection(context.graph())) return false;
 
             // otherwise show preset list for uninteresting vertices
             return true;
@@ -87,7 +87,7 @@ export function uiInspector(context) {
             wrap.style('right', '-100%');
             editorPane.classed('hide', true);
             presetPane.classed('hide', false)
-                .call(presetList);
+                .call(presetList.autofocus(false));
         } else {
             wrap.style('right', '0%');
             presetPane.classed('hide', true);
