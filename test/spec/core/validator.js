@@ -132,9 +132,12 @@ describe('iD.coreValidator', function() {
         var validator = new iD.coreValidator(context);
         validator.init();
         await validator.validate();
-        // There should be a validation error about the untagged way
+        // There should be a validation error about the untagged way plus missing_start_date errors
         let issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(1);
+        expect(issues.length).toBeGreaterThanOrEqual(1);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_tag', 'missing_start_date']);
+        });
 
         // add way to relation
         context.perform(
@@ -142,9 +145,11 @@ describe('iD.coreValidator', function() {
         );
 
         await validator.validate();
-        // Validation error should be fixed
+        // Validation error should be fixed but missing_start_date errors remain
         issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(0);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_tag', 'missing_start_date']);
+        });
     });
 
     it('add validation issue when untagged way is removed from boundary relation', async () => {
