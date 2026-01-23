@@ -34,7 +34,7 @@ describe('iD.uiFieldDate', function() {
         }, 20);
     }));
 
-    it('ignores similar keys like `end_date`',  () => new Promise(done => {
+    it('ignores similar keys like `end_date`', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
@@ -45,7 +45,7 @@ describe('iD.uiFieldDate', function() {
         }, 20);
     }));
 
-    it('removes the tag when the value is emptied',  () => new Promise(done => {
+    it('removes the tag when the value is emptied', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
