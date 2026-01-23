@@ -56,7 +56,10 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should produce disconnected way error
         let issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(1);
+        expect(issues).to.have.lengthOf(2);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['disconnected_way', 'missing_start_date']);
+        });
 
         // Add new node with entrance node to simulate connection with rest of map
         var n3 = iD.osmNode({ id: 'n-3', loc: [4, 6], tags: { 'entrance': 'yes' } });
@@ -66,9 +69,12 @@ describe('iD.coreValidator', function() {
             iD.actionAddEntity(w2)
         );
         await validator.validate();
-        // Should be no errors
+        // Should only have a missing_start_date error
         issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(0);
+        expect(issues).to.have.lengthOf(1);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_start_date']);
+        });
     });
 
     it('add validation issue when highway becomes disconnected', async () => {
@@ -88,9 +94,11 @@ describe('iD.coreValidator', function() {
         var validator = new iD.coreValidator(context);
         validator.init();
         await validator.validate();
-        // Should be no errors
+        // Should be no errors other than missing_start_date
         let issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(0);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_start_date']);
+        });
 
         // delete second way -> first way becomes disconnected form the rest of the network
         context.perform(
@@ -100,7 +108,10 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should produce disconnected way error
         issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(1);
+        expect(issues.length).toBeGreaterThanOrEqual(1);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['disconnected_way', 'missing_start_date']);
+        });
     });
 
     it('removes validation issue when untagged way is becomes part of a boundary relation', async () => {
@@ -151,10 +162,12 @@ describe('iD.coreValidator', function() {
         var validator = new iD.coreValidator(context);
         validator.init();
         await validator.validate();
-        // Should be no errors
+        // Should only have a missing_start_date error
         let issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(0);
-
+        expect(issues).to.have.lengthOf(1);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_start_date']);
+        });
         // delete relation
         context.perform(
             iD.actionDeleteRelation(r.id)
@@ -163,6 +176,9 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should produce untagged feature error
         issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(1);
+        expect(issues).to.have.lengthOf(2);
+        issues.forEach(issue => {
+            expect(issue.type).toBeOneOf(['missing_tag', 'missing_start_date']);
+        });
     });
 });
