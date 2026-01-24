@@ -282,7 +282,7 @@ export function uiSectionPhotoOverlays(context) {
             .attr('value', () => 1 - dateSliderValue('to'))
             .classed('list-option-date-slider', true)
             .classed('to-date', true)
-            .style('display', () => dateSliderValue('to') === 0 ? 'none' : null)
+            // OHM variant: https://github.com/OpenHistoricalMap/issues/issues/1030 .style('display', () => dateSliderValue('to') === 0 ? 'none' : null)
             .style('direction', localizer.textDirection())
             .call(utilNoAuto)
             .on('change', function() {
