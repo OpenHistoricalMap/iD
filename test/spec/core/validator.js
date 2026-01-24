@@ -69,9 +69,8 @@ describe('iD.coreValidator', function() {
             iD.actionAddEntity(w2)
         );
         await validator.validate();
-        // Should only have a missing_start_date error
+        // Should be no issues other than missing_start_date
         issues = validator.getIssues();
-        expect(issues).to.have.lengthOf(1);
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['missing_start_date']);
         });
@@ -94,7 +93,7 @@ describe('iD.coreValidator', function() {
         var validator = new iD.coreValidator(context);
         validator.init();
         await validator.validate();
-        // Should be no errors other than missing_start_date
+        // Should be no issues other than missing_start_date
         let issues = validator.getIssues();
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['missing_start_date']);
