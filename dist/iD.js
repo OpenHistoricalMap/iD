@@ -19243,6 +19243,9 @@
     }
   }
   function utilDisplayName(entity, hideNetwork, isMapLabel) {
+    const appendDateRange = (name2, dateRange2) => {
+      return dateRange2 ? `${name2} [${dateRange2}]` : name2;
+    };
     var localizedNameKey = "name:" + _mainLocalizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || "";
     let dateRange;
@@ -19280,14 +19283,11 @@
       to: entity.tags.to,
       via: entity.tags.via
     };
-    if (name) {
-      return dateRange ? `${name} [${dateRange}]` : name;
-    }
     if (entity.tags.route && entity.tags.name && entity.tags.name.match(/[→⇒↔⇔]|[-=]>/)) {
-      return entity.tags.name;
+      return appendDateRange(entity.tags.name, dateRange);
     }
     if (!entity.tags.route && name) {
-      return name;
+      return appendDateRange(name, dateRange);
     }
     var keyComponents = [];
     if (tags.network) {
@@ -19311,7 +19311,7 @@
       }
     }
     if (keyComponents.length) {
-      return _t("inspector.display_name." + keyComponents.join("_"), tags);
+      return appendDateRange(_t("inspector.display_name." + keyComponents.join("_"), tags), dateRange);
     }
     const alternativeNameKeys = [
       "addr:housename",
@@ -19329,28 +19329,29 @@
     }
     for (const key of alternativeNameKeys) {
       if (key in entity.tags) {
-        return entity.tags[key];
+        return appendDateRange(entity.tags[key], dateRange);
       }
     }
     const unit2 = entity.tags["addr:unit"];
     const housenumber = entity.tags["addr:housenumber"];
     const streetOrPlace = entity.tags["addr:street"] || entity.tags["addr:place"];
     if (!isMapLabel && unit2 && housenumber && streetOrPlace) {
-      return _t("inspector.display_name_addr_with_unit", {
+      return appendDateRange(_t("inspector.display_name_addr_with_unit", {
         unit: unit2,
         housenumber,
         streetOrPlace
-      });
+      }), dateRange);
     }
     if (!isMapLabel && housenumber && streetOrPlace) {
-      return _t("inspector.display_name_addr", {
+      return appendDateRange(_t("inspector.display_name_addr", {
         housenumber,
         streetOrPlace
-      });
+      }), dateRange);
     }
-    if (housenumber) return housenumber;
+    if (housenumber) {
+      return appendDateRange(housenumber, dateRange);
+    }
     return "";
-    return dateRange ? `${name} [${dateRange}]` : name;
   }
   function utilDisplayNameForPath(entity) {
     var name = utilDisplayName(entity, void 0, true);
@@ -47770,7 +47771,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         {
           id: "google",
           regex: /(google)/i,
-          exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)/i
+          exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)|(:\/\/\S+\/\S+(google)\S+)/i
         }
       ];
     }
@@ -74635,7 +74636,6 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return _cache5[ent].parents;
     };
     features.isHiddenPreset = function(preset, geometry) {
-      if (!_hidden.length) return false;
       if (!preset.tags) return false;
       var test = preset.setTags({ ...preset.tags }, geometry);
       for (var key in _rules) {
@@ -74649,18 +74649,15 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return false;
     };
     features.isHiddenFeature = function(entity, resolver, geometry) {
-      if (!_hidden.length) return false;
       if (!entity.version) return false;
       if (_forceVisible[entity.id]) return false;
       if (!features.featureFitsDateRange(entity)) return true;
-      if (!_hidden.length) return false;
       var matches = Object.keys(features.getMatches(entity, resolver, geometry));
       return matches.length && matches.every(function(k3) {
         return features.hidden(k3);
       });
     };
     features.isHiddenChild = function(entity, resolver, geometry) {
-      if (!_hidden.length) return false;
       if (!entity.version || geometry === "point") return false;
       if (_forceVisible[entity.id]) return false;
       if (!features.featureFitsDateRange(entity)) return true;
@@ -74674,7 +74671,6 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       return true;
     };
     features.hasHiddenConnections = function(entity, resolver) {
-      if (!_hidden.length) return false;
       var childNodes, connections;
       if (entity.type === "midpoint") {
         childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -74691,7 +74687,6 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
     };
     features.isHidden = function(entity, resolver, geometry) {
-      if (!_hidden.length) return false;
       if (!entity.version) return false;
       var fn = geometry === "vertex" ? features.isHiddenChild : features.isHiddenFeature;
       return fn(entity, resolver, geometry);
@@ -83531,7 +83526,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!value && Array.isArray(d4.value)) return;
       let t2 = {};
       t2[sourceKey] = value;
-      d4.value = value;
+      if (d4.value !== void 0) d4.value = value;
       dispatch12.call("change", this, t2);
     }
     function addSource(d3_event) {
@@ -85249,7 +85244,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!value && Array.isArray(d4.value)) return;
       let t2 = {};
       t2[edtfKey] = value;
-      d4.value = value;
+      if (d4.value !== void 0) d4.value = value;
       dispatch12.call("change", this, t2);
     }
     function renderEDTF(selection2) {
