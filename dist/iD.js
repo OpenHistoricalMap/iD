@@ -82673,7 +82673,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         this.value = dateSliderValue("from");
       });
       sliderWrap.append("div").attr("class", "date-slider-label");
-      sliderWrap.append("input").attr("type", "range").attr("min", 0).attr("max", 1).attr("step", 1e-3).attr("list", "photo-overlay-date-range-inverted").attr("value", () => 1 - dateSliderValue("to")).classed("list-option-date-slider", true).classed("to-date", true).style("display", () => dateSliderValue("to") === 0 ? "none" : null).style("direction", _mainLocalizer.textDirection()).call(utilNoAuto).on("change", function() {
+      sliderWrap.append("input").attr("type", "range").attr("min", 0).attr("max", 1).attr("step", 1e-3).attr("list", "photo-overlay-date-range-inverted").attr("value", () => 1 - dateSliderValue("to")).classed("list-option-date-slider", true).classed("to-date", true).style("direction", _mainLocalizer.textDirection()).call(utilNoAuto).on("change", function() {
         let value = select_default2(this).property("value");
         setYearFilter(1 - value, true, "to");
       });
