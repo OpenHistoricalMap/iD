@@ -1,6 +1,7 @@
 import { actionChangeTags } from '../actions/change_tags';
 import { localizer, t } from '../core/localizer';
-import { utilDisplayLabel, utilNormalizeDateString } from '../util';
+import { utilDisplayLabel } from '../util/utilDisplayLabel';
+import { utilNormalizeDateString } from '../util/ohm_date';
 import { validationIssue, validationIssueFix } from '../core/validation';
 
 import * as edtf from 'edtf';
@@ -22,7 +23,7 @@ export function validationMismatchedDates() {
             }
 
             return parsed;
-        } catch (e) {
+        } catch {
             // Already handled by invalid_format rule.
             return;
         }

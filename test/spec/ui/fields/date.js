@@ -7,7 +7,7 @@ describe('iD.uiFieldDate', function() {
         field = iD.presetField('name', { key: 'start_date', type: 'date' });
     });
 
-    it('adds an EDTF field when the + button is clicked', function(done) {
+    it('adds an EDTF field when the + button is clicked', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
@@ -15,9 +15,9 @@ describe('iD.uiFieldDate', function() {
             expect(selection.selectAll('.date-value').nodes().length).to.equal(1);
             done();
         }, 20);
-    });
+    }));
 
-    it('creates an EDTF tag after setting the value', function(done) {
+    it('creates an EDTF tag after setting the value', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
@@ -32,9 +32,9 @@ describe('iD.uiFieldDate', function() {
 
             done();
         }, 20);
-    });
+    }));
 
-    it('ignores similar keys like `end_date`', function(done) {
+    it('ignores similar keys like `end_date`', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
@@ -43,9 +43,9 @@ describe('iD.uiFieldDate', function() {
             expect(selection.selectAll('.date-value').empty()).to.be.ok;
             done();
         }, 20);
-    });
+    }));
 
-    it('removes the tag when the value is emptied', function(done) {
+    it('removes the tag when the value is emptied', () => new Promise(done => {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
@@ -59,5 +59,5 @@ describe('iD.uiFieldDate', function() {
             happen.once(selection.selectAll('.date-value').node(), {type: 'change'});
             done();
         }, 20);
-    });
+    }));
 });

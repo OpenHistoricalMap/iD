@@ -285,7 +285,7 @@ export function uiFieldDate(field, context) {
 
         let t = {};
         t[edtfKey] = value;
-        d.value = value;
+        if (d.value !== undefined) d.value = value;
         dispatch.call('change', this, t);
     }
 

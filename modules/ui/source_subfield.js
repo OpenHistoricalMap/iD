@@ -122,7 +122,7 @@ export function uiSourceSubfield(context, field, tags, dispatch) {
 
         let t = {};
         t[sourceKey] = value;
-        d.value = value;
+        if (d.value !== undefined) d.value = value;
         dispatch.call('change', this, t);
     }
 

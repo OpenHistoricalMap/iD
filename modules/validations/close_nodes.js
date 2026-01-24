@@ -1,5 +1,6 @@
 import { actionMergeNodes } from '../actions/merge_nodes';
-import { utilDisplayLabel, utilDatesOverlap } from '../util';
+import { utilDisplayLabel } from '../util/utilDisplayLabel';
+import { utilDatesOverlap } from '../util';
 import { t } from '../core/localizer';
 import { validationIssue, validationIssueFix } from '../core/validation';
 import { osmPathHighwayTagValues } from '../osm/tags';
