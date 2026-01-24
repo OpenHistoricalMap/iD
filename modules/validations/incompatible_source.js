@@ -14,7 +14,7 @@ const incompatibleRules = [
   {
     id: 'google',
     regex: /(google)/i,
-    exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)/i
+    exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)|(:\/\/\S+\/\S+(google)\S+)/i
   }
 ];
 
