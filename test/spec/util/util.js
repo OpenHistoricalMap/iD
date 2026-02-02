@@ -363,6 +363,9 @@ describe('iD.util', function() {
             expect(iD.utilDisplayName({tags: {name: 'Capitol Christmas Tree', start_date: '2021-11-19', end_date: '2021-12-25'}})).to.eql('Capitol Christmas Tree [2021]');
             expect(iD.utilDisplayName({tags: {name: 'Binary Search Tree', start_date: '0b0110', end_date: '0b0110'}})).to.eql('Binary Search Tree');
         });
+        it('appends a date range even if unnamed', function() {
+            expect(iD.utilDisplayName({tags: {start_date: '1988-03-01'}})).to.eql('[1988 – ]');
+        });
     });
 
     describe('utilOldestID', function() {
