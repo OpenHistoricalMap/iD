@@ -197,7 +197,7 @@ export function utilDisplayName(entity, hideNetwork, isMapLabel) {
     // https://github.com/OpenHistoricalMap/issues/issues/470
     //return name && dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
     const appendDateRange = (name, dateRange) => {
-        return dateRange ? `${name} [${dateRange}]` : name;
+        return dateRange ? `${name} [${dateRange}]`.trim() : name;
     };
 
     var localizedNameKey = 'name:' + localizer.languageCode().toLowerCase();
@@ -335,7 +335,7 @@ export function utilDisplayName(entity, hideNetwork, isMapLabel) {
     }
 
     // no match found
-    return '';
+    return appendDateRange('', dateRange);
 }
 
 
