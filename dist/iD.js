@@ -19244,7 +19244,7 @@
   }
   function utilDisplayName(entity, hideNetwork, isMapLabel) {
     const appendDateRange = (name2, dateRange2) => {
-      return dateRange2 ? `${name2} [${dateRange2}]` : name2;
+      return dateRange2 ? `${name2} [${dateRange2}]`.trim() : name2;
     };
     var localizedNameKey = "name:" + _mainLocalizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || "";
@@ -19351,7 +19351,7 @@
     if (housenumber) {
       return appendDateRange(housenumber, dateRange);
     }
-    return "";
+    return appendDateRange("", dateRange);
   }
   function utilDisplayNameForPath(entity) {
     var name = utilDisplayName(entity, void 0, true);
