@@ -612,7 +612,7 @@ export function rendererFeatures(context) {
 
 
     features.filter = function(d, resolver) {
-        if (!_hidden.length) return d;
+        // if (!_hidden.length) return d;
 
         var result = [];
         for (var i = 0; i < d.length; i++) {
