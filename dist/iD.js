@@ -1340,7 +1340,7 @@
     "package.json"() {
       package_default = {
         name: "@openhistoricalmap/id",
-        version: "2.29.4",
+        version: "2.29.5",
         description: "The OpenHistoricalMap fork of a friendly editor for OpenStreetMap",
         main: "dist/iD.min.js",
         repository: {
