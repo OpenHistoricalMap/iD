@@ -80462,9 +80462,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       sawVersion = currVersion;
     }
     return function(selection2) {
-      selection2.append("a").attr("target", "_blank").attr("href", "https://github.com/openstreetmap/iD").text(currVersion);
+      selection2.append("a").attr("target", "_blank").attr("href", "https://github.com/OpenHistoricalMap/iD").text(currVersion);
       if (isNewVersion && !isNewUser) {
-        selection2.append("a").attr("class", "badge").attr("target", "_blank").attr("href", `https://github.com/openstreetmap/iD/releases/tag/v${currVersion}`).call(svgIcon("#maki-gift")).call(
+        selection2.append("a").attr("class", "badge").attr("target", "_blank").attr("href", `https://github.com/OpenHistoricalMap/iD/releases/tag/v${currVersion}`).call(svgIcon("#maki-gift")).call(
           uiTooltip().title(() => _t.append("version.whats_new", { version: currVersion })).placement("top").scrollContainer(context.container().select(".main-footer-wrap"))
         );
       }
