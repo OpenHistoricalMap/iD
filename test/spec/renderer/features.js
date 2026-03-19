@@ -613,6 +613,7 @@ describe('iD.rendererFeatures', function() {
             expect(features.isHidden(b, graph, bgeo)).to.be.false;
             expect(features.isHidden(c, graph, cgeo)).to.be.true;
             expect(features.dateMatchCount()).to.eql(1);
+            expect(features.filter([a, b, c], graph)).to.deep.equal([a, b]);
         });
 
         it('#forceVisible', function() {
