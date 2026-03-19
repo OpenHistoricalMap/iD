@@ -653,7 +653,7 @@ describe('iD.rendererFeatures', function() {
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
-            msg = ++i + ' points';
+            msg = (i + 1) + ' points';
 
             expect(hidden, msg).to.include('points');
             expect(autoHidden, msg).to.include('points');
@@ -684,7 +684,7 @@ describe('iD.rendererFeatures', function() {
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
-            msg = ++i + ' points';
+            msg = (i + 1) + ' points';
 
             expect(hidden, msg).to.include('points');
             expect(autoHidden, msg).to.include('points');

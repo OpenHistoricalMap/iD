@@ -72,7 +72,7 @@ export function coreFileFetcher() {
   function getUrl(url, which) {
     let prom = _inflight[url];
     if (!prom) {
-      _inflight[url] = prom = (window.VITEST ? import(`../${url}`) : fetch(url))
+      prom = (window.VITEST ? import(`../${url}`) : fetch(url))
         .then(response => {
           if (window.VITEST) return response.default;
 
@@ -94,6 +94,7 @@ export function coreFileFetcher() {
           delete _inflight[url];
           throw err;
         });
+      _inflight[url] = prom;
     }
 
     return prom;
