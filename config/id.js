@@ -24,6 +24,7 @@ const defaultOsmApiConnections = {
     client_secret: 'OnfWFC-JkZNHyYdr_viNn_h_RTZXRslKcUxllOXqf5g'
   }
 };
+/** @type {{ url: string; apiUrl: string; client_id: string; }[]} */
 const osmApiConnections = [];
 if (ENV__ID_API_CONNECTION_URL !== null &&
     ENV__ID_API_CONNECTION_CLIENT_ID !== null &&

@@ -613,6 +613,7 @@ describe('iD.rendererFeatures', function() {
             expect(features.isHidden(b, graph, bgeo)).to.be.false;
             expect(features.isHidden(c, graph, cgeo)).to.be.true;
             expect(features.dateMatchCount()).to.eql(1);
+            expect(features.filter([a, b, c], graph)).to.deep.equal([a, b]);
         });
 
         it('#forceVisible', function() {
@@ -652,7 +653,7 @@ describe('iD.rendererFeatures', function() {
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
-            msg = ++i + ' points';
+            msg = (i + 1) + ' points';
 
             expect(hidden, msg).to.include('points');
             expect(autoHidden, msg).to.include('points');
@@ -683,7 +684,7 @@ describe('iD.rendererFeatures', function() {
             features.gatherStats(all, graph, dimensions);
             hidden = features.hidden();
             autoHidden = features.autoHidden();
-            msg = ++i + ' points';
+            msg = (i + 1) + ' points';
 
             expect(hidden, msg).to.include('points');
             expect(autoHidden, msg).to.include('points');

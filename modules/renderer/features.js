@@ -478,7 +478,8 @@ export function rendererFeatures(context) {
                 }
 
                 if (_rules[_keys[i]].filter(entity.tags, geometry)) {
-                    matches[_keys[i]] = hasMatch = true;
+                    matches[_keys[i]] = true;
+                    hasMatch = true;
                 }
             }
             _cache[ent].matches = matches;
@@ -612,7 +613,7 @@ export function rendererFeatures(context) {
 
 
     features.filter = function(d, resolver) {
-        if (!_hidden.length) return d;
+        // if (!_hidden.length) return d;
 
         var result = [];
         for (var i = 0; i < d.length; i++) {
