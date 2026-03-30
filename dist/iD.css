@@ -374,8 +374,7 @@
 
 /* No interactivity except what we specifically allow */
 .ideditor .data-layer.osm *,
-.ideditor .data-layer.notes *,
-.ideditor .data-layer.keepRight * {
+.ideditor .data-layer.notes * {
     pointer-events: none;
 }
 
@@ -3544,7 +3543,6 @@
 /* OSM Notes and QA Layers */
 
 .ideditor .qa-header-icon .qaItem-fill,
-.ideditor .layer-keepRight .qaItem .qaItem-fill,
 .ideditor .layer-osmose .qaItem .qaItem-fill {
     stroke: #333;
     stroke-width: 1.3px;  /* NOTE: likely a better way to scale the icon stroke */
@@ -3593,79 +3591,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* Keep Right Issues
-------------------------------------------------------- */
-.ideditor .keepRight.itemType-20,     
-.ideditor .keepRight.itemType-40,     
-.ideditor .keepRight.itemType-210,     
-.ideditor .keepRight.itemType-270,     
-.ideditor .keepRight.itemType-310,     
-.ideditor .keepRight.itemType-320,     
-.ideditor .keepRight.itemType-350 {   /* improper bridge tag */
-    color: #ff9;
-}
-
-.ideditor .keepRight.itemType-50 {    /* almost junctions */
-    color: #88f;
-}
-
-.ideditor .keepRight.itemType-60,     
-.ideditor .keepRight.itemType-70,     
-.ideditor .keepRight.itemType-90,     
-.ideditor .keepRight.itemType-100,     
-.ideditor .keepRight.itemType-110,     
-.ideditor .keepRight.itemType-150,     
-.ideditor .keepRight.itemType-220,     
-.ideditor .keepRight.itemType-380 {   /* non-physical sport tag */
-    color: #5d0;
-}
-
-.ideditor .keepRight.itemType-130 {   /* disconnected ways */
-    color: #fa3;
-}
-
-.ideditor .keepRight.itemType-170 {   /* FIXME tag */
-    color: #ff0;
-}
-
-.ideditor .keepRight.itemType-190 {   /* intersection without junction */
-    color: #f33;
-}
-
-.ideditor .keepRight.itemType-200 {   /* overlapping ways */
-    color: #fdbf6f;
-}
-
-.ideditor .keepRight.itemType-160,    
-.ideditor .keepRight.itemType-230 {   /* layer conflict */
-    color: #b60;
-}
-
-.ideditor .keepRight.itemType-280 {   /* boundary issues */
-    color: #5f47a0;
-}
-
-.ideditor .keepRight.itemType-180,    
-.ideditor .keepRight.itemType-290 {   /* turn restriction issues */
-    color: #ace;
-}
-
-.ideditor .keepRight.itemType-300,    
-.ideditor .keepRight.itemType-390 {   /* missing tracktype */
-    color: #090;
-}
-
-.ideditor .keepRight.itemType-360,    
-.ideditor .keepRight.itemType-370,    
-.ideditor .keepRight.itemType-410 {   /* website issues */
-    color: #f9b;
-}
-
-.ideditor .keepRight.itemType-120,    
-.ideditor .keepRight.itemType-400 {   /* geometry / turn angles */
-    color: #c35;
 }
 
 /* Custom Map Data (geojson, gpx, kml, vector tile) */
@@ -5484,19 +5409,11 @@
     display: flex;
     flex-flow: row nowrap;
 }
-.ideditor .form-field ul.rows li.labeled-input > div,
-.ideditor .form-field ul.rows li.labeled-input-source > div {
+.ideditor .form-field ul.rows li.labeled-input > div {
     flex: 1 1 auto;
     width: 100%;
     border-radius: 0;
     line-height: 0.95rem;
-}
-.ideditor .form-field ul.rows li.labeled-input div > span,
-.ideditor .form-field ul.rows li.labeled-input-source div > span{
-    vertical-align: middle;
-}
-.ideditor .form-field ul.rows li.labeled-input-source > div {
-    width: auto;
 }
 .ideditor .form-field ul.rows li input {
     border-radius: 0;
@@ -5521,12 +5438,10 @@
     display: table;
     width: 100%;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input,
-.ideditor .form-field ul.rows.rows-table li.labeled-input-source {
+.ideditor .form-field ul.rows.rows-table li.labeled-input {
     display: table-row;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input > div:first-child,
-.ideditor .form-field ul.rows.rows-table li.labeled-input-source > div:first-child {
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:first-child {
     display: table-cell;
     width: auto;
     max-width: 170px;
@@ -5534,8 +5449,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input > div:nth-child(2),
-.ideditor .form-field ul.rows.rows-table li.labeled-input-source > div:nth-child(2) {
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:nth-child(2) {
     display: table-cell;
     width: auto;
 }
@@ -5966,13 +5880,8 @@
 }
 
 
-/* Field - date, roadheight, and roadspeed
+/* Field - roadheight and roadspeed
 ------------------------------------------------------- */
-.ideditor .form-field-input-source {
-    flex-direction: column;
-}
-.ideditor .form-field-input-date input.date-year,
-.ideditor .form-field-input-date input.date-month,
 .ideditor .form-field-input-roadheight input.roadheight-number,
 .ideditor .form-field-input-roadheight input.roadheight-secondary-number,
 .ideditor .form-field-input-roadspeed input.roadspeed-number {
@@ -5984,29 +5893,23 @@
     flex: 0 1 auto;
     width: 60px;
 }
-.ideditor .form-field-input-date input.date-era,
-.ideditor .form-field-input-date input.date-day,
 .ideditor .form-field-input-roadspeed input.roadspeed-unit {
     flex: 0 1 auto;
     width: 80px;
 }
-.ideditor[dir='ltr'] .form-field-input-date > input:first-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:first-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 0 4px;
 }
-.ideditor[dir='rtl'] .form-field-input-date > input:first-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:first-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='ltr'] .form-field-input-date > input:last-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:last-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadspeed > input:last-of-type {
     border-left: 0;
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='rtl'] .form-field-input-date > input:last-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:last-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadspeed > input:last-of-type {
     border-right: 0;
@@ -6014,7 +5917,7 @@
 }
 
 
-/* Field - Localized Name, Date
+/* Field - Localized Name
 ------------------------------------------------------- */
 .ideditor .form-field-input-localized > input.localized-main {
     border-radius: 0 0 0 4px;
@@ -6022,12 +5925,10 @@
 .ideditor[dir='rtl'] .form-field-input-localized > input.localized-main {
     border-radius: 0 0 4px 0;
 }
-.ideditor .form-field-input-localized > button.localized-add,
-.ideditor .form-field-input-date > button.date-add {
+.ideditor .form-field-input-localized > button.localized-add {
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='rtl'] .form-field-input-localized > button.localized-add,
-.ideditor[dir='rtl'] .form-field-input-date > button.date-add {
+.ideditor[dir='rtl'] .form-field-input-localized > button.localized-add {
     border-radius: 0 0 0 4px;
 }
 
@@ -6040,24 +5941,18 @@
     cursor: not-allowed;
 }
 
-/* nested subfields for name in different languages or date in different formats */
-.ideditor .localized-multilingual,
-.ideditor .field-source,
-.ideditor .date-edtf {
+/* nested subfields for name in different languages */
+.ideditor .localized-multilingual {
     padding: 0 10px;
     flex-basis: 100%;
 }
-.ideditor .localized-multilingual .entry,
-.ideditor .field-source .entry,
-.ideditor .date-edtf .entry {
+.ideditor .localized-multilingual .entry {
     position: relative;
     overflow: hidden;
 }
 
 /* draws a little line connecting the multilingual field up to the name field */
-.ideditor .localized-multilingual .entry::before,
-.ideditor .field-source .entry::before,
-.ideditor .date-edtf .entry::before {
+.ideditor .localized-multilingual .entry::before {
     content: "";
     display: block;
     position: absolute;
@@ -6075,23 +5970,10 @@
     border-top-width: 0;
     width: 100%;
 }
-.ideditor .localized-multilingual .entry .localized-value,
-.ideditor .field-source .entry .field-source-value,
-.ideditor .date-edtf .entry .date-value {
+.ideditor .localized-multilingual .entry .localized-value {
     border-top-width: 0;
     border-radius: 0 0 4px 4px;
     width: 100%;
-}
-
-
-/* Field - Date
-------------------------------------------------------- */
-.ideditor .form-field-input-date > input.date-main + input.date-main,
-.ideditor .form-field-input-date > .combobox-caret + input.date-main {
-    border-left: 0;
-}
-.ideditor .form-field-input-date > input.date-main:last-of-type {
-    border-radius: 0;
 }
 
 
@@ -6275,11 +6157,8 @@
             user-select: none;
 }
 
-.ideditor .restriction-help span {
-    margin: 2px;
-}
-
 .ideditor .restriction-help .qualifier {
+    margin: 2px;
     color: #666;
     font-weight: bold;
 }
@@ -6916,10 +6795,6 @@
 .ideditor .add-row .add-relation,
 .ideditor .add-row .space-value {
     flex: 1 1 50%;
-}
-.ideditor .add-row .add-subkey {
-    width: 32px;
-    flex: 0 1 auto;
 }
 .ideditor .add-row .space-buttons {
     flex: 0 0 62px;
@@ -8951,7 +8826,7 @@
     margin-left: 5px;
 }
 
-.ideditor .user-list a:not(:last-child):after {
+.ideditor .user-list a:not(:last-of-type):after {
     content: ', ';
 }
 

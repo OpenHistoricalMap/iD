@@ -1,6 +1,6 @@
 {
   "name": "@openhistoricalmap/id",
-  "version": "2.29.6",
+  "version": "2.39.5",
   "description": "The OpenHistoricalMap fork of a friendly editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": {
@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "@actions/github-script": "github:actions/github-script#v8.0.0",
-    "@enzet/roentgen": "^0.13.0",
+    "@enzet/roentgen": "^0.14.0",
     "@eslint/js": "^10.0.1",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
     "@fortawesome/free-brands-svg-icons": "^7.2.0",
