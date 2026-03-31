@@ -38401,6 +38401,7 @@ ${source}
           translations: "node scripts/update_locales.js"
         },
         dependencies: {
+          "@esri/wayback-core": "^1.0.10",
           "@mapbox/geojson-area": "^0.2.2",
           "@mapbox/sexagesimal": "1.2.0",
           "@mapbox/vector-tile": "^2.0.4",
@@ -38428,7 +38429,6 @@ ${source}
           pbf: "^4.0.1",
           "polygon-clipping": "~0.15.7",
           rbush: "4.0.1",
-          vitest: "^4.0.9",
           "whatwg-fetch": "^3.6.20",
           "which-polygon": "2.2.1"
         },
@@ -38493,7 +38493,8 @@ ${source}
           "sinon-chai": "^4.0.1",
           "svg-sprite": "2.0.4",
           typescript: "^5.9.3",
-          "typescript-eslint": "^8.56.0"
+          "typescript-eslint": "^8.56.0",
+          vitest: "^4.1.2"
         },
         engines: {
           node: ">=22"
