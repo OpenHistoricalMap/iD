@@ -1234,8 +1234,8 @@
       return promisifyRequest(store.transaction);
     });
   }
-  function getMany(keys4, customStore = defaultGetStore()) {
-    return customStore("readonly", (store) => Promise.all(keys4.map((key) => promisifyRequest(store.get(key)))));
+  function getMany(keys5, customStore = defaultGetStore()) {
+    return customStore("readonly", (store) => Promise.all(keys5.map((key) => promisifyRequest(store.get(key)))));
   }
   function update(key, updater, customStore = defaultGetStore()) {
     return customStore("readwrite", (store) => (
@@ -1260,9 +1260,9 @@
       return promisifyRequest(store.transaction);
     });
   }
-  function delMany(keys4, customStore = defaultGetStore()) {
+  function delMany(keys5, customStore = defaultGetStore()) {
     return customStore("readwrite", (store) => {
-      keys4.forEach((key) => store.delete(key));
+      keys5.forEach((key) => store.delete(key));
       return promisifyRequest(store.transaction);
     });
   }
@@ -1305,7 +1305,7 @@
         return Promise.all([
           promisifyRequest(store.getAllKeys()),
           promisifyRequest(store.getAll())
-        ]).then(([keys4, values3]) => keys4.map((key, i3) => [key, values3[i3]]));
+        ]).then(([keys5, values3]) => keys5.map((key, i3) => [key, values3[i3]]));
       }
       const items = [];
       return customStore("readonly", (store2) => eachCursor(store2, (cursor) => items.push([cursor.key, cursor.value])).then(() => items));
@@ -1454,24 +1454,24 @@
   __export(extent_exports, {
     geoExtent: () => geoExtent
   });
-  function geoExtent(min4, max4) {
+  function geoExtent(min5, max5) {
     if (!(this instanceof geoExtent)) {
-      return new geoExtent(min4, max4);
-    } else if (min4 instanceof geoExtent) {
+      return new geoExtent(min5, max5);
+    } else if (min5 instanceof geoExtent) {
       return (
         /** @type {geoExtent} */
-        min4
+        min5
       );
-    } else if (min4 && min4.length === 2 && min4[0].length === 2 && min4[1].length === 2) {
+    } else if (min5 && min5.length === 2 && min5[0].length === 2 && min5[1].length === 2) {
       this[0] = /** @type {Vec2} */
-      min4[0];
+      min5[0];
       this[1] = /** @type {Vec2} */
-      min4[1];
+      min5[1];
     } else {
       this[0] = /** @type {Vec2} */
-      min4 || [Infinity, Infinity];
+      min5 || [Infinity, Infinity];
       this[1] = /** @type {Vec2} */
-      max4 || min4 || [-Infinity, -Infinity];
+      max5 || min5 || [-Infinity, -Infinity];
     }
   }
   var init_extent = __esm({
@@ -1745,7 +1745,7 @@
     return p2[0] * q3[1] - p2[1] * q3[0];
   }
   function geoVecProject(a2, points2) {
-    var min4 = Infinity;
+    var min5 = Infinity;
     var idx;
     var target;
     for (var i3 = 0; i3 < points2.length - 1; i3++) {
@@ -1762,14 +1762,14 @@
         p2 = [o2[0] + proj * s2[0], o2[1] + proj * s2[1]];
       }
       var dist = geoVecLength(p2, a2);
-      if (dist < min4) {
-        min4 = dist;
+      if (dist < min5) {
+        min5 = dist;
         idx = i3 + 1;
         target = p2;
       }
     }
     if (idx !== void 0) {
-      return { index: idx, distance: min4, target };
+      return { index: idx, distance: min5, target };
     } else {
       return null;
     }
@@ -1822,7 +1822,7 @@
     var ids = nodes.map(function(n3) {
       return n3.id;
     });
-    var min4 = Infinity;
+    var min5 = Infinity;
     var idx;
     var loc;
     for (var i3 = 0; i3 < points2.length - 1; i3++) {
@@ -1840,14 +1840,14 @@
         p2 = [o2[0] + proj * s2[0], o2[1] + proj * s2[1]];
       }
       var d2 = dist(p2, point3);
-      if (d2 < min4) {
-        min4 = d2;
+      if (d2 < min5) {
+        min5 = d2;
         idx = i3 + 1;
         loc = projection2.invert(p2);
       }
     }
     if (idx !== void 0) {
-      return { index: idx, distance: min4, loc };
+      return { index: idx, distance: min5, loc };
     } else {
       return null;
     }
@@ -2023,19 +2023,19 @@
     return length2;
   }
   function geoViewportEdge(point3, dimensions) {
-    var pad6 = [80, 20, 50, 20];
+    var pad7 = [80, 20, 50, 20];
     var x3 = 0;
     var y3 = 0;
-    if (point3[0] > dimensions[0] - pad6[1]) {
+    if (point3[0] > dimensions[0] - pad7[1]) {
       x3 = -10;
     }
-    if (point3[0] < pad6[3]) {
+    if (point3[0] < pad7[3]) {
       x3 = 10;
     }
-    if (point3[1] > dimensions[1] - pad6[2]) {
+    if (point3[1] > dimensions[1] - pad7[2]) {
       y3 = -10;
     }
-    if (point3[1] < pad6[0]) {
+    if (point3[1] < pad7[0]) {
       y3 = 10;
     }
     if (x3 || y3) {
@@ -2175,13 +2175,13 @@
     return values3;
   }
   function Blur2(blur3) {
-    return function(data, rx, ry = rx) {
+    return function(data2, rx, ry = rx) {
       if (!((rx = +rx) >= 0)) throw new RangeError("invalid rx");
       if (!((ry = +ry) >= 0)) throw new RangeError("invalid ry");
-      let { data: values3, width, height } = data;
+      let { data: values3, width, height } = data2;
       if (!((width = Math.floor(width)) >= 0)) throw new RangeError("invalid width");
       if (!((height = Math.floor(height !== void 0 ? height : values3.length / width)) >= 0)) throw new RangeError("invalid height");
-      if (!width || !height || !rx && !ry) return data;
+      if (!width || !height || !rx && !ry) return data2;
       const blurx = rx && blur3(rx);
       const blury = ry && blur3(ry);
       const temp = values3.slice();
@@ -2201,27 +2201,27 @@
         blurv(blury, temp, values3, width, height);
         blurv(blury, values3, temp, width, height);
       }
-      return data;
+      return data2;
     };
   }
-  function blurh(blur3, T3, S2, w3, h2) {
+  function blurh(blur3, T3, S3, w3, h2) {
     for (let y3 = 0, n3 = w3 * h2; y3 < n3; ) {
-      blur3(T3, S2, y3, y3 += w3, 1);
+      blur3(T3, S3, y3, y3 += w3, 1);
     }
   }
-  function blurv(blur3, T3, S2, w3, h2) {
+  function blurv(blur3, T3, S3, w3, h2) {
     for (let x3 = 0, n3 = w3 * h2; x3 < w3; ++x3) {
-      blur3(T3, S2, x3, x3 + n3, w3);
+      blur3(T3, S3, x3, x3 + n3, w3);
     }
   }
   function blurfImage(radius) {
     const blur3 = blurf(radius);
-    return (T3, S2, start2, stop, step) => {
+    return (T3, S3, start2, stop, step) => {
       start2 <<= 2, stop <<= 2, step <<= 2;
-      blur3(T3, S2, start2 + 0, stop + 0, step);
-      blur3(T3, S2, start2 + 1, stop + 1, step);
-      blur3(T3, S2, start2 + 2, stop + 2, step);
-      blur3(T3, S2, start2 + 3, stop + 3, step);
+      blur3(T3, S3, start2 + 0, stop + 0, step);
+      blur3(T3, S3, start2 + 1, stop + 1, step);
+      blur3(T3, S3, start2 + 2, stop + 2, step);
+      blur3(T3, S3, start2 + 3, stop + 3, step);
     };
   }
   function blurf(radius) {
@@ -2229,34 +2229,34 @@
     if (radius0 === radius) return bluri(radius);
     const t4 = radius - radius0;
     const w3 = 2 * radius + 1;
-    return (T3, S2, start2, stop, step) => {
+    return (T3, S3, start2, stop, step) => {
       if (!((stop -= step) >= start2)) return;
-      let sum3 = radius0 * S2[start2];
+      let sum3 = radius0 * S3[start2];
       const s0 = step * radius0;
       const s1 = s0 + step;
       for (let i3 = start2, j3 = start2 + s0; i3 < j3; i3 += step) {
-        sum3 += S2[Math.min(stop, i3)];
+        sum3 += S3[Math.min(stop, i3)];
       }
       for (let i3 = start2, j3 = stop; i3 <= j3; i3 += step) {
-        sum3 += S2[Math.min(stop, i3 + s0)];
-        T3[i3] = (sum3 + t4 * (S2[Math.max(start2, i3 - s1)] + S2[Math.min(stop, i3 + s1)])) / w3;
-        sum3 -= S2[Math.max(start2, i3 - s0)];
+        sum3 += S3[Math.min(stop, i3 + s0)];
+        T3[i3] = (sum3 + t4 * (S3[Math.max(start2, i3 - s1)] + S3[Math.min(stop, i3 + s1)])) / w3;
+        sum3 -= S3[Math.max(start2, i3 - s0)];
       }
     };
   }
   function bluri(radius) {
     const w3 = 2 * radius + 1;
-    return (T3, S2, start2, stop, step) => {
+    return (T3, S3, start2, stop, step) => {
       if (!((stop -= step) >= start2)) return;
-      let sum3 = radius * S2[start2];
+      let sum3 = radius * S3[start2];
       const s2 = step * radius;
       for (let i3 = start2, j3 = start2 + s2; i3 < j3; i3 += step) {
-        sum3 += S2[Math.min(stop, i3)];
+        sum3 += S3[Math.min(stop, i3)];
       }
       for (let i3 = start2, j3 = stop; i3 <= j3; i3 += step) {
-        sum3 += S2[Math.min(stop, i3 + s2)];
+        sum3 += S3[Math.min(stop, i3 + s2)];
         T3[i3] = sum3 / w3;
-        sum3 -= S2[Math.max(start2, i3 - s2)];
+        sum3 -= S3[Math.max(start2, i3 - s2)];
       }
     };
   }
@@ -2388,8 +2388,8 @@
   });
 
   // node_modules/d3-array/src/permute.js
-  function permute(source, keys4) {
-    return Array.from(keys4, (key) => source[key]);
+  function permute(source, keys5) {
+    return Array.from(keys5, (key) => source[key]);
   }
   var init_permute = __esm({
     "node_modules/d3-array/src/permute.js"() {
@@ -2447,37 +2447,37 @@
   // node_modules/d3-array/src/ticks.js
   function tickSpec(start2, stop, count2) {
     const step = (stop - start2) / Math.max(0, count2), power = Math.floor(Math.log10(step)), error = step / Math.pow(10, power), factor = error >= e10 ? 10 : error >= e5 ? 5 : error >= e2 ? 2 : 1;
-    let i1, i22, inc;
+    let i1, i22, inc2;
     if (power < 0) {
-      inc = Math.pow(10, -power) / factor;
-      i1 = Math.round(start2 * inc);
-      i22 = Math.round(stop * inc);
-      if (i1 / inc < start2) ++i1;
-      if (i22 / inc > stop) --i22;
-      inc = -inc;
+      inc2 = Math.pow(10, -power) / factor;
+      i1 = Math.round(start2 * inc2);
+      i22 = Math.round(stop * inc2);
+      if (i1 / inc2 < start2) ++i1;
+      if (i22 / inc2 > stop) --i22;
+      inc2 = -inc2;
     } else {
-      inc = Math.pow(10, power) * factor;
-      i1 = Math.round(start2 / inc);
-      i22 = Math.round(stop / inc);
-      if (i1 * inc < start2) ++i1;
-      if (i22 * inc > stop) --i22;
+      inc2 = Math.pow(10, power) * factor;
+      i1 = Math.round(start2 / inc2);
+      i22 = Math.round(stop / inc2);
+      if (i1 * inc2 < start2) ++i1;
+      if (i22 * inc2 > stop) --i22;
     }
     if (i22 < i1 && 0.5 <= count2 && count2 < 2) return tickSpec(start2, stop, count2 * 2);
-    return [i1, i22, inc];
+    return [i1, i22, inc2];
   }
   function ticks(start2, stop, count2) {
     stop = +stop, start2 = +start2, count2 = +count2;
     if (!(count2 > 0)) return [];
     if (start2 === stop) return [start2];
-    const reverse3 = stop < start2, [i1, i22, inc] = reverse3 ? tickSpec(stop, start2, count2) : tickSpec(start2, stop, count2);
+    const reverse3 = stop < start2, [i1, i22, inc2] = reverse3 ? tickSpec(stop, start2, count2) : tickSpec(start2, stop, count2);
     if (!(i22 >= i1)) return [];
     const n3 = i22 - i1 + 1, ticks2 = new Array(n3);
     if (reverse3) {
-      if (inc < 0) for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i22 - i3) / -inc;
-      else for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i22 - i3) * inc;
+      if (inc2 < 0) for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i22 - i3) / -inc2;
+      else for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i22 - i3) * inc2;
     } else {
-      if (inc < 0) for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i1 + i3) / -inc;
-      else for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i1 + i3) * inc;
+      if (inc2 < 0) for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i1 + i3) / -inc2;
+      else for (let i3 = 0; i3 < n3; ++i3) ticks2[i3] = (i1 + i3) * inc2;
     }
     return ticks2;
   }
@@ -2487,8 +2487,8 @@
   }
   function tickStep(start2, stop, count2) {
     stop = +stop, start2 = +start2, count2 = +count2;
-    const reverse3 = stop < start2, inc = reverse3 ? tickIncrement(stop, start2, count2) : tickIncrement(start2, stop, count2);
-    return (reverse3 ? -1 : 1) * (inc < 0 ? 1 / -inc : inc);
+    const reverse3 = stop < start2, inc2 = reverse3 ? tickIncrement(stop, start2, count2) : tickIncrement(start2, stop, count2);
+    return (reverse3 ? -1 : 1) * (inc2 < 0 ? 1 / -inc2 : inc2);
   }
   var e10, e5, e2;
   var init_ticks = __esm({
@@ -2517,22 +2517,22 @@
 
   // node_modules/d3-array/src/max.js
   function max(values3, valueof) {
-    let max4;
+    let max5;
     if (valueof === void 0) {
       for (const value of values3) {
-        if (value != null && (max4 < value || max4 === void 0 && value >= value)) {
-          max4 = value;
+        if (value != null && (max5 < value || max5 === void 0 && value >= value)) {
+          max5 = value;
         }
       }
     } else {
       let index2 = -1;
       for (let value of values3) {
-        if ((value = valueof(value, ++index2, values3)) != null && (max4 < value || max4 === void 0 && value >= value)) {
-          max4 = value;
+        if ((value = valueof(value, ++index2, values3)) != null && (max5 < value || max5 === void 0 && value >= value)) {
+          max5 = value;
         }
       }
     }
-    return max4;
+    return max5;
   }
   var init_max = __esm({
     "node_modules/d3-array/src/max.js"() {
@@ -2541,20 +2541,20 @@
 
   // node_modules/d3-array/src/maxIndex.js
   function maxIndex(values3, valueof) {
-    let max4;
+    let max5;
     let maxIndex2 = -1;
     let index2 = -1;
     if (valueof === void 0) {
       for (const value of values3) {
         ++index2;
-        if (value != null && (max4 < value || max4 === void 0 && value >= value)) {
-          max4 = value, maxIndex2 = index2;
+        if (value != null && (max5 < value || max5 === void 0 && value >= value)) {
+          max5 = value, maxIndex2 = index2;
         }
       }
     } else {
       for (let value of values3) {
-        if ((value = valueof(value, ++index2, values3)) != null && (max4 < value || max4 === void 0 && value >= value)) {
-          max4 = value, maxIndex2 = index2;
+        if ((value = valueof(value, ++index2, values3)) != null && (max5 < value || max5 === void 0 && value >= value)) {
+          max5 = value, maxIndex2 = index2;
         }
       }
     }
@@ -2567,22 +2567,22 @@
 
   // node_modules/d3-array/src/min.js
   function min(values3, valueof) {
-    let min4;
+    let min5;
     if (valueof === void 0) {
       for (const value of values3) {
-        if (value != null && (min4 > value || min4 === void 0 && value >= value)) {
-          min4 = value;
+        if (value != null && (min5 > value || min5 === void 0 && value >= value)) {
+          min5 = value;
         }
       }
     } else {
       let index2 = -1;
       for (let value of values3) {
-        if ((value = valueof(value, ++index2, values3)) != null && (min4 > value || min4 === void 0 && value >= value)) {
-          min4 = value;
+        if ((value = valueof(value, ++index2, values3)) != null && (min5 > value || min5 === void 0 && value >= value)) {
+          min5 = value;
         }
       }
     }
-    return min4;
+    return min5;
   }
   var init_min = __esm({
     "node_modules/d3-array/src/min.js"() {
@@ -2591,20 +2591,20 @@
 
   // node_modules/d3-array/src/minIndex.js
   function minIndex(values3, valueof) {
-    let min4;
+    let min5;
     let minIndex2 = -1;
     let index2 = -1;
     if (valueof === void 0) {
       for (const value of values3) {
         ++index2;
-        if (value != null && (min4 > value || min4 === void 0 && value >= value)) {
-          min4 = value, minIndex2 = index2;
+        if (value != null && (min5 > value || min5 === void 0 && value >= value)) {
+          min5 = value, minIndex2 = index2;
         }
       }
     } else {
       for (let value of values3) {
-        if ((value = valueof(value, ++index2, values3)) != null && (min4 > value || min4 === void 0 && value >= value)) {
-          min4 = value, minIndex2 = index2;
+        if ((value = valueof(value, ++index2, values3)) != null && (min5 > value || min5 === void 0 && value >= value)) {
+          min5 = value, minIndex2 = index2;
         }
       }
     }
@@ -2663,27 +2663,27 @@
 
   // node_modules/d3-array/src/greatest.js
   function greatest(values3, compare2 = ascending) {
-    let max4;
+    let max5;
     let defined = false;
     if (compare2.length === 1) {
       let maxValue;
       for (const element of values3) {
         const value = compare2(element);
         if (defined ? ascending(value, maxValue) > 0 : ascending(value, value) === 0) {
-          max4 = element;
+          max5 = element;
           maxValue = value;
           defined = true;
         }
       }
     } else {
       for (const value of values3) {
-        if (defined ? compare2(value, max4) > 0 : compare2(value, value) === 0) {
-          max4 = value;
+        if (defined ? compare2(value, max5) > 0 : compare2(value, value) === 0) {
+          max5 = value;
           defined = true;
         }
       }
     }
-    return max4;
+    return max5;
   }
   var init_greatest = __esm({
     "node_modules/d3-array/src/greatest.js"() {
@@ -3933,12 +3933,12 @@
       var pa = cartesian(a2), pb = cartesian(b11);
       var n1 = [1, 0, 0], n22 = cartesianCross(pa, pb), n2n2 = cartesianDot(n22, n22), n1n2 = n22[0], determinant = n2n2 - n1n2 * n1n2;
       if (!determinant) return !two && a2;
-      var c1 = cr * n2n2 / determinant, c2 = -cr * n1n2 / determinant, n1xn2 = cartesianCross(n1, n22), A7 = cartesianScale(n1, c1), B4 = cartesianScale(n22, c2);
-      cartesianAddInPlace(A7, B4);
-      var u4 = n1xn2, w3 = cartesianDot(A7, u4), uu = cartesianDot(u4, u4), t22 = w3 * w3 - uu * (cartesianDot(A7, A7) - 1);
+      var c1 = cr * n2n2 / determinant, c2 = -cr * n1n2 / determinant, n1xn2 = cartesianCross(n1, n22), A9 = cartesianScale(n1, c1), B4 = cartesianScale(n22, c2);
+      cartesianAddInPlace(A9, B4);
+      var u4 = n1xn2, w3 = cartesianDot(A9, u4), uu = cartesianDot(u4, u4), t22 = w3 * w3 - uu * (cartesianDot(A9, A9) - 1);
       if (t22 < 0) return;
       var t4 = sqrt(t22), q3 = cartesianScale(u4, (-w3 - t4) / uu);
-      cartesianAddInPlace(q3, A7);
+      cartesianAddInPlace(q3, A9);
       q3 = spherical(q3);
       if (!two) return q3;
       var lambda04 = a2[0], lambda12 = b11[0], phi02 = a2[1], phi12 = b11[1], z3;
@@ -3947,7 +3947,7 @@
       if (!polar && phi12 < phi02) z3 = phi02, phi02 = phi12, phi12 = z3;
       if (meridian ? polar ? phi02 + phi12 > 0 ^ q3[1] < (abs(q3[0] - lambda04) < epsilon ? phi02 : phi12) : phi02 <= q3[1] && q3[1] <= phi12 : delta2 > pi ^ (lambda04 <= q3[0] && q3[0] <= lambda12)) {
         var q1 = cartesianScale(u4, (-w3 + t4) / uu);
-        cartesianAddInPlace(q1, A7);
+        cartesianAddInPlace(q1, A9);
         return [q3, spherical(q1)];
       }
     }
@@ -5594,14 +5594,14 @@
   });
 
   // node_modules/d3-selection/src/selection/data.js
-  function bindIndex(parent, group2, enter, update3, exit, data) {
-    var i3 = 0, node, groupLength = group2.length, dataLength = data.length;
+  function bindIndex(parent, group2, enter, update3, exit, data2) {
+    var i3 = 0, node, groupLength = group2.length, dataLength = data2.length;
     for (; i3 < dataLength; ++i3) {
       if (node = group2[i3]) {
-        node.__data__ = data[i3];
+        node.__data__ = data2[i3];
         update3[i3] = node;
       } else {
-        enter[i3] = new EnterNode(parent, data[i3]);
+        enter[i3] = new EnterNode(parent, data2[i3]);
       }
     }
     for (; i3 < groupLength; ++i3) {
@@ -5610,8 +5610,8 @@
       }
     }
   }
-  function bindKey(parent, group2, enter, update3, exit, data, key) {
-    var i3, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group2.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
+  function bindKey(parent, group2, enter, update3, exit, data2, key) {
+    var i3, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group2.length, dataLength = data2.length, keyValues = new Array(groupLength), keyValue;
     for (i3 = 0; i3 < groupLength; ++i3) {
       if (node = group2[i3]) {
         keyValues[i3] = keyValue = key.call(node, node.__data__, i3, group2) + "";
@@ -5623,13 +5623,13 @@
       }
     }
     for (i3 = 0; i3 < dataLength; ++i3) {
-      keyValue = key.call(parent, data[i3], i3, data) + "";
+      keyValue = key.call(parent, data2[i3], i3, data2) + "";
       if (node = nodeByKeyValue.get(keyValue)) {
         update3[i3] = node;
-        node.__data__ = data[i3];
+        node.__data__ = data2[i3];
         nodeByKeyValue.delete(keyValue);
       } else {
-        enter[i3] = new EnterNode(parent, data[i3]);
+        enter[i3] = new EnterNode(parent, data2[i3]);
       }
     }
     for (i3 = 0; i3 < groupLength; ++i3) {
@@ -5646,8 +5646,8 @@
     var bind2 = key ? bindKey : bindIndex, parents = this._parents, groups2 = this._groups;
     if (typeof value !== "function") value = constant_default2(value);
     for (var m3 = groups2.length, update3 = new Array(m3), enter = new Array(m3), exit = new Array(m3), j3 = 0; j3 < m3; ++j3) {
-      var parent = parents[j3], group2 = groups2[j3], groupLength = group2.length, data = arraylike(value.call(parent, parent && parent.__data__, j3, parents)), dataLength = data.length, enterGroup = enter[j3] = new Array(dataLength), updateGroup = update3[j3] = new Array(dataLength), exitGroup = exit[j3] = new Array(groupLength);
-      bind2(parent, group2, enterGroup, updateGroup, exitGroup, data, key);
+      var parent = parents[j3], group2 = groups2[j3], groupLength = group2.length, data2 = arraylike(value.call(parent, parent && parent.__data__, j3, parents)), dataLength = data2.length, enterGroup = enter[j3] = new Array(dataLength), updateGroup = update3[j3] = new Array(dataLength), exitGroup = exit[j3] = new Array(groupLength);
+      bind2(parent, group2, enterGroup, updateGroup, exitGroup, data2, key);
       for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
         if (previous = enterGroup[i0]) {
           if (i0 >= i1) i1 = i0 + 1;
@@ -5661,8 +5661,8 @@
     update3._exit = exit;
     return update3;
   }
-  function arraylike(data) {
-    return typeof data === "object" && "length" in data ? data : Array.from(data);
+  function arraylike(data2) {
+    return typeof data2 === "object" && "length" in data2 ? data2 : Array.from(data2);
   }
   var init_data = __esm({
     "node_modules/d3-selection/src/selection/data.js"() {
@@ -5709,9 +5709,9 @@
   function merge_default(context) {
     var selection2 = context.selection ? context.selection() : context;
     for (var groups0 = this._groups, groups1 = selection2._groups, m0 = groups0.length, m1 = groups1.length, m3 = Math.min(m0, m1), merges = new Array(m0), j3 = 0; j3 < m3; ++j3) {
-      for (var group0 = groups0[j3], group1 = groups1[j3], n3 = group0.length, merge4 = merges[j3] = new Array(n3), node, i3 = 0; i3 < n3; ++i3) {
+      for (var group0 = groups0[j3], group1 = groups1[j3], n3 = group0.length, merge5 = merges[j3] = new Array(n3), node, i3 = 0; i3 < n3; ++i3) {
         if (node = group0[i3] || group1[i3]) {
-          merge4[i3] = node;
+          merge5[i3] = node;
         }
       }
     }
@@ -5964,12 +5964,12 @@
     this._names = classArray(node.getAttribute("class") || "");
   }
   function classedAdd(node, names) {
-    var list = classList(node), i3 = -1, n3 = names.length;
-    while (++i3 < n3) list.add(names[i3]);
+    var list2 = classList(node), i3 = -1, n3 = names.length;
+    while (++i3 < n3) list2.add(names[i3]);
   }
   function classedRemove(node, names) {
-    var list = classList(node), i3 = -1, n3 = names.length;
-    while (++i3 < n3) list.remove(names[i3]);
+    var list2 = classList(node), i3 = -1, n3 = names.length;
+    while (++i3 < n3) list2.remove(names[i3]);
   }
   function classedTrue(names) {
     return function() {
@@ -5989,8 +5989,8 @@
   function classed_default(name, value) {
     var names = classArray(name + "");
     if (arguments.length < 2) {
-      var list = classList(this.node()), i3 = -1, n3 = names.length;
-      while (++i3 < n3) if (!list.contains(names[i3])) return false;
+      var list2 = classList(this.node()), i3 = -1, n3 = names.length;
+      while (++i3 < n3) if (!list2.contains(names[i3])) return false;
       return true;
     }
     return this.each((typeof value === "function" ? classedFunction : value ? classedTrue : classedFalse)(names, value));
@@ -6390,9 +6390,9 @@
       Local.prototype = local.prototype = {
         constructor: Local,
         get: function(node) {
-          var id2 = this._;
-          while (!(id2 in node)) if (!(node = node.parentNode)) return;
-          return node[id2];
+          var id3 = this._;
+          while (!(id3 in node)) if (!(node = node.parentNode)) return;
+          return node[id3];
         },
         set: function(node, value) {
           return node[this._] = value;
@@ -6766,10 +6766,10 @@
   function color_formatRgb() {
     return this.rgb().formatRgb();
   }
-  function color(format2) {
+  function color(format3) {
     var m3, l2;
-    format2 = (format2 + "").trim().toLowerCase();
-    return (m3 = reHex.exec(format2)) ? (l2 = m3[1].length, m3 = parseInt(m3[1], 16), l2 === 6 ? rgbn(m3) : l2 === 3 ? new Rgb(m3 >> 8 & 15 | m3 >> 4 & 240, m3 >> 4 & 15 | m3 & 240, (m3 & 15) << 4 | m3 & 15, 1) : l2 === 8 ? rgba(m3 >> 24 & 255, m3 >> 16 & 255, m3 >> 8 & 255, (m3 & 255) / 255) : l2 === 4 ? rgba(m3 >> 12 & 15 | m3 >> 8 & 240, m3 >> 8 & 15 | m3 >> 4 & 240, m3 >> 4 & 15 | m3 & 240, ((m3 & 15) << 4 | m3 & 15) / 255) : null) : (m3 = reRgbInteger.exec(format2)) ? new Rgb(m3[1], m3[2], m3[3], 1) : (m3 = reRgbPercent.exec(format2)) ? new Rgb(m3[1] * 255 / 100, m3[2] * 255 / 100, m3[3] * 255 / 100, 1) : (m3 = reRgbaInteger.exec(format2)) ? rgba(m3[1], m3[2], m3[3], m3[4]) : (m3 = reRgbaPercent.exec(format2)) ? rgba(m3[1] * 255 / 100, m3[2] * 255 / 100, m3[3] * 255 / 100, m3[4]) : (m3 = reHslPercent.exec(format2)) ? hsla(m3[1], m3[2] / 100, m3[3] / 100, 1) : (m3 = reHslaPercent.exec(format2)) ? hsla(m3[1], m3[2] / 100, m3[3] / 100, m3[4]) : named.hasOwnProperty(format2) ? rgbn(named[format2]) : format2 === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+    format3 = (format3 + "").trim().toLowerCase();
+    return (m3 = reHex.exec(format3)) ? (l2 = m3[1].length, m3 = parseInt(m3[1], 16), l2 === 6 ? rgbn(m3) : l2 === 3 ? new Rgb(m3 >> 8 & 15 | m3 >> 4 & 240, m3 >> 4 & 15 | m3 & 240, (m3 & 15) << 4 | m3 & 15, 1) : l2 === 8 ? rgba(m3 >> 24 & 255, m3 >> 16 & 255, m3 >> 8 & 255, (m3 & 255) / 255) : l2 === 4 ? rgba(m3 >> 12 & 15 | m3 >> 8 & 240, m3 >> 8 & 15 | m3 >> 4 & 240, m3 >> 4 & 15 | m3 & 240, ((m3 & 15) << 4 | m3 & 15) / 255) : null) : (m3 = reRgbInteger.exec(format3)) ? new Rgb(m3[1], m3[2], m3[3], 1) : (m3 = reRgbPercent.exec(format3)) ? new Rgb(m3[1] * 255 / 100, m3[2] * 255 / 100, m3[3] * 255 / 100, 1) : (m3 = reRgbaInteger.exec(format3)) ? rgba(m3[1], m3[2], m3[3], m3[4]) : (m3 = reRgbaPercent.exec(format3)) ? rgba(m3[1] * 255 / 100, m3[2] * 255 / 100, m3[3] * 255 / 100, m3[4]) : (m3 = reHslPercent.exec(format3)) ? hsla(m3[1], m3[2] / 100, m3[3] / 100, 1) : (m3 = reHslaPercent.exec(format3)) ? hsla(m3[1], m3[2] / 100, m3[3] / 100, m3[4]) : named.hasOwnProperty(format3) ? rgbn(named[format3]) : format3 === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
   }
   function rgbn(n3) {
     return new Rgb(n3 >> 16 & 255, n3 >> 8 & 255, n3 & 255, 1);
@@ -6825,12 +6825,12 @@
     if (!o2) return new Hsl();
     if (o2 instanceof Hsl) return o2;
     o2 = o2.rgb();
-    var r2 = o2.r / 255, g4 = o2.g / 255, b11 = o2.b / 255, min4 = Math.min(r2, g4, b11), max4 = Math.max(r2, g4, b11), h2 = NaN, s2 = max4 - min4, l2 = (max4 + min4) / 2;
+    var r2 = o2.r / 255, g4 = o2.g / 255, b11 = o2.b / 255, min5 = Math.min(r2, g4, b11), max5 = Math.max(r2, g4, b11), h2 = NaN, s2 = max5 - min5, l2 = (max5 + min5) / 2;
     if (s2) {
-      if (r2 === max4) h2 = (g4 - b11) / s2 + (g4 < b11) * 6;
-      else if (g4 === max4) h2 = (b11 - r2) / s2 + 2;
+      if (r2 === max5) h2 = (g4 - b11) / s2 + (g4 < b11) * 6;
+      else if (g4 === max5) h2 = (b11 - r2) / s2 + 2;
       else h2 = (r2 - g4) / s2 + 4;
-      s2 /= l2 < 0.5 ? max4 + min4 : 2 - max4 - min4;
+      s2 /= l2 < 0.5 ? max5 + min5 : 2 - max5 - min5;
       h2 *= 60;
     } else {
       s2 = l2 > 0 && l2 < 1 ? 0 : h2;
@@ -7592,7 +7592,7 @@
   });
 
   // node_modules/d3-interpolate/src/transform/index.js
-  function interpolateTransform(parse, pxComma, pxParen, degParen) {
+  function interpolateTransform(parse2, pxComma, pxParen, degParen) {
     function pop(s2) {
       return s2.length ? s2.pop() + " " : "";
     }
@@ -7630,7 +7630,7 @@
     }
     return function(a2, b11) {
       var s2 = [], q3 = [];
-      a2 = parse(a2), b11 = parse(b11);
+      a2 = parse2(a2), b11 = parse2(b11);
       translate(a2.translateX, a2.translateY, b11.translateX, b11.translateY, s2, q3);
       rotate(a2.rotate, b11.rotate, s2, q3);
       skewX(a2.skewX, b11.skewX, s2, q3);
@@ -7669,21 +7669,21 @@
       epsilon22 = 1e-12;
       zoom_default = (function zoomRho(rho, rho2, rho4) {
         function zoom(p02, p1) {
-          var ux0 = p02[0], uy0 = p02[1], w0 = p02[2], ux1 = p1[0], uy1 = p1[1], w1 = p1[2], dx = ux1 - ux0, dy = uy1 - uy0, d2 = dx * dx + dy * dy, i3, S2;
+          var ux0 = p02[0], uy0 = p02[1], w0 = p02[2], ux1 = p1[0], uy1 = p1[1], w1 = p1[2], dx = ux1 - ux0, dy = uy1 - uy0, d2 = dx * dx + dy * dy, i3, S3;
           if (d2 < epsilon22) {
-            S2 = Math.log(w1 / w0) / rho;
+            S3 = Math.log(w1 / w0) / rho;
             i3 = function(t4) {
               return [
                 ux0 + t4 * dx,
                 uy0 + t4 * dy,
-                w0 * Math.exp(rho * t4 * S2)
+                w0 * Math.exp(rho * t4 * S3)
               ];
             };
           } else {
             var d1 = Math.sqrt(d2), b02 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1), b12 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1), r0 = Math.log(Math.sqrt(b02 * b02 + 1) - b02), r1 = Math.log(Math.sqrt(b12 * b12 + 1) - b12);
-            S2 = (r1 - r0) / rho;
+            S3 = (r1 - r0) / rho;
             i3 = function(t4) {
-              var s2 = t4 * S2, coshr0 = cosh(r0), u4 = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s2 + r0) - sinh(r0));
+              var s2 = t4 * S3, coshr0 = cosh(r0), u4 = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s2 + r0) - sinh(r0));
               return [
                 ux0 + u4 * dx,
                 uy0 + u4 * dy,
@@ -7691,7 +7691,7 @@
               ];
             };
           }
-          i3.duration = S2 * 1e3 * rho / Math.SQRT2;
+          i3.duration = S3 * 1e3 * rho / Math.SQRT2;
           return i3;
         }
         zoom.rho = function(_3) {
@@ -7956,11 +7956,11 @@
   });
 
   // node_modules/d3-transition/src/transition/schedule.js
-  function schedule_default(node, name, id2, index2, group2, timing) {
+  function schedule_default(node, name, id3, index2, group2, timing) {
     var schedules = node.__transition;
     if (!schedules) node.__transition = {};
-    else if (id2 in schedules) return;
-    create(node, id2, {
+    else if (id3 in schedules) return;
+    create(node, id3, {
       name,
       index: index2,
       // For context during callback.
@@ -7976,24 +7976,24 @@
       state: CREATED
     });
   }
-  function init(node, id2) {
-    var schedule = get3(node, id2);
+  function init(node, id3) {
+    var schedule = get3(node, id3);
     if (schedule.state > CREATED) throw new Error("too late; already scheduled");
     return schedule;
   }
-  function set3(node, id2) {
-    var schedule = get3(node, id2);
+  function set3(node, id3) {
+    var schedule = get3(node, id3);
     if (schedule.state > STARTED) throw new Error("too late; already running");
     return schedule;
   }
-  function get3(node, id2) {
+  function get3(node, id3) {
     var schedule = node.__transition;
-    if (!schedule || !(schedule = schedule[id2])) throw new Error("transition not found");
+    if (!schedule || !(schedule = schedule[id3])) throw new Error("transition not found");
     return schedule;
   }
-  function create(node, id2, self2) {
+  function create(node, id3, self2) {
     var schedules = node.__transition, tween;
-    schedules[id2] = self2;
+    schedules[id3] = self2;
     self2.timer = timer(schedule, 0, self2.time);
     function schedule(elapsed) {
       self2.state = SCHEDULED;
@@ -8012,7 +8012,7 @@
           o2.timer.stop();
           o2.on.call("interrupt", node, node.__data__, o2.index, o2.group);
           delete schedules[i3];
-        } else if (+i3 < id2) {
+        } else if (+i3 < id3) {
           o2.state = ENDED;
           o2.timer.stop();
           o2.on.call("cancel", node, node.__data__, o2.index, o2.group);
@@ -8051,7 +8051,7 @@
     function stop() {
       self2.state = ENDED;
       self2.timer.stop();
-      delete schedules[id2];
+      delete schedules[id3];
       for (var i3 in schedules) return;
       delete node.__transition;
     }
@@ -8110,10 +8110,10 @@
   });
 
   // node_modules/d3-transition/src/transition/tween.js
-  function tweenRemove(id2, name) {
+  function tweenRemove(id3, name) {
     var tween0, tween1;
     return function() {
-      var schedule = set3(this, id2), tween = schedule.tween;
+      var schedule = set3(this, id3), tween = schedule.tween;
       if (tween !== tween0) {
         tween1 = tween0 = tween;
         for (var i3 = 0, n3 = tween1.length; i3 < n3; ++i3) {
@@ -8127,11 +8127,11 @@
       schedule.tween = tween1;
     };
   }
-  function tweenFunction(id2, name, value) {
+  function tweenFunction(id3, name, value) {
     var tween0, tween1;
     if (typeof value !== "function") throw new Error();
     return function() {
-      var schedule = set3(this, id2), tween = schedule.tween;
+      var schedule = set3(this, id3), tween = schedule.tween;
       if (tween !== tween0) {
         tween1 = (tween0 = tween).slice();
         for (var t4 = { name, value }, i3 = 0, n3 = tween1.length; i3 < n3; ++i3) {
@@ -8146,10 +8146,10 @@
     };
   }
   function tween_default(name, value) {
-    var id2 = this._id;
+    var id3 = this._id;
     name += "";
     if (arguments.length < 2) {
-      var tween = get3(this.node(), id2).tween;
+      var tween = get3(this.node(), id3).tween;
       for (var i3 = 0, n3 = tween.length, t4; i3 < n3; ++i3) {
         if ((t4 = tween[i3]).name === name) {
           return t4.value;
@@ -8157,16 +8157,16 @@
       }
       return null;
     }
-    return this.each((value == null ? tweenRemove : tweenFunction)(id2, name, value));
+    return this.each((value == null ? tweenRemove : tweenFunction)(id3, name, value));
   }
   function tweenValue(transition2, name, value) {
-    var id2 = transition2._id;
+    var id3 = transition2._id;
     transition2.each(function() {
-      var schedule = set3(this, id2);
+      var schedule = set3(this, id3);
       (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
     });
     return function(node) {
-      return get3(node, id2).value[name];
+      return get3(node, id3).value[name];
     };
   }
   var init_tween = __esm({
@@ -8291,19 +8291,19 @@
   });
 
   // node_modules/d3-transition/src/transition/delay.js
-  function delayFunction(id2, value) {
+  function delayFunction(id3, value) {
     return function() {
-      init(this, id2).delay = +value.apply(this, arguments);
+      init(this, id3).delay = +value.apply(this, arguments);
     };
   }
-  function delayConstant(id2, value) {
+  function delayConstant(id3, value) {
     return value = +value, function() {
-      init(this, id2).delay = value;
+      init(this, id3).delay = value;
     };
   }
   function delay_default(value) {
-    var id2 = this._id;
-    return arguments.length ? this.each((typeof value === "function" ? delayFunction : delayConstant)(id2, value)) : get3(this.node(), id2).delay;
+    var id3 = this._id;
+    return arguments.length ? this.each((typeof value === "function" ? delayFunction : delayConstant)(id3, value)) : get3(this.node(), id3).delay;
   }
   var init_delay = __esm({
     "node_modules/d3-transition/src/transition/delay.js"() {
@@ -8312,19 +8312,19 @@
   });
 
   // node_modules/d3-transition/src/transition/duration.js
-  function durationFunction(id2, value) {
+  function durationFunction(id3, value) {
     return function() {
-      set3(this, id2).duration = +value.apply(this, arguments);
+      set3(this, id3).duration = +value.apply(this, arguments);
     };
   }
-  function durationConstant(id2, value) {
+  function durationConstant(id3, value) {
     return value = +value, function() {
-      set3(this, id2).duration = value;
+      set3(this, id3).duration = value;
     };
   }
   function duration_default(value) {
-    var id2 = this._id;
-    return arguments.length ? this.each((typeof value === "function" ? durationFunction : durationConstant)(id2, value)) : get3(this.node(), id2).duration;
+    var id3 = this._id;
+    return arguments.length ? this.each((typeof value === "function" ? durationFunction : durationConstant)(id3, value)) : get3(this.node(), id3).duration;
   }
   var init_duration = __esm({
     "node_modules/d3-transition/src/transition/duration.js"() {
@@ -8333,15 +8333,15 @@
   });
 
   // node_modules/d3-transition/src/transition/ease.js
-  function easeConstant(id2, value) {
+  function easeConstant(id3, value) {
     if (typeof value !== "function") throw new Error();
     return function() {
-      set3(this, id2).ease = value;
+      set3(this, id3).ease = value;
     };
   }
   function ease_default(value) {
-    var id2 = this._id;
-    return arguments.length ? this.each(easeConstant(id2, value)) : get3(this.node(), id2).ease;
+    var id3 = this._id;
+    return arguments.length ? this.each(easeConstant(id3, value)) : get3(this.node(), id3).ease;
   }
   var init_ease = __esm({
     "node_modules/d3-transition/src/transition/ease.js"() {
@@ -8350,11 +8350,11 @@
   });
 
   // node_modules/d3-transition/src/transition/easeVarying.js
-  function easeVarying(id2, value) {
+  function easeVarying(id3, value) {
     return function() {
       var v3 = value.apply(this, arguments);
       if (typeof v3 !== "function") throw new Error();
-      set3(this, id2).ease = v3;
+      set3(this, id3).ease = v3;
     };
   }
   function easeVarying_default(value) {
@@ -8390,9 +8390,9 @@
   function merge_default2(transition2) {
     if (transition2._id !== this._id) throw new Error();
     for (var groups0 = this._groups, groups1 = transition2._groups, m0 = groups0.length, m1 = groups1.length, m3 = Math.min(m0, m1), merges = new Array(m0), j3 = 0; j3 < m3; ++j3) {
-      for (var group0 = groups0[j3], group1 = groups1[j3], n3 = group0.length, merge4 = merges[j3] = new Array(n3), node, i3 = 0; i3 < n3; ++i3) {
+      for (var group0 = groups0[j3], group1 = groups1[j3], n3 = group0.length, merge5 = merges[j3] = new Array(n3), node, i3 = 0; i3 < n3; ++i3) {
         if (node = group0[i3] || group1[i3]) {
-          merge4[i3] = node;
+          merge5[i3] = node;
         }
       }
     }
@@ -8415,17 +8415,17 @@
       return !t4 || t4 === "start";
     });
   }
-  function onFunction(id2, name, listener) {
+  function onFunction(id3, name, listener) {
     var on0, on1, sit = start(name) ? init : set3;
     return function() {
-      var schedule = sit(this, id2), on = schedule.on;
+      var schedule = sit(this, id3), on = schedule.on;
       if (on !== on0) (on1 = (on0 = on).copy()).on(name, listener);
       schedule.on = on1;
     };
   }
   function on_default2(name, listener) {
-    var id2 = this._id;
-    return arguments.length < 2 ? get3(this.node(), id2).on.on(name) : this.each(onFunction(id2, name, listener));
+    var id3 = this._id;
+    return arguments.length < 2 ? get3(this.node(), id3).on.on(name) : this.each(onFunction(id3, name, listener));
   }
   var init_on2 = __esm({
     "node_modules/d3-transition/src/transition/on.js"() {
@@ -8434,10 +8434,10 @@
   });
 
   // node_modules/d3-transition/src/transition/remove.js
-  function removeFunction(id2) {
+  function removeFunction(id3) {
     return function() {
       var parent = this.parentNode;
-      for (var i3 in this.__transition) if (+i3 !== id2) return;
+      for (var i3 in this.__transition) if (+i3 !== id3) return;
       if (parent) parent.removeChild(this);
     };
   }
@@ -8451,18 +8451,18 @@
 
   // node_modules/d3-transition/src/transition/select.js
   function select_default3(select) {
-    var name = this._name, id2 = this._id;
+    var name = this._name, id3 = this._id;
     if (typeof select !== "function") select = selector_default(select);
     for (var groups2 = this._groups, m3 = groups2.length, subgroups = new Array(m3), j3 = 0; j3 < m3; ++j3) {
       for (var group2 = groups2[j3], n3 = group2.length, subgroup = subgroups[j3] = new Array(n3), node, subnode, i3 = 0; i3 < n3; ++i3) {
         if ((node = group2[i3]) && (subnode = select.call(node, node.__data__, i3, group2))) {
           if ("__data__" in node) subnode.__data__ = node.__data__;
           subgroup[i3] = subnode;
-          schedule_default(subgroup[i3], name, id2, i3, subgroup, get3(node, id2));
+          schedule_default(subgroup[i3], name, id3, i3, subgroup, get3(node, id3));
         }
       }
     }
-    return new Transition(subgroups, this._parents, name, id2);
+    return new Transition(subgroups, this._parents, name, id3);
   }
   var init_select3 = __esm({
     "node_modules/d3-transition/src/transition/select.js"() {
@@ -8474,14 +8474,14 @@
 
   // node_modules/d3-transition/src/transition/selectAll.js
   function selectAll_default3(select) {
-    var name = this._name, id2 = this._id;
+    var name = this._name, id3 = this._id;
     if (typeof select !== "function") select = selectorAll_default(select);
     for (var groups2 = this._groups, m3 = groups2.length, subgroups = [], parents = [], j3 = 0; j3 < m3; ++j3) {
       for (var group2 = groups2[j3], n3 = group2.length, node, i3 = 0; i3 < n3; ++i3) {
         if (node = group2[i3]) {
-          for (var children2 = select.call(node, node.__data__, i3, group2), child, inherit2 = get3(node, id2), k3 = 0, l2 = children2.length; k3 < l2; ++k3) {
+          for (var children2 = select.call(node, node.__data__, i3, group2), child, inherit3 = get3(node, id3), k3 = 0, l2 = children2.length; k3 < l2; ++k3) {
             if (child = children2[k3]) {
-              schedule_default(child, name, id2, k3, children2, inherit2);
+              schedule_default(child, name, id3, k3, children2, inherit3);
             }
           }
           subgroups.push(children2);
@@ -8489,7 +8489,7 @@
         }
       }
     }
-    return new Transition(subgroups, parents, name, id2);
+    return new Transition(subgroups, parents, name, id3);
   }
   var init_selectAll3 = __esm({
     "node_modules/d3-transition/src/transition/selectAll.js"() {
@@ -8539,10 +8539,10 @@
       return string0 === string1 ? null : string0 === string00 && string1 === string10 ? interpolate0 : (string10 = string1, interpolate0 = interpolate(string00 = string0, value1));
     };
   }
-  function styleMaybeRemove(id2, name) {
+  function styleMaybeRemove(id3, name) {
     var on0, on1, listener0, key = "style." + name, event = "end." + key, remove4;
     return function() {
-      var schedule = set3(this, id2), on = schedule.on, listener = schedule.value[key] == null ? remove4 || (remove4 = styleRemove2(name)) : void 0;
+      var schedule = set3(this, id3), on = schedule.on, listener = schedule.value[key] == null ? remove4 || (remove4 = styleRemove2(name)) : void 0;
       if (on !== on0 || listener0 !== listener) (on1 = (on0 = on).copy()).on(event, listener0 = listener);
       schedule.on = on1;
     };
@@ -8644,12 +8644,12 @@
     for (var groups2 = this._groups, m3 = groups2.length, j3 = 0; j3 < m3; ++j3) {
       for (var group2 = groups2[j3], n3 = group2.length, node, i3 = 0; i3 < n3; ++i3) {
         if (node = group2[i3]) {
-          var inherit2 = get3(node, id0);
+          var inherit3 = get3(node, id0);
           schedule_default(node, name, id1, i3, group2, {
-            time: inherit2.time + inherit2.delay + inherit2.duration,
+            time: inherit3.time + inherit3.delay + inherit3.duration,
             delay: 0,
-            duration: inherit2.duration,
-            ease: inherit2.ease
+            duration: inherit3.duration,
+            ease: inherit3.ease
           });
         }
       }
@@ -8665,13 +8665,13 @@
 
   // node_modules/d3-transition/src/transition/end.js
   function end_default() {
-    var on0, on1, that = this, id2 = that._id, size2 = that.size();
+    var on0, on1, that = this, id3 = that._id, size2 = that.size();
     return new Promise(function(resolve, reject2) {
       var cancel = { value: reject2 }, end = { value: function() {
         if (--size2 === 0) resolve();
       } };
       that.each(function() {
-        var schedule = set3(this, id2), on = schedule.on;
+        var schedule = set3(this, id3), on = schedule.on;
         if (on !== on0) {
           on1 = (on0 = on).copy();
           on1._.cancel.push(cancel);
@@ -8690,11 +8690,11 @@
   });
 
   // node_modules/d3-transition/src/transition/index.js
-  function Transition(groups2, parents, name, id2) {
+  function Transition(groups2, parents, name, id3) {
     this._groups = groups2;
     this._parents = parents;
     this._name = name;
-    this._id = id2;
+    this._id = id3;
   }
   function transition(name) {
     return selection_default().transition(name);
@@ -8976,30 +8976,30 @@
   });
 
   // node_modules/d3-transition/src/selection/transition.js
-  function inherit(node, id2) {
+  function inherit(node, id3) {
     var timing;
-    while (!(timing = node.__transition) || !(timing = timing[id2])) {
+    while (!(timing = node.__transition) || !(timing = timing[id3])) {
       if (!(node = node.parentNode)) {
-        throw new Error(`transition ${id2} not found`);
+        throw new Error(`transition ${id3} not found`);
       }
     }
     return timing;
   }
   function transition_default2(name) {
-    var id2, timing;
+    var id3, timing;
     if (name instanceof Transition) {
-      id2 = name._id, name = name._name;
+      id3 = name._id, name = name._name;
     } else {
-      id2 = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
+      id3 = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
     }
     for (var groups2 = this._groups, m3 = groups2.length, j3 = 0; j3 < m3; ++j3) {
       for (var group2 = groups2[j3], n3 = group2.length, node, i3 = 0; i3 < n3; ++i3) {
         if (node = group2[i3]) {
-          schedule_default(node, name, id2, i3, group2, timing || inherit(node, id2));
+          schedule_default(node, name, id3, i3, group2, timing || inherit(node, id3));
         }
       }
     }
-    return new Transition(groups2, this._parents, name, id2);
+    return new Transition(groups2, this._parents, name, id3);
   }
   var defaultTiming;
   var init_transition3 = __esm({
@@ -9573,7 +9573,7 @@
     return score;
   }
   function geoOrthoMaxOffsetAngle(coords, isClosed, lessThan) {
-    var max4 = -Infinity;
+    var max5 = -Infinity;
     var first = isClosed ? 0 : 1;
     var last3 = isClosed ? coords.length : coords.length - 1;
     for (var i3 = first; i3 < last3; i3++) {
@@ -9584,10 +9584,10 @@
       var angle2 = Math.acos(Math.abs(normalizedDotP)) * 180 / Math.PI;
       if (angle2 > 45) angle2 = 90 - angle2;
       if (angle2 >= lessThan) continue;
-      if (angle2 > max4) max4 = angle2;
+      if (angle2 > max5) max5 = angle2;
     }
-    if (max4 === -Infinity) return null;
-    return max4;
+    if (max5 === -Infinity) return null;
+    return max5;
   }
   function geoOrthoCanOrthogonalize(coords, isClosed, epsilon3, threshold2, allowStraightAngles) {
     var score = null;
@@ -9827,7 +9827,7 @@
         })();
         var numberOfRounds = { 16: 10, 24: 12, 32: 14 };
         var rcon = [1, 2, 4, 8, 16, 32, 64, 128, 27, 54, 108, 216, 171, 77, 154, 47, 94, 188, 99, 198, 151, 53, 106, 212, 179, 125, 250, 239, 197, 145];
-        var S2 = [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22];
+        var S3 = [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103, 43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89, 71, 240, 173, 212, 162, 175, 156, 164, 114, 192, 183, 253, 147, 38, 54, 63, 247, 204, 52, 165, 229, 241, 113, 216, 49, 21, 4, 199, 35, 195, 24, 150, 5, 154, 7, 18, 128, 226, 235, 39, 178, 117, 9, 131, 44, 26, 27, 110, 90, 160, 82, 59, 214, 179, 41, 227, 47, 132, 83, 209, 0, 237, 32, 252, 177, 91, 106, 203, 190, 57, 74, 76, 88, 207, 208, 239, 170, 251, 67, 77, 51, 133, 69, 249, 2, 127, 80, 60, 159, 168, 81, 163, 64, 143, 146, 157, 56, 245, 188, 182, 218, 33, 16, 255, 243, 210, 205, 12, 19, 236, 95, 151, 68, 23, 196, 167, 126, 61, 100, 93, 25, 115, 96, 129, 79, 220, 34, 42, 144, 136, 70, 238, 184, 20, 222, 94, 11, 219, 224, 50, 58, 10, 73, 6, 36, 92, 194, 211, 172, 98, 145, 149, 228, 121, 231, 200, 55, 109, 141, 213, 78, 169, 108, 86, 244, 234, 101, 122, 174, 8, 186, 120, 37, 46, 28, 166, 180, 198, 232, 221, 116, 31, 75, 189, 139, 138, 112, 62, 181, 102, 72, 3, 246, 14, 97, 53, 87, 185, 134, 193, 29, 158, 225, 248, 152, 17, 105, 217, 142, 148, 155, 30, 135, 233, 206, 85, 40, 223, 140, 161, 137, 13, 191, 230, 66, 104, 65, 153, 45, 15, 176, 84, 187, 22];
         var Si = [82, 9, 106, 213, 48, 54, 165, 56, 191, 64, 163, 158, 129, 243, 215, 251, 124, 227, 57, 130, 155, 47, 255, 135, 52, 142, 67, 68, 196, 222, 233, 203, 84, 123, 148, 50, 166, 194, 35, 61, 238, 76, 149, 11, 66, 250, 195, 78, 8, 46, 161, 102, 40, 217, 36, 178, 118, 91, 162, 73, 109, 139, 209, 37, 114, 248, 246, 100, 134, 104, 152, 22, 212, 164, 92, 204, 93, 101, 182, 146, 108, 112, 72, 80, 253, 237, 185, 218, 94, 21, 70, 87, 167, 141, 157, 132, 144, 216, 171, 0, 140, 188, 211, 10, 247, 228, 88, 5, 184, 179, 69, 6, 208, 44, 30, 143, 202, 63, 15, 2, 193, 175, 189, 3, 1, 19, 138, 107, 58, 145, 17, 65, 79, 103, 220, 234, 151, 242, 207, 206, 240, 180, 230, 115, 150, 172, 116, 34, 231, 173, 53, 133, 226, 249, 55, 232, 28, 117, 223, 110, 71, 241, 26, 113, 29, 41, 197, 137, 111, 183, 98, 14, 170, 24, 190, 27, 252, 86, 62, 75, 198, 210, 121, 32, 154, 219, 192, 254, 120, 205, 90, 244, 31, 221, 168, 51, 136, 7, 199, 49, 177, 18, 16, 89, 39, 128, 236, 95, 96, 81, 127, 169, 25, 181, 74, 13, 45, 229, 122, 159, 147, 201, 156, 239, 160, 224, 59, 77, 174, 42, 245, 176, 200, 235, 187, 60, 131, 83, 153, 97, 23, 43, 4, 126, 186, 119, 214, 38, 225, 105, 20, 99, 85, 33, 12, 125];
         var T1 = [3328402341, 4168907908, 4000806809, 4135287693, 4294111757, 3597364157, 3731845041, 2445657428, 1613770832, 33620227, 3462883241, 1445669757, 3892248089, 3050821474, 1303096294, 3967186586, 2412431941, 528646813, 2311702848, 4202528135, 4026202645, 2992200171, 2387036105, 4226871307, 1101901292, 3017069671, 1604494077, 1169141738, 597466303, 1403299063, 3832705686, 2613100635, 1974974402, 3791519004, 1033081774, 1277568618, 1815492186, 2118074177, 4126668546, 2211236943, 1748251740, 1369810420, 3521504564, 4193382664, 3799085459, 2883115123, 1647391059, 706024767, 134480908, 2512897874, 1176707941, 2646852446, 806885416, 932615841, 168101135, 798661301, 235341577, 605164086, 461406363, 3756188221, 3454790438, 1311188841, 2142417613, 3933566367, 302582043, 495158174, 1479289972, 874125870, 907746093, 3698224818, 3025820398, 1537253627, 2756858614, 1983593293, 3084310113, 2108928974, 1378429307, 3722699582, 1580150641, 327451799, 2790478837, 3117535592, 0, 3253595436, 1075847264, 3825007647, 2041688520, 3059440621, 3563743934, 2378943302, 1740553945, 1916352843, 2487896798, 2555137236, 2958579944, 2244988746, 3151024235, 3320835882, 1336584933, 3992714006, 2252555205, 2588757463, 1714631509, 293963156, 2319795663, 3925473552, 67240454, 4269768577, 2689618160, 2017213508, 631218106, 1269344483, 2723238387, 1571005438, 2151694528, 93294474, 1066570413, 563977660, 1882732616, 4059428100, 1673313503, 2008463041, 2950355573, 1109467491, 537923632, 3858759450, 4260623118, 3218264685, 2177748300, 403442708, 638784309, 3287084079, 3193921505, 899127202, 2286175436, 773265209, 2479146071, 1437050866, 4236148354, 2050833735, 3362022572, 3126681063, 840505643, 3866325909, 3227541664, 427917720, 2655997905, 2749160575, 1143087718, 1412049534, 999329963, 193497219, 2353415882, 3354324521, 1807268051, 672404540, 2816401017, 3160301282, 369822493, 2916866934, 3688947771, 1681011286, 1949973070, 336202270, 2454276571, 201721354, 1210328172, 3093060836, 2680341085, 3184776046, 1135389935, 3294782118, 965841320, 831886756, 3554993207, 4068047243, 3588745010, 2345191491, 1849112409, 3664604599, 26054028, 2983581028, 2622377682, 1235855840, 3630984372, 2891339514, 4092916743, 3488279077, 3395642799, 4101667470, 1202630377, 268961816, 1874508501, 4034427016, 1243948399, 1546530418, 941366308, 1470539505, 1941222599, 2546386513, 3421038627, 2715671932, 3899946140, 1042226977, 2521517021, 1639824860, 227249030, 260737669, 3765465232, 2084453954, 1907733956, 3429263018, 2420656344, 100860677, 4160157185, 470683154, 3261161891, 1781871967, 2924959737, 1773779408, 394692241, 2579611992, 974986535, 664706745, 3655459128, 3958962195, 731420851, 571543859, 3530123707, 2849626480, 126783113, 865375399, 765172662, 1008606754, 361203602, 3387549984, 2278477385, 2857719295, 1344809080, 2782912378, 59542671, 1503764984, 160008576, 437062935, 1707065306, 3622233649, 2218934982, 3496503480, 2185314755, 697932208, 1512910199, 504303377, 2075177163, 2824099068, 1841019862, 739644986];
         var T22 = [2781242211, 2230877308, 2582542199, 2381740923, 234877682, 3184946027, 2984144751, 1418839493, 1348481072, 50462977, 2848876391, 2102799147, 434634494, 1656084439, 3863849899, 2599188086, 1167051466, 2636087938, 1082771913, 2281340285, 368048890, 3954334041, 3381544775, 201060592, 3963727277, 1739838676, 4250903202, 3930435503, 3206782108, 4149453988, 2531553906, 1536934080, 3262494647, 484572669, 2923271059, 1783375398, 1517041206, 1098792767, 49674231, 1334037708, 1550332980, 4098991525, 886171109, 150598129, 2481090929, 1940642008, 1398944049, 1059722517, 201851908, 1385547719, 1699095331, 1587397571, 674240536, 2704774806, 252314885, 3039795866, 151914247, 908333586, 2602270848, 1038082786, 651029483, 1766729511, 3447698098, 2682942837, 454166793, 2652734339, 1951935532, 775166490, 758520603, 3000790638, 4004797018, 4217086112, 4137964114, 1299594043, 1639438038, 3464344499, 2068982057, 1054729187, 1901997871, 2534638724, 4121318227, 1757008337, 0, 750906861, 1614815264, 535035132, 3363418545, 3988151131, 3201591914, 1183697867, 3647454910, 1265776953, 3734260298, 3566750796, 3903871064, 1250283471, 1807470800, 717615087, 3847203498, 384695291, 3313910595, 3617213773, 1432761139, 2484176261, 3481945413, 283769337, 100925954, 2180939647, 4037038160, 1148730428, 3123027871, 3813386408, 4087501137, 4267549603, 3229630528, 2315620239, 2906624658, 3156319645, 1215313976, 82966005, 3747855548, 3245848246, 1974459098, 1665278241, 807407632, 451280895, 251524083, 1841287890, 1283575245, 337120268, 891687699, 801369324, 3787349855, 2721421207, 3431482436, 959321879, 1469301956, 4065699751, 2197585534, 1199193405, 2898814052, 3887750493, 724703513, 2514908019, 2696962144, 2551808385, 3516813135, 2141445340, 1715741218, 2119445034, 2872807568, 2198571144, 3398190662, 700968686, 3547052216, 1009259540, 2041044702, 3803995742, 487983883, 1991105499, 1004265696, 1449407026, 1316239930, 504629770, 3683797321, 168560134, 1816667172, 3837287516, 1570751170, 1857934291, 4014189740, 2797888098, 2822345105, 2754712981, 936633572, 2347923833, 852879335, 1133234376, 1500395319, 3084545389, 2348912013, 1689376213, 3533459022, 3762923945, 3034082412, 4205598294, 133428468, 634383082, 2949277029, 2398386810, 3913789102, 403703816, 3580869306, 2297460856, 1867130149, 1918643758, 607656988, 4049053350, 3346248884, 1368901318, 600565992, 2090982877, 2632479860, 557719327, 3717614411, 3697393085, 2249034635, 2232388234, 2430627952, 1115438654, 3295786421, 2865522278, 3633334344, 84280067, 33027830, 303828494, 2747425121, 1600795957, 4188952407, 3496589753, 2434238086, 1486471617, 658119965, 3106381470, 953803233, 334231800, 3005978776, 857870609, 3151128937, 1890179545, 2298973838, 2805175444, 3056442267, 574365214, 2450884487, 550103529, 1233637070, 4289353045, 2018519080, 2057691103, 2399374476, 4166623649, 2148108681, 387583245, 3664101311, 836232934, 3330556482, 3100665960, 3280093505, 2955516313, 2002398509, 287182607, 3413881008, 4238890068, 3597515707, 975967766];
@@ -9839,8 +9839,8 @@
         var T8 = [4104605777, 1097159550, 396673818, 660510266, 2875968315, 2638606623, 4200115116, 3808662347, 821712160, 1986918061, 3430322568, 38544885, 3856137295, 718002117, 893681702, 1654886325, 2975484382, 3122358053, 3926825029, 4274053469, 796197571, 1290801793, 1184342925, 3556361835, 2405426947, 2459735317, 1836772287, 1381620373, 3196267988, 1948373848, 3764988233, 3385345166, 3263785589, 2390325492, 1480485785, 3111247143, 3780097726, 2293045232, 548169417, 3459953789, 3746175075, 439452389, 1362321559, 1400849762, 1685577905, 1806599355, 2174754046, 137073913, 1214797936, 1174215055, 3731654548, 2079897426, 1943217067, 1258480242, 529487843, 1437280870, 3945269170, 3049390895, 3313212038, 923313619, 679998e3, 3215307299, 57326082, 377642221, 3474729866, 2041877159, 133361907, 1776460110, 3673476453, 96392454, 878845905, 2801699524, 777231668, 4082475170, 2330014213, 4142626212, 2213296395, 1626319424, 1906247262, 1846563261, 562755902, 3708173718, 1040559837, 3871163981, 1418573201, 3294430577, 114585348, 1343618912, 2566595609, 3186202582, 1078185097, 3651041127, 3896688048, 2307622919, 425408743, 3371096953, 2081048481, 1108339068, 2216610296, 0, 2156299017, 736970802, 292596766, 1517440620, 251657213, 2235061775, 2933202493, 758720310, 265905162, 1554391400, 1532285339, 908999204, 174567692, 1474760595, 4002861748, 2610011675, 3234156416, 3693126241, 2001430874, 303699484, 2478443234, 2687165888, 585122620, 454499602, 151849742, 2345119218, 3064510765, 514443284, 4044981591, 1963412655, 2581445614, 2137062819, 19308535, 1928707164, 1715193156, 4219352155, 1126790795, 600235211, 3992742070, 3841024952, 836553431, 1669664834, 2535604243, 3323011204, 1243905413, 3141400786, 4180808110, 698445255, 2653899549, 2989552604, 2253581325, 3252932727, 3004591147, 1891211689, 2487810577, 3915653703, 4237083816, 4030667424, 2100090966, 865136418, 1229899655, 953270745, 3399679628, 3557504664, 4118925222, 2061379749, 3079546586, 2915017791, 983426092, 2022837584, 1607244650, 2118541908, 2366882550, 3635996816, 972512814, 3283088770, 1568718495, 3499326569, 3576539503, 621982671, 2895723464, 410887952, 2623762152, 1002142683, 645401037, 1494807662, 2595684844, 1335535747, 2507040230, 4293295786, 3167684641, 367585007, 3885750714, 1865862730, 2668221674, 2960971305, 2763173681, 1059270954, 2777952454, 2724642869, 1320957812, 2194319100, 2429595872, 2815956275, 77089521, 3973773121, 3444575871, 2448830231, 1305906550, 4021308739, 2857194700, 2516901860, 3518358430, 1787304780, 740276417, 1699839814, 1592394909, 2352307457, 2272556026, 188821243, 1729977011, 3687994002, 274084841, 3594982253, 3613494426, 2701949495, 4162096729, 322734571, 2837966542, 1640576439, 484830689, 1202797690, 3537852828, 4067639125, 349075736, 3342319475, 4157467219, 4255800159, 1030690015, 1155237496, 2951971274, 1757691577, 607398968, 2738905026, 499347990, 3794078908, 1011452712, 227885567, 2818666809, 213114376, 3034881240, 1455525988, 3414450555, 850817237, 1817998408, 3092726480];
         var U1 = [0, 235474187, 470948374, 303765277, 941896748, 908933415, 607530554, 708780849, 1883793496, 2118214995, 1817866830, 1649639237, 1215061108, 1181045119, 1417561698, 1517767529, 3767586992, 4003061179, 4236429990, 4069246893, 3635733660, 3602770327, 3299278474, 3400528769, 2430122216, 2664543715, 2362090238, 2193862645, 2835123396, 2801107407, 3035535058, 3135740889, 3678124923, 3576870512, 3341394285, 3374361702, 3810496343, 3977675356, 4279080257, 4043610186, 2876494627, 2776292904, 3076639029, 3110650942, 2472011535, 2640243204, 2403728665, 2169303058, 1001089995, 899835584, 666464733, 699432150, 59727847, 226906860, 530400753, 294930682, 1273168787, 1172967064, 1475418501, 1509430414, 1942435775, 2110667444, 1876241833, 1641816226, 2910219766, 2743034109, 2976151520, 3211623147, 2505202138, 2606453969, 2302690252, 2269728455, 3711829422, 3543599269, 3240894392, 3475313331, 3843699074, 3943906441, 4178062228, 4144047775, 1306967366, 1139781709, 1374988112, 1610459739, 1975683434, 2076935265, 1775276924, 1742315127, 1034867998, 866637845, 566021896, 800440835, 92987698, 193195065, 429456164, 395441711, 1984812685, 2017778566, 1784663195, 1683407248, 1315562145, 1080094634, 1383856311, 1551037884, 101039829, 135050206, 437757123, 337553864, 1042385657, 807962610, 573804783, 742039012, 2531067453, 2564033334, 2328828971, 2227573024, 2935566865, 2700099354, 3001755655, 3168937228, 3868552805, 3902563182, 4203181171, 4102977912, 3736164937, 3501741890, 3265478751, 3433712980, 1106041591, 1340463100, 1576976609, 1408749034, 2043211483, 2009195472, 1708848333, 1809054150, 832877231, 1068351396, 766945465, 599762354, 159417987, 126454664, 361929877, 463180190, 2709260871, 2943682380, 3178106961, 3009879386, 2572697195, 2538681184, 2236228733, 2336434550, 3509871135, 3745345300, 3441850377, 3274667266, 3910161971, 3877198648, 4110568485, 4211818798, 2597806476, 2497604743, 2261089178, 2295101073, 2733856160, 2902087851, 3202437046, 2968011453, 3936291284, 3835036895, 4136440770, 4169408201, 3535486456, 3702665459, 3467192302, 3231722213, 2051518780, 1951317047, 1716890410, 1750902305, 1113818384, 1282050075, 1584504582, 1350078989, 168810852, 67556463, 371049330, 404016761, 841739592, 1008918595, 775550814, 540080725, 3969562369, 3801332234, 4035489047, 4269907996, 3569255213, 3669462566, 3366754619, 3332740144, 2631065433, 2463879762, 2160117071, 2395588676, 2767645557, 2868897406, 3102011747, 3069049960, 202008497, 33778362, 270040487, 504459436, 875451293, 975658646, 675039627, 641025152, 2084704233, 1917518562, 1615861247, 1851332852, 1147550661, 1248802510, 1484005843, 1451044056, 933301370, 967311729, 733156972, 632953703, 260388950, 25965917, 328671808, 496906059, 1206477858, 1239443753, 1543208500, 1441952575, 2144161806, 1908694277, 1675577880, 1842759443, 3610369226, 3644379585, 3408119516, 3307916247, 4011190502, 3776767469, 4077384432, 4245618683, 2809771154, 2842737049, 3144396420, 3043140495, 2673705150, 2438237621, 2203032232, 2370213795];
         var U22 = [0, 185469197, 370938394, 487725847, 741876788, 657861945, 975451694, 824852259, 1483753576, 1400783205, 1315723890, 1164071807, 1950903388, 2135319889, 1649704518, 1767536459, 2967507152, 3152976349, 2801566410, 2918353863, 2631447780, 2547432937, 2328143614, 2177544179, 3901806776, 3818836405, 4270639778, 4118987695, 3299409036, 3483825537, 3535072918, 3652904859, 2077965243, 1893020342, 1841768865, 1724457132, 1474502543, 1559041666, 1107234197, 1257309336, 598438867, 681933534, 901210569, 1052338372, 261314535, 77422314, 428819965, 310463728, 3409685355, 3224740454, 3710368113, 3593056380, 3875770207, 3960309330, 4045380933, 4195456072, 2471224067, 2554718734, 2237133081, 2388260884, 3212035895, 3028143674, 2842678573, 2724322336, 4138563181, 4255350624, 3769721975, 3955191162, 3667219033, 3516619604, 3431546947, 3347532110, 2933734917, 2782082824, 3099667487, 3016697106, 2196052529, 2313884476, 2499348523, 2683765030, 1179510461, 1296297904, 1347548327, 1533017514, 1786102409, 1635502980, 2087309459, 2003294622, 507358933, 355706840, 136428751, 53458370, 839224033, 957055980, 605657339, 790073846, 2373340630, 2256028891, 2607439820, 2422494913, 2706270690, 2856345839, 3075636216, 3160175349, 3573941694, 3725069491, 3273267108, 3356761769, 4181598602, 4063242375, 4011996048, 3828103837, 1033297158, 915985419, 730517276, 545572369, 296679730, 446754879, 129166120, 213705253, 1709610350, 1860738147, 1945798516, 2029293177, 1239331162, 1120974935, 1606591296, 1422699085, 4148292826, 4233094615, 3781033664, 3931371469, 3682191598, 3497509347, 3446004468, 3328955385, 2939266226, 2755636671, 3106780840, 2988687269, 2198438022, 2282195339, 2501218972, 2652609425, 1201765386, 1286567175, 1371368976, 1521706781, 1805211710, 1620529459, 2105887268, 1988838185, 533804130, 350174575, 164439672, 46346101, 870912086, 954669403, 636813900, 788204353, 2358957921, 2274680428, 2592523643, 2441661558, 2695033685, 2880240216, 3065962831, 3182487618, 3572145929, 3756299780, 3270937875, 3388507166, 4174560061, 4091327024, 4006521127, 3854606378, 1014646705, 930369212, 711349675, 560487590, 272786309, 457992840, 106852767, 223377554, 1678381017, 1862534868, 1914052035, 2031621326, 1211247597, 1128014560, 1580087799, 1428173050, 32283319, 182621114, 401639597, 486441376, 768917123, 651868046, 1003007129, 818324884, 1503449823, 1385356242, 1333838021, 1150208456, 1973745387, 2125135846, 1673061617, 1756818940, 2970356327, 3120694122, 2802849917, 2887651696, 2637442643, 2520393566, 2334669897, 2149987652, 3917234703, 3799141122, 4284502037, 4100872472, 3309594171, 3460984630, 3545789473, 3629546796, 2050466060, 1899603969, 1814803222, 1730525723, 1443857720, 1560382517, 1075025698, 1260232239, 575138148, 692707433, 878443390, 1062597235, 243256656, 91341917, 409198410, 325965383, 3403100636, 3252238545, 3704300486, 3620022987, 3874428392, 3990953189, 4042459122, 4227665663, 2460449204, 2578018489, 2226875310, 2411029155, 3198115200, 3046200461, 2827177882, 2743944855];
-        var U3 = [0, 218828297, 437656594, 387781147, 875313188, 958871085, 775562294, 590424639, 1750626376, 1699970625, 1917742170, 2135253587, 1551124588, 1367295589, 1180849278, 1265195639, 3501252752, 3720081049, 3399941250, 3350065803, 3835484340, 3919042237, 4270507174, 4085369519, 3102249176, 3051593425, 2734591178, 2952102595, 2361698556, 2177869557, 2530391278, 2614737639, 3145456443, 3060847922, 2708326185, 2892417312, 2404901663, 2187128086, 2504130317, 2555048196, 3542330227, 3727205754, 3375740769, 3292445032, 3876557655, 3926170974, 4246310725, 4027744588, 1808481195, 1723872674, 1910319033, 2094410160, 1608975247, 1391201670, 1173430173, 1224348052, 59984867, 244860394, 428169201, 344873464, 935293895, 984907214, 766078933, 547512796, 1844882806, 1627235199, 2011214180, 2062270317, 1507497298, 1423022939, 1137477952, 1321699145, 95345982, 145085239, 532201772, 313773861, 830661914, 1015671571, 731183368, 648017665, 3175501286, 2957853679, 2807058932, 2858115069, 2305455554, 2220981195, 2474404304, 2658625497, 3575528878, 3625268135, 3473416636, 3254988725, 3778151818, 3963161475, 4213447064, 4130281361, 3599595085, 3683022916, 3432737375, 3247465558, 3802222185, 4020912224, 4172763771, 4122762354, 3201631749, 3017672716, 2764249623, 2848461854, 2331590177, 2280796200, 2431590963, 2648976442, 104699613, 188127444, 472615631, 287343814, 840019705, 1058709744, 671593195, 621591778, 1852171925, 1668212892, 1953757831, 2037970062, 1514790577, 1463996600, 1080017571, 1297403050, 3673637356, 3623636965, 3235995134, 3454686199, 4007360968, 3822090177, 4107101658, 4190530515, 2997825956, 3215212461, 2830708150, 2779915199, 2256734592, 2340947849, 2627016082, 2443058075, 172466556, 122466165, 273792366, 492483431, 1047239e3, 861968209, 612205898, 695634755, 1646252340, 1863638845, 2013908262, 1963115311, 1446242576, 1530455833, 1277555970, 1093597963, 1636604631, 1820824798, 2073724613, 1989249228, 1436590835, 1487645946, 1337376481, 1119727848, 164948639, 81781910, 331544205, 516552836, 1039717051, 821288114, 669961897, 719700128, 2973530695, 3157750862, 2871682645, 2787207260, 2232435299, 2283490410, 2667994737, 2450346104, 3647212047, 3564045318, 3279033885, 3464042516, 3980931627, 3762502690, 4150144569, 4199882800, 3070356634, 3121275539, 2904027272, 2686254721, 2200818878, 2384911031, 2570832044, 2486224549, 3747192018, 3528626907, 3310321856, 3359936201, 3950355702, 3867060991, 4049844452, 4234721005, 1739656202, 1790575107, 2108100632, 1890328081, 1402811438, 1586903591, 1233856572, 1149249077, 266959938, 48394827, 369057872, 418672217, 1002783846, 919489135, 567498868, 752375421, 209336225, 24197544, 376187827, 459744698, 945164165, 895287692, 574624663, 793451934, 1679968233, 1764313568, 2117360635, 1933530610, 1343127501, 1560637892, 1243112415, 1192455638, 3704280881, 3519142200, 3336358691, 3419915562, 3907448597, 3857572124, 4075877127, 4294704398, 3029510009, 3113855344, 2927934315, 2744104290, 2159976285, 2377486676, 2594734927, 2544078150];
-        var U4 = [0, 151849742, 303699484, 454499602, 607398968, 758720310, 908999204, 1059270954, 1214797936, 1097159550, 1517440620, 1400849762, 1817998408, 1699839814, 2118541908, 2001430874, 2429595872, 2581445614, 2194319100, 2345119218, 3034881240, 3186202582, 2801699524, 2951971274, 3635996816, 3518358430, 3399679628, 3283088770, 4237083816, 4118925222, 4002861748, 3885750714, 1002142683, 850817237, 698445255, 548169417, 529487843, 377642221, 227885567, 77089521, 1943217067, 2061379749, 1640576439, 1757691577, 1474760595, 1592394909, 1174215055, 1290801793, 2875968315, 2724642869, 3111247143, 2960971305, 2405426947, 2253581325, 2638606623, 2487810577, 3808662347, 3926825029, 4044981591, 4162096729, 3342319475, 3459953789, 3576539503, 3693126241, 1986918061, 2137062819, 1685577905, 1836772287, 1381620373, 1532285339, 1078185097, 1229899655, 1040559837, 923313619, 740276417, 621982671, 439452389, 322734571, 137073913, 19308535, 3871163981, 4021308739, 4104605777, 4255800159, 3263785589, 3414450555, 3499326569, 3651041127, 2933202493, 2815956275, 3167684641, 3049390895, 2330014213, 2213296395, 2566595609, 2448830231, 1305906550, 1155237496, 1607244650, 1455525988, 1776460110, 1626319424, 2079897426, 1928707164, 96392454, 213114376, 396673818, 514443284, 562755902, 679998e3, 865136418, 983426092, 3708173718, 3557504664, 3474729866, 3323011204, 4180808110, 4030667424, 3945269170, 3794078908, 2507040230, 2623762152, 2272556026, 2390325492, 2975484382, 3092726480, 2738905026, 2857194700, 3973773121, 3856137295, 4274053469, 4157467219, 3371096953, 3252932727, 3673476453, 3556361835, 2763173681, 2915017791, 3064510765, 3215307299, 2156299017, 2307622919, 2459735317, 2610011675, 2081048481, 1963412655, 1846563261, 1729977011, 1480485785, 1362321559, 1243905413, 1126790795, 878845905, 1030690015, 645401037, 796197571, 274084841, 425408743, 38544885, 188821243, 3613494426, 3731654548, 3313212038, 3430322568, 4082475170, 4200115116, 3780097726, 3896688048, 2668221674, 2516901860, 2366882550, 2216610296, 3141400786, 2989552604, 2837966542, 2687165888, 1202797690, 1320957812, 1437280870, 1554391400, 1669664834, 1787304780, 1906247262, 2022837584, 265905162, 114585348, 499347990, 349075736, 736970802, 585122620, 972512814, 821712160, 2595684844, 2478443234, 2293045232, 2174754046, 3196267988, 3079546586, 2895723464, 2777952454, 3537852828, 3687994002, 3234156416, 3385345166, 4142626212, 4293295786, 3841024952, 3992742070, 174567692, 57326082, 410887952, 292596766, 777231668, 660510266, 1011452712, 893681702, 1108339068, 1258480242, 1343618912, 1494807662, 1715193156, 1865862730, 1948373848, 2100090966, 2701949495, 2818666809, 3004591147, 3122358053, 2235061775, 2352307457, 2535604243, 2653899549, 3915653703, 3764988233, 4219352155, 4067639125, 3444575871, 3294430577, 3746175075, 3594982253, 836553431, 953270745, 600235211, 718002117, 367585007, 484830689, 133361907, 251657213, 2041877159, 1891211689, 1806599355, 1654886325, 1568718495, 1418573201, 1335535747, 1184342925];
+        var U32 = [0, 218828297, 437656594, 387781147, 875313188, 958871085, 775562294, 590424639, 1750626376, 1699970625, 1917742170, 2135253587, 1551124588, 1367295589, 1180849278, 1265195639, 3501252752, 3720081049, 3399941250, 3350065803, 3835484340, 3919042237, 4270507174, 4085369519, 3102249176, 3051593425, 2734591178, 2952102595, 2361698556, 2177869557, 2530391278, 2614737639, 3145456443, 3060847922, 2708326185, 2892417312, 2404901663, 2187128086, 2504130317, 2555048196, 3542330227, 3727205754, 3375740769, 3292445032, 3876557655, 3926170974, 4246310725, 4027744588, 1808481195, 1723872674, 1910319033, 2094410160, 1608975247, 1391201670, 1173430173, 1224348052, 59984867, 244860394, 428169201, 344873464, 935293895, 984907214, 766078933, 547512796, 1844882806, 1627235199, 2011214180, 2062270317, 1507497298, 1423022939, 1137477952, 1321699145, 95345982, 145085239, 532201772, 313773861, 830661914, 1015671571, 731183368, 648017665, 3175501286, 2957853679, 2807058932, 2858115069, 2305455554, 2220981195, 2474404304, 2658625497, 3575528878, 3625268135, 3473416636, 3254988725, 3778151818, 3963161475, 4213447064, 4130281361, 3599595085, 3683022916, 3432737375, 3247465558, 3802222185, 4020912224, 4172763771, 4122762354, 3201631749, 3017672716, 2764249623, 2848461854, 2331590177, 2280796200, 2431590963, 2648976442, 104699613, 188127444, 472615631, 287343814, 840019705, 1058709744, 671593195, 621591778, 1852171925, 1668212892, 1953757831, 2037970062, 1514790577, 1463996600, 1080017571, 1297403050, 3673637356, 3623636965, 3235995134, 3454686199, 4007360968, 3822090177, 4107101658, 4190530515, 2997825956, 3215212461, 2830708150, 2779915199, 2256734592, 2340947849, 2627016082, 2443058075, 172466556, 122466165, 273792366, 492483431, 1047239e3, 861968209, 612205898, 695634755, 1646252340, 1863638845, 2013908262, 1963115311, 1446242576, 1530455833, 1277555970, 1093597963, 1636604631, 1820824798, 2073724613, 1989249228, 1436590835, 1487645946, 1337376481, 1119727848, 164948639, 81781910, 331544205, 516552836, 1039717051, 821288114, 669961897, 719700128, 2973530695, 3157750862, 2871682645, 2787207260, 2232435299, 2283490410, 2667994737, 2450346104, 3647212047, 3564045318, 3279033885, 3464042516, 3980931627, 3762502690, 4150144569, 4199882800, 3070356634, 3121275539, 2904027272, 2686254721, 2200818878, 2384911031, 2570832044, 2486224549, 3747192018, 3528626907, 3310321856, 3359936201, 3950355702, 3867060991, 4049844452, 4234721005, 1739656202, 1790575107, 2108100632, 1890328081, 1402811438, 1586903591, 1233856572, 1149249077, 266959938, 48394827, 369057872, 418672217, 1002783846, 919489135, 567498868, 752375421, 209336225, 24197544, 376187827, 459744698, 945164165, 895287692, 574624663, 793451934, 1679968233, 1764313568, 2117360635, 1933530610, 1343127501, 1560637892, 1243112415, 1192455638, 3704280881, 3519142200, 3336358691, 3419915562, 3907448597, 3857572124, 4075877127, 4294704398, 3029510009, 3113855344, 2927934315, 2744104290, 2159976285, 2377486676, 2594734927, 2544078150];
+        var U42 = [0, 151849742, 303699484, 454499602, 607398968, 758720310, 908999204, 1059270954, 1214797936, 1097159550, 1517440620, 1400849762, 1817998408, 1699839814, 2118541908, 2001430874, 2429595872, 2581445614, 2194319100, 2345119218, 3034881240, 3186202582, 2801699524, 2951971274, 3635996816, 3518358430, 3399679628, 3283088770, 4237083816, 4118925222, 4002861748, 3885750714, 1002142683, 850817237, 698445255, 548169417, 529487843, 377642221, 227885567, 77089521, 1943217067, 2061379749, 1640576439, 1757691577, 1474760595, 1592394909, 1174215055, 1290801793, 2875968315, 2724642869, 3111247143, 2960971305, 2405426947, 2253581325, 2638606623, 2487810577, 3808662347, 3926825029, 4044981591, 4162096729, 3342319475, 3459953789, 3576539503, 3693126241, 1986918061, 2137062819, 1685577905, 1836772287, 1381620373, 1532285339, 1078185097, 1229899655, 1040559837, 923313619, 740276417, 621982671, 439452389, 322734571, 137073913, 19308535, 3871163981, 4021308739, 4104605777, 4255800159, 3263785589, 3414450555, 3499326569, 3651041127, 2933202493, 2815956275, 3167684641, 3049390895, 2330014213, 2213296395, 2566595609, 2448830231, 1305906550, 1155237496, 1607244650, 1455525988, 1776460110, 1626319424, 2079897426, 1928707164, 96392454, 213114376, 396673818, 514443284, 562755902, 679998e3, 865136418, 983426092, 3708173718, 3557504664, 3474729866, 3323011204, 4180808110, 4030667424, 3945269170, 3794078908, 2507040230, 2623762152, 2272556026, 2390325492, 2975484382, 3092726480, 2738905026, 2857194700, 3973773121, 3856137295, 4274053469, 4157467219, 3371096953, 3252932727, 3673476453, 3556361835, 2763173681, 2915017791, 3064510765, 3215307299, 2156299017, 2307622919, 2459735317, 2610011675, 2081048481, 1963412655, 1846563261, 1729977011, 1480485785, 1362321559, 1243905413, 1126790795, 878845905, 1030690015, 645401037, 796197571, 274084841, 425408743, 38544885, 188821243, 3613494426, 3731654548, 3313212038, 3430322568, 4082475170, 4200115116, 3780097726, 3896688048, 2668221674, 2516901860, 2366882550, 2216610296, 3141400786, 2989552604, 2837966542, 2687165888, 1202797690, 1320957812, 1437280870, 1554391400, 1669664834, 1787304780, 1906247262, 2022837584, 265905162, 114585348, 499347990, 349075736, 736970802, 585122620, 972512814, 821712160, 2595684844, 2478443234, 2293045232, 2174754046, 3196267988, 3079546586, 2895723464, 2777952454, 3537852828, 3687994002, 3234156416, 3385345166, 4142626212, 4293295786, 3841024952, 3992742070, 174567692, 57326082, 410887952, 292596766, 777231668, 660510266, 1011452712, 893681702, 1108339068, 1258480242, 1343618912, 1494807662, 1715193156, 1865862730, 1948373848, 2100090966, 2701949495, 2818666809, 3004591147, 3122358053, 2235061775, 2352307457, 2535604243, 2653899549, 3915653703, 3764988233, 4219352155, 4067639125, 3444575871, 3294430577, 3746175075, 3594982253, 836553431, 953270745, 600235211, 718002117, 367585007, 484830689, 133361907, 251657213, 2041877159, 1891211689, 1806599355, 1654886325, 1568718495, 1418573201, 1335535747, 1184342925];
         function convertToInt32(bytes) {
           var result2 = [];
           for (var i3 = 0; i3 < bytes.length; i3 += 4) {
@@ -9883,7 +9883,7 @@
           var t4 = KC, tt3;
           while (t4 < roundKeyCount) {
             tt3 = tk[KC - 1];
-            tk[0] ^= S2[tt3 >> 16 & 255] << 24 ^ S2[tt3 >> 8 & 255] << 16 ^ S2[tt3 & 255] << 8 ^ S2[tt3 >> 24 & 255] ^ rcon[rconpointer] << 24;
+            tk[0] ^= S3[tt3 >> 16 & 255] << 24 ^ S3[tt3 >> 8 & 255] << 16 ^ S3[tt3 & 255] << 8 ^ S3[tt3 >> 24 & 255] ^ rcon[rconpointer] << 24;
             rconpointer += 1;
             if (KC != 8) {
               for (var i3 = 1; i3 < KC; i3++) {
@@ -9894,7 +9894,7 @@
                 tk[i3] ^= tk[i3 - 1];
               }
               tt3 = tk[KC / 2 - 1];
-              tk[KC / 2] ^= S2[tt3 & 255] ^ S2[tt3 >> 8 & 255] << 8 ^ S2[tt3 >> 16 & 255] << 16 ^ S2[tt3 >> 24 & 255] << 24;
+              tk[KC / 2] ^= S3[tt3 & 255] ^ S3[tt3 >> 8 & 255] << 8 ^ S3[tt3 >> 16 & 255] << 16 ^ S3[tt3 >> 24 & 255] << 24;
               for (var i3 = KC / 2 + 1; i3 < KC; i3++) {
                 tk[i3] ^= tk[i3 - 1];
               }
@@ -9911,7 +9911,7 @@
           for (var r2 = 1; r2 < rounds; r2++) {
             for (var c2 = 0; c2 < 4; c2++) {
               tt3 = this._Kd[r2][c2];
-              this._Kd[r2][c2] = U1[tt3 >> 24 & 255] ^ U22[tt3 >> 16 & 255] ^ U3[tt3 >> 8 & 255] ^ U4[tt3 & 255];
+              this._Kd[r2][c2] = U1[tt3 >> 24 & 255] ^ U22[tt3 >> 16 & 255] ^ U32[tt3 >> 8 & 255] ^ U42[tt3 & 255];
             }
           }
         };
@@ -9934,10 +9934,10 @@
           var result2 = createArray(16), tt3;
           for (var i3 = 0; i3 < 4; i3++) {
             tt3 = this._Ke[rounds][i3];
-            result2[4 * i3] = (S2[t4[i3] >> 24 & 255] ^ tt3 >> 24) & 255;
-            result2[4 * i3 + 1] = (S2[t4[(i3 + 1) % 4] >> 16 & 255] ^ tt3 >> 16) & 255;
-            result2[4 * i3 + 2] = (S2[t4[(i3 + 2) % 4] >> 8 & 255] ^ tt3 >> 8) & 255;
-            result2[4 * i3 + 3] = (S2[t4[(i3 + 3) % 4] & 255] ^ tt3) & 255;
+            result2[4 * i3] = (S3[t4[i3] >> 24 & 255] ^ tt3 >> 24) & 255;
+            result2[4 * i3 + 1] = (S3[t4[(i3 + 1) % 4] >> 16 & 255] ^ tt3 >> 16) & 255;
+            result2[4 * i3 + 2] = (S3[t4[(i3 + 2) % 4] >> 8 & 255] ^ tt3 >> 8) & 255;
+            result2[4 * i3 + 3] = (S3[t4[(i3 + 3) % 4] & 255] ^ tt3) & 255;
           }
           return result2;
         };
@@ -10198,33 +10198,33 @@
           return encrypted;
         };
         ModeOfOperationCTR.prototype.decrypt = ModeOfOperationCTR.prototype.encrypt;
-        function pkcs7pad(data) {
-          data = coerceArray(data, true);
-          var padder = 16 - data.length % 16;
-          var result2 = createArray(data.length + padder);
-          copyArray2(data, result2);
-          for (var i3 = data.length; i3 < result2.length; i3++) {
+        function pkcs7pad(data2) {
+          data2 = coerceArray(data2, true);
+          var padder = 16 - data2.length % 16;
+          var result2 = createArray(data2.length + padder);
+          copyArray2(data2, result2);
+          for (var i3 = data2.length; i3 < result2.length; i3++) {
             result2[i3] = padder;
           }
           return result2;
         }
-        function pkcs7strip(data) {
-          data = coerceArray(data, true);
-          if (data.length < 16) {
+        function pkcs7strip(data2) {
+          data2 = coerceArray(data2, true);
+          if (data2.length < 16) {
             throw new Error("PKCS#7 invalid length");
           }
-          var padder = data[data.length - 1];
+          var padder = data2[data2.length - 1];
           if (padder > 16) {
             throw new Error("PKCS#7 padding byte out of range");
           }
-          var length2 = data.length - padder;
+          var length2 = data2.length - padder;
           for (var i3 = 0; i3 < padder; i3++) {
-            if (data[length2 + i3] !== padder) {
+            if (data2[length2 + i3] !== padder) {
               throw new Error("PKCS#7 invalid padding byte");
             }
           }
           var result2 = createArray(length2);
-          copyArray2(data, result2, 0, 0, length2);
+          copyArray2(data2, result2, 0, 0, length2);
           return result2;
         }
         var aesjs2 = {
@@ -10474,7 +10474,7 @@
     return brush(XY);
   }
   function brush(dim) {
-    var extent2 = defaultExtent2, filter4 = defaultFilter3, touchable = defaultTouchable3, keys4 = true, listeners = dispatch_default("start", "brush", "end"), handleSize = 6, touchending;
+    var extent2 = defaultExtent2, filter4 = defaultFilter3, touchable = defaultTouchable3, keys5 = true, listeners = dispatch_default("start", "brush", "end"), handleSize = 6, touchending;
     function brush2(group2) {
       var overlay = group2.property("__brush", initialize).selectAll(".overlay").data([type("overlay")]);
       overlay.enter().append("rect").attr("class", "overlay").attr("pointer-events", "all").attr("cursor", cursors.overlay).merge(overlay).each(function() {
@@ -10586,7 +10586,7 @@
     function started(event) {
       if (touchending && !event.touches) return;
       if (!filter4.apply(this, arguments)) return;
-      var that = this, type2 = event.target.__data__.type, mode2 = (keys4 && event.metaKey ? type2 = "overlay" : type2) === "selection" ? MODE_DRAG : keys4 && event.altKey ? MODE_CENTER : MODE_HANDLE, signX = dim === Y ? null : signsX[type2], signY = dim === X ? null : signsY[type2], state = local2(that), extent3 = state.extent, selection2 = state.selection, W3 = extent3[0][0], w0, w1, N3 = extent3[0][1], n0, n1, E4 = extent3[1][0], e0, e1, S2 = extent3[1][1], s0, s1, dx = 0, dy = 0, moving, shifting = signX && signY && keys4 && event.shiftKey, lockX, lockY, points2 = Array.from(event.touches || [event], (t4) => {
+      var that = this, type2 = event.target.__data__.type, mode2 = (keys5 && event.metaKey ? type2 = "overlay" : type2) === "selection" ? MODE_DRAG : keys5 && event.altKey ? MODE_CENTER : MODE_HANDLE, signX = dim === Y ? null : signsX[type2], signY = dim === X ? null : signsY[type2], state = local2(that), extent3 = state.extent, selection2 = state.selection, W3 = extent3[0][0], w0, w1, N3 = extent3[0][1], n0, n1, E4 = extent3[1][0], e0, e1, S3 = extent3[1][1], s0, s1, dx = 0, dy = 0, moving, shifting = signX && signY && keys5 && event.shiftKey, lockX, lockY, points2 = Array.from(event.touches || [event], (t4) => {
         const i3 = t4.identifier;
         t4 = pointer_default(t4, that);
         t4.point0 = t4.slice();
@@ -10603,7 +10603,7 @@
           n0 = dim === X ? N3 : min2(pts[0][1], pts[1][1])
         ], [
           e0 = dim === Y ? E4 : max2(pts[0][0], pts[1][0]),
-          s0 = dim === X ? S2 : max2(pts[0][1], pts[1][1])
+          s0 = dim === X ? S3 : max2(pts[0][1], pts[1][1])
         ]];
         if (points2.length > 1) move(event);
       } else {
@@ -10623,7 +10623,7 @@
         emit.ended = ended;
       } else {
         var view = select_default2(event.view).on("mousemove.brush", moved, true).on("mouseup.brush", ended, true);
-        if (keys4) view.on("keydown.brush", keydowned, true).on("keyup.brush", keyupped, true);
+        if (keys5) view.on("keydown.brush", keydowned, true).on("keyup.brush", keyupped, true);
         nodrag_default(event.view);
       }
       redraw.call(that);
@@ -10655,24 +10655,24 @@
           case MODE_SPACE:
           case MODE_DRAG: {
             if (signX) dx = max2(W3 - w0, min2(E4 - e0, dx)), w1 = w0 + dx, e1 = e0 + dx;
-            if (signY) dy = max2(N3 - n0, min2(S2 - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
+            if (signY) dy = max2(N3 - n0, min2(S3 - s0, dy)), n1 = n0 + dy, s1 = s0 + dy;
             break;
           }
           case MODE_HANDLE: {
             if (points2[1]) {
               if (signX) w1 = max2(W3, min2(E4, points2[0][0])), e1 = max2(W3, min2(E4, points2[1][0])), signX = 1;
-              if (signY) n1 = max2(N3, min2(S2, points2[0][1])), s1 = max2(N3, min2(S2, points2[1][1])), signY = 1;
+              if (signY) n1 = max2(N3, min2(S3, points2[0][1])), s1 = max2(N3, min2(S3, points2[1][1])), signY = 1;
             } else {
               if (signX < 0) dx = max2(W3 - w0, min2(E4 - w0, dx)), w1 = w0 + dx, e1 = e0;
               else if (signX > 0) dx = max2(W3 - e0, min2(E4 - e0, dx)), w1 = w0, e1 = e0 + dx;
-              if (signY < 0) dy = max2(N3 - n0, min2(S2 - n0, dy)), n1 = n0 + dy, s1 = s0;
-              else if (signY > 0) dy = max2(N3 - s0, min2(S2 - s0, dy)), n1 = n0, s1 = s0 + dy;
+              if (signY < 0) dy = max2(N3 - n0, min2(S3 - n0, dy)), n1 = n0 + dy, s1 = s0;
+              else if (signY > 0) dy = max2(N3 - s0, min2(S3 - s0, dy)), n1 = n0, s1 = s0 + dy;
             }
             break;
           }
           case MODE_CENTER: {
             if (signX) w1 = max2(W3, min2(E4, w0 - dx * signX)), e1 = max2(W3, min2(E4, e0 + dx * signX));
-            if (signY) n1 = max2(N3, min2(S2, n0 - dy * signY)), s1 = max2(N3, min2(S2, s0 + dy * signY));
+            if (signY) n1 = max2(N3, min2(S3, n0 - dy * signY)), s1 = max2(N3, min2(S3, s0 + dy * signY));
             break;
           }
         }
@@ -10816,7 +10816,7 @@
       return arguments.length ? (handleSize = +_3, brush2) : handleSize;
     };
     brush2.keyModifiers = function(_3) {
-      return arguments.length ? (keys4 = !!_3, brush2) : keys4;
+      return arguments.length ? (keys5 = !!_3, brush2) : keys5;
     };
     brush2.on = function() {
       var value = listeners.on.apply(listeners, arguments);
@@ -10980,16 +10980,16 @@
     var s2 = value + "", length2 = s2.length;
     return length2 < width ? new Array(width - length2 + 1).join(0) + s2 : s2;
   }
-  function formatYear(year) {
-    return year < 0 ? "-" + pad(-year, 6) : year > 9999 ? "+" + pad(year, 6) : pad(year, 4);
+  function formatYear(year2) {
+    return year2 < 0 ? "-" + pad(-year2, 6) : year2 > 9999 ? "+" + pad(year2, 6) : pad(year2, 4);
   }
-  function formatDate(date) {
-    var hours = date.getUTCHours(), minutes = date.getUTCMinutes(), seconds2 = date.getUTCSeconds(), milliseconds2 = date.getUTCMilliseconds();
-    return isNaN(date) ? "Invalid Date" : formatYear(date.getUTCFullYear(), 4) + "-" + pad(date.getUTCMonth() + 1, 2) + "-" + pad(date.getUTCDate(), 2) + (milliseconds2 ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds2, 2) + "." + pad(milliseconds2, 3) + "Z" : seconds2 ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds2, 2) + "Z" : minutes || hours ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + "Z" : "");
+  function formatDate(date2) {
+    var hours = date2.getUTCHours(), minutes = date2.getUTCMinutes(), seconds2 = date2.getUTCSeconds(), milliseconds2 = date2.getUTCMilliseconds();
+    return isNaN(date2) ? "Invalid Date" : formatYear(date2.getUTCFullYear(), 4) + "-" + pad(date2.getUTCMonth() + 1, 2) + "-" + pad(date2.getUTCDate(), 2) + (milliseconds2 ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds2, 2) + "." + pad(milliseconds2, 3) + "Z" : seconds2 ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds2, 2) + "Z" : minutes || hours ? "T" + pad(hours, 2) + ":" + pad(minutes, 2) + "Z" : "");
   }
   function dsv_default(delimiter) {
     var reFormat = new RegExp('["' + delimiter + "\n\r]"), DELIMITER = delimiter.charCodeAt(0);
-    function parse(text, f2) {
+    function parse2(text, f2) {
       var convert, columns, rows = parseRows(text, function(row, i3) {
         if (convert) return convert(row, i3 - 1);
         columns = row, convert = f2 ? customConverter(row, f2) : objectConverter(row);
@@ -11040,7 +11040,7 @@
         }).join(delimiter);
       });
     }
-    function format2(rows, columns) {
+    function format3(rows, columns) {
       if (columns == null) columns = inferColumns(rows);
       return [columns.map(formatValue).join(delimiter)].concat(preformatBody(rows, columns)).join("\n");
     }
@@ -11058,9 +11058,9 @@
       return value == null ? "" : value instanceof Date ? formatDate(value) : reFormat.test(value += "") ? '"' + value.replace(/"/g, '""') + '"' : value;
     }
     return {
-      parse,
+      parse: parse2,
       parseRows,
-      format: format2,
+      format: format3,
       formatBody,
       formatRows,
       formatRow,
@@ -11166,19 +11166,19 @@
   });
 
   // node_modules/d3-fetch/src/dsv.js
-  function dsvParse(parse) {
+  function dsvParse(parse2) {
     return function(input, init2, row) {
       if (arguments.length === 2 && typeof init2 === "function") row = init2, init2 = void 0;
       return text_default3(input, init2).then(function(response) {
-        return parse(response, row);
+        return parse2(response, row);
       });
     };
   }
   function dsv(delimiter, input, init2, row) {
     if (arguments.length === 3 && typeof init2 === "function") row = init2, init2 = void 0;
-    var format2 = dsv_default(delimiter);
+    var format3 = dsv_default(delimiter);
     return text_default3(input, init2).then(function(response) {
-      return format2.parse(response, row);
+      return format3.parse(response, row);
     });
   }
   var csv2, tsv2;
@@ -11438,14 +11438,14 @@
     var group2 = locale3.grouping === void 0 || locale3.thousands === void 0 ? identity_default3 : formatGroup_default(map2.call(locale3.grouping, Number), locale3.thousands + ""), currencyPrefix = locale3.currency === void 0 ? "" : locale3.currency[0] + "", currencySuffix = locale3.currency === void 0 ? "" : locale3.currency[1] + "", decimal = locale3.decimal === void 0 ? "." : locale3.decimal + "", numerals = locale3.numerals === void 0 ? identity_default3 : formatNumerals_default(map2.call(locale3.numerals, String)), percent = locale3.percent === void 0 ? "%" : locale3.percent + "", minus = locale3.minus === void 0 ? "\u2212" : locale3.minus + "", nan = locale3.nan === void 0 ? "NaN" : locale3.nan + "";
     function newFormat(specifier) {
       specifier = formatSpecifier(specifier);
-      var fill3 = specifier.fill, align = specifier.align, sign2 = specifier.sign, symbol = specifier.symbol, zero3 = specifier.zero, width = specifier.width, comma = specifier.comma, precision3 = specifier.precision, trim3 = specifier.trim, type2 = specifier.type;
+      var fill3 = specifier.fill, align = specifier.align, sign2 = specifier.sign, symbol = specifier.symbol, zero4 = specifier.zero, width = specifier.width, comma = specifier.comma, precision3 = specifier.precision, trim3 = specifier.trim, type2 = specifier.type;
       if (type2 === "n") comma = true, type2 = "g";
       else if (!formatTypes_default[type2]) precision3 === void 0 && (precision3 = 12), trim3 = true, type2 = "g";
-      if (zero3 || fill3 === "0" && align === "=") zero3 = true, fill3 = "0", align = "=";
+      if (zero4 || fill3 === "0" && align === "=") zero4 = true, fill3 = "0", align = "=";
       var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
       var formatType = formatTypes_default[type2], maybeSuffix = /[defgprs%]/.test(type2);
       precision3 = precision3 === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision3)) : Math.max(0, Math.min(20, precision3));
-      function format2(value) {
+      function format3(value) {
         var valuePrefix = prefix, valueSuffix = suffix, i3, n3, c2;
         if (type2 === "c") {
           valueSuffix = formatType(value) + valueSuffix;
@@ -11469,9 +11469,9 @@
             }
           }
         }
-        if (comma && !zero3) value = group2(value, Infinity);
+        if (comma && !zero4) value = group2(value, Infinity);
         var length2 = valuePrefix.length + value.length + valueSuffix.length, padding = length2 < width ? new Array(width - length2 + 1).join(fill3) : "";
-        if (comma && zero3) value = group2(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
+        if (comma && zero4) value = group2(padding + value, padding.length ? width - valueSuffix.length : Infinity), padding = "";
         switch (align) {
           case "<":
             value = valuePrefix + value + valueSuffix + padding;
@@ -11488,10 +11488,10 @@
         }
         return numerals(value);
       }
-      format2.toString = function() {
+      format3.toString = function() {
         return specifier + "";
       };
-      return format2;
+      return format3;
     }
     function formatPrefix2(specifier, value) {
       var f2 = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)), e3 = Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3, k3 = Math.pow(10, -e3), prefix = prefixes[8 + e3 / 3];
@@ -11559,9 +11559,9 @@
   });
 
   // node_modules/d3-format/src/precisionRound.js
-  function precisionRound_default(step, max4) {
-    step = Math.abs(step), max4 = Math.abs(max4) - step;
-    return Math.max(0, exponent_default(max4) - exponent_default(step)) + 1;
+  function precisionRound_default(step, max5) {
+    step = Math.abs(step), max5 = Math.abs(max5) - step;
+    return Math.max(0, exponent_default(max5) - exponent_default(step)) + 1;
   }
   var init_precisionRound = __esm({
     "node_modules/d3-format/src/precisionRound.js"() {
@@ -11937,25 +11937,25 @@
 
   // node_modules/d3-time/src/interval.js
   function timeInterval(floori, offseti, count2, field) {
-    function interval2(date) {
-      return floori(date = arguments.length === 0 ? /* @__PURE__ */ new Date() : /* @__PURE__ */ new Date(+date)), date;
+    function interval3(date2) {
+      return floori(date2 = arguments.length === 0 ? /* @__PURE__ */ new Date() : /* @__PURE__ */ new Date(+date2)), date2;
     }
-    interval2.floor = (date) => {
-      return floori(date = /* @__PURE__ */ new Date(+date)), date;
+    interval3.floor = (date2) => {
+      return floori(date2 = /* @__PURE__ */ new Date(+date2)), date2;
     };
-    interval2.ceil = (date) => {
-      return floori(date = new Date(date - 1)), offseti(date, 1), floori(date), date;
+    interval3.ceil = (date2) => {
+      return floori(date2 = new Date(date2 - 1)), offseti(date2, 1), floori(date2), date2;
     };
-    interval2.round = (date) => {
-      const d0 = interval2(date), d1 = interval2.ceil(date);
-      return date - d0 < d1 - date ? d0 : d1;
+    interval3.round = (date2) => {
+      const d0 = interval3(date2), d1 = interval3.ceil(date2);
+      return date2 - d0 < d1 - date2 ? d0 : d1;
     };
-    interval2.offset = (date, step) => {
-      return offseti(date = /* @__PURE__ */ new Date(+date), step == null ? 1 : Math.floor(step)), date;
+    interval3.offset = (date2, step) => {
+      return offseti(date2 = /* @__PURE__ */ new Date(+date2), step == null ? 1 : Math.floor(step)), date2;
     };
-    interval2.range = (start2, stop, step) => {
+    interval3.range = (start2, stop, step) => {
       const range5 = [];
-      start2 = interval2.ceil(start2);
+      start2 = interval3.ceil(start2);
       step = step == null ? 1 : Math.floor(step);
       if (!(start2 < stop) || !(step > 0)) return range5;
       let previous;
@@ -11964,34 +11964,34 @@
       while (previous < start2 && start2 < stop);
       return range5;
     };
-    interval2.filter = (test) => {
-      return timeInterval((date) => {
-        if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
-      }, (date, step) => {
-        if (date >= date) {
+    interval3.filter = (test) => {
+      return timeInterval((date2) => {
+        if (date2 >= date2) while (floori(date2), !test(date2)) date2.setTime(date2 - 1);
+      }, (date2, step) => {
+        if (date2 >= date2) {
           if (step < 0) while (++step <= 0) {
-            while (offseti(date, -1), !test(date)) {
+            while (offseti(date2, -1), !test(date2)) {
             }
           }
           else while (--step >= 0) {
-            while (offseti(date, 1), !test(date)) {
+            while (offseti(date2, 1), !test(date2)) {
             }
           }
         }
       });
     };
     if (count2) {
-      interval2.count = (start2, end) => {
+      interval3.count = (start2, end) => {
         t02.setTime(+start2), t12.setTime(+end);
         floori(t02), floori(t12);
         return Math.floor(count2(t02, t12));
       };
-      interval2.every = (step) => {
+      interval3.every = (step) => {
         step = Math.floor(step);
-        return !isFinite(step) || !(step > 0) ? null : !(step > 1) ? interval2 : interval2.filter(field ? (d2) => field(d2) % step === 0 : (d2) => interval2.count(0, d2) % step === 0);
+        return !isFinite(step) || !(step > 0) ? null : !(step > 1) ? interval3 : interval3.filter(field ? (d2) => field(d2) % step === 0 : (d2) => interval3.count(0, d2) % step === 0);
       };
     }
-    return interval2;
+    return interval3;
   }
   var t02, t12;
   var init_interval2 = __esm({
@@ -12006,8 +12006,8 @@
     "node_modules/d3-time/src/millisecond.js"() {
       init_interval2();
       millisecond = timeInterval(() => {
-      }, (date, step) => {
-        date.setTime(+date + step);
+      }, (date2, step) => {
+        date2.setTime(+date2 + step);
       }, (start2, end) => {
         return end - start2;
       });
@@ -12015,10 +12015,10 @@
         k3 = Math.floor(k3);
         if (!isFinite(k3) || !(k3 > 0)) return null;
         if (!(k3 > 1)) return millisecond;
-        return timeInterval((date) => {
-          date.setTime(Math.floor(date / k3) * k3);
-        }, (date, step) => {
-          date.setTime(+date + step * k3);
+        return timeInterval((date2) => {
+          date2.setTime(Math.floor(date2 / k3) * k3);
+        }, (date2, step) => {
+          date2.setTime(+date2 + step * k3);
         }, (start2, end) => {
           return (end - start2) / k3;
         });
@@ -12047,14 +12047,14 @@
     "node_modules/d3-time/src/second.js"() {
       init_interval2();
       init_duration2();
-      second = timeInterval((date) => {
-        date.setTime(date - date.getMilliseconds());
-      }, (date, step) => {
-        date.setTime(+date + step * durationSecond);
+      second = timeInterval((date2) => {
+        date2.setTime(date2 - date2.getMilliseconds());
+      }, (date2, step) => {
+        date2.setTime(+date2 + step * durationSecond);
       }, (start2, end) => {
         return (end - start2) / durationSecond;
-      }, (date) => {
-        return date.getUTCSeconds();
+      }, (date2) => {
+        return date2.getUTCSeconds();
       });
       seconds = second.range;
     }
@@ -12066,24 +12066,24 @@
     "node_modules/d3-time/src/minute.js"() {
       init_interval2();
       init_duration2();
-      timeMinute = timeInterval((date) => {
-        date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond);
-      }, (date, step) => {
-        date.setTime(+date + step * durationMinute);
+      timeMinute = timeInterval((date2) => {
+        date2.setTime(date2 - date2.getMilliseconds() - date2.getSeconds() * durationSecond);
+      }, (date2, step) => {
+        date2.setTime(+date2 + step * durationMinute);
       }, (start2, end) => {
         return (end - start2) / durationMinute;
-      }, (date) => {
-        return date.getMinutes();
+      }, (date2) => {
+        return date2.getMinutes();
       });
       timeMinutes = timeMinute.range;
-      utcMinute = timeInterval((date) => {
-        date.setUTCSeconds(0, 0);
-      }, (date, step) => {
-        date.setTime(+date + step * durationMinute);
+      utcMinute = timeInterval((date2) => {
+        date2.setUTCSeconds(0, 0);
+      }, (date2, step) => {
+        date2.setTime(+date2 + step * durationMinute);
       }, (start2, end) => {
         return (end - start2) / durationMinute;
-      }, (date) => {
-        return date.getUTCMinutes();
+      }, (date2) => {
+        return date2.getUTCMinutes();
       });
       utcMinutes = utcMinute.range;
     }
@@ -12095,24 +12095,24 @@
     "node_modules/d3-time/src/hour.js"() {
       init_interval2();
       init_duration2();
-      timeHour = timeInterval((date) => {
-        date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond - date.getMinutes() * durationMinute);
-      }, (date, step) => {
-        date.setTime(+date + step * durationHour);
+      timeHour = timeInterval((date2) => {
+        date2.setTime(date2 - date2.getMilliseconds() - date2.getSeconds() * durationSecond - date2.getMinutes() * durationMinute);
+      }, (date2, step) => {
+        date2.setTime(+date2 + step * durationHour);
       }, (start2, end) => {
         return (end - start2) / durationHour;
-      }, (date) => {
-        return date.getHours();
+      }, (date2) => {
+        return date2.getHours();
       });
       timeHours = timeHour.range;
-      utcHour = timeInterval((date) => {
-        date.setUTCMinutes(0, 0, 0);
-      }, (date, step) => {
-        date.setTime(+date + step * durationHour);
+      utcHour = timeInterval((date2) => {
+        date2.setUTCMinutes(0, 0, 0);
+      }, (date2, step) => {
+        date2.setTime(+date2 + step * durationHour);
       }, (start2, end) => {
         return (end - start2) / durationHour;
-      }, (date) => {
-        return date.getUTCHours();
+      }, (date2) => {
+        return date2.getUTCHours();
       });
       utcHours = utcHour.range;
     }
@@ -12125,30 +12125,30 @@
       init_interval2();
       init_duration2();
       timeDay = timeInterval(
-        (date) => date.setHours(0, 0, 0, 0),
-        (date, step) => date.setDate(date.getDate() + step),
+        (date2) => date2.setHours(0, 0, 0, 0),
+        (date2, step) => date2.setDate(date2.getDate() + step),
         (start2, end) => (end - start2 - (end.getTimezoneOffset() - start2.getTimezoneOffset()) * durationMinute) / durationDay,
-        (date) => date.getDate() - 1
+        (date2) => date2.getDate() - 1
       );
       timeDays = timeDay.range;
-      utcDay = timeInterval((date) => {
-        date.setUTCHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setUTCDate(date.getUTCDate() + step);
+      utcDay = timeInterval((date2) => {
+        date2.setUTCHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setUTCDate(date2.getUTCDate() + step);
       }, (start2, end) => {
         return (end - start2) / durationDay;
-      }, (date) => {
-        return date.getUTCDate() - 1;
+      }, (date2) => {
+        return date2.getUTCDate() - 1;
       });
       utcDays = utcDay.range;
-      unixDay = timeInterval((date) => {
-        date.setUTCHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setUTCDate(date.getUTCDate() + step);
+      unixDay = timeInterval((date2) => {
+        date2.setUTCHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setUTCDate(date2.getUTCDate() + step);
       }, (start2, end) => {
         return (end - start2) / durationDay;
-      }, (date) => {
-        return Math.floor(date / durationDay);
+      }, (date2) => {
+        return Math.floor(date2 / durationDay);
       });
       unixDays = unixDay.range;
     }
@@ -12156,21 +12156,21 @@
 
   // node_modules/d3-time/src/week.js
   function timeWeekday(i3) {
-    return timeInterval((date) => {
-      date.setDate(date.getDate() - (date.getDay() + 7 - i3) % 7);
-      date.setHours(0, 0, 0, 0);
-    }, (date, step) => {
-      date.setDate(date.getDate() + step * 7);
+    return timeInterval((date2) => {
+      date2.setDate(date2.getDate() - (date2.getDay() + 7 - i3) % 7);
+      date2.setHours(0, 0, 0, 0);
+    }, (date2, step) => {
+      date2.setDate(date2.getDate() + step * 7);
     }, (start2, end) => {
       return (end - start2 - (end.getTimezoneOffset() - start2.getTimezoneOffset()) * durationMinute) / durationWeek;
     });
   }
   function utcWeekday(i3) {
-    return timeInterval((date) => {
-      date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 7 - i3) % 7);
-      date.setUTCHours(0, 0, 0, 0);
-    }, (date, step) => {
-      date.setUTCDate(date.getUTCDate() + step * 7);
+    return timeInterval((date2) => {
+      date2.setUTCDate(date2.getUTCDate() - (date2.getUTCDay() + 7 - i3) % 7);
+      date2.setUTCHours(0, 0, 0, 0);
+    }, (date2, step) => {
+      date2.setUTCDate(date2.getUTCDate() + step * 7);
     }, (start2, end) => {
       return (end - start2) / durationWeek;
     });
@@ -12216,26 +12216,26 @@
   var init_month = __esm({
     "node_modules/d3-time/src/month.js"() {
       init_interval2();
-      timeMonth = timeInterval((date) => {
-        date.setDate(1);
-        date.setHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setMonth(date.getMonth() + step);
+      timeMonth = timeInterval((date2) => {
+        date2.setDate(1);
+        date2.setHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setMonth(date2.getMonth() + step);
       }, (start2, end) => {
         return end.getMonth() - start2.getMonth() + (end.getFullYear() - start2.getFullYear()) * 12;
-      }, (date) => {
-        return date.getMonth();
+      }, (date2) => {
+        return date2.getMonth();
       });
       timeMonths = timeMonth.range;
-      utcMonth = timeInterval((date) => {
-        date.setUTCDate(1);
-        date.setUTCHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setUTCMonth(date.getUTCMonth() + step);
+      utcMonth = timeInterval((date2) => {
+        date2.setUTCDate(1);
+        date2.setUTCHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setUTCMonth(date2.getUTCMonth() + step);
       }, (start2, end) => {
         return end.getUTCMonth() - start2.getUTCMonth() + (end.getUTCFullYear() - start2.getUTCFullYear()) * 12;
-      }, (date) => {
-        return date.getUTCMonth();
+      }, (date2) => {
+        return date2.getUTCMonth();
       });
       utcMonths = utcMonth.range;
     }
@@ -12246,43 +12246,43 @@
   var init_year = __esm({
     "node_modules/d3-time/src/year.js"() {
       init_interval2();
-      timeYear = timeInterval((date) => {
-        date.setMonth(0, 1);
-        date.setHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setFullYear(date.getFullYear() + step);
+      timeYear = timeInterval((date2) => {
+        date2.setMonth(0, 1);
+        date2.setHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setFullYear(date2.getFullYear() + step);
       }, (start2, end) => {
         return end.getFullYear() - start2.getFullYear();
-      }, (date) => {
-        return date.getFullYear();
+      }, (date2) => {
+        return date2.getFullYear();
       });
       timeYear.every = (k3) => {
-        return !isFinite(k3 = Math.floor(k3)) || !(k3 > 0) ? null : timeInterval((date) => {
-          date.setFullYear(Math.floor(date.getFullYear() / k3) * k3);
-          date.setMonth(0, 1);
-          date.setHours(0, 0, 0, 0);
-        }, (date, step) => {
-          date.setFullYear(date.getFullYear() + step * k3);
+        return !isFinite(k3 = Math.floor(k3)) || !(k3 > 0) ? null : timeInterval((date2) => {
+          date2.setFullYear(Math.floor(date2.getFullYear() / k3) * k3);
+          date2.setMonth(0, 1);
+          date2.setHours(0, 0, 0, 0);
+        }, (date2, step) => {
+          date2.setFullYear(date2.getFullYear() + step * k3);
         });
       };
       timeYears = timeYear.range;
-      utcYear = timeInterval((date) => {
-        date.setUTCMonth(0, 1);
-        date.setUTCHours(0, 0, 0, 0);
-      }, (date, step) => {
-        date.setUTCFullYear(date.getUTCFullYear() + step);
+      utcYear = timeInterval((date2) => {
+        date2.setUTCMonth(0, 1);
+        date2.setUTCHours(0, 0, 0, 0);
+      }, (date2, step) => {
+        date2.setUTCFullYear(date2.getUTCFullYear() + step);
       }, (start2, end) => {
         return end.getUTCFullYear() - start2.getUTCFullYear();
-      }, (date) => {
-        return date.getUTCFullYear();
+      }, (date2) => {
+        return date2.getUTCFullYear();
       });
       utcYear.every = (k3) => {
-        return !isFinite(k3 = Math.floor(k3)) || !(k3 > 0) ? null : timeInterval((date) => {
-          date.setUTCFullYear(Math.floor(date.getUTCFullYear() / k3) * k3);
-          date.setUTCMonth(0, 1);
-          date.setUTCHours(0, 0, 0, 0);
-        }, (date, step) => {
-          date.setUTCFullYear(date.getUTCFullYear() + step * k3);
+        return !isFinite(k3 = Math.floor(k3)) || !(k3 > 0) ? null : timeInterval((date2) => {
+          date2.setUTCFullYear(Math.floor(date2.getUTCFullYear() / k3) * k3);
+          date2.setUTCMonth(0, 1);
+          date2.setUTCHours(0, 0, 0, 0);
+        }, (date2, step) => {
+          date2.setUTCFullYear(date2.getUTCFullYear() + step * k3);
         });
       };
       utcYears = utcYear.range;
@@ -12290,7 +12290,7 @@
   });
 
   // node_modules/d3-time/src/ticks.js
-  function ticker(year, month, week, day, hour, minute) {
+  function ticker(year2, month, week, day, hour, minute) {
     const tickIntervals = [
       [second, 1, durationSecond],
       [second, 5, 5 * durationSecond],
@@ -12309,19 +12309,19 @@
       [week, 1, durationWeek],
       [month, 1, durationMonth],
       [month, 3, 3 * durationMonth],
-      [year, 1, durationYear]
+      [year2, 1, durationYear]
     ];
     function ticks2(start2, stop, count2) {
       const reverse3 = stop < start2;
       if (reverse3) [start2, stop] = [stop, start2];
-      const interval2 = count2 && typeof count2.range === "function" ? count2 : tickInterval(start2, stop, count2);
-      const ticks3 = interval2 ? interval2.range(start2, +stop + 1) : [];
+      const interval3 = count2 && typeof count2.range === "function" ? count2 : tickInterval(start2, stop, count2);
+      const ticks3 = interval3 ? interval3.range(start2, +stop + 1) : [];
       return reverse3 ? ticks3.reverse() : ticks3;
     }
     function tickInterval(start2, stop, count2) {
       const target = Math.abs(stop - start2) / count2;
       const i3 = bisector(([, , step2]) => step2).right(tickIntervals, target);
-      if (i3 === tickIntervals.length) return year.every(tickStep(start2 / durationYear, stop / durationYear, count2));
+      if (i3 === tickIntervals.length) return year2.every(tickStep(start2 / durationYear, stop / durationYear, count2));
       if (i3 === 0) return millisecond.every(Math.max(tickStep(start2, stop, count2), 1));
       const [t4, step] = tickIntervals[target / tickIntervals[i3 - 1][2] < tickIntervals[i3][2] / target ? i3 - 1 : i3];
       return t4.every(step);
@@ -12365,17 +12365,17 @@
   // node_modules/d3-time-format/src/locale.js
   function localDate(d2) {
     if (0 <= d2.y && d2.y < 100) {
-      var date = new Date(-1, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L);
-      date.setFullYear(d2.y);
-      return date;
+      var date2 = new Date(-1, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L);
+      date2.setFullYear(d2.y);
+      return date2;
     }
     return new Date(d2.y, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L);
   }
   function utcDate(d2) {
     if (0 <= d2.y && d2.y < 100) {
-      var date = new Date(Date.UTC(-1, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L));
-      date.setUTCFullYear(d2.y);
-      return date;
+      var date2 = new Date(Date.UTC(-1, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L));
+      date2.setUTCFullYear(d2.y);
+      return date2;
     }
     return new Date(Date.UTC(d2.y, d2.m, d2.d, d2.H, d2.M, d2.S, d2.L));
   }
@@ -12494,15 +12494,15 @@
     utcFormats.X = newFormat(locale_time, utcFormats);
     utcFormats.c = newFormat(locale_dateTime, utcFormats);
     function newFormat(specifier, formats2) {
-      return function(date) {
-        var string = [], i3 = -1, j3 = 0, n3 = specifier.length, c2, pad6, format2;
-        if (!(date instanceof Date)) date = /* @__PURE__ */ new Date(+date);
+      return function(date2) {
+        var string = [], i3 = -1, j3 = 0, n3 = specifier.length, c2, pad7, format3;
+        if (!(date2 instanceof Date)) date2 = /* @__PURE__ */ new Date(+date2);
         while (++i3 < n3) {
           if (specifier.charCodeAt(i3) === 37) {
             string.push(specifier.slice(j3, i3));
-            if ((pad6 = pads[c2 = specifier.charAt(++i3)]) != null) c2 = specifier.charAt(++i3);
-            else pad6 = c2 === "e" ? " " : "0";
-            if (format2 = formats2[c2]) c2 = format2(date, pad6);
+            if ((pad7 = pads[c2 = specifier.charAt(++i3)]) != null) c2 = specifier.charAt(++i3);
+            else pad7 = c2 === "e" ? " " : "0";
+            if (format3 = formats2[c2]) c2 = format3(date2, pad7);
             string.push(c2);
             j3 = i3 + 1;
           }
@@ -12511,13 +12511,13 @@
         return string.join("");
       };
     }
-    function newParse(specifier, Z4) {
+    function newParse(specifier, Z5) {
       return function(string) {
         var d2 = newDate(1900, void 0, 1), i3 = parseSpecifier(d2, specifier, string += "", 0), week, day;
         if (i3 != string.length) return null;
         if ("Q" in d2) return new Date(d2.Q);
         if ("s" in d2) return new Date(d2.s * 1e3 + ("L" in d2 ? d2.L : 0));
-        if (Z4 && !("Z" in d2)) d2.Z = 0;
+        if (Z5 && !("Z" in d2)) d2.Z = 0;
         if ("p" in d2) d2.H = d2.H % 12 + d2.p * 12;
         if (d2.m === void 0) d2.m = "q" in d2 ? d2.q : 0;
         if ("V" in d2) {
@@ -12553,14 +12553,14 @@
       };
     }
     function parseSpecifier(d2, specifier, string, j3) {
-      var i3 = 0, n3 = specifier.length, m3 = string.length, c2, parse;
+      var i3 = 0, n3 = specifier.length, m3 = string.length, c2, parse2;
       while (i3 < n3) {
         if (j3 >= m3) return -1;
         c2 = specifier.charCodeAt(i3++);
         if (c2 === 37) {
           c2 = specifier.charAt(i3++);
-          parse = parses[c2 in pads ? specifier.charAt(i3++) : c2];
-          if (!parse || (j3 = parse(d2, string, j3)) < 0) return -1;
+          parse2 = parses[c2 in pads ? specifier.charAt(i3++) : c2];
+          if (!parse2 || (j3 = parse2(d2, string, j3)) < 0) return -1;
         } else if (c2 != string.charCodeAt(j3++)) {
           return -1;
         }
@@ -12933,8 +12933,8 @@
   });
 
   // node_modules/d3-time-format/src/isoFormat.js
-  function formatIsoNative(date) {
-    return date.toISOString();
+  function formatIsoNative(date2) {
+    return date2.toISOString();
   }
   var isoSpecifier, formatIso, isoFormat_default;
   var init_isoFormat = __esm({
@@ -12948,8 +12948,8 @@
 
   // node_modules/d3-time-format/src/isoParse.js
   function parseIsoNative(string) {
-    var date = new Date(string);
-    return isNaN(date) ? null : date;
+    var date2 = new Date(string);
+    return isNaN(date2) ? null : date2;
   }
   var parseIso, isoParse_default;
   var init_isoParse = __esm({
@@ -16567,11 +16567,11 @@
     if (source instanceof Set) {
       return isSetMatch(target, source, compare2, stack);
     }
-    const keys4 = Object.keys(source);
+    const keys5 = Object.keys(source);
     if (target == null || isPrimitive(target)) {
-      return keys4.length === 0;
+      return keys5.length === 0;
     }
-    if (keys4.length === 0) {
+    if (keys5.length === 0) {
       return true;
     }
     if (stack?.has(source)) {
@@ -16579,8 +16579,8 @@
     }
     stack?.set(source, target);
     try {
-      for (let i3 = 0; i3 < keys4.length; i3++) {
-        const key = keys4[i3];
+      for (let i3 = 0; i3 < keys5.length; i3++) {
+        const key = keys5[i3];
         if (!isPrimitive(target) && !(key in target)) {
           return false;
         }
@@ -16864,11 +16864,11 @@
     return valueToClone;
   }
   function copyProperties(target, source, objectToClone = target, stack, cloneValue) {
-    const keys4 = [...Object.keys(source), ...getSymbols(source)];
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
-      const descriptor = Object.getOwnPropertyDescriptor(target, key);
-      if (descriptor == null || descriptor.writable) {
+    const keys5 = [...Object.keys(source), ...getSymbols(source)];
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
+      const descriptor2 = Object.getOwnPropertyDescriptor(target, key);
+      if (descriptor2 == null || descriptor2.writable) {
         target[key] = cloneDeepWithImpl(source[key], key, objectToClone, stack, cloneValue);
       }
     }
@@ -17556,9 +17556,9 @@
     if (!collection) {
       return collection;
     }
-    const keys4 = isArrayLike(collection) || Array.isArray(collection) ? range3(0, collection.length) : Object.keys(collection);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = isArrayLike(collection) || Array.isArray(collection) ? range3(0, collection.length) : Object.keys(collection);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = collection[key];
       const result2 = callback(value, key, collection);
       if (result2 === false) {
@@ -17580,9 +17580,9 @@
     if (!collection) {
       return collection;
     }
-    const keys4 = isArrayLike(collection) ? range3(0, collection.length) : Object.keys(collection);
-    for (let i3 = keys4.length - 1; i3 >= 0; i3--) {
-      const key = keys4[i3];
+    const keys5 = isArrayLike(collection) ? range3(0, collection.length) : Object.keys(collection);
+    for (let i3 = keys5.length - 1; i3 >= 0; i3--) {
+      const key = keys5[i3];
       const value = collection[key];
       const result2 = callback(value, key, collection);
       if (result2 === false) {
@@ -17652,9 +17652,9 @@
       }
     }
     if (!isArrayLike(source)) {
-      const keys4 = Object.keys(source);
-      for (let i3 = 0; i3 < keys4.length; i3++) {
-        const key = keys4[i3];
+      const keys5 = Object.keys(source);
+      for (let i3 = 0; i3 < keys5.length; i3++) {
+        const key = keys5[i3];
         const value = source[key];
         if (!predicate(value, key, source)) {
           return false;
@@ -17738,10 +17738,10 @@
     predicate = iteratee(predicate);
     if (!Array.isArray(source)) {
       const result3 = [];
-      const keys4 = Object.keys(source);
-      const length3 = isArrayLike(source) ? source.length : keys4.length;
+      const keys5 = Object.keys(source);
+      const length3 = isArrayLike(source) ? source.length : keys5.length;
       for (let i3 = 0; i3 < length3; i3++) {
-        const key = keys4[i3];
+        const key = keys5[i3];
         const value = source[key];
         if (predicate(value, key, source)) {
           result3.push(value);
@@ -17777,9 +17777,9 @@
     }
     const doesMatch = iteratee(_doesMatch);
     if (!Array.isArray(source)) {
-      const keys4 = Object.keys(source);
-      for (let i3 = fromIndex; i3 < keys4.length; i3++) {
-        const key = keys4[i3];
+      const keys5 = Object.keys(source);
+      for (let i3 = fromIndex; i3 < keys5.length; i3++) {
+        const key = keys5[i3];
         const value = source[key];
         if (doesMatch(value, key, source)) {
           return value;
@@ -17861,9 +17861,9 @@
     }
     const doesMatch = iteratee(_doesMatch);
     if (!Array.isArray(source)) {
-      const keys4 = Object.keys(source);
+      const keys5 = Object.keys(source);
       for (let i3 = fromIndex; i3 >= 0; i3--) {
-        const key = keys4[i3];
+        const key = keys5[i3];
         const value = source[key];
         if (doesMatch(value, key, source)) {
           return value;
@@ -17991,11 +17991,11 @@
     if (!collection) {
       return [];
     }
-    const keys4 = isArrayLike(collection) || Array.isArray(collection) ? range3(0, collection.length) : Object.keys(collection);
+    const keys5 = isArrayLike(collection) || Array.isArray(collection) ? range3(0, collection.length) : Object.keys(collection);
     const iteratee$1 = iteratee(_iteratee ?? identity5);
-    const result2 = new Array(keys4.length);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const result2 = new Array(keys5.length);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = collection[key];
       result2[i3] = iteratee$1(value, key, collection);
     }
@@ -18131,12 +18131,12 @@
     if (Array.isArray(source)) {
       return source.includes(target, fromIndex);
     }
-    const keys4 = Object.keys(source);
+    const keys5 = Object.keys(source);
     if (fromIndex < 0) {
-      fromIndex = Math.max(0, keys4.length + fromIndex);
+      fromIndex = Math.max(0, keys5.length + fromIndex);
     }
-    for (let i3 = fromIndex; i3 < keys4.length; i3++) {
-      const value = Reflect.get(source, keys4[i3]);
+    for (let i3 = fromIndex; i3 < keys5.length; i3++) {
+      const value = Reflect.get(source, keys5[i3]);
       if (isEqualsSameValueZero(value, target)) {
         return true;
       }
@@ -18437,23 +18437,23 @@
     if (!collection) {
       return accumulator;
     }
-    let keys4;
+    let keys5;
     let startIndex = 0;
     if (isArrayLike(collection)) {
-      keys4 = range3(0, collection.length);
+      keys5 = range3(0, collection.length);
       if (accumulator == null && collection.length > 0) {
         accumulator = collection[0];
         startIndex += 1;
       }
     } else {
-      keys4 = Object.keys(collection);
+      keys5 = Object.keys(collection);
       if (accumulator == null) {
-        accumulator = collection[keys4[0]];
+        accumulator = collection[keys5[0]];
         startIndex += 1;
       }
     }
-    for (let i3 = startIndex; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    for (let i3 = startIndex; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = collection[key];
       accumulator = iteratee2(accumulator, value, key, collection);
     }
@@ -18968,10 +18968,10 @@
     if (!collection) {
       return accumulator;
     }
-    let keys4;
+    let keys5;
     let startIndex;
     if (isArrayLike(collection)) {
-      keys4 = range3(0, collection.length).reverse();
+      keys5 = range3(0, collection.length).reverse();
       if (accumulator == null && collection.length > 0) {
         accumulator = collection[collection.length - 1];
         startIndex = 1;
@@ -18979,16 +18979,16 @@
         startIndex = 0;
       }
     } else {
-      keys4 = Object.keys(collection).reverse();
+      keys5 = Object.keys(collection).reverse();
       if (accumulator == null) {
-        accumulator = collection[keys4[0]];
+        accumulator = collection[keys5[0]];
         startIndex = 1;
       } else {
         startIndex = 0;
       }
     }
-    for (let i3 = startIndex; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    for (let i3 = startIndex; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = collection[key];
       accumulator = iteratee2(accumulator, value, key, collection);
     }
@@ -19367,9 +19367,9 @@
     switch (typeof predicate) {
       case "function": {
         if (!Array.isArray(source)) {
-          const keys4 = Object.keys(source);
-          for (let i3 = 0; i3 < keys4.length; i3++) {
-            const key = keys4[i3];
+          const keys5 = Object.keys(source);
+          for (let i3 = 0; i3 < keys5.length; i3++) {
+            const key = keys5[i3];
             const value = source[key];
             if (predicate(value, key, source)) {
               return true;
@@ -20173,10 +20173,10 @@
   });
 
   // node_modules/es-toolkit/dist/compat/array/zipObject.mjs
-  function zipObject(keys4 = [], values3 = []) {
+  function zipObject(keys5 = [], values3 = []) {
     const result2 = {};
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      assignValue(result2, keys4[i3], values3[i3]);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      assignValue(result2, keys5[i3], values3[i3]);
     }
     return result2;
   }
@@ -20243,15 +20243,15 @@
   });
 
   // node_modules/es-toolkit/dist/compat/array/zipObjectDeep.mjs
-  function zipObjectDeep(keys4, values3) {
+  function zipObjectDeep(keys5, values3) {
     const result2 = {};
-    if (!isArrayLike(keys4)) {
+    if (!isArrayLike(keys5)) {
       return result2;
     }
     if (!isArrayLike(values3)) {
       values3 = [];
     }
-    const zipped = zip2(Array.from(keys4), Array.from(values3));
+    const zipped = zip2(Array.from(keys5), Array.from(values3));
     for (let i3 = 0; i3 < zipped.length; i3++) {
       const [key, value] = zipped[i3];
       if (key != null) {
@@ -21188,12 +21188,12 @@
       return void 0;
     }
     let maxElement = items[0];
-    let max4 = getValue(maxElement, 0, items);
+    let max5 = getValue(maxElement, 0, items);
     for (let i3 = 1; i3 < items.length; i3++) {
       const element = items[i3];
       const value = getValue(element, i3, items);
-      if (value > max4) {
-        max4 = value;
+      if (value > max5) {
+        max5 = value;
         maxElement = element;
       }
     }
@@ -21333,12 +21333,12 @@
       return void 0;
     }
     let minElement = items[0];
-    let min4 = getValue(minElement, 0, items);
+    let min5 = getValue(minElement, 0, items);
     for (let i3 = 1; i3 < items.length; i3++) {
       const element = items[i3];
       const value = getValue(element, i3, items);
-      if (value < min4) {
-        min4 = value;
+      if (value < min5) {
+        min5 = value;
         minElement = element;
       }
     }
@@ -21928,8 +21928,8 @@
     return result2;
   }
   function prototypeKeysIn(object) {
-    const keys4 = keysInImpl(object);
-    return keys4.filter((key) => key !== "constructor");
+    const keys5 = keysInImpl(object);
+    return keys5.filter((key) => key !== "constructor");
   }
   function arrayLikeKeysIn(object) {
     const indices = times(object.length, (index2) => `${index2}`);
@@ -21967,9 +21967,9 @@
     return object;
   }
   function assignInImpl(object, source) {
-    const keys4 = keysIn(source);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = keysIn(source);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       if (!(key in object) || !isEqualsSameValueZero(object[key], source[key])) {
         object[key] = source[key];
       }
@@ -21996,9 +21996,9 @@
     return object;
   }
   function assignInWithImpl(object, source, getValueToAssign) {
-    const keys4 = keysIn(source);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = keysIn(source);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const objValue = object[key];
       const srcValue = source[key];
       const newValue = getValueToAssign?.(objValue, srcValue, key, object, source) ?? srcValue;
@@ -22260,9 +22260,9 @@
         continue;
       }
       const source = sources[i3];
-      const keys4 = Object.keys(source);
-      for (let j3 = 0; j3 < keys4.length; j3++) {
-        const key = keys4[j3];
+      const keys5 = Object.keys(source);
+      for (let j3 = 0; j3 < keys5.length; j3++) {
+        const key = keys5[j3];
         const value = object[key];
         if (value === void 0 || !Object.hasOwn(object, key) && isEqualsSameValueZero(value, objectProto[key])) {
           object[key] = source[key];
@@ -22379,8 +22379,8 @@
 
   // node_modules/es-toolkit/dist/object/findKey.mjs
   function findKey(obj, predicate) {
-    const keys4 = Object.keys(obj);
-    return keys4.find((key) => predicate(obj[key], key, obj));
+    const keys5 = Object.keys(obj);
+    return keys5.find((key) => predicate(obj[key], key, obj));
   }
   var init_findKey = __esm({
     "node_modules/es-toolkit/dist/object/findKey.mjs"() {
@@ -22410,8 +22410,8 @@
       return void 0;
     }
     const iteratee$1 = iteratee(predicate ?? identity6);
-    const keys4 = Object.keys(obj);
-    return keys4.findLast((key) => iteratee$1(obj[key], key, obj));
+    const keys5 = Object.keys(obj);
+    return keys5.findLast((key) => iteratee$1(obj[key], key, obj));
   }
   var init_findLastKey = __esm({
     "node_modules/es-toolkit/dist/compat/object/findLastKey.mjs"() {
@@ -22445,12 +22445,12 @@
     if (object == null) {
       return object;
     }
-    const keys4 = [];
+    const keys5 = [];
     for (const key in object) {
-      keys4.push(key);
+      keys5.push(key);
     }
-    for (let i3 = keys4.length - 1; i3 >= 0; i3--) {
-      const key = keys4[i3];
+    for (let i3 = keys5.length - 1; i3 >= 0; i3--) {
+      const key = keys5[i3];
       const result2 = iteratee2(object[key], key, object);
       if (result2 === false) {
         break;
@@ -22599,9 +22599,9 @@
   // node_modules/es-toolkit/dist/object/invert.mjs
   function invert(obj) {
     const result2 = {};
-    const keys4 = Object.keys(obj);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = Object.keys(obj);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = obj[key];
       result2[value] = key;
     }
@@ -22631,10 +22631,10 @@
     if (iteratee$1 == null) {
       iteratee$1 = identity5;
     }
-    const keys4 = Object.keys(object);
+    const keys5 = Object.keys(object);
     const getString = iteratee(iteratee$1);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = object[key];
       const valueStr = getString(value);
       if (Array.isArray(result2[valueStr])) {
@@ -22656,9 +22656,9 @@
   // node_modules/es-toolkit/dist/object/mapKeys.mjs
   function mapKeys(object, getNewKey) {
     const result2 = {};
-    const keys4 = Object.keys(object);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = Object.keys(object);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = object[key];
       result2[getNewKey(value, key, object)] = value;
     }
@@ -22687,9 +22687,9 @@
   // node_modules/es-toolkit/dist/object/mapValues.mjs
   function mapValues(object, getNewValue) {
     const result2 = {};
-    const keys4 = Object.keys(object);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = Object.keys(object);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = object[key];
       result2[key] = getNewValue(value, key, object);
     }
@@ -22770,15 +22770,15 @@
   // node_modules/es-toolkit/dist/compat/object/mergeWith.mjs
   function mergeWith(object, ...otherArgs) {
     const sources = otherArgs.slice(0, -1);
-    const merge4 = otherArgs[otherArgs.length - 1];
+    const merge5 = otherArgs[otherArgs.length - 1];
     let result2 = object;
     for (let i3 = 0; i3 < sources.length; i3++) {
       const source = sources[i3];
-      result2 = mergeWithDeep(result2, source, merge4, /* @__PURE__ */ new Map());
+      result2 = mergeWithDeep(result2, source, merge5, /* @__PURE__ */ new Map());
     }
     return result2;
   }
-  function mergeWithDeep(target, source, merge4, stack) {
+  function mergeWithDeep(target, source, merge5, stack) {
     if (isPrimitive(target)) {
       target = Object(target);
     }
@@ -22831,15 +22831,15 @@
           targetValue = [];
         }
       }
-      const merged = merge4(targetValue, sourceValue, key, target, source, stack);
+      const merged = merge5(targetValue, sourceValue, key, target, source, stack);
       if (merged !== void 0) {
         target[key] = merged;
       } else if (Array.isArray(sourceValue)) {
-        target[key] = mergeWithDeep(targetValue, sourceValue, merge4, stack);
+        target[key] = mergeWithDeep(targetValue, sourceValue, merge5, stack);
       } else if (isObjectLike(targetValue) && isObjectLike(sourceValue) && (isPlainObject2(targetValue) || isPlainObject2(sourceValue) || isTypedArray2(targetValue) || isTypedArray2(sourceValue))) {
-        target[key] = mergeWithDeep(targetValue, sourceValue, merge4, stack);
+        target[key] = mergeWithDeep(targetValue, sourceValue, merge5, stack);
       } else if (targetValue == null && isPlainObject2(sourceValue)) {
-        target[key] = mergeWithDeep({}, sourceValue, merge4, stack);
+        target[key] = mergeWithDeep({}, sourceValue, merge5, stack);
       } else if (targetValue == null && isTypedArray2(sourceValue)) {
         target[key] = cloneDeep2(sourceValue);
       } else if (targetValue === void 0 || sourceValue !== void 0) {
@@ -22897,14 +22897,14 @@
     keysArr = flatten3(keysArr);
     const result2 = cloneInOmit(obj, keysArr);
     for (let i3 = 0; i3 < keysArr.length; i3++) {
-      let keys4 = keysArr[i3];
-      switch (typeof keys4) {
+      let keys5 = keysArr[i3];
+      switch (typeof keys5) {
         case "object": {
-          if (!Array.isArray(keys4)) {
-            keys4 = Array.from(keys4);
+          if (!Array.isArray(keys5)) {
+            keys5 = Array.from(keys5);
           }
-          for (let j3 = 0; j3 < keys4.length; j3++) {
-            const key = keys4[j3];
+          for (let j3 = 0; j3 < keys5.length; j3++) {
+            const key = keys5[j3];
             unset(result2, key);
           }
           break;
@@ -22912,15 +22912,15 @@
         case "string":
         case "symbol":
         case "number": {
-          unset(result2, keys4);
+          unset(result2, keys5);
           break;
         }
       }
     }
     return result2;
   }
-  function cloneInOmit(obj, keys4) {
-    const hasDeepKey = keys4.some((key) => Array.isArray(key) || isDeepKey(key));
+  function cloneInOmit(obj, keys5) {
+    const hasDeepKey = keys5.some((key) => Array.isArray(key) || isDeepKey(key));
     if (hasDeepKey) {
       return deepCloneInOmit(obj);
     }
@@ -22968,9 +22968,9 @@
     }
     const result2 = {};
     const predicate = iteratee(shouldOmit ?? identity6);
-    const keys4 = isArrayLike(object) ? range3(0, object.length) : [...keysIn(object), ...getSymbolsIn(object)];
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = isSymbol(keys4[i3]) ? keys4[i3] : keys4[i3].toString();
+    const keys5 = isArrayLike(object) ? range3(0, object.length) : [...keysIn(object), ...getSymbolsIn(object)];
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = isSymbol(keys5[i3]) ? keys5[i3] : keys5[i3].toString();
       const value = object[key];
       if (!predicate(value, key, object)) {
         result2[key] = value;
@@ -22997,14 +22997,14 @@
     }
     const result2 = {};
     for (let i3 = 0; i3 < keysArr.length; i3++) {
-      let keys4 = keysArr[i3];
-      switch (typeof keys4) {
+      let keys5 = keysArr[i3];
+      switch (typeof keys5) {
         case "object": {
-          if (!Array.isArray(keys4)) {
-            if (isArrayLike(keys4)) {
-              keys4 = Array.from(keys4);
+          if (!Array.isArray(keys5)) {
+            if (isArrayLike(keys5)) {
+              keys5 = Array.from(keys5);
             } else {
-              keys4 = [keys4];
+              keys5 = [keys5];
             }
           }
           break;
@@ -23012,11 +23012,11 @@
         case "string":
         case "symbol":
         case "number": {
-          keys4 = [keys4];
+          keys5 = [keys5];
           break;
         }
       }
-      for (const key of keys4) {
+      for (const key of keys5) {
         const value = get4(obj, key);
         if (value === void 0 && !has(obj, key)) {
           continue;
@@ -23047,9 +23047,9 @@
     }
     const predicate = iteratee(shouldPick ?? identity6);
     const result2 = {};
-    const keys4 = isArrayLike(obj) ? range3(0, obj.length) : [...keysIn(obj), ...getSymbolsIn(obj)];
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = isSymbol(keys4[i3]) ? keys4[i3] : keys4[i3].toString();
+    const keys5 = isArrayLike(obj) ? range3(0, obj.length) : [...keysIn(obj), ...getSymbolsIn(obj)];
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = isSymbol(keys5[i3]) ? keys5[i3] : keys5[i3].toString();
       const value = obj[key];
       if (predicate(value, key, obj)) {
         result2[key] = value;
@@ -23138,10 +23138,10 @@
   // node_modules/es-toolkit/dist/compat/_internal/mapToEntries.mjs
   function mapToEntries(map4) {
     const arr = new Array(map4.size);
-    const keys4 = map4.keys();
+    const keys5 = map4.keys();
     const values3 = map4.values();
     for (let i3 = 0; i3 < arr.length; i3++) {
-      arr[i3] = [keys4.next().value, values3.next().value];
+      arr[i3] = [keys5.next().value, values3.next().value];
     }
     return arr;
   }
@@ -23204,10 +23204,10 @@
     if (object instanceof Map) {
       return mapToEntries(object);
     }
-    const keys4 = keysIn(object);
-    const result2 = new Array(keys4.length);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = keysIn(object);
+    const result2 = new Array(keys5.length);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const value = object[key];
       result2[i3] = [key, value];
     }
@@ -23274,10 +23274,10 @@
 
   // node_modules/es-toolkit/dist/compat/object/valuesIn.mjs
   function valuesIn(object) {
-    const keys4 = keysIn(object);
-    const result2 = new Array(keys4.length);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = keysIn(object);
+    const result2 = new Array(keys5.length);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       result2[i3] = object[key];
     }
     return result2;
@@ -23352,9 +23352,9 @@
     if (target == null) {
       return Object.keys(source).length === 0;
     }
-    const keys4 = Object.keys(source);
-    for (let i3 = 0; i3 < keys4.length; i3++) {
-      const key = keys4[i3];
+    const keys5 = Object.keys(source);
+    for (let i3 = 0; i3 < keys5.length; i3++) {
+      const key = keys5[i3];
       const predicate = source[key];
       const value = target[key];
       if (value === void 0 && !(key in target)) {
@@ -23458,11 +23458,11 @@
       if (value instanceof Map || value instanceof Set) {
         return value.size === 0;
       }
-      const keys4 = Object.keys(value);
+      const keys5 = Object.keys(value);
       if (isPrototype(value)) {
-        return keys4.filter((x3) => x3 !== "constructor").length === 0;
+        return keys5.filter((x3) => x3 !== "constructor").length === 0;
       }
-      return keys4.length === 0;
+      return keys5.length === 0;
     }
     return true;
   }
@@ -24043,8 +24043,8 @@
   });
 
   // node_modules/es-toolkit/dist/compat/string/split.mjs
-  function split(string, separator, limit) {
-    return toString(string).split(separator, limit);
+  function split(string, separator, limit2) {
+    return toString(string).split(separator, limit2);
   }
   var init_split = __esm({
     "node_modules/es-toolkit/dist/compat/string/split.mjs"() {
@@ -24869,8 +24869,8 @@ ${source}
 
   // node_modules/es-toolkit/dist/compat/util/uniqueId.mjs
   function uniqueId(prefix = "") {
-    const id2 = ++idCounter;
-    return `${prefix}${id2}`;
+    const id3 = ++idCounter;
+    return `${prefix}${id3}`;
   }
   var idCounter;
   var init_uniqueId = __esm({
@@ -25893,13 +25893,15 @@ ${source}
       nsiCdnUrl = "https://cdn.jsdelivr.net/npm/name-suggestion-index@{version}/";
       defaultOsmApiConnections = {
         live: {
-          url: "https://www.openstreetmap.org",
-          apiUrl: "https://api.openstreetmap.org",
-          client_id: "0tmNTmd0Jo1dQp4AUmMBLtGiD9YpMuXzHefitcuVStc"
+          url: "https://www.openhistoricalmap.org",
+          apiUrl: "https://www.openhistoricalmap.org",
+          client_id: "0tmNTmd0Jo1dQp4AUmMBLtGiD9YpMuXzHefitcuVStc",
+          client_secret: "BTlNrNxIPitHdL4sP2clHw5KLoee9aKkA7dQbc0Bj7Q"
         },
         dev: {
           url: "https://api06.dev.openstreetmap.org",
-          client_id: "Ee1wWJ6UlpERbF6BfTNOpwn0R8k_06mvMXdDUkeHMgw"
+          client_id: "Ee1wWJ6UlpERbF6BfTNOpwn0R8k_06mvMXdDUkeHMgw",
+          client_secret: "OnfWFC-JkZNHyYdr_viNn_h_RTZXRslKcUxllOXqf5g"
         }
       };
       osmApiConnections = [];
@@ -25907,7 +25909,8 @@ ${source}
         osmApiConnections.push({
           url: null,
           apiUrl: null,
-          client_id: null
+          client_id: null,
+          client_secret: ENV__ID_API_CONNECTION_CLIENT_SECRET
         });
       } else if (false) {
         osmApiConnections.push(defaultOsmApiConnections[null]);
@@ -25989,7 +25992,7 @@ ${source}
         let loadStringsPromises = [];
         indexes2.forEach((index2, i3) => {
           const fullCoverageIndex = _localeCodes.findIndex(function(locale3) {
-            return index2[locale3] && index2[locale3].pct === 1;
+            return locale3 === "en" && index2[locale3] && index2[locale3].pct === 1;
           });
           _localeCodes.slice(0, fullCoverageIndex + 1).forEach(function(code) {
             let scopeId = Object.keys(localeDirs)[i3];
@@ -26162,6 +26165,7 @@ ${source}
     localizer.hasTextForStringId = function(stringId) {
       return !!localizer.tInfo(stringId, { default: "nothing found" }).locale;
     };
+    localizer.coalesceStringIds = (stringIds) => stringIds.find((id3) => localizer.hasTextForStringId(id3)) || stringIds[stringIds.length - 1];
     localizer.t = function(stringId, replacements, locale3) {
       return localizer.tInfo(stringId, replacements, locale3).texts.join("");
     };
@@ -26262,10 +26266,10 @@ ${source}
     localizer.floatParser = (locale3) => {
       const polyfill = (string) => +string.trim();
       if (!("Intl" in window && "NumberFormat" in Intl)) return polyfill;
-      const format2 = new Intl.NumberFormat(locale3, { maximumFractionDigits: 20 });
-      if (!("formatToParts" in format2)) return polyfill;
-      const parts = format2.formatToParts(-12345.6);
-      const numerals = Array.from({ length: 10 }).map((_3, i3) => format2.format(i3));
+      const format3 = new Intl.NumberFormat(locale3, { maximumFractionDigits: 20 });
+      if (!("formatToParts" in format3)) return polyfill;
+      const parts = format3.formatToParts(-12345.6);
+      const numerals = Array.from({ length: 10 }).map((_3, i3) => format3.format(i3));
       const index2 = new Map(numerals.map((d2, i3) => [d2, i3]));
       const literalPart = parts.find((d2) => d2.type === "literal");
       const literal = literalPart && new RegExp(`[${literalPart.value}]`, "g");
@@ -26287,9 +26291,9 @@ ${source}
     localizer.decimalPlaceCounter = (locale3) => {
       var literal, group2, decimal;
       if ("Intl" in window && "NumberFormat" in Intl) {
-        const format2 = new Intl.NumberFormat(locale3, { maximumFractionDigits: 20 });
-        if ("formatToParts" in format2) {
-          const parts = format2.formatToParts(-12345.6);
+        const format3 = new Intl.NumberFormat(locale3, { maximumFractionDigits: 20 });
+        if ("formatToParts" in format3) {
+          const parts = format3.formatToParts(-12345.6);
           const literalPart = parts.find((d2) => d2.type === "literal");
           literal = literalPart && new RegExp(`[${literalPart.value}]`, "g");
           const groupPart = parts.find((d2) => d2.type === "group");
@@ -26316,11 +26320,3051 @@ ${source}
       init_compat2();
       init_file_fetcher();
       init_detect();
-      init_util2();
+      init_util3();
       init_array3();
       init_id();
       _mainLocalizer = coreLocalizer();
       _t = _mainLocalizer.t;
+    }
+  });
+
+  // node_modules/edtf/src/assert.js
+  function assert(value, message2) {
+    return equal(!!value, true, message2 || `expected "${value}" to be ok`);
+  }
+  function equal(actual, expected, message2) {
+    if (actual == expected)
+      return true;
+    if (Number.isNaN(actual) && Number.isNaN(expected))
+      return true;
+    throw new Error(message2 || `expected "${actual}" to equal "${expected}"`);
+  }
+  var assert_default;
+  var init_assert = __esm({
+    "node_modules/edtf/src/assert.js"() {
+      assert.equal = equal;
+      assert_default = assert;
+    }
+  });
+
+  // node_modules/edtf/src/bitmask.js
+  function leap(year2) {
+    if (year2 % 4 > 0) return false;
+    if (year2 % 100 > 0) return true;
+    if (year2 % 400 > 0) return false;
+    return true;
+  }
+  var DAY, MONTH, YEAR, SYMBOL, SYMBOLS, PATTERN, YYYYMMDD, MAXDAYS, floor3, pow3, max4, min4, Bitmask;
+  var init_bitmask = __esm({
+    "node_modules/edtf/src/bitmask.js"() {
+      DAY = /^days?$/i;
+      MONTH = /^months?$/i;
+      YEAR = /^years?$/i;
+      SYMBOL = /^[xX]$/;
+      SYMBOLS = /[xX]/g;
+      PATTERN = /^[0-9xXdDmMyY]{8}$/;
+      YYYYMMDD = "YYYYMMDD".split("");
+      MAXDAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+      ({ floor: floor3, pow: pow3, max: max4, min: min4 } = Math);
+      Bitmask = class _Bitmask {
+        static test(a2, b11) {
+          return this.convert(a2) & this.convert(b11);
+        }
+        static convert(value = 0) {
+          value = value || 0;
+          if (value instanceof _Bitmask) return value.value;
+          switch (typeof value) {
+            case "number":
+              return value;
+            case "boolean":
+              return value ? _Bitmask.YMD : 0;
+            case "string":
+              if (DAY.test(value)) return _Bitmask.DAY;
+              if (MONTH.test(value)) return _Bitmask.MONTH;
+              if (YEAR.test(value)) return _Bitmask.YEAR;
+              if (PATTERN.test(value)) return _Bitmask.compute(value);
+            // fall through!
+            default:
+              throw new Error(`invalid value: ${value}`);
+          }
+        }
+        static compute(value) {
+          return value.split("").reduce((memo, c2, idx) => memo | (SYMBOL.test(c2) ? pow3(2, idx) : 0), 0);
+        }
+        static values(mask2, digit = 0, normalize3 = true) {
+          let num2 = _Bitmask.numbers(mask2, digit).split("");
+          let values3 = [Number(num2.slice(0, 4).join(""))];
+          if (num2.length > 4) values3.push(Number(num2.slice(4, 6).join("")));
+          if (num2.length > 6) values3.push(Number(num2.slice(6, 8).join("")));
+          return normalize3 ? _Bitmask.normalize(values3) : values3;
+        }
+        static numbers(mask2, digit = 0) {
+          return mask2.replace(SYMBOLS, digit);
+        }
+        static normalize(values3) {
+          if (values3.length > 1)
+            values3[1] = min4(11, max4(0, values3[1] - 1));
+          if (values3.length > 2)
+            values3[2] = min4(MAXDAYS[values3[1]] || NaN, max4(1, values3[2]));
+          return values3;
+        }
+        constructor(value = 0) {
+          this.value = _Bitmask.convert(value);
+        }
+        test(value = 0) {
+          return this.value & _Bitmask.convert(value);
+        }
+        bit(k3) {
+          return this.value & pow3(2, k3);
+        }
+        get day() {
+          return this.test(_Bitmask.DAY);
+        }
+        get month() {
+          return this.test(_Bitmask.MONTH);
+        }
+        get year() {
+          return this.test(_Bitmask.YEAR);
+        }
+        add(value) {
+          return this.value = this.value | _Bitmask.convert(value), this;
+        }
+        set(value = 0) {
+          return this.value = _Bitmask.convert(value), this;
+        }
+        mask(input = YYYYMMDD, offset = 0, symbol = "X") {
+          return input.map((c2, idx) => this.bit(offset + idx) ? symbol : c2);
+        }
+        masks(values3, symbol = "X") {
+          let offset = 0;
+          return values3.map((value) => {
+            let mask2 = this.mask(value.split(""), offset, symbol);
+            offset = offset + mask2.length;
+            return mask2.join("");
+          });
+        }
+        // eslint-disable-next-line complexity
+        max([year2, month, day]) {
+          if (!year2) return [];
+          year2 = Number(
+            this.test(_Bitmask.YEAR) ? this.masks([year2], "9")[0] : year2
+          );
+          if (!month) return [year2];
+          month = Number(month) - 1;
+          switch (this.test(_Bitmask.MONTH)) {
+            case _Bitmask.MONTH:
+              month = 11;
+              break;
+            case _Bitmask.MX:
+              month = month < 9 ? 8 : 11;
+              break;
+            case _Bitmask.XM:
+              month = (month + 1) % 10;
+              month = month < 3 ? month + 9 : month - 1;
+              break;
+          }
+          if (!day) return [year2, month];
+          day = Number(day);
+          switch (this.test(_Bitmask.DAY)) {
+            case _Bitmask.DAY:
+              day = MAXDAYS[month];
+              break;
+            case _Bitmask.DX:
+              day = min4(MAXDAYS[month], day + (9 - day % 10));
+              break;
+            case _Bitmask.XD:
+              day = day % 10;
+              if (month === 1) {
+                day = day === 9 && !leap(year2) ? day + 10 : day + 20;
+              } else {
+                day = day < 2 ? day + 30 : day + 20;
+                if (day > MAXDAYS[month]) day = day - 10;
+              }
+              break;
+          }
+          if (month === 1 && day > 28 && !leap(year2)) {
+            day = 28;
+          }
+          return [year2, month, day];
+        }
+        // eslint-disable-next-line complexity
+        min([year2, month, day]) {
+          if (!year2) return [];
+          year2 = Number(
+            this.test(_Bitmask.YEAR) ? this.masks([year2], "0")[0] : year2
+          );
+          if (month == null) return [year2];
+          month = Number(month) - 1;
+          switch (this.test(_Bitmask.MONTH)) {
+            case _Bitmask.MONTH:
+            case _Bitmask.XM:
+              month = 0;
+              break;
+            case _Bitmask.MX:
+              month = month < 9 ? 0 : 9;
+              break;
+          }
+          if (!day) return [year2, month];
+          day = Number(day);
+          switch (this.test(_Bitmask.DAY)) {
+            case _Bitmask.DAY:
+              day = 1;
+              break;
+            case _Bitmask.DX:
+              day = max4(1, floor3(day / 10) * 10);
+              break;
+            case _Bitmask.XD:
+              day = max4(1, day % 10);
+              break;
+          }
+          return [year2, month, day];
+        }
+        marks(values3, symbol = "?") {
+          return values3.map((value, idx) => [
+            this.qualified(idx * 2) ? symbol : "",
+            value,
+            this.qualified(idx * 2 + 1) ? symbol : ""
+          ].join(""));
+        }
+        qualified(idx) {
+          switch (idx) {
+            case 1:
+              return this.value === _Bitmask.YEAR || this.value & _Bitmask.YEAR && !(this.value & _Bitmask.MONTH);
+            case 2:
+              return this.value === _Bitmask.MONTH || this.value & _Bitmask.MONTH && !(this.value & _Bitmask.YEAR);
+            case 3:
+              return this.value === _Bitmask.YM;
+            case 4:
+              return this.value === _Bitmask.DAY || this.value & _Bitmask.DAY && this.value !== _Bitmask.YMD;
+            case 5:
+              return this.value === _Bitmask.YMD;
+            default:
+              return false;
+          }
+        }
+        qualify(idx) {
+          return this.value = this.value | _Bitmask.UA[idx], this;
+        }
+        toJSON() {
+          return this.value;
+        }
+        toString(symbol = "X") {
+          return this.masks(["YYYY", "MM", "DD"], symbol).join("-");
+        }
+      };
+      Bitmask.prototype.is = Bitmask.prototype.test;
+      Bitmask.DAY = Bitmask.D = Bitmask.compute("yyyymmxx");
+      Bitmask.MONTH = Bitmask.M = Bitmask.compute("yyyyxxdd");
+      Bitmask.YEAR = Bitmask.Y = Bitmask.compute("xxxxmmdd");
+      Bitmask.MD = Bitmask.M | Bitmask.D;
+      Bitmask.YMD = Bitmask.Y | Bitmask.MD;
+      Bitmask.YM = Bitmask.Y | Bitmask.M;
+      Bitmask.YYXX = Bitmask.compute("yyxxmmdd");
+      Bitmask.YYYX = Bitmask.compute("yyyxmmdd");
+      Bitmask.XXXX = Bitmask.compute("xxxxmmdd");
+      Bitmask.DX = Bitmask.compute("yyyymmdx");
+      Bitmask.XD = Bitmask.compute("yyyymmxd");
+      Bitmask.MX = Bitmask.compute("yyyymxdd");
+      Bitmask.XM = Bitmask.compute("yyyyxmdd");
+      Bitmask.UA = [
+        Bitmask.YEAR,
+        Bitmask.YEAR,
+        // YEAR !DAY
+        Bitmask.MONTH,
+        Bitmask.YM,
+        Bitmask.DAY,
+        // YEARDAY
+        Bitmask.YMD
+      ];
+    }
+  });
+
+  // node_modules/nearley/lib/nearley.js
+  var require_nearley = __commonJS({
+    "node_modules/nearley/lib/nearley.js"(exports, module) {
+      (function(root2, factory) {
+        if (typeof module === "object" && module.exports) {
+          module.exports = factory();
+        } else {
+          root2.nearley = factory();
+        }
+      })(exports, function() {
+        function Rule(name, symbols, postprocess) {
+          this.id = ++Rule.highestId;
+          this.name = name;
+          this.symbols = symbols;
+          this.postprocess = postprocess;
+          return this;
+        }
+        Rule.highestId = 0;
+        Rule.prototype.toString = function(withCursorAt) {
+          var symbolSequence = typeof withCursorAt === "undefined" ? this.symbols.map(getSymbolShortDisplay).join(" ") : this.symbols.slice(0, withCursorAt).map(getSymbolShortDisplay).join(" ") + " \u25CF " + this.symbols.slice(withCursorAt).map(getSymbolShortDisplay).join(" ");
+          return this.name + " \u2192 " + symbolSequence;
+        };
+        function State(rule, dot, reference, wantedBy) {
+          this.rule = rule;
+          this.dot = dot;
+          this.reference = reference;
+          this.data = [];
+          this.wantedBy = wantedBy;
+          this.isComplete = this.dot === rule.symbols.length;
+        }
+        State.prototype.toString = function() {
+          return "{" + this.rule.toString(this.dot) + "}, from: " + (this.reference || 0);
+        };
+        State.prototype.nextState = function(child) {
+          var state = new State(this.rule, this.dot + 1, this.reference, this.wantedBy);
+          state.left = this;
+          state.right = child;
+          if (state.isComplete) {
+            state.data = state.build();
+            state.right = void 0;
+          }
+          return state;
+        };
+        State.prototype.build = function() {
+          var children2 = [];
+          var node = this;
+          do {
+            children2.push(node.right.data);
+            node = node.left;
+          } while (node.left);
+          children2.reverse();
+          return children2;
+        };
+        State.prototype.finish = function() {
+          if (this.rule.postprocess) {
+            this.data = this.rule.postprocess(this.data, this.reference, Parser.fail);
+          }
+        };
+        function Column(grammar, index2) {
+          this.grammar = grammar;
+          this.index = index2;
+          this.states = [];
+          this.wants = {};
+          this.scannable = [];
+          this.completed = {};
+        }
+        Column.prototype.process = function(nextColumn) {
+          var states = this.states;
+          var wants = this.wants;
+          var completed = this.completed;
+          for (var w3 = 0; w3 < states.length; w3++) {
+            var state = states[w3];
+            if (state.isComplete) {
+              state.finish();
+              if (state.data !== Parser.fail) {
+                var wantedBy = state.wantedBy;
+                for (var i3 = wantedBy.length; i3--; ) {
+                  var left = wantedBy[i3];
+                  this.complete(left, state);
+                }
+                if (state.reference === this.index) {
+                  var exp2 = state.rule.name;
+                  (this.completed[exp2] = this.completed[exp2] || []).push(state);
+                }
+              }
+            } else {
+              var exp2 = state.rule.symbols[state.dot];
+              if (typeof exp2 !== "string") {
+                this.scannable.push(state);
+                continue;
+              }
+              if (wants[exp2]) {
+                wants[exp2].push(state);
+                if (completed.hasOwnProperty(exp2)) {
+                  var nulls = completed[exp2];
+                  for (var i3 = 0; i3 < nulls.length; i3++) {
+                    var right = nulls[i3];
+                    this.complete(state, right);
+                  }
+                }
+              } else {
+                wants[exp2] = [state];
+                this.predict(exp2);
+              }
+            }
+          }
+        };
+        Column.prototype.predict = function(exp2) {
+          var rules = this.grammar.byName[exp2] || [];
+          for (var i3 = 0; i3 < rules.length; i3++) {
+            var r2 = rules[i3];
+            var wantedBy = this.wants[exp2];
+            var s2 = new State(r2, 0, this.index, wantedBy);
+            this.states.push(s2);
+          }
+        };
+        Column.prototype.complete = function(left, right) {
+          var copy2 = left.nextState(right);
+          this.states.push(copy2);
+        };
+        function Grammar(rules, start2) {
+          this.rules = rules;
+          this.start = start2 || this.rules[0].name;
+          var byName = this.byName = {};
+          this.rules.forEach(function(rule) {
+            if (!byName.hasOwnProperty(rule.name)) {
+              byName[rule.name] = [];
+            }
+            byName[rule.name].push(rule);
+          });
+        }
+        Grammar.fromCompiled = function(rules, start2) {
+          var lexer = rules.Lexer;
+          if (rules.ParserStart) {
+            start2 = rules.ParserStart;
+            rules = rules.ParserRules;
+          }
+          var rules = rules.map(function(r2) {
+            return new Rule(r2.name, r2.symbols, r2.postprocess);
+          });
+          var g4 = new Grammar(rules, start2);
+          g4.lexer = lexer;
+          return g4;
+        };
+        function StreamLexer() {
+          this.reset("");
+        }
+        StreamLexer.prototype.reset = function(data2, state) {
+          this.buffer = data2;
+          this.index = 0;
+          this.line = state ? state.line : 1;
+          this.lastLineBreak = state ? -state.col : 0;
+        };
+        StreamLexer.prototype.next = function() {
+          if (this.index < this.buffer.length) {
+            var ch = this.buffer[this.index++];
+            if (ch === "\n") {
+              this.line += 1;
+              this.lastLineBreak = this.index;
+            }
+            return { value: ch };
+          }
+        };
+        StreamLexer.prototype.save = function() {
+          return {
+            line: this.line,
+            col: this.index - this.lastLineBreak
+          };
+        };
+        StreamLexer.prototype.formatError = function(token, message2) {
+          var buffer = this.buffer;
+          if (typeof buffer === "string") {
+            var lines = buffer.split("\n").slice(
+              Math.max(0, this.line - 5),
+              this.line
+            );
+            var nextLineBreak = buffer.indexOf("\n", this.index);
+            if (nextLineBreak === -1) nextLineBreak = buffer.length;
+            var col = this.index - this.lastLineBreak;
+            var lastLineDigits = String(this.line).length;
+            message2 += " at line " + this.line + " col " + col + ":\n\n";
+            message2 += lines.map(function(line, i3) {
+              return pad7(this.line - lines.length + i3 + 1, lastLineDigits) + " " + line;
+            }, this).join("\n");
+            message2 += "\n" + pad7("", lastLineDigits + col) + "^\n";
+            return message2;
+          } else {
+            return message2 + " at index " + (this.index - 1);
+          }
+          function pad7(n3, length2) {
+            var s2 = String(n3);
+            return Array(length2 - s2.length + 1).join(" ") + s2;
+          }
+        };
+        function Parser(rules, start2, options) {
+          if (rules instanceof Grammar) {
+            var grammar = rules;
+            var options = start2;
+          } else {
+            var grammar = Grammar.fromCompiled(rules, start2);
+          }
+          this.grammar = grammar;
+          this.options = {
+            keepHistory: false,
+            lexer: grammar.lexer || new StreamLexer()
+          };
+          for (var key in options || {}) {
+            this.options[key] = options[key];
+          }
+          this.lexer = this.options.lexer;
+          this.lexerState = void 0;
+          var column = new Column(grammar, 0);
+          var table = this.table = [column];
+          column.wants[grammar.start] = [];
+          column.predict(grammar.start);
+          column.process();
+          this.current = 0;
+        }
+        Parser.fail = {};
+        Parser.prototype.feed = function(chunk3) {
+          var lexer = this.lexer;
+          lexer.reset(chunk3, this.lexerState);
+          var token;
+          while (true) {
+            try {
+              token = lexer.next();
+              if (!token) {
+                break;
+              }
+            } catch (e3) {
+              var nextColumn = new Column(this.grammar, this.current + 1);
+              this.table.push(nextColumn);
+              var err = new Error(this.reportLexerError(e3));
+              err.offset = this.current;
+              err.token = e3.token;
+              throw err;
+            }
+            var column = this.table[this.current];
+            if (!this.options.keepHistory) {
+              delete this.table[this.current - 1];
+            }
+            var n3 = this.current + 1;
+            var nextColumn = new Column(this.grammar, n3);
+            this.table.push(nextColumn);
+            var literal = token.text !== void 0 ? token.text : token.value;
+            var value = lexer.constructor === StreamLexer ? token.value : token;
+            var scannable = column.scannable;
+            for (var w3 = scannable.length; w3--; ) {
+              var state = scannable[w3];
+              var expect = state.rule.symbols[state.dot];
+              if (expect.test ? expect.test(value) : expect.type ? expect.type === token.type : expect.literal === literal) {
+                var next = state.nextState({ data: value, token, isToken: true, reference: n3 - 1 });
+                nextColumn.states.push(next);
+              }
+            }
+            nextColumn.process();
+            if (nextColumn.states.length === 0) {
+              var err = new Error(this.reportError(token));
+              err.offset = this.current;
+              err.token = token;
+              throw err;
+            }
+            if (this.options.keepHistory) {
+              column.lexerState = lexer.save();
+            }
+            this.current++;
+          }
+          if (column) {
+            this.lexerState = lexer.save();
+          }
+          this.results = this.finish();
+          return this;
+        };
+        Parser.prototype.reportLexerError = function(lexerError) {
+          var tokenDisplay, lexerMessage;
+          var token = lexerError.token;
+          if (token) {
+            tokenDisplay = "input " + JSON.stringify(token.text[0]) + " (lexer error)";
+            lexerMessage = this.lexer.formatError(token, "Syntax error");
+          } else {
+            tokenDisplay = "input (lexer error)";
+            lexerMessage = lexerError.message;
+          }
+          return this.reportErrorCommon(lexerMessage, tokenDisplay);
+        };
+        Parser.prototype.reportError = function(token) {
+          var tokenDisplay = (token.type ? token.type + " token: " : "") + JSON.stringify(token.value !== void 0 ? token.value : token);
+          var lexerMessage = this.lexer.formatError(token, "Syntax error");
+          return this.reportErrorCommon(lexerMessage, tokenDisplay);
+        };
+        Parser.prototype.reportErrorCommon = function(lexerMessage, tokenDisplay) {
+          var lines = [];
+          lines.push(lexerMessage);
+          var lastColumnIndex = this.table.length - 2;
+          var lastColumn = this.table[lastColumnIndex];
+          var expectantStates = lastColumn.states.filter(function(state) {
+            var nextSymbol = state.rule.symbols[state.dot];
+            return nextSymbol && typeof nextSymbol !== "string";
+          });
+          if (expectantStates.length === 0) {
+            lines.push("Unexpected " + tokenDisplay + ". I did not expect any more input. Here is the state of my parse table:\n");
+            this.displayStateStack(lastColumn.states, lines);
+          } else {
+            lines.push("Unexpected " + tokenDisplay + ". Instead, I was expecting to see one of the following:\n");
+            var stateStacks = expectantStates.map(function(state) {
+              return this.buildFirstStateStack(state, []) || [state];
+            }, this);
+            stateStacks.forEach(function(stateStack) {
+              var state = stateStack[0];
+              var nextSymbol = state.rule.symbols[state.dot];
+              var symbolDisplay = this.getSymbolDisplay(nextSymbol);
+              lines.push("A " + symbolDisplay + " based on:");
+              this.displayStateStack(stateStack, lines);
+            }, this);
+          }
+          lines.push("");
+          return lines.join("\n");
+        };
+        Parser.prototype.displayStateStack = function(stateStack, lines) {
+          var lastDisplay;
+          var sameDisplayCount = 0;
+          for (var j3 = 0; j3 < stateStack.length; j3++) {
+            var state = stateStack[j3];
+            var display = state.rule.toString(state.dot);
+            if (display === lastDisplay) {
+              sameDisplayCount++;
+            } else {
+              if (sameDisplayCount > 0) {
+                lines.push("    ^ " + sameDisplayCount + " more lines identical to this");
+              }
+              sameDisplayCount = 0;
+              lines.push("    " + display);
+            }
+            lastDisplay = display;
+          }
+        };
+        Parser.prototype.getSymbolDisplay = function(symbol) {
+          return getSymbolLongDisplay(symbol);
+        };
+        Parser.prototype.buildFirstStateStack = function(state, visited) {
+          if (visited.indexOf(state) !== -1) {
+            return null;
+          }
+          if (state.wantedBy.length === 0) {
+            return [state];
+          }
+          var prevState = state.wantedBy[0];
+          var childVisited = [state].concat(visited);
+          var childResult = this.buildFirstStateStack(prevState, childVisited);
+          if (childResult === null) {
+            return null;
+          }
+          return [state].concat(childResult);
+        };
+        Parser.prototype.save = function() {
+          var column = this.table[this.current];
+          column.lexerState = this.lexerState;
+          return column;
+        };
+        Parser.prototype.restore = function(column) {
+          var index2 = column.index;
+          this.current = index2;
+          this.table[index2] = column;
+          this.table.splice(index2 + 1);
+          this.lexerState = column.lexerState;
+          this.results = this.finish();
+        };
+        Parser.prototype.rewind = function(index2) {
+          if (!this.options.keepHistory) {
+            throw new Error("set option `keepHistory` to enable rewinding");
+          }
+          this.restore(this.table[index2]);
+        };
+        Parser.prototype.finish = function() {
+          var considerations = [];
+          var start2 = this.grammar.start;
+          var column = this.table[this.table.length - 1];
+          column.states.forEach(function(t4) {
+            if (t4.rule.name === start2 && t4.dot === t4.rule.symbols.length && t4.reference === 0 && t4.data !== Parser.fail) {
+              considerations.push(t4);
+            }
+          });
+          return considerations.map(function(c2) {
+            return c2.data;
+          });
+        };
+        function getSymbolLongDisplay(symbol) {
+          var type2 = typeof symbol;
+          if (type2 === "string") {
+            return symbol;
+          } else if (type2 === "object") {
+            if (symbol.literal) {
+              return JSON.stringify(symbol.literal);
+            } else if (symbol instanceof RegExp) {
+              return "character matching " + symbol;
+            } else if (symbol.type) {
+              return symbol.type + " token";
+            } else if (symbol.test) {
+              return "token matching " + String(symbol.test);
+            } else {
+              throw new Error("Unknown symbol type: " + symbol);
+            }
+          }
+        }
+        function getSymbolShortDisplay(symbol) {
+          var type2 = typeof symbol;
+          if (type2 === "string") {
+            return symbol;
+          } else if (type2 === "object") {
+            if (symbol.literal) {
+              return JSON.stringify(symbol.literal);
+            } else if (symbol instanceof RegExp) {
+              return symbol.toString();
+            } else if (symbol.type) {
+              return "%" + symbol.type;
+            } else if (symbol.test) {
+              return "<" + String(symbol.test) + ">";
+            } else {
+              throw new Error("Unknown symbol type: " + symbol);
+            }
+          }
+        }
+        return {
+          Parser,
+          Grammar,
+          Rule
+        };
+      });
+    }
+  });
+
+  // node_modules/edtf/src/defaults.js
+  var defaults2;
+  var init_defaults2 = __esm({
+    "node_modules/edtf/src/defaults.js"() {
+      defaults2 = {
+        level: 2,
+        offset: true,
+        types: [],
+        seasonIntervals: false,
+        seasonUncertainty: false
+      };
+    }
+  });
+
+  // node_modules/edtf/src/util.js
+  function num(data2) {
+    return Number(Array.isArray(data2) ? data2.join("") : data2);
+  }
+  function join2(data2) {
+    return data2.join("");
+  }
+  function zero3() {
+    return 0;
+  }
+  function nothing() {
+    return null;
+  }
+  function pick2(...args) {
+    return args.length === 1 ? (data2) => data2[args[0]] : (data2) => concat2(data2, args);
+  }
+  function pluck(...args) {
+    return (data2) => args.map((i3) => data2[i3]);
+  }
+  function concat2(data2, idx = data2.keys()) {
+    return Array.from(idx).reduce((memo, i3) => data2[i3] !== null ? memo.concat(data2[i3]) : memo, []);
+  }
+  function merge3(...args) {
+    if (typeof args[args.length - 1] === "object")
+      var extra = args.pop();
+    return (data2) => assign2(args.reduce((a2, i3) => assign2(a2, data2[i3]), {}), extra);
+  }
+  function interval2(level) {
+    return (data2) => ({
+      values: [data2[0], data2[2]],
+      type: "Interval",
+      level
+    });
+  }
+  function masked(type2 = "unspecified", symbol = "X", normalize3 = true) {
+    return (data2, _3, reject2) => {
+      data2 = data2.join("");
+      let negative = data2.startsWith("-");
+      let mask2 = data2.replace(/-/g, "");
+      if (mask2.indexOf(symbol) === -1) return reject2;
+      let values3 = Bitmask.values(mask2, 0, normalize3);
+      if (negative) values3[0] = -values3[0];
+      return {
+        values: values3,
+        [type2]: Bitmask.compute(mask2)
+      };
+    };
+  }
+  function date(values3, level = 0, extra = null) {
+    return assign2({
+      type: "Date",
+      level,
+      values: Bitmask.normalize(values3.map(Number))
+    }, extra);
+  }
+  function year(values3, level = 1, extra = null) {
+    return assign2({
+      type: "Year",
+      level,
+      values: values3.map(Number)
+    }, extra);
+  }
+  function century(value, level = 0) {
+    return {
+      type: "Century",
+      level,
+      values: [value]
+    };
+  }
+  function decade(value, level = 2) {
+    return {
+      type: "Decade",
+      level,
+      values: [value]
+    };
+  }
+  function offsetToTimeZone(offset) {
+    let sign2 = offset < 0 ? "-" : "+";
+    let abs7 = Math.abs(offset);
+    let h2 = String(Math.floor(abs7 / 60)).padStart(2, "0");
+    let m3 = String(abs7 % 60).padStart(2, "0");
+    return `${sign2}${h2}:${m3}`;
+  }
+  function datetime(data2) {
+    let offset = data2[3];
+    let values3 = Bitmask.normalize(data2[0].map(Number)).concat(data2[2]);
+    let timeZone;
+    if (offset == null && !!defaults2.offset) {
+      if (typeof defaults2.offset === "number") {
+        offset = defaults2.offset;
+      } else {
+        offset = -1 * new Date(...values3).getTimezoneOffset();
+      }
+    } else if (offset != null) {
+      timeZone = offsetToTimeZone(offset);
+    }
+    return {
+      level: 0,
+      offset,
+      timeZone,
+      type: "Date",
+      values: values3
+    };
+  }
+  function season(values3, level = 1) {
+    return {
+      type: "Season",
+      level,
+      values: values3.map(Number)
+    };
+  }
+  function list(data2) {
+    return assign2({ values: data2[1], level: 2 }, data2[0], data2[2]);
+  }
+  function qualified(fn, level = 2) {
+    return ([parts], _3, reject2) => {
+      let q3 = {
+        uncertain: new Bitmask(),
+        approximate: new Bitmask()
+      };
+      let values3 = parts.map(([lhs, part, rhs], idx) => {
+        for (let ua in lhs) q3[ua].qualify(idx * 2);
+        for (let ua in rhs) q3[ua].qualify(1 + idx * 2);
+        return part;
+      });
+      return !q3.uncertain.value && !q3.approximate.value ? reject2 : {
+        ...fn(values3, level),
+        uncertain: q3.uncertain.value,
+        approximate: q3.approximate.value
+      };
+    };
+  }
+  var assign2;
+  var init_util = __esm({
+    "node_modules/edtf/src/util.js"() {
+      init_bitmask();
+      init_defaults2();
+      ({ assign: assign2 } = Object);
+    }
+  });
+
+  // node_modules/edtf/src/grammar.js
+  function id2(x3) {
+    return x3[0];
+  }
+  var DAY2, MONTH2, YEAR2, YMD, YM, MD, YYXX, YYYX, XXXX, Lexer, ParserRules, ParserStart, grammar_default;
+  var init_grammar = __esm({
+    "node_modules/edtf/src/grammar.js"() {
+      init_util();
+      init_bitmask();
+      ({
+        DAY: DAY2,
+        MONTH: MONTH2,
+        YEAR: YEAR2,
+        YMD,
+        YM,
+        MD,
+        YYXX,
+        YYYX,
+        XXXX
+      } = Bitmask);
+      Lexer = void 0;
+      ParserRules = [
+        { "name": "edtf", "symbols": ["L0"], "postprocess": id2 },
+        { "name": "edtf", "symbols": ["L1"], "postprocess": id2 },
+        { "name": "edtf", "symbols": ["L2"], "postprocess": id2 },
+        { "name": "edtf", "symbols": ["L3"], "postprocess": id2 },
+        { "name": "L0", "symbols": ["date_time"], "postprocess": id2 },
+        { "name": "L0", "symbols": ["century"], "postprocess": id2 },
+        { "name": "L0", "symbols": ["L0i"], "postprocess": id2 },
+        { "name": "L0i", "symbols": ["date_time", { "literal": "/" }, "date_time"], "postprocess": interval2(0) },
+        { "name": "century", "symbols": ["positive_century"], "postprocess": (data2) => century(data2[0]) },
+        { "name": "century$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner(d2) {
+          return d2.join("");
+        } },
+        { "name": "century", "symbols": ["century$string$1"], "postprocess": (data2) => century(0) },
+        { "name": "century", "symbols": [{ "literal": "-" }, "positive_century"], "postprocess": (data2) => century(-data2[1]) },
+        { "name": "positive_century", "symbols": ["positive_digit", "digit"], "postprocess": num },
+        { "name": "positive_century", "symbols": [{ "literal": "0" }, "positive_digit"], "postprocess": num },
+        { "name": "date_time", "symbols": ["date"], "postprocess": id2 },
+        { "name": "date_time", "symbols": ["datetime"], "postprocess": id2 },
+        { "name": "date", "symbols": ["year"], "postprocess": (data2) => date(data2) },
+        { "name": "date", "symbols": ["year_month"], "postprocess": (data2) => date(data2[0]) },
+        { "name": "date", "symbols": ["year_month_day"], "postprocess": (data2) => date(data2[0]) },
+        { "name": "year", "symbols": ["positive_year"], "postprocess": id2 },
+        { "name": "year", "symbols": ["negative_year"], "postprocess": id2 },
+        { "name": "year$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner2(d2) {
+          return d2.join("");
+        } },
+        { "name": "year", "symbols": ["year$string$1"], "postprocess": join2 },
+        { "name": "positive_year", "symbols": ["positive_digit", "digit", "digit", "digit"], "postprocess": join2 },
+        { "name": "positive_year", "symbols": [{ "literal": "0" }, "positive_digit", "digit", "digit"], "postprocess": join2 },
+        { "name": "positive_year$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner3(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_year", "symbols": ["positive_year$string$1", "positive_digit", "digit"], "postprocess": join2 },
+        { "name": "positive_year$string$2", "symbols": [{ "literal": "0" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner4(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_year", "symbols": ["positive_year$string$2", "positive_digit"], "postprocess": join2 },
+        { "name": "negative_year", "symbols": [{ "literal": "-" }, "positive_year"], "postprocess": join2 },
+        { "name": "year_month", "symbols": ["year", { "literal": "-" }, "month"], "postprocess": pick2(0, 2) },
+        { "name": "year_month_day", "symbols": ["year", { "literal": "-" }, "month_day"], "postprocess": pick2(0, 2) },
+        { "name": "month", "symbols": ["d01_12"], "postprocess": id2 },
+        { "name": "month_day", "symbols": ["m31", { "literal": "-" }, "day"], "postprocess": pick2(0, 2) },
+        { "name": "month_day", "symbols": ["m30", { "literal": "-" }, "d01_30"], "postprocess": pick2(0, 2) },
+        { "name": "month_day$string$1", "symbols": [{ "literal": "0" }, { "literal": "2" }], "postprocess": function joiner5(d2) {
+          return d2.join("");
+        } },
+        { "name": "month_day", "symbols": ["month_day$string$1", { "literal": "-" }, "d01_29"], "postprocess": pick2(0, 2) },
+        { "name": "day", "symbols": ["d01_31"], "postprocess": id2 },
+        { "name": "datetime$ebnf$1$subexpression$1", "symbols": ["timezone"], "postprocess": id2 },
+        { "name": "datetime$ebnf$1", "symbols": ["datetime$ebnf$1$subexpression$1"], "postprocess": id2 },
+        { "name": "datetime$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "datetime", "symbols": ["year_month_day", { "literal": "T" }, "time", "datetime$ebnf$1"], "postprocess": datetime },
+        { "name": "time", "symbols": ["hours", { "literal": ":" }, "minutes", { "literal": ":" }, "seconds", "milliseconds"], "postprocess": pick2(0, 2, 4, 5) },
+        { "name": "time", "symbols": ["hours", { "literal": ":" }, "minutes"], "postprocess": pick2(0, 2) },
+        { "name": "time$string$1", "symbols": [{ "literal": "2" }, { "literal": "4" }, { "literal": ":" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner6(d2) {
+          return d2.join("");
+        } },
+        { "name": "time$ebnf$1$string$1", "symbols": [{ "literal": ":" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner7(d2) {
+          return d2.join("");
+        } },
+        { "name": "time$ebnf$1", "symbols": ["time$ebnf$1$string$1"], "postprocess": id2 },
+        { "name": "time$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "time", "symbols": ["time$string$1", "time$ebnf$1"], "postprocess": () => [24, 0, 0] },
+        { "name": "hours", "symbols": ["d00_23"], "postprocess": num },
+        { "name": "minutes", "symbols": ["d00_59"], "postprocess": num },
+        { "name": "seconds", "symbols": ["d00_59"], "postprocess": num },
+        { "name": "milliseconds", "symbols": [] },
+        { "name": "milliseconds", "symbols": [{ "literal": "." }, "d3s"], "postprocess": (data2) => num(data2.slice(1)) },
+        { "name": "timezone", "symbols": [{ "literal": "Z" }], "postprocess": zero3 },
+        { "name": "timezone$subexpression$1", "symbols": [{ "literal": "-" }] },
+        { "name": "timezone$subexpression$1", "symbols": [{ "literal": "\u2212" }] },
+        { "name": "timezone", "symbols": ["timezone$subexpression$1", "offset"], "postprocess": (data2) => -data2[1] },
+        { "name": "timezone", "symbols": [{ "literal": "+" }, "positive_offset"], "postprocess": pick2(1) },
+        { "name": "positive_offset", "symbols": ["offset"], "postprocess": id2 },
+        { "name": "positive_offset$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner8(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset$ebnf$1", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "positive_offset$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "positive_offset$string$2", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner9(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset", "symbols": ["positive_offset$string$1", "positive_offset$ebnf$1", "positive_offset$string$2"], "postprocess": zero3 },
+        { "name": "positive_offset$subexpression$1$string$1", "symbols": [{ "literal": "1" }, { "literal": "2" }], "postprocess": function joiner10(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset$subexpression$1", "symbols": ["positive_offset$subexpression$1$string$1"] },
+        { "name": "positive_offset$subexpression$1$string$2", "symbols": [{ "literal": "1" }, { "literal": "3" }], "postprocess": function joiner11(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset$subexpression$1", "symbols": ["positive_offset$subexpression$1$string$2"] },
+        { "name": "positive_offset$ebnf$2", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "positive_offset$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "positive_offset", "symbols": ["positive_offset$subexpression$1", "positive_offset$ebnf$2", "minutes"], "postprocess": (data2) => num(data2[0]) * 60 + data2[2] },
+        { "name": "positive_offset$string$3", "symbols": [{ "literal": "1" }, { "literal": "4" }], "postprocess": function joiner12(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset$ebnf$3", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "positive_offset$ebnf$3", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "positive_offset$string$4", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner13(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_offset", "symbols": ["positive_offset$string$3", "positive_offset$ebnf$3", "positive_offset$string$4"], "postprocess": () => 840 },
+        { "name": "positive_offset", "symbols": ["d00_14"], "postprocess": (data2) => num(data2[0]) * 60 },
+        { "name": "offset$ebnf$1", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "offset$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "offset", "symbols": ["d01_11", "offset$ebnf$1", "minutes"], "postprocess": (data2) => num(data2[0]) * 60 + data2[2] },
+        { "name": "offset$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner14(d2) {
+          return d2.join("");
+        } },
+        { "name": "offset$ebnf$2", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "offset$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "offset", "symbols": ["offset$string$1", "offset$ebnf$2", "d01_59"], "postprocess": (data2) => num(data2[2]) },
+        { "name": "offset$string$2", "symbols": [{ "literal": "1" }, { "literal": "2" }], "postprocess": function joiner15(d2) {
+          return d2.join("");
+        } },
+        { "name": "offset$ebnf$3", "symbols": [{ "literal": ":" }], "postprocess": id2 },
+        { "name": "offset$ebnf$3", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "offset$string$3", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner16(d2) {
+          return d2.join("");
+        } },
+        { "name": "offset", "symbols": ["offset$string$2", "offset$ebnf$3", "offset$string$3"], "postprocess": () => 720 },
+        { "name": "offset", "symbols": ["d01_12"], "postprocess": (data2) => num(data2[0]) * 60 },
+        { "name": "L1", "symbols": ["L1d"], "postprocess": id2 },
+        { "name": "L1", "symbols": ["L1Y"], "postprocess": id2 },
+        { "name": "L1", "symbols": ["L1S"], "postprocess": id2 },
+        { "name": "L1", "symbols": ["L1i"], "postprocess": id2 },
+        { "name": "L1d", "symbols": ["date_ua"], "postprocess": id2 },
+        { "name": "L1d", "symbols": ["L1X"], "postprocess": merge3(0, { type: "Date", level: 1 }) },
+        { "name": "date_ua", "symbols": ["date", "UA"], "postprocess": merge3(0, 1, { level: 1 }) },
+        { "name": "L1i", "symbols": ["L1i_date", { "literal": "/" }, "L1i_date"], "postprocess": interval2(1) },
+        { "name": "L1i", "symbols": ["date_time", { "literal": "/" }, "L1i_date"], "postprocess": interval2(1) },
+        { "name": "L1i", "symbols": ["L1i_date", { "literal": "/" }, "date_time"], "postprocess": interval2(1) },
+        { "name": "L1i_date", "symbols": [], "postprocess": nothing },
+        { "name": "L1i_date", "symbols": ["date_ua"], "postprocess": id2 },
+        { "name": "L1i_date", "symbols": ["INFINITY"], "postprocess": id2 },
+        { "name": "INFINITY$string$1", "symbols": [{ "literal": "." }, { "literal": "." }], "postprocess": function joiner17(d2) {
+          return d2.join("");
+        } },
+        { "name": "INFINITY", "symbols": ["INFINITY$string$1"], "postprocess": () => Infinity },
+        { "name": "L1X$string$1", "symbols": [{ "literal": "-" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner18(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["nd4", { "literal": "-" }, "md", "L1X$string$1"], "postprocess": masked() },
+        { "name": "L1X$string$2", "symbols": [{ "literal": "-" }, { "literal": "X" }, { "literal": "X" }, { "literal": "-" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner19(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["nd4", "L1X$string$2"], "postprocess": masked() },
+        { "name": "L1X$string$3", "symbols": [{ "literal": "X" }, { "literal": "X" }, { "literal": "X" }, { "literal": "X" }, { "literal": "-" }, { "literal": "X" }, { "literal": "X" }, { "literal": "-" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner20(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["L1X$string$3"], "postprocess": masked() },
+        { "name": "L1X$string$4", "symbols": [{ "literal": "-" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner21(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["nd4", "L1X$string$4"], "postprocess": masked() },
+        { "name": "L1X$string$5", "symbols": [{ "literal": "X" }, { "literal": "X" }, { "literal": "X" }, { "literal": "X" }, { "literal": "-" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner22(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["L1X$string$5"], "postprocess": masked() },
+        { "name": "L1X$string$6", "symbols": [{ "literal": "X" }, { "literal": "X" }], "postprocess": function joiner23(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["nd2", "L1X$string$6"], "postprocess": masked() },
+        { "name": "L1X", "symbols": ["nd3", { "literal": "X" }], "postprocess": masked() },
+        { "name": "L1X$string$7", "symbols": [{ "literal": "X" }, { "literal": "X" }, { "literal": "X" }, { "literal": "X" }], "postprocess": function joiner24(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1X", "symbols": ["L1X$string$7"], "postprocess": masked() },
+        { "name": "L1Y", "symbols": [{ "literal": "Y" }, "d5+"], "postprocess": (data2) => year([num(data2[1])], 1) },
+        { "name": "L1Y$string$1", "symbols": [{ "literal": "Y" }, { "literal": "-" }], "postprocess": function joiner25(d2) {
+          return d2.join("");
+        } },
+        { "name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": (data2) => year([-num(data2[1])], 1) },
+        { "name": "UA", "symbols": [{ "literal": "?" }], "postprocess": () => ({ uncertain: true }) },
+        { "name": "UA", "symbols": [{ "literal": "~" }], "postprocess": () => ({ approximate: true }) },
+        { "name": "UA", "symbols": [{ "literal": "%" }], "postprocess": () => ({ approximate: true, uncertain: true }) },
+        { "name": "L1S", "symbols": ["year", { "literal": "-" }, "d21_24"], "postprocess": (d2) => season([d2[0], d2[2]], 1) },
+        { "name": "L2", "symbols": ["L2d"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["L2Y"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["L2S"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["L2D"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["L2C"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["L2i"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["set"], "postprocess": id2 },
+        { "name": "L2", "symbols": ["list"], "postprocess": id2 },
+        { "name": "L2d", "symbols": ["ua_date"], "postprocess": id2 },
+        { "name": "L2d", "symbols": ["L2X"], "postprocess": merge3(0, { type: "Date", level: 2 }) },
+        { "name": "L2D", "symbols": ["decade"], "postprocess": id2 },
+        { "name": "L2D", "symbols": ["decade", "UA"], "postprocess": merge3(0, 1) },
+        { "name": "L2C", "symbols": ["century"], "postprocess": id2 },
+        { "name": "L2C", "symbols": ["century", "UA"], "postprocess": merge3(0, 1, { level: 2 }) },
+        { "name": "ua_date", "symbols": ["ua_year"], "postprocess": qualified(date) },
+        { "name": "ua_date", "symbols": ["ua_year_month"], "postprocess": qualified(date) },
+        { "name": "ua_date", "symbols": ["ua_year_month_day"], "postprocess": qualified(date) },
+        { "name": "ua_year", "symbols": ["UA", "year"], "postprocess": (data2) => [data2] },
+        { "name": "ua_year_month$macrocall$2", "symbols": ["year"] },
+        { "name": "ua_year_month$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month$macrocall$1$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month$macrocall$1$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month$macrocall$1", "symbols": ["ua_year_month$macrocall$1$ebnf$1", "ua_year_month$macrocall$2", "ua_year_month$macrocall$1$ebnf$2"] },
+        { "name": "ua_year_month$macrocall$4", "symbols": ["month"] },
+        { "name": "ua_year_month$macrocall$3$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month$macrocall$3$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month$macrocall$3$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month$macrocall$3$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month$macrocall$3", "symbols": ["ua_year_month$macrocall$3$ebnf$1", "ua_year_month$macrocall$4", "ua_year_month$macrocall$3$ebnf$2"] },
+        { "name": "ua_year_month", "symbols": ["ua_year_month$macrocall$1", { "literal": "-" }, "ua_year_month$macrocall$3"], "postprocess": pluck(0, 2) },
+        { "name": "ua_year_month_day$macrocall$2", "symbols": ["year"] },
+        { "name": "ua_year_month_day$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month_day$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month_day$macrocall$1$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_year_month_day$macrocall$1$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_year_month_day$macrocall$1", "symbols": ["ua_year_month_day$macrocall$1$ebnf$1", "ua_year_month_day$macrocall$2", "ua_year_month_day$macrocall$1$ebnf$2"] },
+        { "name": "ua_year_month_day", "symbols": ["ua_year_month_day$macrocall$1", { "literal": "-" }, "ua_month_day"], "postprocess": (data2) => [data2[0], ...data2[2]] },
+        { "name": "ua_month_day$macrocall$2", "symbols": ["m31"] },
+        { "name": "ua_month_day$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$1$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$1$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$1", "symbols": ["ua_month_day$macrocall$1$ebnf$1", "ua_month_day$macrocall$2", "ua_month_day$macrocall$1$ebnf$2"] },
+        { "name": "ua_month_day$macrocall$4", "symbols": ["day"] },
+        { "name": "ua_month_day$macrocall$3$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$3$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$3$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$3$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$3", "symbols": ["ua_month_day$macrocall$3$ebnf$1", "ua_month_day$macrocall$4", "ua_month_day$macrocall$3$ebnf$2"] },
+        { "name": "ua_month_day", "symbols": ["ua_month_day$macrocall$1", { "literal": "-" }, "ua_month_day$macrocall$3"], "postprocess": pluck(0, 2) },
+        { "name": "ua_month_day$macrocall$6", "symbols": ["m30"] },
+        { "name": "ua_month_day$macrocall$5$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$5$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$5$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$5$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$5", "symbols": ["ua_month_day$macrocall$5$ebnf$1", "ua_month_day$macrocall$6", "ua_month_day$macrocall$5$ebnf$2"] },
+        { "name": "ua_month_day$macrocall$8", "symbols": ["d01_30"] },
+        { "name": "ua_month_day$macrocall$7$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$7$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$7$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$7$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$7", "symbols": ["ua_month_day$macrocall$7$ebnf$1", "ua_month_day$macrocall$8", "ua_month_day$macrocall$7$ebnf$2"] },
+        { "name": "ua_month_day", "symbols": ["ua_month_day$macrocall$5", { "literal": "-" }, "ua_month_day$macrocall$7"], "postprocess": pluck(0, 2) },
+        { "name": "ua_month_day$macrocall$10$string$1", "symbols": [{ "literal": "0" }, { "literal": "2" }], "postprocess": function joiner26(d2) {
+          return d2.join("");
+        } },
+        { "name": "ua_month_day$macrocall$10", "symbols": ["ua_month_day$macrocall$10$string$1"] },
+        { "name": "ua_month_day$macrocall$9$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$9$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$9$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$9$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$9", "symbols": ["ua_month_day$macrocall$9$ebnf$1", "ua_month_day$macrocall$10", "ua_month_day$macrocall$9$ebnf$2"] },
+        { "name": "ua_month_day$macrocall$12", "symbols": ["d01_29"] },
+        { "name": "ua_month_day$macrocall$11$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$11$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$11$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_month_day$macrocall$11$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_month_day$macrocall$11", "symbols": ["ua_month_day$macrocall$11$ebnf$1", "ua_month_day$macrocall$12", "ua_month_day$macrocall$11$ebnf$2"] },
+        { "name": "ua_month_day", "symbols": ["ua_month_day$macrocall$9", { "literal": "-" }, "ua_month_day$macrocall$11"], "postprocess": pluck(0, 2) },
+        { "name": "L2X", "symbols": ["dx4"], "postprocess": masked() },
+        { "name": "L2X", "symbols": ["dx4", { "literal": "-" }, "mx"], "postprocess": masked() },
+        { "name": "L2X", "symbols": ["dx4", { "literal": "-" }, "mdx"], "postprocess": masked() },
+        { "name": "mdx", "symbols": ["m31x", { "literal": "-" }, "d31x"], "postprocess": join2 },
+        { "name": "mdx", "symbols": ["m30x", { "literal": "-" }, "d30x"], "postprocess": join2 },
+        { "name": "mdx$string$1", "symbols": [{ "literal": "0" }, { "literal": "2" }, { "literal": "-" }], "postprocess": function joiner27(d2) {
+          return d2.join("");
+        } },
+        { "name": "mdx", "symbols": ["mdx$string$1", "d29x"], "postprocess": join2 },
+        { "name": "L2i", "symbols": ["L2i_date", { "literal": "/" }, "L2i_date"], "postprocess": interval2(2) },
+        { "name": "L2i", "symbols": ["date_time", { "literal": "/" }, "L2i_date"], "postprocess": interval2(2) },
+        { "name": "L2i", "symbols": ["L2i_date", { "literal": "/" }, "date_time"], "postprocess": interval2(2) },
+        { "name": "L2i_date", "symbols": [], "postprocess": nothing },
+        { "name": "L2i_date", "symbols": ["ua_date"], "postprocess": id2 },
+        { "name": "L2i_date", "symbols": ["L2X"], "postprocess": id2 },
+        { "name": "L2i_date", "symbols": ["INFINITY"], "postprocess": id2 },
+        { "name": "L2Y", "symbols": ["exp_year"], "postprocess": id2 },
+        { "name": "L2Y", "symbols": ["exp_year", "significant_digits"], "postprocess": merge3(0, 1) },
+        { "name": "L2Y", "symbols": ["L1Y", "significant_digits"], "postprocess": merge3(0, 1, { level: 2 }) },
+        { "name": "L2Y", "symbols": ["year", "significant_digits"], "postprocess": (data2) => year([data2[0]], 2, data2[1]) },
+        { "name": "significant_digits", "symbols": [{ "literal": "S" }, "positive_digit"], "postprocess": (data2) => ({ significant: num(data2[1]) }) },
+        { "name": "exp_year", "symbols": [{ "literal": "Y" }, "exp"], "postprocess": (data2) => year([data2[1]], 2) },
+        { "name": "exp_year$string$1", "symbols": [{ "literal": "Y" }, { "literal": "-" }], "postprocess": function joiner28(d2) {
+          return d2.join("");
+        } },
+        { "name": "exp_year", "symbols": ["exp_year$string$1", "exp"], "postprocess": (data2) => year([-data2[1]], 2) },
+        { "name": "exp", "symbols": ["digits", { "literal": "E" }, "digits"], "postprocess": (data2) => num(data2[0]) * Math.pow(10, num(data2[2])) },
+        { "name": "L2S", "symbols": ["year", { "literal": "-" }, "d25_41"], "postprocess": (d2) => season([d2[0], d2[2]], 2) },
+        { "name": "decade", "symbols": ["positive_decade"], "postprocess": (data2) => decade(data2[0]) },
+        { "name": "decade$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner29(d2) {
+          return d2.join("");
+        } },
+        { "name": "decade", "symbols": ["decade$string$1"], "postprocess": () => decade(0) },
+        { "name": "decade", "symbols": [{ "literal": "-" }, "positive_decade"], "postprocess": (data2) => decade(-data2[1]) },
+        { "name": "positive_decade", "symbols": ["positive_digit", "digit", "digit"], "postprocess": num },
+        { "name": "positive_decade", "symbols": [{ "literal": "0" }, "positive_digit", "digit"], "postprocess": num },
+        { "name": "positive_decade$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner30(d2) {
+          return d2.join("");
+        } },
+        { "name": "positive_decade", "symbols": ["positive_decade$string$1", "positive_digit"], "postprocess": num },
+        { "name": "set", "symbols": ["LSB", "OL", "RSB"], "postprocess": list },
+        { "name": "list", "symbols": ["LLB", "OL", "RLB"], "postprocess": list },
+        { "name": "LSB", "symbols": [{ "literal": "[" }], "postprocess": () => ({ type: "Set" }) },
+        { "name": "LSB$string$1", "symbols": [{ "literal": "[" }, { "literal": "." }, { "literal": "." }], "postprocess": function joiner31(d2) {
+          return d2.join("");
+        } },
+        { "name": "LSB", "symbols": ["LSB$string$1"], "postprocess": () => ({ type: "Set", earlier: true }) },
+        { "name": "LLB", "symbols": [{ "literal": "{" }], "postprocess": () => ({ type: "List" }) },
+        { "name": "LLB$string$1", "symbols": [{ "literal": "{" }, { "literal": "." }, { "literal": "." }], "postprocess": function joiner32(d2) {
+          return d2.join("");
+        } },
+        { "name": "LLB", "symbols": ["LLB$string$1"], "postprocess": () => ({ type: "List", earlier: true }) },
+        { "name": "RSB", "symbols": [{ "literal": "]" }], "postprocess": nothing },
+        { "name": "RSB$string$1", "symbols": [{ "literal": "." }, { "literal": "." }, { "literal": "]" }], "postprocess": function joiner33(d2) {
+          return d2.join("");
+        } },
+        { "name": "RSB", "symbols": ["RSB$string$1"], "postprocess": () => ({ later: true }) },
+        { "name": "RLB", "symbols": [{ "literal": "}" }], "postprocess": nothing },
+        { "name": "RLB$string$1", "symbols": [{ "literal": "." }, { "literal": "." }, { "literal": "}" }], "postprocess": function joiner34(d2) {
+          return d2.join("");
+        } },
+        { "name": "RLB", "symbols": ["RLB$string$1"], "postprocess": () => ({ later: true }) },
+        { "name": "OL", "symbols": ["LI"], "postprocess": (data2) => [data2[0]] },
+        { "name": "OL", "symbols": ["OL", "_", { "literal": "," }, "_", "LI"], "postprocess": (data2) => [...data2[0], data2[4]] },
+        { "name": "LI", "symbols": ["date"], "postprocess": id2 },
+        { "name": "LI", "symbols": ["ua_date"], "postprocess": id2 },
+        { "name": "LI", "symbols": ["L2X"], "postprocess": id2 },
+        { "name": "LI", "symbols": ["consecutives"], "postprocess": id2 },
+        { "name": "consecutives$string$1", "symbols": [{ "literal": "." }, { "literal": "." }], "postprocess": function joiner35(d2) {
+          return d2.join("");
+        } },
+        { "name": "consecutives", "symbols": ["year_month_day", "consecutives$string$1", "year_month_day"], "postprocess": (d2) => [date(d2[0]), date(d2[2])] },
+        { "name": "consecutives$string$2", "symbols": [{ "literal": "." }, { "literal": "." }], "postprocess": function joiner36(d2) {
+          return d2.join("");
+        } },
+        { "name": "consecutives", "symbols": ["year_month", "consecutives$string$2", "year_month"], "postprocess": (d2) => [date(d2[0]), date(d2[2])] },
+        { "name": "consecutives$string$3", "symbols": [{ "literal": "." }, { "literal": "." }], "postprocess": function joiner37(d2) {
+          return d2.join("");
+        } },
+        { "name": "consecutives", "symbols": ["year", "consecutives$string$3", "year"], "postprocess": (d2) => [date([d2[0]]), date([d2[2]])] },
+        { "name": "L3", "symbols": ["L3i"], "postprocess": id2 },
+        { "name": "L3", "symbols": ["L3S"], "postprocess": id2 },
+        { "name": "L3i", "symbols": ["L3s", { "literal": "/" }, "L3s"], "postprocess": interval2(3) },
+        { "name": "L3s", "symbols": ["L1S"], "postprocess": id2 },
+        { "name": "L3s", "symbols": ["L2S"], "postprocess": id2 },
+        { "name": "L3s", "symbols": ["L3S"], "postprocess": id2 },
+        { "name": "L3S", "symbols": ["ua_season"], "postprocess": qualified(season, 3) },
+        { "name": "L3S", "symbols": ["xx_season"], "postprocess": merge3(0, { type: "Season", level: 3 }) },
+        { "name": "ua_season$macrocall$2", "symbols": ["year"] },
+        { "name": "ua_season$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_season$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_season$macrocall$1$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_season$macrocall$1$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_season$macrocall$1", "symbols": ["ua_season$macrocall$1$ebnf$1", "ua_season$macrocall$2", "ua_season$macrocall$1$ebnf$2"] },
+        { "name": "ua_season$macrocall$4", "symbols": ["d21_41"] },
+        { "name": "ua_season$macrocall$3$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_season$macrocall$3$ebnf$1", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_season$macrocall$3$ebnf$2", "symbols": ["UA"], "postprocess": id2 },
+        { "name": "ua_season$macrocall$3$ebnf$2", "symbols": [], "postprocess": function(d2) {
+          return null;
+        } },
+        { "name": "ua_season$macrocall$3", "symbols": ["ua_season$macrocall$3$ebnf$1", "ua_season$macrocall$4", "ua_season$macrocall$3$ebnf$2"] },
+        { "name": "ua_season", "symbols": ["ua_season$macrocall$1", { "literal": "-" }, "ua_season$macrocall$3"], "postprocess": pluck(0, 2) },
+        { "name": "xx_season", "symbols": ["dx4", { "literal": "-" }, "d21_41"], "postprocess": masked("unspecified", "X", false) },
+        { "name": "digit", "symbols": ["positive_digit"], "postprocess": id2 },
+        { "name": "digit", "symbols": [{ "literal": "0" }], "postprocess": id2 },
+        { "name": "digits", "symbols": ["digit"], "postprocess": id2 },
+        { "name": "digits", "symbols": ["digits", "digit"], "postprocess": join2 },
+        { "name": "nd4", "symbols": ["d4"] },
+        { "name": "nd4", "symbols": [{ "literal": "-" }, "d4"], "postprocess": join2 },
+        { "name": "nd3", "symbols": ["d3"] },
+        { "name": "nd3", "symbols": [{ "literal": "-" }, "d3"], "postprocess": join2 },
+        { "name": "nd2", "symbols": ["d2"] },
+        { "name": "nd2", "symbols": [{ "literal": "-" }, "d2"], "postprocess": join2 },
+        { "name": "d4", "symbols": ["d2", "d2"], "postprocess": join2 },
+        { "name": "d3", "symbols": ["d2", "digit"], "postprocess": join2 },
+        { "name": "d2", "symbols": ["digit", "digit"], "postprocess": join2 },
+        { "name": "d3s", "symbols": ["digit"], "postprocess": id2 },
+        { "name": "d3s", "symbols": ["d2"], "postprocess": id2 },
+        { "name": "d3s", "symbols": ["d3"], "postprocess": id2 },
+        { "name": "d3s", "symbols": ["d3", "digits"], "postprocess": pick2(0) },
+        { "name": "d5+", "symbols": ["positive_digit", "d3", "digits"], "postprocess": num },
+        { "name": "d1x", "symbols": [/[1-9X]/], "postprocess": id2 },
+        { "name": "dx", "symbols": ["d1x"], "postprocess": id2 },
+        { "name": "dx", "symbols": [{ "literal": "0" }], "postprocess": id2 },
+        { "name": "dx2", "symbols": ["dx", "dx"], "postprocess": join2 },
+        { "name": "dx4", "symbols": ["dx2", "dx2"], "postprocess": join2 },
+        { "name": "dx4", "symbols": [{ "literal": "-" }, "dx2", "dx2"], "postprocess": join2 },
+        { "name": "md", "symbols": ["m31"], "postprocess": id2 },
+        { "name": "md", "symbols": ["m30"], "postprocess": id2 },
+        { "name": "md$string$1", "symbols": [{ "literal": "0" }, { "literal": "2" }], "postprocess": function joiner38(d2) {
+          return d2.join("");
+        } },
+        { "name": "md", "symbols": ["md$string$1"], "postprocess": id2 },
+        { "name": "mx", "symbols": [{ "literal": "0" }, "d1x"], "postprocess": join2 },
+        { "name": "mx", "symbols": [/[1X]/, /[012X]/], "postprocess": join2 },
+        { "name": "m31x", "symbols": [/[0X]/, /[13578X]/], "postprocess": join2 },
+        { "name": "m31x", "symbols": [/[1X]/, /[02]/], "postprocess": join2 },
+        { "name": "m31x$string$1", "symbols": [{ "literal": "1" }, { "literal": "X" }], "postprocess": function joiner39(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31x", "symbols": ["m31x$string$1"], "postprocess": id2 },
+        { "name": "m30x", "symbols": [/[0X]/, /[469]/], "postprocess": join2 },
+        { "name": "m30x$string$1", "symbols": [{ "literal": "1" }, { "literal": "1" }], "postprocess": function joiner40(d2) {
+          return d2.join("");
+        } },
+        { "name": "m30x", "symbols": ["m30x$string$1"], "postprocess": join2 },
+        { "name": "d29x", "symbols": [{ "literal": "0" }, "d1x"], "postprocess": join2 },
+        { "name": "d29x", "symbols": [/[1-2X]/, "dx"], "postprocess": join2 },
+        { "name": "d30x", "symbols": ["d29x"], "postprocess": join2 },
+        { "name": "d30x$string$1", "symbols": [{ "literal": "3" }, { "literal": "0" }], "postprocess": function joiner41(d2) {
+          return d2.join("");
+        } },
+        { "name": "d30x", "symbols": ["d30x$string$1"], "postprocess": id2 },
+        { "name": "d31x", "symbols": ["d30x"], "postprocess": id2 },
+        { "name": "d31x", "symbols": [{ "literal": "3" }, /[1X]/], "postprocess": join2 },
+        { "name": "positive_digit", "symbols": [/[1-9]/], "postprocess": id2 },
+        { "name": "m31$subexpression$1$string$1", "symbols": [{ "literal": "0" }, { "literal": "1" }], "postprocess": function joiner42(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$1"] },
+        { "name": "m31$subexpression$1$string$2", "symbols": [{ "literal": "0" }, { "literal": "3" }], "postprocess": function joiner43(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$2"] },
+        { "name": "m31$subexpression$1$string$3", "symbols": [{ "literal": "0" }, { "literal": "5" }], "postprocess": function joiner44(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$3"] },
+        { "name": "m31$subexpression$1$string$4", "symbols": [{ "literal": "0" }, { "literal": "7" }], "postprocess": function joiner45(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$4"] },
+        { "name": "m31$subexpression$1$string$5", "symbols": [{ "literal": "0" }, { "literal": "8" }], "postprocess": function joiner46(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$5"] },
+        { "name": "m31$subexpression$1$string$6", "symbols": [{ "literal": "1" }, { "literal": "0" }], "postprocess": function joiner47(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$6"] },
+        { "name": "m31$subexpression$1$string$7", "symbols": [{ "literal": "1" }, { "literal": "2" }], "postprocess": function joiner48(d2) {
+          return d2.join("");
+        } },
+        { "name": "m31$subexpression$1", "symbols": ["m31$subexpression$1$string$7"] },
+        { "name": "m31", "symbols": ["m31$subexpression$1"], "postprocess": id2 },
+        { "name": "m30$subexpression$1$string$1", "symbols": [{ "literal": "0" }, { "literal": "4" }], "postprocess": function joiner49(d2) {
+          return d2.join("");
+        } },
+        { "name": "m30$subexpression$1", "symbols": ["m30$subexpression$1$string$1"] },
+        { "name": "m30$subexpression$1$string$2", "symbols": [{ "literal": "0" }, { "literal": "6" }], "postprocess": function joiner50(d2) {
+          return d2.join("");
+        } },
+        { "name": "m30$subexpression$1", "symbols": ["m30$subexpression$1$string$2"] },
+        { "name": "m30$subexpression$1$string$3", "symbols": [{ "literal": "0" }, { "literal": "9" }], "postprocess": function joiner51(d2) {
+          return d2.join("");
+        } },
+        { "name": "m30$subexpression$1", "symbols": ["m30$subexpression$1$string$3"] },
+        { "name": "m30$subexpression$1$string$4", "symbols": [{ "literal": "1" }, { "literal": "1" }], "postprocess": function joiner52(d2) {
+          return d2.join("");
+        } },
+        { "name": "m30$subexpression$1", "symbols": ["m30$subexpression$1$string$4"] },
+        { "name": "m30", "symbols": ["m30$subexpression$1"], "postprocess": id2 },
+        { "name": "d01_11", "symbols": [{ "literal": "0" }, "positive_digit"], "postprocess": join2 },
+        { "name": "d01_11", "symbols": [{ "literal": "1" }, /[0-1]/], "postprocess": join2 },
+        { "name": "d01_12", "symbols": ["d01_11"], "postprocess": id2 },
+        { "name": "d01_12$string$1", "symbols": [{ "literal": "1" }, { "literal": "2" }], "postprocess": function joiner53(d2) {
+          return d2.join("");
+        } },
+        { "name": "d01_12", "symbols": ["d01_12$string$1"], "postprocess": id2 },
+        { "name": "d01_13", "symbols": ["d01_12"], "postprocess": id2 },
+        { "name": "d01_13$string$1", "symbols": [{ "literal": "1" }, { "literal": "3" }], "postprocess": function joiner54(d2) {
+          return d2.join("");
+        } },
+        { "name": "d01_13", "symbols": ["d01_13$string$1"], "postprocess": id2 },
+        { "name": "d00_14$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner55(d2) {
+          return d2.join("");
+        } },
+        { "name": "d00_14", "symbols": ["d00_14$string$1"], "postprocess": id2 },
+        { "name": "d00_14", "symbols": ["d01_13"], "postprocess": id2 },
+        { "name": "d00_14$string$2", "symbols": [{ "literal": "1" }, { "literal": "4" }], "postprocess": function joiner56(d2) {
+          return d2.join("");
+        } },
+        { "name": "d00_14", "symbols": ["d00_14$string$2"], "postprocess": id2 },
+        { "name": "d00_23$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner57(d2) {
+          return d2.join("");
+        } },
+        { "name": "d00_23", "symbols": ["d00_23$string$1"], "postprocess": id2 },
+        { "name": "d00_23", "symbols": ["d01_23"], "postprocess": id2 },
+        { "name": "d01_23", "symbols": [{ "literal": "0" }, "positive_digit"], "postprocess": join2 },
+        { "name": "d01_23", "symbols": [{ "literal": "1" }, "digit"], "postprocess": join2 },
+        { "name": "d01_23", "symbols": [{ "literal": "2" }, /[0-3]/], "postprocess": join2 },
+        { "name": "d01_29", "symbols": [{ "literal": "0" }, "positive_digit"], "postprocess": join2 },
+        { "name": "d01_29", "symbols": [/[1-2]/, "digit"], "postprocess": join2 },
+        { "name": "d01_30", "symbols": ["d01_29"], "postprocess": id2 },
+        { "name": "d01_30$string$1", "symbols": [{ "literal": "3" }, { "literal": "0" }], "postprocess": function joiner58(d2) {
+          return d2.join("");
+        } },
+        { "name": "d01_30", "symbols": ["d01_30$string$1"], "postprocess": id2 },
+        { "name": "d01_31", "symbols": ["d01_30"], "postprocess": id2 },
+        { "name": "d01_31$string$1", "symbols": [{ "literal": "3" }, { "literal": "1" }], "postprocess": function joiner59(d2) {
+          return d2.join("");
+        } },
+        { "name": "d01_31", "symbols": ["d01_31$string$1"], "postprocess": id2 },
+        { "name": "d00_59$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner60(d2) {
+          return d2.join("");
+        } },
+        { "name": "d00_59", "symbols": ["d00_59$string$1"], "postprocess": id2 },
+        { "name": "d00_59", "symbols": ["d01_59"], "postprocess": id2 },
+        { "name": "d01_59", "symbols": ["d01_29"], "postprocess": id2 },
+        { "name": "d01_59", "symbols": [/[345]/, "digit"], "postprocess": join2 },
+        { "name": "d21_24", "symbols": [{ "literal": "2" }, /[1-4]/], "postprocess": join2 },
+        { "name": "d25_41", "symbols": [{ "literal": "2" }, /[5-9]/], "postprocess": join2 },
+        { "name": "d25_41", "symbols": [{ "literal": "3" }, "digit"], "postprocess": join2 },
+        { "name": "d25_41", "symbols": [{ "literal": "4" }, /[01]/], "postprocess": join2 },
+        { "name": "d21_41", "symbols": ["d21_24"], "postprocess": id2 },
+        { "name": "d21_41", "symbols": ["d25_41"], "postprocess": id2 },
+        { "name": "_$ebnf$1", "symbols": [] },
+        { "name": "_$ebnf$1", "symbols": ["_$ebnf$1", { "literal": " " }], "postprocess": function arrpush(d2) {
+          return d2[0].concat([d2[1]]);
+        } },
+        { "name": "_", "symbols": ["_$ebnf$1"] }
+      ];
+      ParserStart = "edtf";
+      grammar_default = { Lexer, ParserRules, ParserStart };
+    }
+  });
+
+  // node_modules/edtf/src/parser.js
+  function byLevel(a2, b11) {
+    return a2.level < b11.level ? -1 : a2.level > b11.level ? 1 : 0;
+  }
+  function limit(results, constraints = {}) {
+    if (!results.length) return results;
+    let {
+      level,
+      types,
+      seasonIntervals,
+      seasonUncertainty
+    } = { ...defaults2, ...constraints };
+    return results.filter((res) => {
+      if (seasonIntervals && isSeasonInterval(res))
+        return true;
+      if (seasonUncertainty && isSeasonLevel3(res))
+        return true;
+      if (res.level > level)
+        return false;
+      if (types.length && !types.includes(res.type))
+        return false;
+      return true;
+    });
+  }
+  function isSeasonInterval({ type: type2, values: values3 }) {
+    return type2 === "Interval" && values3[0].type === "Season";
+  }
+  function isSeasonLevel3({ type: type2, level }) {
+    return type2 === "Season" && level >= 3;
+  }
+  function best(results) {
+    if (results.length < 2) return results[0];
+    return results.sort(byLevel)[0];
+  }
+  function parse(input, constraints = {}) {
+    try {
+      let nep = parser2();
+      let res = best(limit(nep.feed(input).results, constraints));
+      if (!res) throw new Error("edtf: No possible parsings (@EOS)");
+      return res;
+    } catch (error) {
+      error.message += ` for "${input}"`;
+      throw error;
+    }
+  }
+  function parser2() {
+    return new import_nearley.default.Parser(grammar_default.ParserRules, grammar_default.ParserStart);
+  }
+  var import_nearley;
+  var init_parser = __esm({
+    "node_modules/edtf/src/parser.js"() {
+      import_nearley = __toESM(require_nearley(), 1);
+      init_grammar();
+      init_defaults2();
+    }
+  });
+
+  // node_modules/edtf/src/interface.js
+  function adj(date2, by = 1900) {
+    date2.setUTCFullYear(date2.getUTCFullYear() - by);
+    return date2.getTime();
+  }
+  var ExtDateTime;
+  var init_interface = __esm({
+    "node_modules/edtf/src/interface.js"() {
+      init_parser();
+      ExtDateTime = class {
+        static get type() {
+          return this.name;
+        }
+        static parse(input) {
+          return parse(input, { types: [this.type] });
+        }
+        static from(input) {
+          return input instanceof this ? input : new this(input);
+        }
+        static UTC(...args) {
+          let time2 = Date.UTC(...args);
+          if (args[0] >= 0 && args[0] < 100)
+            time2 = adj(new Date(time2));
+          return time2;
+        }
+        get type() {
+          return this.constructor.type;
+        }
+        get edtf() {
+          return this.toEDTF();
+        }
+        get isEDTF() {
+          return true;
+        }
+        toJSON() {
+          return this.toEDTF();
+        }
+        toString() {
+          return this.toEDTF();
+        }
+        toLocaleString(...args) {
+          return this.localize(...args);
+        }
+        inspect() {
+          return this.toEDTF();
+        }
+        valueOf() {
+          return this.min;
+        }
+        [Symbol.toPrimitive](hint) {
+          return hint === "number" ? this.valueOf() : this.toEDTF();
+        }
+        covers(other) {
+          return this.min <= other.min && this.max >= other.max;
+        }
+        compare(other) {
+          if (other.min == null || other.max == null) return null;
+          let [a2, x3, b11, y3] = [this.min, this.max, other.min, other.max];
+          if (a2 !== b11)
+            return a2 < b11 ? -1 : 1;
+          if (x3 !== y3)
+            return x3 < y3 ? -1 : 1;
+          return 0;
+        }
+        includes(other) {
+          let covered = this.covers(other);
+          if (!covered || !this[Symbol.iterator]) return covered;
+          for (let cur of this) {
+            if (cur.edtf === other.edtf) return true;
+          }
+          return false;
+        }
+        *until(then) {
+          yield this;
+          if (this.compare(then)) yield* this.between(then);
+        }
+        *through(then) {
+          yield* this.until(then);
+          if (this.compare(then)) yield then;
+        }
+        *between(then) {
+          then = this.constructor.from(then);
+          let cur = this;
+          let dir = this.compare(then);
+          if (!dir) return;
+          for (; ; ) {
+            cur = cur.next(-dir);
+            if (cur.compare(then) !== dir) break;
+            yield cur;
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/mixin.js
+  function mixin(target, ...mixins) {
+    for (let source of mixins) {
+      inherit2(target, source);
+      inherit2(target.prototype, source.prototype);
+    }
+    return target;
+  }
+  function inherit2(target, source) {
+    for (let key of keys3(source)) {
+      if (!has2.call(target, key)) {
+        define2(target, key, descriptor(source, key));
+      }
+    }
+  }
+  var keys3, descriptor, define2, has2;
+  var init_mixin = __esm({
+    "node_modules/edtf/src/mixin.js"() {
+      keys3 = Reflect.ownKeys.bind(Reflect);
+      descriptor = Object.getOwnPropertyDescriptor.bind(Object);
+      define2 = Object.defineProperty.bind(Object);
+      has2 = Object.prototype.hasOwnProperty;
+    }
+  });
+
+  // node_modules/edtf/locale-data/en-US.json
+  var en_US_default;
+  var init_en_US = __esm({
+    "node_modules/edtf/locale-data/en-US.json"() {
+      en_US_default = {
+        locale: "en-US",
+        date: {
+          approximate: {
+            long: "circa %D",
+            medium: "ca. %D",
+            short: "c. %D"
+          },
+          uncertain: {
+            long: "%D (unspecified)",
+            medium: "%D (?)",
+            short: "%D (?)"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/es-ES.json
+  var es_ES_default;
+  var init_es_ES = __esm({
+    "node_modules/edtf/locale-data/es-ES.json"() {
+      es_ES_default = {
+        locale: "es-ES",
+        date: {
+          approximate: {
+            long: "circa %D",
+            medium: "ca. %D",
+            short: "c. %D"
+          },
+          uncertain: {
+            long: "%D (?)",
+            medium: "%D (?)",
+            short: "%D (?)"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/de-DE.json
+  var de_DE_default;
+  var init_de_DE = __esm({
+    "node_modules/edtf/locale-data/de-DE.json"() {
+      de_DE_default = {
+        locale: "de-DE",
+        date: {
+          approximate: {
+            long: "circa %D",
+            medium: "ca. %D",
+            short: "ca. %D"
+          },
+          uncertain: {
+            long: "%D (?)",
+            medium: "%D (?)",
+            short: "%D (?)"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/fr-FR.json
+  var fr_FR_default;
+  var init_fr_FR = __esm({
+    "node_modules/edtf/locale-data/fr-FR.json"() {
+      fr_FR_default = {
+        locale: "fr-FR",
+        date: {
+          approximate: {
+            long: "circa %D",
+            medium: "ca. %D",
+            short: "c. %D"
+          },
+          uncertain: {
+            long: "%D (?)",
+            medium: "%D (?)",
+            short: "%D (?)"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/it-IT.json
+  var it_IT_default;
+  var init_it_IT = __esm({
+    "node_modules/edtf/locale-data/it-IT.json"() {
+      it_IT_default = {
+        locale: "it-IT",
+        date: {
+          approximate: {
+            long: "circa %D",
+            medium: "ca. %D",
+            short: "c. %D"
+          },
+          uncertain: {
+            long: "%D (?)",
+            medium: "%D (?)",
+            short: "%D (?)"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/ja-JA.json
+  var ja_JA_default;
+  var init_ja_JA = __esm({
+    "node_modules/edtf/locale-data/ja-JA.json"() {
+      ja_JA_default = {
+        locale: "ja-JA",
+        date: {
+          approximate: {
+            long: "%D\u9803",
+            medium: "%D\u9803",
+            short: "%D\u9803"
+          },
+          uncertain: {
+            long: "%D\u9803",
+            medium: "%D\u9803",
+            short: "%D\u9803"
+          }
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/locale-data/index.js
+  var data, alias, locale_data_default;
+  var init_locale_data = __esm({
+    "node_modules/edtf/locale-data/index.js"() {
+      init_en_US();
+      init_es_ES();
+      init_de_DE();
+      init_fr_FR();
+      init_it_IT();
+      init_ja_JA();
+      data = { en: en_US_default, es: es_ES_default, de: de_DE_default, fr: fr_FR_default, it: it_IT_default, ja: ja_JA_default };
+      alias = (lang, ...regions) => {
+        for (let region of regions)
+          data[`${lang}-${region}`] = data[lang];
+      };
+      alias("en", "AU", "CA", "GB", "NZ", "SA", "US");
+      alias("de", "AT", "CH", "DE");
+      alias("fr", "CH", "FR");
+      locale_data_default = data;
+    }
+  });
+
+  // node_modules/edtf/src/format.js
+  function configure(level, options) {
+    options = { ...DEFAULTS[level], ...options };
+    switch (level) {
+      case 1:
+        options.month = void 0;
+      // eslint-disable-next-line no-fallthrough
+      case 2:
+        options.day = void 0;
+        options.weekday = void 0;
+      // eslint-disable-next-line no-fallthrough
+      case 3:
+        options.hour = void 0;
+        options.minute = void 0;
+        options.second = void 0;
+    }
+    return options;
+  }
+  function getCacheId(locale3, options) {
+    return `${locale3}:${JSON.stringify(normalize2(options))}`;
+  }
+  function normalize2(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([, b11]) => b11 != null).sort(([a2], [b11]) => a2.localeCompare(b11))
+    );
+  }
+  function getFormat(date2, locale3, options) {
+    let opts = configure(date2.precision, options);
+    let id3 = getCacheId(locale3, opts);
+    if (!format2.cache.has(id3)) {
+      if (format2.cache.size >= 64)
+        format2.cache.clear();
+      format2.cache.set(id3, new Intl.DateTimeFormat(locale3, opts));
+    }
+    return format2.cache.get(id3);
+  }
+  function getPatternsFor(fmt) {
+    const { locale: locale3, weekday, month, year: year2 } = fmt.resolvedOptions();
+    const lc = locale_data_default[locale3];
+    if (lc == null) return null;
+    const variant = weekday || month === "long" ? "long" : !month || year2 === "2-digit" ? "short" : "medium";
+    return {
+      approximate: lc.date.approximate[variant],
+      uncertain: lc.date.uncertain[variant]
+    };
+  }
+  function isDMY(type2) {
+    return type2 === "day" || type2 === "month" || type2 === "year";
+  }
+  function mask(date2, parts) {
+    let string = "";
+    for (let { type: type2, value } of parts) {
+      string += isDMY(type2) && date2.unspecified.is(type2) ? value.replace(/./g, "X") : value;
+    }
+    return string;
+  }
+  function format2(date2, locale3 = "en-US", options = {}) {
+    if (date2.timeZone && !options.timeZone) {
+      options = {
+        timeZoneName: "short",
+        ...options,
+        timeZone: date2.timeZone
+      };
+    }
+    const fmt = getFormat(date2, locale3, options);
+    const pat = getPatternsFor(fmt);
+    if (!date2.isEDTF || pat == null) {
+      return fmt.format(date2);
+    }
+    if (date2.type === "Interval") {
+      if (date2.finite) {
+        return fmt.formatRange(date2.lower, date2.upper);
+      } else {
+        throw new Error("cannot format infinite intervals");
+      }
+    }
+    let string = !date2.unspecified.value || !fmt.formatToParts ? fmt.format(date2) : mask(date2, fmt.formatToParts(date2));
+    if (date2.approximate.value) {
+      string = pat.approximate.replace("%D", string);
+    }
+    if (date2.uncertain.value) {
+      string = pat.uncertain.replace("%D", string);
+    }
+    return string;
+  }
+  var DEFAULTS;
+  var init_format = __esm({
+    "node_modules/edtf/src/format.js"() {
+      init_locale_data();
+      DEFAULTS = [
+        {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          timeZoneName: void 0,
+          hour: "numeric",
+          minute: "numeric",
+          second: "numeric"
+        },
+        {
+          year: "numeric",
+          timeZone: "UTC",
+          timeZoneName: void 0
+        },
+        {
+          month: "numeric",
+          year: "numeric",
+          timeZone: "UTC",
+          timeZoneName: void 0
+        },
+        {
+          day: "numeric",
+          month: "numeric",
+          year: "numeric",
+          timeZone: "UTC",
+          timeZoneName: void 0
+        }
+      ];
+      format2.cache = /* @__PURE__ */ new Map();
+    }
+  });
+
+  // node_modules/edtf/src/date.js
+  var abs3, isArray2, P, U, A5, X3, Z, PM, Date2, pad5;
+  var init_date2 = __esm({
+    "node_modules/edtf/src/date.js"() {
+      init_assert();
+      init_bitmask();
+      init_interface();
+      init_mixin();
+      init_format();
+      ({ abs: abs3 } = Math);
+      ({ isArray: isArray2 } = Array);
+      P = /* @__PURE__ */ new WeakMap();
+      U = /* @__PURE__ */ new WeakMap();
+      A5 = /* @__PURE__ */ new WeakMap();
+      X3 = /* @__PURE__ */ new WeakMap();
+      Z = /* @__PURE__ */ new WeakMap();
+      PM = [Bitmask.YMD, Bitmask.Y, Bitmask.YM, Bitmask.YMD];
+      Date2 = class _Date extends globalThis.Date {
+        constructor(...args) {
+          let precision3 = 0;
+          let uncertain, approximate, unspecified, timeZone;
+          switch (args.length) {
+            case 0:
+              break;
+            case 1:
+              switch (typeof args[0]) {
+                case "number":
+                  break;
+                case "string":
+                  args = [_Date.parse(args[0])];
+                // eslint-disable-next-line no-fallthrough
+                case "object":
+                  if (isArray2(args[0]))
+                    args[0] = { values: args[0] };
+                  {
+                    let obj = args[0];
+                    assert_default(obj != null);
+                    if (obj.type) assert_default.equal("Date", obj.type);
+                    if (obj.values && obj.values.length) {
+                      precision3 = obj.values.length;
+                      args = obj.values.slice();
+                      if (args.length < 2) args.push(0);
+                      if (obj.offset) {
+                        if (args.length < 3) args.push(1);
+                        while (args.length < 5) args.push(0);
+                        args[4] = args[4] - obj.offset;
+                      }
+                      args = [ExtDateTime.UTC(...args)];
+                    }
+                    ({ uncertain, approximate, unspecified, timeZone } = obj);
+                  }
+                  break;
+                default:
+                  throw new RangeError("Invalid time value");
+              }
+              break;
+            default:
+              precision3 = args.length;
+          }
+          super(...args);
+          this.precision = precision3;
+          this.uncertain = uncertain;
+          this.approximate = approximate;
+          this.unspecified = unspecified;
+          this.timeZone = timeZone;
+        }
+        set precision(value) {
+          P.set(this, value > 3 ? 0 : Number(value));
+        }
+        get precision() {
+          return P.get(this);
+        }
+        set uncertain(value) {
+          U.set(this, this.bits(value));
+        }
+        get uncertain() {
+          return U.get(this);
+        }
+        set approximate(value) {
+          A5.set(this, this.bits(value));
+        }
+        get approximate() {
+          return A5.get(this);
+        }
+        set unspecified(value) {
+          X3.set(this, new Bitmask(value));
+        }
+        get unspecified() {
+          return X3.get(this);
+        }
+        set timeZone(value) {
+          Z.set(this, value);
+        }
+        get timeZone() {
+          return Z.get(this);
+        }
+        get atomic() {
+          return !(this.precision || this.unspecified.value);
+        }
+        get min() {
+          if (this.unspecified.value && this.year < 0) {
+            let values3 = this.unspecified.max(this.values.map(_Date.pad));
+            values3[0] = -values3[0];
+            return new _Date({ values: values3 }).getTime();
+          }
+          return this.getTime();
+        }
+        get max() {
+          return this.atomic ? this.getTime() : this.next().getTime() - 1;
+        }
+        get year() {
+          return this.getUTCFullYear();
+        }
+        get month() {
+          return this.getUTCMonth();
+        }
+        get date() {
+          return this.getUTCDate();
+        }
+        get hours() {
+          return this.getUTCHours();
+        }
+        get minutes() {
+          return this.getUTCMinutes();
+        }
+        get seconds() {
+          return this.getUTCSeconds();
+        }
+        get values() {
+          switch (this.precision) {
+            case 1:
+              return [this.year];
+            case 2:
+              return [this.year, this.month];
+            case 3:
+              return [this.year, this.month, this.date];
+            default:
+              return [
+                this.year,
+                this.month,
+                this.date,
+                this.hours,
+                this.minutes,
+                this.seconds
+              ];
+          }
+        }
+        /**
+         * Returns the next second, day, month, or year, depending on
+         * the current date's precision. Uncertain, approximate and
+         * unspecified masks are copied.
+         */
+        next(k3 = 1) {
+          let { values: values3, unspecified, uncertain, approximate } = this;
+          if (unspecified.value) {
+            let bc = values3[0] < 0;
+            values3 = k3 < 0 ^ bc ? unspecified.min(values3.map(_Date.pad)) : unspecified.max(values3.map(_Date.pad));
+            if (bc) values3[0] = -values3[0];
+          }
+          values3.push(values3.pop() + k3);
+          return new _Date({ values: values3, unspecified, uncertain, approximate });
+        }
+        prev(k3 = 1) {
+          return this.next(-k3);
+        }
+        *[Symbol.iterator]() {
+          let cur = this;
+          while (cur <= this.max) {
+            yield cur;
+            cur = cur.next();
+          }
+        }
+        toEDTF() {
+          if (!this.precision) return this.toISOString();
+          let sign2 = this.year < 0 ? "-" : "";
+          let values3 = this.values.map(_Date.pad);
+          if (this.unspecified.value)
+            return sign2 + this.unspecified.masks(values3).join("-");
+          if (this.uncertain.value)
+            values3 = this.uncertain.marks(values3, "?");
+          if (this.approximate.value) {
+            values3 = this.approximate.marks(values3, "~").map((value) => value.replace(/(~\?)|(\?~)/, "%"));
+          }
+          return sign2 + values3.join("-");
+        }
+        format(...args) {
+          return format2(this, ...args);
+        }
+        static pad(number4, idx = 0) {
+          if (!idx) {
+            let k3 = abs3(number4);
+            if (k3 < 10) return `000${k3}`;
+            if (k3 < 100) return `00${k3}`;
+            if (k3 < 1e3) return `0${k3}`;
+            return `${k3}`;
+          }
+          if (idx === 1) number4 = number4 + 1;
+          return number4 < 10 ? `0${number4}` : `${number4}`;
+        }
+        bits(value) {
+          if (value === true)
+            value = PM[this.precision];
+          return new Bitmask(value);
+        }
+      };
+      mixin(Date2, ExtDateTime);
+      pad5 = Date2.pad;
+    }
+  });
+
+  // node_modules/edtf/src/year.js
+  var abs4, V, S, Year;
+  var init_year2 = __esm({
+    "node_modules/edtf/src/year.js"() {
+      init_assert();
+      init_interface();
+      init_date2();
+      ({ abs: abs4 } = Math);
+      V = /* @__PURE__ */ new WeakMap();
+      S = /* @__PURE__ */ new WeakMap();
+      Year = class _Year extends ExtDateTime {
+        constructor(input) {
+          super();
+          V.set(this, []);
+          switch (typeof input) {
+            case "number":
+              this.year = input;
+              break;
+            case "string":
+              input = _Year.parse(input);
+            // eslint-disable-next-line no-fallthrough
+            case "object":
+              if (Array.isArray(input))
+                input = { values: input };
+              {
+                assert_default(input !== null);
+                if (input.type) assert_default.equal("Year", input.type);
+                assert_default(input.values);
+                assert_default(input.values.length);
+                this.year = input.values[0];
+                this.significant = input.significant;
+              }
+              break;
+            case "undefined":
+              this.year = (/* @__PURE__ */ new Date()).getUTCFullYear();
+              break;
+            default:
+              throw new RangeError("Invalid year value");
+          }
+        }
+        get year() {
+          return this.values[0];
+        }
+        set year(year2) {
+          this.values[0] = Number(year2);
+        }
+        get significant() {
+          return S.get(this);
+        }
+        set significant(digits) {
+          S.set(this, Number(digits));
+        }
+        get values() {
+          return V.get(this);
+        }
+        get min() {
+          return ExtDateTime.UTC(this.year, 0);
+        }
+        get max() {
+          return ExtDateTime.UTC(this.year + 1, 0) - 1;
+        }
+        toEDTF() {
+          let y3 = abs4(this.year);
+          let s2 = this.significant ? `S${this.significant}` : "";
+          if (y3 <= 9999) return `${this.year < 0 ? "-" : ""}${pad5(this.year)}${s2}`;
+          return `Y${this.year}${s2}`;
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/decade.js
+  var abs5, floor4, V2, Decade;
+  var init_decade = __esm({
+    "node_modules/edtf/src/decade.js"() {
+      init_assert();
+      init_date2();
+      init_interface();
+      ({ abs: abs5, floor: floor4 } = Math);
+      V2 = /* @__PURE__ */ new WeakMap();
+      Decade = class _Decade extends ExtDateTime {
+        constructor(input) {
+          super();
+          V2.set(this, []);
+          this.uncertain = false;
+          this.approximate = false;
+          switch (typeof input) {
+            case "number":
+              this.decade = input;
+              break;
+            case "string":
+              input = _Decade.parse(input);
+            // eslint-disable-next-line no-fallthrough
+            case "object":
+              if (Array.isArray(input))
+                input = { values: input };
+              {
+                assert_default(input !== null);
+                if (input.type) assert_default.equal("Decade", input.type);
+                assert_default(input.values);
+                assert_default(input.values.length === 1);
+                this.decade = input.values[0];
+                this.uncertain = !!input.uncertain;
+                this.approximate = !!input.approximate;
+              }
+              break;
+            case "undefined":
+              this.year = (/* @__PURE__ */ new Date()).getUTCFullYear();
+              break;
+            default:
+              throw new RangeError("Invalid decade value");
+          }
+        }
+        get decade() {
+          return this.values[0];
+        }
+        set decade(decade2) {
+          decade2 = floor4(Number(decade2));
+          assert_default(abs5(decade2) < 1e3, `invalid decade: ${decade2}`);
+          this.values[0] = decade2;
+        }
+        get year() {
+          return this.values[0] * 10;
+        }
+        set year(year2) {
+          this.decade = year2 / 10;
+        }
+        get values() {
+          return V2.get(this);
+        }
+        get min() {
+          return Date2.UTC(this.year, 0);
+        }
+        get max() {
+          return Date2.UTC(this.year + 10, 0) - 1;
+        }
+        toEDTF() {
+          let decade2 = _Decade.pad(this.decade);
+          if (this.uncertain)
+            decade2 = decade2 + "?";
+          if (this.approximate)
+            decade2 = (decade2 + "~").replace(/\?~/, "%");
+          return decade2;
+        }
+        static pad(number4) {
+          let k3 = abs5(number4);
+          let sign2 = k3 === number4 ? "" : "-";
+          if (k3 < 10) return `${sign2}00${k3}`;
+          if (k3 < 100) return `${sign2}0${k3}`;
+          return `${number4}`;
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/century.js
+  var abs6, floor5, V3, Century;
+  var init_century = __esm({
+    "node_modules/edtf/src/century.js"() {
+      init_assert();
+      init_date2();
+      init_interface();
+      ({ abs: abs6, floor: floor5 } = Math);
+      V3 = /* @__PURE__ */ new WeakMap();
+      Century = class _Century extends ExtDateTime {
+        constructor(input) {
+          super();
+          V3.set(this, []);
+          this.uncertain = false;
+          this.approximate = false;
+          switch (typeof input) {
+            case "number":
+              this.century = input;
+              break;
+            case "string":
+              input = _Century.parse(input);
+            // eslint-disable-next-line no-fallthrough
+            case "object":
+              if (Array.isArray(input))
+                input = { values: input };
+              {
+                assert_default(input !== null);
+                if (input.type) assert_default.equal("Century", input.type);
+                assert_default(input.values);
+                assert_default(input.values.length === 1);
+                this.century = input.values[0];
+                this.uncertain = !!input.uncertain;
+                this.approximate = !!input.approximate;
+              }
+              break;
+            case "undefined":
+              this.year = (/* @__PURE__ */ new Date()).getUTCFullYear();
+              break;
+            default:
+              throw new RangeError("Invalid century value");
+          }
+        }
+        get century() {
+          return this.values[0];
+        }
+        set century(century2) {
+          century2 = floor5(Number(century2));
+          assert_default(abs6(century2) < 100, `invalid century: ${century2}`);
+          this.values[0] = century2;
+        }
+        get year() {
+          return this.values[0] * 100;
+        }
+        set year(year2) {
+          this.century = year2 / 100;
+        }
+        get values() {
+          return V3.get(this);
+        }
+        get min() {
+          return Date2.UTC(this.year, 0);
+        }
+        get max() {
+          return Date2.UTC(this.year + 100, 0) - 1;
+        }
+        toEDTF() {
+          let century2 = _Century.pad(this.century);
+          if (this.uncertain)
+            century2 = century2 + "?";
+          if (this.approximate)
+            century2 = (century2 + "~").replace(/\?~/, "%");
+          return century2;
+        }
+        static pad(number4) {
+          let k3 = abs6(number4);
+          let sign2 = k3 === number4 ? "" : "-";
+          if (k3 < 10) return `${sign2}0${k3}`;
+          return `${number4}`;
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/season.js
+  function validate(season2) {
+    if (isNaN(season2) || season2 < 21 || season2 === Infinity)
+      throw new RangeError(`invalid division of year: ${season2}`);
+    return season2;
+  }
+  function inc(year2, season2, by, base, size2) {
+    const m3 = season2 + by - base;
+    return [
+      year2 + Math.floor(m3 / size2),
+      validate(base + (m3 % size2 + size2) % size2)
+    ];
+  }
+  var A6, U2, V4, X4, Season;
+  var init_season = __esm({
+    "node_modules/edtf/src/season.js"() {
+      init_assert();
+      init_bitmask();
+      init_interface();
+      init_date2();
+      A6 = /* @__PURE__ */ new WeakMap();
+      U2 = /* @__PURE__ */ new WeakMap();
+      V4 = /* @__PURE__ */ new WeakMap();
+      X4 = /* @__PURE__ */ new WeakMap();
+      Season = class _Season extends ExtDateTime {
+        constructor(input) {
+          super();
+          let uncertain, approximate, unspecified;
+          V4.set(this, []);
+          switch (typeof input) {
+            case "number":
+              this.year = input;
+              this.season = arguments[1] || 21;
+              break;
+            case "string":
+              input = _Season.parse(input);
+            // eslint-disable-next-line no-fallthrough
+            case "object":
+              if (Array.isArray(input))
+                input = { values: input };
+              {
+                assert_default(input !== null);
+                if (input.type) assert_default.equal("Season", input.type);
+                assert_default(input.values);
+                assert_default.equal(2, input.values.length);
+                this.year = input.values[0];
+                this.season = input.values[1];
+                ({ unspecified, uncertain, approximate } = input);
+              }
+              break;
+            case "undefined":
+              this.year = (/* @__PURE__ */ new Date()).getUTCFullYear();
+              this.season = 21;
+              break;
+            default:
+              throw new RangeError("Invalid season value");
+          }
+          this.unspecified = unspecified;
+          this.uncertain = uncertain;
+          this.approximate = approximate;
+        }
+        get year() {
+          return this.values[0];
+        }
+        set year(year2) {
+          this.values[0] = Number(year2);
+        }
+        get season() {
+          return this.values[1];
+        }
+        set season(season2) {
+          this.values[1] = validate(Number(season2));
+        }
+        get values() {
+          return V4.get(this);
+        }
+        set uncertain(value) {
+          U2.set(this, new Bitmask(value));
+        }
+        get uncertain() {
+          return U2.get(this);
+        }
+        set approximate(value) {
+          A6.set(this, new Bitmask(value));
+        }
+        get approximate() {
+          return A6.get(this);
+        }
+        set unspecified(value) {
+          X4.set(this, new Bitmask(value));
+        }
+        get unspecified() {
+          return X4.get(this);
+        }
+        next(k3 = 1) {
+          let { season: season2, year: year2, unspecified, approximate, uncertain } = this;
+          switch (true) {
+            case (season2 >= 21 && season2 <= 36):
+              [year2, season2] = inc(year2, season2, k3, season2 - (season2 - 21) % 4, 4);
+              break;
+            case (season2 >= 37 && season2 <= 39):
+              [year2, season2] = inc(year2, season2, k3, 37, 3);
+              break;
+            case (season2 >= 40 && season2 <= 41):
+              [year2, season2] = inc(year2, season2, k3, 40, 2);
+              break;
+            default:
+              throw new RangeError(`Cannot compute next/prev for season ${season2}`);
+          }
+          return new _Season({
+            values: [year2, season2],
+            approximate,
+            uncertain,
+            unspecified
+          });
+        }
+        prev(k3 = 1) {
+          return this.next(-k3);
+        }
+        get min() {
+          switch (this.season) {
+            case 21:
+            case 25:
+            case 32:
+            case 33:
+            case 40:
+            case 37:
+              return ExtDateTime.UTC(this.year, 0);
+            case 22:
+            case 26:
+            case 31:
+            case 34:
+              return ExtDateTime.UTC(this.year, 3);
+            case 23:
+            case 27:
+            case 30:
+            case 35:
+            case 41:
+              return ExtDateTime.UTC(this.year, 6);
+            case 24:
+            case 28:
+            case 29:
+            case 36:
+              return ExtDateTime.UTC(this.year, 9);
+            case 38:
+              return ExtDateTime.UTC(this.year, 4);
+            case 39:
+              return ExtDateTime.UTC(this.year, 8);
+            default:
+              return ExtDateTime.UTC(this.year, 0);
+          }
+        }
+        get max() {
+          let [year2] = this.unspecified.max([pad5(this.year)]);
+          switch (this.season) {
+            case 21:
+            case 25:
+            case 32:
+            case 33:
+              return ExtDateTime.UTC(year2, 3) - 1;
+            case 22:
+            case 26:
+            case 31:
+            case 34:
+            case 40:
+              return ExtDateTime.UTC(year2, 6) - 1;
+            case 23:
+            case 27:
+            case 30:
+            case 35:
+              return ExtDateTime.UTC(year2, 9) - 1;
+            case 24:
+            case 28:
+            case 29:
+            case 36:
+            case 41:
+            case 39:
+              return ExtDateTime.UTC(year2 + 1, 0) - 1;
+            case 37:
+              return ExtDateTime.UTC(year2, 5) - 1;
+            case 38:
+              return ExtDateTime.UTC(year2, 9) - 1;
+            default:
+              return ExtDateTime.UTC(year2 + 1, 0) - 1;
+          }
+        }
+        toEDTF() {
+          let sign2 = this.year < 0 ? "-" : "";
+          let values3 = [pad5(this.year), String(this.season)];
+          if (this.unspecified.value)
+            return sign2 + this.unspecified.masks(values3).join("-");
+          if (this.uncertain.value)
+            values3 = this.uncertain.marks(values3, "?");
+          if (this.approximate.value) {
+            values3 = this.approximate.marks(values3, "~").map((value) => value.replace(/(~\?)|(\?~)/, "%"));
+          }
+          return sign2 + values3.join("-");
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/interval.js
+  function getDateOrSeasonFrom(value) {
+    try {
+      return Date2.from(value);
+    } catch {
+      return Season.from(value);
+    }
+  }
+  var V5, Interval;
+  var init_interval3 = __esm({
+    "node_modules/edtf/src/interval.js"() {
+      init_assert();
+      init_date2();
+      init_interface();
+      init_season();
+      V5 = /* @__PURE__ */ new WeakMap();
+      Interval = class _Interval extends ExtDateTime {
+        constructor(...args) {
+          super();
+          V5.set(this, [null, null]);
+          switch (args.length) {
+            case 2:
+              this.lower = args[0];
+              this.upper = args[1];
+              break;
+            case 1:
+              switch (typeof args[0]) {
+                case "string":
+                  args[0] = _Interval.parse(args[0]);
+                // eslint-disable-next-line no-fallthrough
+                case "object":
+                  if (Array.isArray(args[0]))
+                    args[0] = { values: args[0] };
+                  {
+                    let [obj] = args;
+                    assert_default(obj !== null);
+                    if (obj.type) assert_default.equal("Interval", obj.type);
+                    assert_default(obj.values);
+                    assert_default(obj.values.length < 3);
+                    this.lower = obj.values[0];
+                    this.upper = obj.values[1];
+                    this.earlier = obj.earlier;
+                    this.later = obj.later;
+                  }
+                  break;
+                default:
+                  this.lower = args[0];
+              }
+              break;
+            case 0:
+              break;
+            default:
+              throw new RangeError(`invalid interval value: ${args}`);
+          }
+        }
+        get lower() {
+          return this.values[0];
+        }
+        set lower(value) {
+          if (value == null)
+            return this.values[0] = null;
+          if (value === Infinity || value === -Infinity)
+            return this.values[0] = Infinity;
+          value = getDateOrSeasonFrom(value);
+          if (value >= this.upper && this.upper != null)
+            throw new RangeError(`invalid lower bound: ${value}`);
+          this.values[0] = value;
+        }
+        get upper() {
+          return this.values[1];
+        }
+        set upper(value) {
+          if (value == null)
+            return this.values[1] = null;
+          if (value === Infinity)
+            return this.values[1] = Infinity;
+          value = getDateOrSeasonFrom(value);
+          if (this.lower !== null && this.lower !== Infinity && value <= this.lower)
+            throw new RangeError(`invalid upper bound: ${value}`);
+          this.values[1] = value;
+        }
+        get finite() {
+          return this.lower != null && this.lower !== Infinity && (this.upper != null && this.upper !== Infinity);
+        }
+        get precision() {
+          return this.lower?.precision ?? this.upper?.precision ?? 0;
+        }
+        *[Symbol.iterator]() {
+          if (!this.finite) throw Error("cannot iterate infinite interval");
+          yield* this.lower.through(this.upper);
+        }
+        get values() {
+          return V5.get(this);
+        }
+        get min() {
+          let v3 = this.lower;
+          return !v3 ? null : v3 === Infinity ? -Infinity : v3.min;
+        }
+        get max() {
+          let v3 = this.upper;
+          return !v3 ? null : v3 === Infinity ? Infinity : v3.max;
+        }
+        get isEDTFInterval() {
+          return true;
+        }
+        toEDTF() {
+          return this.values.map((v3) => {
+            if (v3 === Infinity) return "..";
+            if (!v3) return "";
+            return v3.edtf;
+          }).join("/");
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/list.js
+  var isArray3, V6, List;
+  var init_list = __esm({
+    "node_modules/edtf/src/list.js"() {
+      init_assert();
+      init_date2();
+      init_interface();
+      ({ isArray: isArray3 } = Array);
+      V6 = /* @__PURE__ */ new WeakMap();
+      List = class extends ExtDateTime {
+        constructor(...args) {
+          super();
+          V6.set(this, []);
+          if (args.length > 1) args = [args];
+          if (args.length) {
+            switch (typeof args[0]) {
+              case "string":
+                args[0] = new.target.parse(args[0]);
+              // eslint-disable-next-line no-fallthrough
+              case "object":
+                if (isArray3(args[0]))
+                  args[0] = { values: args[0] };
+                {
+                  let [obj] = args;
+                  assert_default(obj !== null);
+                  if (obj.type) assert_default.equal(this.type, obj.type);
+                  assert_default(obj.values);
+                  this.concat(...obj.values);
+                  this.earlier = !!obj.earlier;
+                  this.later = !!obj.later;
+                }
+                break;
+              default:
+                throw new RangeError(`invalid ${this.type} value: ${args}`);
+            }
+          }
+        }
+        get values() {
+          return V6.get(this);
+        }
+        get length() {
+          return this.values.length;
+        }
+        get empty() {
+          return this.length === 0;
+        }
+        get first() {
+          let value = this.values[0];
+          return isArray3(value) ? value[0] : value;
+        }
+        get last() {
+          let value = this.values[this.length - 1];
+          return isArray3(value) ? value[0] : value;
+        }
+        clear() {
+          return this.values.length = 0, this;
+        }
+        concat(...args) {
+          for (let value of args) this.push(value);
+          return this;
+        }
+        push(value) {
+          if (isArray3(value)) {
+            assert_default.equal(2, value.length);
+            return this.values.push(value.map((v3) => Date2.from(v3)));
+          }
+          return this.values.push(Date2.from(value));
+        }
+        *[Symbol.iterator]() {
+          for (let value of this.values) {
+            if (isArray3(value))
+              yield* value[0].through(value[1]);
+            else
+              yield value;
+          }
+        }
+        get min() {
+          return this.earlier ? -Infinity : this.empty ? 0 : this.first.min;
+        }
+        get max() {
+          return this.later ? Infinity : this.empty ? 0 : this.last.max;
+        }
+        content() {
+          return this.values.map((v3) => isArray3(v3) ? v3.map((d2) => d2.edtf).join("..") : v3.edtf).join(",");
+        }
+        toEDTF() {
+          return this.wrap(
+            this.empty ? "" : `${this.earlier ? ".." : ""}${this.content()}${this.later ? ".." : ""}`
+          );
+        }
+        wrap(content) {
+          return `{${content}}`;
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/set.js
+  var Set2;
+  var init_set2 = __esm({
+    "node_modules/edtf/src/set.js"() {
+      init_list();
+      init_parser();
+      Set2 = class extends List {
+        static parse(input) {
+          return parse(input, { types: ["Set"] });
+        }
+        get type() {
+          return "Set";
+        }
+        wrap(content) {
+          return `[${content}]`;
+        }
+      };
+    }
+  });
+
+  // node_modules/edtf/src/types.js
+  var types_exports = {};
+  __export(types_exports, {
+    Century: () => Century,
+    Date: () => Date2,
+    Decade: () => Decade,
+    Interval: () => Interval,
+    List: () => List,
+    Season: () => Season,
+    Set: () => Set2,
+    Year: () => Year
+  });
+  var init_types = __esm({
+    "node_modules/edtf/src/types.js"() {
+      init_date2();
+      init_year2();
+      init_decade();
+      init_century();
+      init_season();
+      init_interval3();
+      init_list();
+      init_set2();
+    }
+  });
+
+  // node_modules/edtf/src/edtf.js
+  function edtf(...args) {
+    if (!args.length)
+      return new Date2();
+    if (args.length === 1) {
+      switch (typeof args[0]) {
+        case "object":
+          return new (types_exports[args[0].type] || Date2)(args[0]);
+        case "number":
+          return new Date2(args[0]);
+        case "string":
+          if (UNIX_TIME.test(args[0]))
+            return new Date2(Number(args[0]));
+      }
+    }
+    let res = parse(...args);
+    return new types_exports[res.type](res);
+  }
+  var UNIX_TIME;
+  var init_edtf = __esm({
+    "node_modules/edtf/src/edtf.js"() {
+      init_types();
+      init_parser();
+      UNIX_TIME = /^\d{5,}$/;
+    }
+  });
+
+  // node_modules/edtf/index.js
+  var init_edtf2 = __esm({
+    "node_modules/edtf/index.js"() {
+      init_edtf();
+      init_types();
+      init_bitmask();
+      init_defaults2();
+      init_parser();
+      init_format();
+    }
+  });
+
+  // modules/util/ohm_date.js
+  var ohm_date_exports = {};
+  __export(ohm_date_exports, {
+    utilDatesOverlap: () => utilDatesOverlap,
+    utilEDTFFromOSMDateString: () => utilEDTFFromOSMDateString,
+    utilNormalizeDateString: () => utilNormalizeDateString
+  });
+  function isSameDate(date1, date2) {
+    if (date1[1] !== date2[1]) return false;
+    if (date1[2] && date2[2] && date1[2] !== date2[2]) return false;
+    if (date1[3] && date2[3] && date1[3] !== date2[3]) return false;
+    return true;
+  }
+  function isBefore(date1, date2) {
+    if (date1[1] > date2[1]) return false;
+    if (date1[2] && date2[2] && date1[2] > date2[2]) return false;
+    if (date1[3] && date2[3] && date1[3] > date2[3]) return false;
+    return true;
+  }
+  function isAfter(date1, date2) {
+    if (date1[1] < date2[1]) return false;
+    if (date1[2] && date2[2] && date1[2] < date2[2]) return false;
+    if (date1[3] && date2[3] && date1[3] < date2[3]) return false;
+    return true;
+  }
+  function utilDatesOverlap(tags1, tags2, touchIsOverlap) {
+    var dateRegex = /^(-?\d{1,4})(?:-(\d\d))?(?:-(\d\d))?$/;
+    var minDate = ["-9999", "-9999"], maxDate = ["9999", "9999"], start1 = (tags1.start_date || "").match(dateRegex) || minDate, start2 = (tags2.start_date || "").match(dateRegex) || minDate, end1 = (tags1.end_date || "").match(dateRegex) || maxDate, end2 = (tags2.end_date || "").match(dateRegex) || maxDate;
+    if (isSameDate(end1, start2) || isSameDate(end2, start1)) {
+      return touchIsOverlap === true;
+    }
+    return isAfter(start1, start2) && isBefore(start1, end2) || isAfter(start2, start1) && isBefore(start2, end1) || isAfter(end1, start2) && isBefore(end1, end2) || isAfter(end2, start1) && isBefore(end2, end1);
+  }
+  function utilNormalizeDateString(raw) {
+    if (!raw) return null;
+    var date2;
+    var dateRegex = /^(-)?(\d+)(?:-(\d\d?)(?:-(\d\d?))?)?$/;
+    var match = raw.match(dateRegex);
+    if (match !== null) {
+      date2 = /* @__PURE__ */ new Date(0);
+      date2.setUTCFullYear(parseInt((match[1] || "") + match[2], 10));
+      if (match[3]) date2.setUTCMonth(parseInt(match[3], 10) - 1);
+      if (match[4]) date2.setUTCDate(parseInt(match[4], 10));
+      if (isNaN(date2.getDate())) {
+        return null;
+      }
+    } else {
+      date2 = new Date(raw);
+      try {
+        date2.toISOString();
+      } catch {
+        return null;
+      }
+    }
+    var normalized = "";
+    if (match !== null && date2.getUTCFullYear() < 0) {
+      var absYear = Math.abs(date2.getUTCFullYear());
+      normalized += "-" + String(absYear).padStart(4, "0");
+    } else {
+      normalized += String(date2.getUTCFullYear()).padStart(4, "0");
+    }
+    if (match === null || match[3]) {
+      normalized += "-" + String(date2.getUTCMonth() + 1).padStart(2, "0");
+    }
+    if (match === null || match[4]) {
+      normalized += "-" + String(date2.getUTCDate()).padStart(2, "0");
+    }
+    return {
+      date: date2,
+      value: normalized,
+      localeOptions: {
+        year: "numeric",
+        era: date2.getUTCFullYear() < 1 ? "short" : void 0,
+        month: match === null || match[3] ? "long" : void 0,
+        day: match === null || match[4] ? "numeric" : void 0,
+        timeZone: "UTC"
+      }
+    };
+  }
+  function utilEDTFFromOSMDateString(osm) {
+    let [match, start2, end, bc] = osm.match(/^(.+)\.\.(.+)( BCE?)?$/) || [];
+    if (match) {
+      if (!bc) bc = "";
+      let startEDTF = utilEDTFFromOSMDateString(start2 + bc);
+      if (startEDTF) {
+        let parsed = edtf(startEDTF);
+        if (parsed instanceof Set) {
+          startEDTF = parsed.earlier ? "" : parsed.first.edtf;
+        }
+        if (parsed instanceof Interval) {
+          startEDTF = parsed.earlier ? "" : parsed.lower.edtf;
+        }
+      }
+      let endEDTF = utilEDTFFromOSMDateString(end + bc);
+      if (endEDTF) {
+        let parsed = edtf(endEDTF);
+        if (parsed instanceof Set) {
+          endEDTF = parsed.later ? "" : parsed.last.edtf;
+        }
+        if (parsed instanceof Interval) {
+          endEDTF = parsed.later ? "" : parsed.upper.edtf;
+        }
+      }
+      if (startEDTF && endEDTF) {
+        if (startEDTF.match(/[~?%]/) || endEDTF.match(/[~?%]/)) {
+          return `${startEDTF}/${endEDTF}`;
+        } else {
+          return `[${startEDTF}..${endEDTF}]`;
+        }
+      }
+    }
+    let year2, circa, monthDay;
+    [match, circa, year2, monthDay, bc] = osm.match(/^(~)?(\d+)(-\d\d(?:-\d\d)?)?( BCE?)?$/) || [];
+    if (match) {
+      if (!circa) circa = "";
+      if (!monthDay) monthDay = "";
+      if (bc) {
+        year2 = "-" + String(parseInt(year2, 10) - 1).padStart(4, "0");
+      } else {
+        year2 = year2.padStart(4, "0");
+      }
+      return `${year2}${monthDay}${circa}`;
+    }
+    let decade2;
+    [match, circa, decade2, bc] = osm.match(/^(~)?(\d+)0s( BCE?)?$/) || [];
+    if (match) {
+      if (!circa) circa = "";
+      if (!bc) {
+        return `${decade2.padStart(3, "0")}X${circa}`;
+      }
+      let startYear = String(parseInt(decade2, 10) * 10 + 8).padStart(4, "0");
+      let endYear = String(parseInt(decade2, 10) * 10 - 1).padStart(4, "0");
+      return `-${startYear}${circa}/-${endYear}${circa}`;
+    }
+    let century2;
+    [match, circa, century2, bc] = osm.match(/^(~)?C(\d+)( BCE?)?$/) || [];
+    if (match) {
+      if (!circa) circa = "";
+      if (!bc) {
+        return `${String(parseInt(century2, 10) - 1).padStart(2, "0")}XX${circa}`;
+      }
+      let startYear = String((parseInt(century2, 10) - 1) * 100 + 98).padStart(4, "0");
+      let endYear = String((parseInt(century2, 10) - 1) * 100 - 1).padStart(4, "0");
+      return `-${startYear}${circa}/-${endYear}${circa}`;
+    }
+    let third;
+    [match, third, decade2, bc] = osm.match(/^(early|mid|late) (\d+)0s( BCE?)?$/) || [];
+    if (match) {
+      const offsetsByThird = {
+        early: [0, 3],
+        mid: [3, 7],
+        late: [7, 9]
+      };
+      let startYear = decade2 * 10 + offsetsByThird[third][bc ? 1 : 0];
+      let endYear = decade2 * 10 + offsetsByThird[third][bc ? 0 : 1];
+      if (bc) {
+        startYear = startYear + 1;
+        endYear = endYear + 1;
+        return `-${String(startYear).padStart(4, "0")}~/-${String(endYear).padStart(4, "0")}~`;
+      } else {
+        return `${String(startYear).padStart(4, "0")}~/${String(endYear).padStart(4, "0")}~`;
+      }
+    }
+    [match, third, century2, bc] = osm.match(/^(early|mid|late) C(\d+)( BCE?)?$/) || [];
+    if (match) {
+      const offsetsByThird = {
+        early: [0, 30],
+        mid: [30, 70],
+        late: [70, 99]
+      };
+      century2 = parseInt(century2, 10) - 1;
+      let startYear = century2 * 100 + offsetsByThird[third][bc ? 1 : 0];
+      let endYear = century2 * 100 + offsetsByThird[third][bc ? 0 : 1];
+      if (bc) {
+        startYear = startYear + 1;
+        endYear = endYear + 1;
+        return `-${String(startYear).padStart(4, "0")}~/-${String(endYear).padStart(4, "0")}~`;
+      } else {
+        return `${String(startYear).padStart(4, "0")}~/${String(endYear).padStart(4, "0")}~`;
+      }
+    }
+    [match, end] = osm.match(/^before (\d{4}(?:-\d\d)?(?:-\d\d)?)$/) || [];
+    if (match) {
+      return `[..${end}]`;
+    }
+    [match, start2] = osm.match(/^after (\d{4}(?:-\d\d)?(?:-\d\d)?)$/) || [];
+    if (match) {
+      return `[${start2}..]`;
+    }
+  }
+  var init_ohm_date = __esm({
+    "modules/util/ohm_date.js"() {
+      "use strict";
+      init_edtf2();
     }
   });
 
@@ -26384,8 +29428,8 @@ ${source}
   }
   function utilTagDiff(oldTags, newTags) {
     var tagDiff = [];
-    var keys4 = utilArrayUnion(Object.keys(oldTags), Object.keys(newTags)).sort();
-    keys4.forEach(function(k3) {
+    var keys5 = utilArrayUnion(Object.keys(oldTags), Object.keys(newTags)).sort();
+    keys5.forEach(function(k3) {
       var oldVal = oldTags[k3];
       var newVal = newTags[k3];
       if ((oldVal || oldVal === "") && (newVal === void 0 || newVal !== oldVal)) {
@@ -26416,13 +29460,13 @@ ${source}
     var seen = new Set(ids);
     ids.forEach(collectShallowDescendants);
     return utilEntitySelector(Array.from(seen));
-    function collectShallowDescendants(id2) {
-      var entity = graph.hasEntity(id2);
+    function collectShallowDescendants(id3) {
+      var entity = graph.hasEntity(id3);
       if (!entity || entity.type !== "relation") return;
       entity.members.map(function(member) {
         return member.id;
-      }).forEach(function(id3) {
-        seen.add(id3);
+      }).forEach(function(id4) {
+        seen.add(id4);
       });
     }
   }
@@ -26433,10 +29477,10 @@ ${source}
     var seen = /* @__PURE__ */ new Set();
     ids.forEach(collectDeepDescendants);
     return Array.from(seen);
-    function collectDeepDescendants(id2) {
-      if (seen.has(id2)) return;
-      seen.add(id2);
-      var entity = graph.hasEntity(id2);
+    function collectDeepDescendants(id3) {
+      if (seen.has(id3)) return;
+      seen.add(id3);
+      var entity = graph.hasEntity(id3);
       if (!entity || entity.type !== "relation") return;
       entity.members.map(function(member) {
         return member.id;
@@ -26449,13 +29493,13 @@ ${source}
     var returners = /* @__PURE__ */ new Set();
     ids.forEach(collectDeepDescendants);
     return utilEntitySelector(Array.from(returners));
-    function collectDeepDescendants(id2) {
-      if (seen.has(id2)) return;
-      seen.add(id2);
-      if (!idsSet.has(id2)) {
-        returners.add(id2);
+    function collectDeepDescendants(id3) {
+      if (seen.has(id3)) return;
+      seen.add(id3);
+      if (!idsSet.has(id3)) {
+        returners.add(id3);
       }
-      var entity = graph.hasEntity(id2);
+      var entity = graph.hasEntity(id3);
       if (!entity || entity.type !== "relation") return;
       if (skipMultipolgonMembers && entity.isMultipolygon()) return;
       entity.members.map(function(member) {
@@ -26471,10 +29515,10 @@ ${source}
     var nodes = /* @__PURE__ */ new Set();
     ids.forEach(collectNodes);
     return Array.from(nodes);
-    function collectNodes(id2) {
-      if (seen.has(id2)) return;
-      seen.add(id2);
-      var entity = graph.hasEntity(id2);
+    function collectNodes(id3) {
+      if (seen.has(id3)) return;
+      seen.add(id3);
+      var entity = graph.hasEntity(id3);
       if (!entity) return;
       if (entity.type === "node") {
         nodes.add(entity);
@@ -26488,8 +29532,37 @@ ${source}
     }
   }
   function utilDisplayName(entity, flags) {
+    const appendDateRange = (name2, dateRange2) => {
+      return dateRange2 ? `${name2} [${dateRange2}]`.trim() : name2;
+    };
     var localizedNameKey = "name:" + _mainLocalizer.languageCode().toLowerCase();
     var name = entity.tags[localizedNameKey] || entity.tags.name || "";
+    let dateRange;
+    if (entity.tags.start_date || entity.tags.end_date) {
+      let start2 = entity.tags.start_date && utilNormalizeDateString(entity.tags.start_date);
+      let end = entity.tags.end_date && utilNormalizeDateString(entity.tags.end_date);
+      if (start2 || end) {
+        let options = { timeZone: "UTC" };
+        if (end) {
+          options.year = end.localeOptions.year;
+          options.era = end.localeOptions.era;
+        }
+        if (start2) {
+          options.year = start2.localeOptions.year;
+          options.era = start2.localeOptions.era;
+        }
+        let format3 = new Intl.DateTimeFormat(_mainLocalizer.languageCode(), options);
+        let lateDate = new Date(Date.UTC(9999));
+        let parts = format3.formatRangeToParts(start2 ? start2.date : lateDate, end ? end.date : lateDate);
+        if (!start2) {
+          parts = parts.filter((p2) => p2.source !== "startRange");
+        }
+        if (!end) {
+          parts = parts.filter((p2) => p2.source !== "endRange");
+        }
+        dateRange = parts.map((p2) => p2.value).join("");
+      }
+    }
     var tags = {
       direction: entity.tags.direction,
       from: entity.tags.from,
@@ -26500,10 +29573,10 @@ ${source}
       via: entity.tags.via
     };
     if (entity.tags.route && entity.tags.name && entity.tags.name.match(/[→⇒↔⇔]|[-=]>/)) {
-      return entity.tags.name;
+      return appendDateRange(entity.tags.name, dateRange);
     }
     if (!entity.tags.route && name) {
-      return name;
+      return appendDateRange(name, dateRange);
     }
     var keyComponents = [];
     if (tags.network) {
@@ -26527,7 +29600,7 @@ ${source}
       }
     }
     if (keyComponents.length) {
-      return _t("inspector.display_name." + keyComponents.join("_"), tags);
+      return appendDateRange(_t("inspector.display_name." + keyComponents.join("_"), tags), dateRange);
     }
     const alternativeNameKeys = [
       "addr:housename",
@@ -26545,27 +29618,29 @@ ${source}
     }
     for (const key of alternativeNameKeys) {
       if (key in entity.tags) {
-        return entity.tags[key];
+        return appendDateRange(entity.tags[key], dateRange);
       }
     }
     const unit2 = entity.tags["addr:unit"];
     const housenumber = entity.tags["addr:housenumber"];
     const streetOrPlace = entity.tags["addr:street"] || entity.tags["addr:place"];
     if (!flags?.isMapLabel && unit2 && housenumber && streetOrPlace) {
-      return _t("inspector.display_name_addr_with_unit", {
+      return appendDateRange(_t("inspector.display_name_addr_with_unit", {
         unit: unit2,
         housenumber,
         streetOrPlace
-      });
+      }), dateRange);
     }
     if (!flags?.isMapLabel && housenumber && streetOrPlace) {
-      return _t("inspector.display_name_addr", {
+      return appendDateRange(_t("inspector.display_name_addr", {
         housenumber,
         streetOrPlace
-      });
+      }), dateRange);
     }
-    if (housenumber) return housenumber;
-    return "";
+    if (housenumber) {
+      return appendDateRange(housenumber, dateRange);
+    }
+    return appendDateRange("", dateRange);
   }
   function utilDisplayNameForPath(entity) {
     var name = utilDisplayName(entity, { isMapLabel: true });
@@ -26576,12 +29651,12 @@ ${source}
     }
     return name;
   }
-  function utilDisplayType(id2) {
+  function utilDisplayType(id3) {
     return {
       n: _t("inspector.node"),
       w: _t("inspector.way"),
       r: _t("inspector.relation")
-    }[id2.charAt(0)];
+    }[id3.charAt(0)];
   }
   function utilEntityRoot(entityType) {
     return {
@@ -26599,8 +29674,8 @@ ${source}
       return graph.hasEntity(entityID);
     }).filter(Boolean);
     entities.forEach(function(entity) {
-      var keys4 = Object.keys(entity.tags).filter(Boolean);
-      keys4.forEach(function(key) {
+      var keys5 = Object.keys(entity.tags).filter(Boolean);
+      keys5.forEach(function(key) {
         allKeys.add(key);
       });
     });
@@ -26739,9 +29814,9 @@ ${source}
     var results = [];
     var errors = [];
     inputs.forEach(function(d2, i3) {
-      func(d2, function done(err, data) {
+      func(d2, function done(err, data2) {
         errors[i3] = err;
-        results[i3] = data;
+        results[i3] = data2;
         remaining--;
         if (!remaining) callback(errors, results);
       });
@@ -26784,11 +29859,11 @@ ${source}
   function utilUnicodeCharsCount(str) {
     return Array.from(str).length;
   }
-  function utilUnicodeCharsTruncated(str, limit) {
-    return Array.from(str).slice(0, limit).join("");
+  function utilUnicodeCharsTruncated(str, limit2) {
+    return Array.from(str).slice(0, limit2).join("");
   }
-  function toNumericID(id2) {
-    var match = id2.match(/^[cnwr](-?\d+)$/);
+  function toNumericID(id3) {
+    var match = id3.match(/^[cnwr](-?\d+)$/);
     if (match) {
       return parseInt(match[1], 10);
     }
@@ -26812,10 +29887,10 @@ ${source}
     var oldestIDIndex = 0;
     var oldestID = toNumericID(ids[0]);
     for (var i3 = 1; i3 < ids.length; i3++) {
-      var num = toNumericID(ids[i3]);
-      if (compareNumericIDs(oldestID, num) === 1) {
+      var num2 = toNumericID(ids[i3]);
+      if (compareNumericIDs(oldestID, num2) === 1) {
         oldestIDIndex = i3;
-        oldestID = num;
+        oldestID = num2;
       }
     }
     return ids[oldestIDIndex];
@@ -26846,7 +29921,7 @@ ${source}
     }
   }
   var import_diacritics, transformProperty;
-  var init_util = __esm({
+  var init_util2 = __esm({
     "modules/util/util.js"() {
       "use strict";
       init_src32();
@@ -26854,6 +29929,7 @@ ${source}
       init_svg_paths_rtl_fix();
       init_localizer();
       init_array3();
+      init_ohm_date();
       init_detect();
       init_extent();
     }
@@ -26947,8 +30023,8 @@ ${source}
     var _keybindings = {};
     function testBindings(d3_event, isCapturing) {
       var didMatch = false;
-      var bindings = Object.keys(_keybindings).map(function(id2) {
-        return _keybindings[id2];
+      var bindings = Object.keys(_keybindings).map(function(id3) {
+        return _keybindings[id3];
       });
       for (const binding of bindings) {
         if (!binding.event.modifiers.shiftKey) continue;
@@ -27032,8 +30108,8 @@ ${source}
     keybinding.off = function(codes, capture2) {
       var arr = utilArrayUniq([].concat(codes));
       for (var i3 = 0; i3 < arr.length; i3++) {
-        var id2 = arr[i3] + (capture2 ? "-capture" : "-bubble");
-        delete _keybindings[id2];
+        var id3 = arr[i3] + (capture2 ? "-capture" : "-bubble");
+        delete _keybindings[id3];
       }
       return keybinding;
     };
@@ -27043,9 +30119,9 @@ ${source}
       }
       var arr = utilArrayUniq([].concat(codes));
       for (var i3 = 0; i3 < arr.length; i3++) {
-        var id2 = arr[i3] + (capture2 ? "-capture" : "-bubble");
+        var id3 = arr[i3] + (capture2 ? "-capture" : "-bubble");
         var binding = {
-          id: id2,
+          id: id3,
           capture: capture2,
           callback,
           event: {
@@ -27061,10 +30137,10 @@ ${source}
             }
           }
         };
-        if (_keybindings[id2]) {
-          console.warn('warning: duplicate keybinding for "' + id2 + '"');
+        if (_keybindings[id3]) {
+          console.warn('warning: duplicate keybinding for "' + id3 + '"');
         }
-        _keybindings[id2] = binding;
+        _keybindings[id3] = binding;
         var matches2 = arr[i3].toLowerCase().match(/(?:(?:[^+⇧⌃⌥⌘])+|[⇧⌃⌥⌘]|\+\+|^\+$)/g);
         for (var j3 = 0; j3 < matches2.length; j3++) {
           if (matches2[j3] === "++") matches2[j3] = "+";
@@ -27532,9 +30608,9 @@ ${source}
       if (z3 >= 7) {
         var center = Math.pow(2, z3 - 1);
         var width = Math.pow(2, z3 - 6);
-        var min4 = center - width / 2;
-        var max4 = center + width / 2 - 1;
-        return x3 >= min4 && x3 <= max4 && y3 >= min4 && y3 <= max4;
+        var min5 = center - width / 2;
+        var max5 = center + width / 2 - 1;
+        return x3 >= min5 && x3 <= max5 && y3 >= min5 && y3 <= max5;
       }
       return false;
     }
@@ -27765,9 +30841,9 @@ ${source}
       return area;
     }
   }
-  function wrap2(x3, min4, max4) {
-    var d2 = max4 - min4;
-    return ((x3 - min4) % d2 + d2) % d2 + min4;
+  function wrap2(x3, min5, max5) {
+    var d2 = max5 - min5;
+    return ((x3 - min5) % d2 + d2) % d2 + min5;
   }
   function roundToDecimal(target, decimalPlace) {
     target = Number(target);
@@ -27779,9 +30855,9 @@ ${source}
     var displayCoordinate2;
     var locale3 = _mainLocalizer.localeCode();
     var degreesFloor = Math.floor(Math.abs(deg));
-    var min4 = (Math.abs(deg) - degreesFloor) * 60;
-    var minFloor = Math.floor(min4);
-    var sec = (min4 - minFloor) * 60;
+    var min5 = (Math.abs(deg) - degreesFloor) * 60;
+    var minFloor = Math.floor(min5);
+    var sec = (min5 - minFloor) * 60;
     var fix = roundToDecimal(sec, 8);
     var secRounded = roundToDecimal(fix, 0);
     if (secRounded === 60) {
@@ -27920,11 +30996,13 @@ ${source}
     utilCleanTags: () => utilCleanTags,
     utilCombinedTags: () => utilCombinedTags,
     utilCompareIDs: () => utilCompareIDs,
+    utilDatesOverlap: () => utilDatesOverlap,
     utilDeepMemberSelector: () => utilDeepMemberSelector,
     utilDetect: () => utilDetect,
     utilDisplayName: () => utilDisplayName,
     utilDisplayNameForPath: () => utilDisplayNameForPath,
     utilDisplayType: () => utilDisplayType,
+    utilEDTFFromOSMDateString: () => utilEDTFFromOSMDateString,
     utilEditDistance: () => utilEditDistance,
     utilEntityAndDeepMemberIDs: () => utilEntityAndDeepMemberIDs,
     utilEntityOrDeepMemberSelector: () => utilEntityOrDeepMemberSelector,
@@ -27939,6 +31017,7 @@ ${source}
     utilHighlightEntities: () => utilHighlightEntities,
     utilKeybinding: () => utilKeybinding,
     utilNoAuto: () => utilNoAuto,
+    utilNormalizeDateString: () => utilNormalizeDateString,
     utilObjectOmit: () => utilObjectOmit,
     utilOldestID: () => utilOldestID,
     utilPrefixCSSProperty: () => utilPrefixCSSProperty,
@@ -27959,7 +31038,7 @@ ${source}
     utilUniqueDomId: () => utilUniqueDomId,
     utilWrap: () => utilWrap
   });
-  var init_util2 = __esm({
+  var init_util3 = __esm({
     "modules/util/index.ts"() {
       "use strict";
       init_aes();
@@ -27973,49 +31052,52 @@ ${source}
       init_array3();
       init_array3();
       init_array3();
-      init_util();
+      init_util2();
       init_clean_tags();
-      init_util();
-      init_util();
+      init_util2();
+      init_ohm_date();
+      init_util2();
       init_detect();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_ohm_date();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
       init_get_set_value();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
       init_keybinding();
-      init_util();
+      init_ohm_date();
+      init_util2();
       init_object2();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
       init_rebind();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
       init_session_mutex();
-      init_util();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
+      init_util2();
       init_tiler();
-      init_util();
+      init_util2();
       init_trigger_event();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
-      init_util();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
+      init_util2();
       init_units();
       init_units();
     }
@@ -28048,7 +31130,7 @@ ${source}
     "modules/actions/add_midpoint.js"() {
       "use strict";
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -28102,7 +31184,15 @@ ${source}
           preserveKeys = preserveKeys.concat(Object.keys(newPreset.addTags));
         }
         if (oldPreset && !oldPreset.id.startsWith(newPreset.id)) {
-          newPreset.fields(loc).concat(newPreset.moreFields(loc)).filter((f2) => f2.matchGeometry(geometry2)).map((f2) => f2.key).filter(Boolean).forEach((key) => preserveKeys.push(key));
+          newPreset.fields(loc).concat(newPreset.moreFields(loc)).filter((f2) => f2.matchGeometry(geometry2)).flatMap((f2) => f2.allKeys()).filter(Boolean).forEach((key) => preserveKeys.push(key));
+        }
+        if (oldPreset && oldPreset.id !== newPreset.id) {
+          const oldPresetFieldKeys = [
+            ...oldPreset.fields(loc),
+            ...oldPreset.moreFields(loc)
+          ].flatMap((f2) => f2.allKeys());
+          const fieldKeysToRemove = utilArrayDifference(oldPresetFieldKeys, preserveKeys);
+          tags = utilObjectOmit(tags, fieldKeysToRemove);
         }
       }
       if (oldPreset) tags = oldPreset.unsetTags(tags, geometry2, preserveKeys, false, loc);
@@ -28113,6 +31203,7 @@ ${source}
   var init_change_preset = __esm({
     "modules/actions/change_preset.js"() {
       "use strict";
+      init_util3();
     }
   });
 
@@ -28169,6 +31260,7 @@ ${source}
     osmShouldRenderDirection: () => osmShouldRenderDirection,
     osmSummableTags: () => osmSummableTags,
     osmTagSuggestingArea: () => osmTagSuggestingArea,
+    osmTimelessFeatureTagValues: () => osmTimelessFeatureTagValues,
     osmVertexTags: () => osmVertexTags
   });
   function osmIsInterestingTag(key) {
@@ -28262,12 +31354,12 @@ ${source}
     if (vertexTags.cycleway === "asl") return !!wayTags.highway;
     return true;
   }
-  var uninterestingKeys, uninterestingKeyRegex, osmLifecyclePrefixes, osmAreaKeys, osmAreaKeysExceptions, osmLineTags, osmPointTags, osmVertexTags, osmOneWayForwardTags, osmOneWayBackwardTags, osmOneWayBiDirectionalTags, osmOneWayTags, osmPavedTags, osmSemipavedTags, osmRightSideIsInsideTags, osmRoutableHighwayTagValues, osmRoutableAerowayTags, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmFlowingWaterwayTagValues, osmLanduseTags, allowUpperCaseTagValues, osmMutuallyExclusiveTagPairs, osmSummableTags, osmIsoCountryKeys;
+  var uninterestingKeys, uninterestingKeyRegex, osmLifecyclePrefixes, osmAreaKeys, osmAreaKeysExceptions, osmLineTags, osmPointTags, osmVertexTags, osmOneWayForwardTags, osmOneWayBackwardTags, osmOneWayBiDirectionalTags, osmOneWayTags, osmPavedTags, osmSemipavedTags, osmRightSideIsInsideTags, osmRoutableHighwayTagValues, osmRoutableAerowayTags, osmPathHighwayTagValues, osmRailwayTrackTagValues, osmFlowingWaterwayTagValues, osmLanduseTags, allowUpperCaseTagValues, osmMutuallyExclusiveTagPairs, osmTimelessFeatureTagValues, osmSummableTags, osmIsoCountryKeys;
   var init_tags2 = __esm({
     "modules/osm/tags.js"() {
       "use strict";
       init_compat2();
-      init_util();
+      init_util2();
       uninterestingKeys = /* @__PURE__ */ new Set([
         "attribution",
         "created_by",
@@ -28438,6 +31530,7 @@ ${source}
         "surface": {
           "bricks": true,
           "cobblestone": true,
+          "cobblestone:flattened": true,
           "unhewn_cobblestone": true,
           "sett": true,
           "paving_stones": true,
@@ -28559,6 +31652,27 @@ ${source}
         ["noaddress", "addr:unit"],
         ["addr:nostreet", "addr:street"]
       ];
+      osmTimelessFeatureTagValues = {
+        wood: true,
+        wetland: true,
+        beach: true,
+        cave_entrance: true,
+        peak: true,
+        cliff: true,
+        coastline: true,
+        tree_row: true,
+        water: true,
+        scrub: true,
+        grassland: true,
+        heath: true,
+        bare_rock: true,
+        glacier: true,
+        stream: true,
+        river: true,
+        pond: true,
+        basin: true,
+        lake: true
+      };
       osmSummableTags = /* @__PURE__ */ new Set([
         "step_count",
         "parking:both:capacity",
@@ -28592,7 +31706,7 @@ ${source}
       init_index();
       init_tags2();
       init_array3();
-      init_util();
+      init_util2();
       osmEntity.id = function(type2) {
         return osmEntity.id.fromOSM(type2, osmEntity.id.next[type2]--);
       };
@@ -28602,18 +31716,18 @@ ${source}
         way: -1,
         relation: -1
       };
-      osmEntity.id.fromOSM = function(type2, id2) {
-        return type2[0] + id2;
+      osmEntity.id.fromOSM = function(type2, id3) {
+        return type2[0] + id3;
       };
-      osmEntity.id.toOSM = function(id2) {
-        var match = id2.match(/^[cnwr](-?\d+)$/);
+      osmEntity.id.toOSM = function(id3) {
+        var match = id3.match(/^[cnwr](-?\d+)$/);
         if (match) {
           return match[1];
         }
         return "";
       };
-      osmEntity.id.type = function(id2) {
-        return { "c": "changeset", "n": "node", "w": "way", "r": "relation" }[id2[0]];
+      osmEntity.id.type = function(id3) {
+        return { "c": "changeset", "n": "node", "w": "way", "r": "relation" }[id3[0]];
       };
       osmEntity.key = function(entity) {
         return entity.id + "v" + (entity.v || 0);
@@ -28743,7 +31857,7 @@ ${source}
       "use strict";
       init_entity();
       init_geo2();
-      init_util2();
+      init_util3();
       init_tags2();
       cardinal = {
         north: 0,
@@ -28869,10 +31983,10 @@ ${source}
               const branchVectors = resolver.parentWays(this).filter((way) => way.tags.railway && way.geometry(resolver) === "line").reduce(neighborNodeReducer(this), {});
               const ids = Object.keys(branchVectors);
               if (ids.length !== 3) return;
-              ids.forEach((id2) => branchVectors[id2] = geoVecNormalize(geoVecSubtract(projection2(resolver.entity(id2).loc), projection2(this.loc))));
-              const sortedIds = ids.map((id2) => {
-                const otherVectorSum = ids.filter((n3) => n3 !== id2).map((n3) => branchVectors[n3]).reduce(geoVecAdd, [0, 0]);
-                return { id: id2, alignment: geoVecLength(otherVectorSum) };
+              ids.forEach((id3) => branchVectors[id3] = geoVecNormalize(geoVecSubtract(projection2(resolver.entity(id3).loc), projection2(this.loc))));
+              const sortedIds = ids.map((id3) => {
+                const otherVectorSum = ids.filter((n3) => n3 !== id3).map((n3) => branchVectors[n3]).reduce(geoVecAdd, [0, 0]);
+                return { id: id3, alignment: geoVecLength(otherVectorSum) };
               }).sort((a2, b11) => b11.alignment - a2.alignment);
               const MIN_ALIGNMENT_RATIO = 2;
               if (sortedIds[0].alignment < MIN_ALIGNMENT_RATIO * sortedIds[1].alignment || !sortedIds[0].id) return;
@@ -28901,9 +32015,9 @@ ${source}
         },
         isEndpoint: function(resolver) {
           return resolver.transient(this, "isEndpoint", function() {
-            var id2 = this.id;
+            var id3 = this.id;
             return resolver.parentWays(this).filter(function(parent) {
-              return !parent.isClosed() && !!parent.affix(id2);
+              return !parent.isClosed() && !!parent.affix(id3);
             }).length > 0;
           });
         },
@@ -29066,12 +32180,12 @@ ${source}
             centroid[0] + Math.cos(angle2) * radius,
             centroid[1] + Math.sin(angle2) * radius
           ]);
-          var min4 = Infinity;
+          var min5 = Infinity;
           for (var nodeId in nearNodes) {
             var nearAngle = nearNodes[nodeId];
             var dist = Math.abs(nearAngle - angle2);
-            if (dist < min4) {
-              min4 = dist;
+            if (dist < min5) {
+              min5 = dist;
               origNode = origNodes[nodeId];
             }
           }
@@ -29201,7 +32315,7 @@ ${source}
       init_src2();
       init_geo2();
       init_node2();
-      init_util2();
+      init_util3();
       init_vector();
     }
   });
@@ -29259,9 +32373,9 @@ ${source}
       relation: actionDeleteRelation
     };
     var action = function(graph) {
-      ids.forEach(function(id2) {
-        if (graph.hasEntity(id2)) {
-          graph = actions[graph.entity(id2).type](id2)(graph);
+      ids.forEach(function(id3) {
+        if (graph.hasEntity(id3)) {
+          graph = actions[graph.entity(id3).type](id3)(graph);
         }
       });
       return graph;
@@ -29313,7 +32427,7 @@ ${source}
     "modules/actions/delete_relation.js"() {
       "use strict";
       init_delete_multiple();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -29575,7 +32689,7 @@ ${source}
       "use strict";
       init_delete_node();
       init_delete_way();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -29587,11 +32701,11 @@ ${source}
   function actionCopyEntities(ids, fromGraph) {
     var _copies = {};
     var action = function(graph) {
-      ids.forEach(function(id3) {
-        fromGraph.entity(id3).copy(fromGraph, _copies);
+      ids.forEach(function(id4) {
+        fromGraph.entity(id4).copy(fromGraph, _copies);
       });
-      for (var id2 in _copies) {
-        graph = graph.replace(_copies[id2]);
+      for (var id3 in _copies) {
+        graph = graph.replace(_copies[id3]);
       }
       return graph;
     };
@@ -29661,11 +32775,11 @@ ${source}
       difference5.created().forEach(checkTags);
       return graph;
       function checkTags(entity) {
-        const keys4 = Object.keys(entity.tags);
+        const keys5 = Object.keys(entity.tags);
         let didDiscard = false;
         let tags = {};
-        for (let i3 = 0; i3 < keys4.length; i3++) {
-          const k3 = keys4[i3];
+        for (let i3 = 0; i3 < keys5.length; i3++) {
+          const k3 = keys5[i3];
           const v3 = entity.tags[k3];
           if (discardTags[k3] === true || typeof discardTags[k3] === "object" && discardTags[k3][v3] || !entity.tags[k3]) {
             didDiscard = true;
@@ -29875,8 +32989,8 @@ ${source}
   });
   function actionJoin(ids) {
     function groupEntitiesByGeometry(graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
+      var entities = ids.map(function(id3) {
+        return graph.entity(id3);
       });
       return Object.assign(
         { line: [] },
@@ -29950,8 +33064,8 @@ ${source}
       return graph;
     };
     action.resultingWayNodesLength = function(graph) {
-      return ids.reduce(function(count2, id2) {
-        return count2 + graph.entity(id2).nodes.length;
+      return ids.reduce(function(count2, id3) {
+        return count2 + graph.entity(id3).nodes.length;
       }, 0) - ids.length - 1;
     };
     action.disabled = function(graph) {
@@ -29964,8 +33078,8 @@ ${source}
         return "not_adjacent";
       }
       var i3;
-      var sortedParentRelations = function(id2) {
-        return graph.parentRelations(graph.entity(id2)).filter((rel) => !rel.isRestriction() && !rel.isConnectivity()).sort((a2, b11) => a2.id.localeCompare(b11.id));
+      var sortedParentRelations = function(id3) {
+        return graph.parentRelations(graph.entity(id3)).filter((rel) => !rel.isRestriction() && !rel.isConnectivity()).sort((a2, b11) => a2.id.localeCompare(b11.id));
       };
       var relsA = sortedParentRelations(ids[0]);
       for (i3 = 1; i3 < ids.length; i3++) {
@@ -30041,7 +33155,7 @@ ${source}
       init_tags2();
       init_multipolygon();
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -30052,8 +33166,8 @@ ${source}
   });
   function actionMerge(ids) {
     function groupEntitiesByGeometry(graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
+      var entities = ids.map(function(id3) {
+        return graph.entity(id3);
       });
       return Object.assign(
         { point: [], area: [], line: [], relation: [] },
@@ -30138,7 +33252,7 @@ ${source}
     "modules/actions/merge.js"() {
       "use strict";
       init_tags2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -30454,18 +33568,18 @@ ${source}
         },
         // Return the first member with the given id. A copy of the member object
         // is returned, extended with an 'index' property whose value is the member index.
-        memberById: function(id2) {
+        memberById: function(id3) {
           for (var i3 = 0; i3 < this.members.length; i3++) {
-            if (this.members[i3].id === id2) {
+            if (this.members[i3].id === id3) {
               return Object.assign({}, this.members[i3], { index: i3 });
             }
           }
         },
         // Return the first member with the given id and role. A copy of the member object
         // is returned, extended with an 'index' property whose value is the member index.
-        memberByIdAndRole: function(id2, role) {
+        memberByIdAndRole: function(id3, role) {
           for (var i3 = 0; i3 < this.members.length; i3++) {
-            if (this.members[i3].id === id2 && this.members[i3].role === role) {
+            if (this.members[i3].id === id3 && this.members[i3].role === role) {
               return Object.assign({}, this.members[i3], { index: i3 });
             }
           }
@@ -30485,9 +33599,9 @@ ${source}
           members.splice(index2, 1);
           return this.update({ members });
         },
-        removeMembersWithID: function(id2) {
+        removeMembersWithID: function(id3) {
           var members = this.members.filter(function(m3) {
-            return m3.id !== id2;
+            return m3.id !== id3;
           });
           return this.update({ members });
         },
@@ -30872,21 +33986,21 @@ ${source}
       return validValues.indexOf(s2) === -1 ? "unknown" : s2;
     });
   }
-  function mapToLanesObj(lanesObj, data, key) {
-    if (data.forward) {
-      data.forward.forEach(function(l2, i3) {
+  function mapToLanesObj(lanesObj, data2, key) {
+    if (data2.forward) {
+      data2.forward.forEach(function(l2, i3) {
         if (!lanesObj.forward[i3]) lanesObj.forward[i3] = {};
         lanesObj.forward[i3][key] = l2;
       });
     }
-    if (data.backward) {
-      data.backward.forEach(function(l2, i3) {
+    if (data2.backward) {
+      data2.backward.forEach(function(l2, i3) {
         if (!lanesObj.backward[i3]) lanesObj.backward[i3] = {};
         lanesObj.backward[i3][key] = l2;
       });
     }
-    if (data.unspecified) {
-      data.unspecified.forEach(function(l2, i3) {
+    if (data2.unspecified) {
+      data2.unspecified.forEach(function(l2, i3) {
         if (!lanesObj.unspecified[i3]) lanesObj.unspecified[i3] = {};
         lanesObj.unspecified[i3][key] = l2;
       });
@@ -30922,7 +34036,7 @@ ${source}
       init_entity();
       init_lanes();
       init_tags2();
-      init_util2();
+      init_util3();
       osmEntity.way = osmWay;
       osmWay.prototype = Object.create(osmEntity.prototype);
       prototype3 = {
@@ -30931,8 +34045,8 @@ ${source}
         copy: function(resolver, copies) {
           if (copies[this.id]) return copies[this.id];
           var copy2 = osmEntity.prototype.copy.call(this, resolver, copies);
-          var nodes = this.nodes.map(function(id2) {
-            return resolver.entity(id2).copy(resolver, copies).id;
+          var nodes = this.nodes.map(function(id3) {
+            return resolver.entity(id3).copy(resolver, copies).id;
           });
           copy2 = copy2.update({ nodes });
           copies[this.id] = copy2;
@@ -31203,15 +34317,15 @@ ${source}
         //   or just before the final connecting node for circular ways.
         // Consecutive duplicates are eliminated including existing ones.
         // Circularity is always preserved when adding a node.
-        addNode: function(id2, index2) {
+        addNode: function(id3, index2) {
           var nodes = this.nodes.slice();
           var isClosed = this.isClosed();
-          var max4 = isClosed ? nodes.length - 1 : nodes.length;
+          var max5 = isClosed ? nodes.length - 1 : nodes.length;
           if (index2 === void 0) {
-            index2 = max4;
+            index2 = max5;
           }
-          if (index2 < 0 || index2 > max4) {
-            throw new RangeError("index " + index2 + " out of range 0.." + max4);
+          if (index2 < 0 || index2 > max5) {
+            throw new RangeError("index " + index2 + " out of range 0.." + max5);
           }
           if (isClosed) {
             var connector = this.first();
@@ -31227,7 +34341,7 @@ ${source}
               i3 = nodes.length - 1;
             }
           }
-          nodes.splice(index2, 0, id2);
+          nodes.splice(index2, 0, id3);
           nodes = nodes.filter(noRepeatNodes);
           if (isClosed && (nodes.length === 1 || nodes[0] !== nodes[nodes.length - 1])) {
             nodes.push(nodes[0]);
@@ -31237,12 +34351,12 @@ ${source}
         // Replaces the node which is currently at position index with the given node (id).
         // Consecutive duplicates are eliminated including existing ones.
         // Circularity is preserved when updating a node.
-        updateNode: function(id2, index2) {
+        updateNode: function(id3, index2) {
           var nodes = this.nodes.slice();
           var isClosed = this.isClosed();
-          var max4 = nodes.length - 1;
-          if (index2 === void 0 || index2 < 0 || index2 > max4) {
-            throw new RangeError("index " + index2 + " out of range 0.." + max4);
+          var max5 = nodes.length - 1;
+          if (index2 === void 0 || index2 < 0 || index2 > max5) {
+            throw new RangeError("index " + index2 + " out of range 0.." + max5);
           }
           if (isClosed) {
             var connector = this.first();
@@ -31258,7 +34372,7 @@ ${source}
               i3 = nodes.length - 1;
             }
           }
-          nodes.splice(index2, 1, id2);
+          nodes.splice(index2, 1, id3);
           nodes = nodes.filter(noRepeatNodes);
           if (isClosed && (nodes.length === 1 || nodes[0] !== nodes[nodes.length - 1])) {
             nodes.push(nodes[0]);
@@ -31285,11 +34399,11 @@ ${source}
         // Removes each occurrence of node id.
         // Consecutive duplicates are eliminated including existing ones.
         // Circularity is preserved.
-        removeNode: function(id2) {
+        removeNode: function(id3) {
           var nodes = this.nodes.slice();
           var isClosed = this.isClosed();
           nodes = nodes.filter(function(node) {
-            return node !== id2;
+            return node !== id3;
           }).filter(noRepeatNodes);
           if (isClosed && (nodes.length === 1 || nodes[0] !== nodes[nodes.length - 1])) {
             nodes.push(nodes[0]);
@@ -31301,8 +34415,8 @@ ${source}
             way: {
               "@id": this.osmId(),
               "@version": this.version || 0,
-              nd: this.nodes.map(function(id2) {
-                return { keyAttributes: { ref: osmEntity.id.toOSM(id2) } };
+              nd: this.nodes.map(function(id3) {
+                return { keyAttributes: { ref: osmEntity.id.toOSM(id3) } };
               }, this),
               tag: Object.keys(this.tags).map(function(k3) {
                 return { keyAttributes: { k: k3, v: this.tags[k3] } };
@@ -31367,23 +34481,23 @@ ${source}
     "modules/osm/qa_item.js"() {
       "use strict";
       QAItem = class _QAItem {
-        constructor(loc, service, itemType, id2, props) {
+        constructor(loc, service, itemType, id3, props) {
           this.loc = loc;
           this.service = service.title;
           this.itemType = itemType;
-          this.id = id2 ? id2 : `${_QAItem.id()}`;
+          this.id = id3 ? id3 : `${_QAItem.id()}`;
           this.update(props);
           if (service && typeof service.getIcon === "function") {
             this.icon = service.getIcon(itemType);
           }
         }
         update(props) {
-          const { loc, service, itemType, id: id2 } = this;
+          const { loc, service, itemType, id: id3 } = this;
           Object.keys(props).forEach((prop) => this[prop] = props[prop]);
           this.loc = loc;
           this.service = service;
           this.itemType = itemType;
-          this.id = id2;
+          this.id = id3;
           return this;
         }
         // Generic handling for newly created QAItems
@@ -31416,7 +34530,7 @@ ${source}
       var lengths = new Array(nodes.length);
       var length2;
       var i3;
-      var best = 0;
+      var best2 = 0;
       var idxB;
       function wrap3(index2) {
         return utilWrap(index2, nodes.length);
@@ -31435,9 +34549,9 @@ ${source}
       }
       for (i3 = 0; i3 < nodes.length; i3++) {
         var cost = lengths[i3] / dist(graph, nodes[idxA], nodes[i3]);
-        if (cost > best) {
+        if (cost > best2) {
           idxB = i3;
-          best = cost;
+          best2 = cost;
         }
       }
       return idxB;
@@ -31750,7 +34864,7 @@ ${source}
       init_geo();
       init_relation();
       init_way();
-      init_util2();
+      init_util3();
       init_tags2();
     }
   });
@@ -31781,24 +34895,24 @@ ${source}
     "modules/core/graph.js"() {
       "use strict";
       init_index();
-      init_util2();
+      init_util3();
       coreGraph.prototype = {
-        hasEntity: function(id2) {
-          return this.entities[id2];
+        hasEntity: function(id3) {
+          return this.entities[id3];
         },
-        entity: function(id2) {
-          var entity = this.entities[id2];
+        entity: function(id3) {
+          var entity = this.entities[id3];
           if (!entity) {
-            throw new Error("entity " + id2 + " not found");
+            throw new Error("entity " + id3 + " not found");
           }
           return entity;
         },
-        geometry: function(id2) {
-          return this.entity(id2).geometry(this);
+        geometry: function(id3) {
+          return this.entity(id3).geometry(this);
         },
         transient: function(entity, key, fn) {
-          var id2 = entity.id;
-          var transients = this.transients[id2] || (this.transients[id2] = {});
+          var id3 = entity.id;
+          var transients = this.transients[id3] || (this.transients[id3] = {});
           if (transients[key] !== void 0) {
             return transients[key];
           }
@@ -31809,8 +34923,8 @@ ${source}
           var parents = this._parentWays[entity.id];
           var result2 = [];
           if (parents) {
-            parents.forEach(function(id2) {
-              result2.push(this.entity(id2));
+            parents.forEach(function(id3) {
+              result2.push(this.entity(id3));
             }, this);
           }
           return result2;
@@ -31827,8 +34941,8 @@ ${source}
           var parents = this._parentRels[entity.id];
           var result2 = [];
           if (parents) {
-            parents.forEach(function(id2) {
-              result2.push(this.entity(id2));
+            parents.forEach(function(id3) {
+              result2.push(this.entity(id3));
             }, this);
           }
           return result2;
@@ -31862,7 +34976,7 @@ ${source}
         // graph always contained the newly downloaded data.
         rebase: function(entities, stack, force) {
           var base = this.base();
-          var i3, j3, k3, id2;
+          var i3, j3, k3, id3;
           for (i3 = 0; i3 < entities.length; i3++) {
             var entity = entities[i3];
             if (!entity.visible || !force && base.entities[entity.id]) continue;
@@ -31870,11 +34984,11 @@ ${source}
             this._updateCalculated(void 0, entity, base.parentWays, base.parentRels);
             if (entity.type === "way") {
               for (j3 = 0; j3 < entity.nodes.length; j3++) {
-                id2 = entity.nodes[j3];
+                id3 = entity.nodes[j3];
                 for (k3 = 1; k3 < stack.length; k3++) {
                   var ents = stack[k3].entities;
-                  if (ents.hasOwnProperty(id2) && ents[id2] === void 0) {
-                    delete ents[id2];
+                  if (ents.hasOwnProperty(id3) && ents[id3] === void 0) {
+                    delete ents[id3];
                   }
                 }
               }
@@ -31888,18 +35002,18 @@ ${source}
           var base = this.base();
           Object.keys(this._parentWays).forEach(function(child) {
             if (base.parentWays[child]) {
-              base.parentWays[child].forEach(function(id2) {
-                if (!this.entities.hasOwnProperty(id2)) {
-                  this._parentWays[child].add(id2);
+              base.parentWays[child].forEach(function(id3) {
+                if (!this.entities.hasOwnProperty(id3)) {
+                  this._parentWays[child].add(id3);
                 }
               }, this);
             }
           }, this);
           Object.keys(this._parentRels).forEach(function(child) {
             if (base.parentRels[child]) {
-              base.parentRels[child].forEach(function(id2) {
-                if (!this.entities.hasOwnProperty(id2)) {
-                  this._parentRels[child].add(id2);
+              base.parentRels[child].forEach(function(id3) {
+                if (!this.entities.hasOwnProperty(id3)) {
+                  this._parentRels[child].add(id3);
                 }
               }, this);
             }
@@ -31971,13 +35085,13 @@ ${source}
             this.entities[entity.id] = void 0;
           });
         },
-        revert: function(id2) {
-          var baseEntity = this.base().entities[id2];
-          var headEntity = this.entities[id2];
+        revert: function(id3) {
+          var baseEntity = this.base().entities[id3];
+          var headEntity = this.entities[id3];
           if (headEntity === baseEntity) return this;
           return this.update(function() {
             this._updateCalculated(headEntity, baseEntity);
-            delete this.entities[id2];
+            delete this.entities[id3];
           });
         },
         update: function() {
@@ -32134,8 +35248,8 @@ ${source}
     });
     vertices = [];
     ways = [];
-    vertexIds.forEach(function(id2) {
-      const vertex2 = vgraph.entity(id2);
+    vertexIds.forEach(function(id3) {
+      const vertex2 = vgraph.entity(id3);
       const parents = vgraph.parentWays(vertex2);
       vertices.push(vertex2);
       ways = ways.concat(parents);
@@ -32165,8 +35279,8 @@ ${source}
       });
     }
     ways = [];
-    wayIds.forEach(function(id2) {
-      var way2 = withMetadata(vgraph.entity(id2), vertexIds);
+    wayIds.forEach(function(id3) {
+      var way2 = withMetadata(vgraph.entity(id3), vertexIds);
       vgraph = vgraph.replace(way2);
       ways.push(way2);
     });
@@ -32487,7 +35601,7 @@ ${source}
       init_graph();
       init_geo2();
       init_entity();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -32518,6 +35632,7 @@ ${source}
     osmSetPointTags: () => osmSetPointTags,
     osmSetVertexTags: () => osmSetVertexTags,
     osmTagSuggestingArea: () => osmTagSuggestingArea,
+    osmTimelessFeatureTagValues: () => osmTimelessFeatureTagValues,
     osmTurn: () => osmTurn,
     osmVertexTags: () => osmVertexTags,
     osmWay: () => osmWay
@@ -32546,8 +35661,8 @@ ${source}
   });
   function actionMergePolygon(ids, newRelationId) {
     function groupEntities(graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
+      var entities = ids.map(function(id3) {
+        return graph.entity(id3);
       });
       var geometryGroups = utilArrayGroupBy(entities, function(entity) {
         if (entity.type === "way" && entity.isClosed()) {
@@ -32679,7 +35794,7 @@ ${source}
       "use strict";
       init_geo2();
       init_osm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -32785,9 +35900,9 @@ ${source}
     return true;
   }
   function areObjectsEqual2(a2, b11, state) {
-    const properties = keys3(a2);
+    const properties = keys4(a2);
     let index2 = properties.length;
-    if (keys3(b11).length !== index2) {
+    if (keys4(b11).length !== index2) {
       return false;
     }
     while (index2-- > 0) {
@@ -33066,7 +36181,7 @@ ${source}
     const equals = createCustomInternalComparator ? createCustomInternalComparator(comparator) : createInternalEqualityComparator(comparator);
     return createIsEqual({ circular, comparator, createState, equals, strict });
   }
-  var getOwnPropertyNames, getOwnPropertySymbols, hasOwnProperty, hasOwn, PREACT_VNODE, PREACT_OWNER, REACT_OWNER, getOwnPropertyDescriptor, keys3, sameValueEqual, toString2, deepEqual, strictDeepEqual, circularDeepEqual, strictCircularDeepEqual, shallowEqual, strictShallowEqual, circularShallowEqual, strictCircularShallowEqual;
+  var getOwnPropertyNames, getOwnPropertySymbols, hasOwnProperty, hasOwn, PREACT_VNODE, PREACT_OWNER, REACT_OWNER, getOwnPropertyDescriptor, keys4, sameValueEqual, toString2, deepEqual, strictDeepEqual, circularDeepEqual, strictCircularDeepEqual, shallowEqual, strictShallowEqual, circularShallowEqual, strictCircularShallowEqual;
   var init_es = __esm({
     "node_modules/fast-equals/dist/es/index.mjs"() {
       ({ getOwnPropertyNames, getOwnPropertySymbols } = Object);
@@ -33076,7 +36191,7 @@ ${source}
       PREACT_VNODE = "__v";
       PREACT_OWNER = "__o";
       REACT_OWNER = "_owner";
-      ({ getOwnPropertyDescriptor, keys: keys3 } = Object);
+      ({ getOwnPropertyDescriptor, keys: keys4 } = Object);
       sameValueEqual = // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       Object.is || function sameValueEqual2(a2, b11) {
         return a2 === b11 ? a2 !== 0 || 1 / a2 === 1 / b11 : a2 !== a2 && b11 !== b11;
@@ -33334,11 +36449,11 @@ ${source}
     return results;
   }
   function diff3Merge(a2, o2, b11, options) {
-    let defaults2 = {
+    let defaults3 = {
       excludeFalseConflicts: true,
       stringSeparator: /\s+/
     };
-    options = Object.assign(defaults2, options);
+    options = Object.assign(defaults3, options);
     if (typeof a2 === "string")
       a2 = a2.split(options.stringSeparator);
     if (typeof o2 === "string")
@@ -33388,12 +36503,12 @@ ${source}
     return results;
   }
   function mergeDiff3(a2, o2, b11, options) {
-    const defaults2 = {
+    const defaults3 = {
       excludeFalseConflicts: true,
       stringSeparator: /\s+/,
       label: {}
     };
-    options = Object.assign(defaults2, options);
+    options = Object.assign(defaults3, options);
     const aSection = "<<<<<<<" + (options.label.a ? ` ${options.label.a}` : "");
     const oSection = "|||||||" + (options.label.o ? ` ${options.label.o}` : "");
     const xSection = "=======";
@@ -33414,13 +36529,13 @@ ${source}
       result: result2
     };
   }
-  function merge3(a2, o2, b11, options) {
-    const defaults2 = {
+  function merge4(a2, o2, b11, options) {
+    const defaults3 = {
       excludeFalseConflicts: true,
       stringSeparator: /\s+/,
       label: {}
     };
-    options = Object.assign(defaults2, options);
+    options = Object.assign(defaults3, options);
     const aSection = "<<<<<<<" + (options.label.a ? ` ${options.label.a}` : "");
     const xSection = "=======";
     const bSection = ">>>>>>>" + (options.label.b ? ` ${options.label.b}` : "");
@@ -33441,12 +36556,12 @@ ${source}
     };
   }
   function mergeDigIn(a2, o2, b11, options) {
-    const defaults2 = {
+    const defaults3 = {
       excludeFalseConflicts: true,
       stringSeparator: /\s+/,
       label: {}
     };
-    options = Object.assign(defaults2, options);
+    options = Object.assign(defaults3, options);
     const aSection = "<<<<<<<" + (options.label.a ? ` ${options.label.a}` : "");
     const xSection = "=======";
     const bSection = ">>>>>>>" + (options.label.b ? ` ${options.label.b}` : "");
@@ -33516,7 +36631,7 @@ ${source}
   __export(merge_remote_changes_exports, {
     actionMergeRemoteChanges: () => actionMergeRemoteChanges
   });
-  function actionMergeRemoteChanges(id2, localGraph, remoteGraph, discardTags, formatUser) {
+  function actionMergeRemoteChanges(id3, localGraph, remoteGraph, discardTags, formatUser) {
     discardTags = discardTags || {};
     var _option = "safe";
     var _conflicts = [];
@@ -33577,16 +36692,16 @@ ${source}
       }
       var ccount = _conflicts.length;
       for (var i3 = 0; i3 < children2.length; i3++) {
-        var id3 = children2[i3];
-        var node = graph.hasEntity(id3);
-        if (targetWay.nodes.indexOf(id3) === -1) {
+        var id4 = children2[i3];
+        var node = graph.hasEntity(id4);
+        if (targetWay.nodes.indexOf(id4) === -1) {
           if (node && !isUsed(node, targetWay)) {
-            updates.removeIds.push(id3);
+            updates.removeIds.push(id4);
           }
           continue;
         }
-        var local3 = localGraph.hasEntity(id3);
-        var remote = remoteGraph.hasEntity(id3);
+        var local3 = localGraph.hasEntity(id4);
+        var remote = remoteGraph.hasEntity(id4);
         var target;
         if (_option === "force_remote" && remote && remote.visible) {
           updates.replacements.push(remote);
@@ -33639,13 +36754,13 @@ ${source}
       var o2 = base.tags || {};
       var a2 = target.tags || {};
       var b11 = remote.tags || {};
-      var keys4 = utilArrayUnion(utilArrayUnion(Object.keys(o2), Object.keys(a2)), Object.keys(b11)).filter(function(k4) {
+      var keys5 = utilArrayUnion(utilArrayUnion(Object.keys(o2), Object.keys(a2)), Object.keys(b11)).filter(function(k4) {
         return !discardTags[k4];
       });
       var tags = Object.assign({}, a2);
       var changed = false;
-      for (var i3 = 0; i3 < keys4.length; i3++) {
-        var k3 = keys4[i3];
+      for (var i3 = 0; i3 < keys5.length; i3++) {
+        var k3 = keys5[i3];
         if (o2[k3] !== b11[k3] && a2[k3] !== b11[k3]) {
           if (o2[k3] !== a2[k3]) {
             _conflicts.push(_t.append(
@@ -33666,13 +36781,13 @@ ${source}
     }
     var action = function(graph) {
       var updates = { replacements: [], removeIds: [] };
-      var base = graph.base().entities[id2];
-      var local3 = localGraph.entity(id2);
-      var remote = remoteGraph.entity(id2);
+      var base = graph.base().entities[id3];
+      var local3 = localGraph.entity(id3);
+      var remote = remoteGraph.entity(id3);
       var target = osmEntity(local3, { version: remote.version });
       if (!remote.visible) {
         if (_option === "force_remote") {
-          return actionDeleteMultiple([id2])(graph);
+          return actionDeleteMultiple([id3])(graph);
         } else if (_option === "force_local") {
           if (target.type === "way") {
             target = mergeChildren(target, utilArrayUniq(local3.nodes), updates, graph);
@@ -33716,7 +36831,7 @@ ${source}
       init_localizer();
       init_delete_multiple();
       init_osm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -33740,16 +36855,16 @@ ${source}
       }
       function cacheEntities(ids) {
         for (var i3 = 0; i3 < ids.length; i3++) {
-          var id2 = ids[i3];
-          if (cache.moving[id2]) continue;
-          cache.moving[id2] = true;
-          var entity = graph.hasEntity(id2);
+          var id3 = ids[i3];
+          if (cache.moving[id3]) continue;
+          cache.moving[id3] = true;
+          var entity = graph.hasEntity(id3);
           if (!entity) continue;
           if (entity.type === "node") {
-            cache.nodes.push(id2);
-            cache.startLoc[id2] = entity.loc;
+            cache.nodes.push(id3);
+            cache.startLoc[id3] = entity.loc;
           } else if (entity.type === "way") {
-            cache.ways.push(id2);
+            cache.ways.push(id3);
             cacheEntities(entity.nodes);
           } else {
             cacheEntities(entity.members.map(function(member) {
@@ -33759,17 +36874,17 @@ ${source}
         }
       }
       function cacheIntersections(ids) {
-        function isEndpoint(way2, id3) {
-          return !way2.isClosed() && !!way2.affix(id3);
+        function isEndpoint(way2, id4) {
+          return !way2.isClosed() && !!way2.affix(id4);
         }
         for (var i3 = 0; i3 < ids.length; i3++) {
-          var id2 = ids[i3];
-          var childNodes = graph.childNodes(graph.entity(id2));
+          var id3 = ids[i3];
+          var childNodes = graph.childNodes(graph.entity(id3));
           for (var j3 = 0; j3 < childNodes.length; j3++) {
             var node = childNodes[j3];
             var parents = graph.parentWays(node);
             if (parents.length !== 2) continue;
-            var moved = graph.entity(id2);
+            var moved = graph.entity(id3);
             var unmoved = null;
             for (var k3 = 0; k3 < parents.length; k3++) {
               var way = parents[k3];
@@ -33979,7 +37094,7 @@ ${source}
       "use strict";
       init_geo2();
       init_node2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -34285,7 +37400,7 @@ ${source}
     "modules/actions/reflect.js"() {
       "use strict";
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -34299,8 +37414,8 @@ ${source}
       var fromWay = graph.entity(turn.from.way);
       var toWay = graph.entity(turn.to.way);
       var viaNode = turn.via.node && graph.entity(turn.via.node);
-      var viaWays = turn.via.ways && turn.via.ways.map(function(id2) {
-        return graph.entity(id2);
+      var viaWays = turn.via.ways && turn.via.ways.map(function(id3) {
+        return graph.entity(id3);
       });
       var members = [];
       members.push({ id: fromWay.id, type: "way", role: "from" });
@@ -34334,13 +37449,13 @@ ${source}
   __export(revert_exports, {
     actionRevert: () => actionRevert
   });
-  function actionRevert(id2) {
+  function actionRevert(id3) {
     var action = function(graph) {
-      var entity = graph.hasEntity(id2), base = graph.base().entities[id2];
+      var entity = graph.hasEntity(id3), base = graph.base().entities[id3];
       if (entity && !base) {
         if (entity.type === "node") {
           graph.parentWays(entity).forEach(function(parent) {
-            parent = parent.removeNode(id2);
+            parent = parent.removeNode(id3);
             graph = graph.replace(parent);
             if (parent.isDegenerate()) {
               graph = actionDeleteWay(parent.id)(graph);
@@ -34348,14 +37463,14 @@ ${source}
           });
         }
         graph.parentRelations(entity).forEach(function(parent) {
-          parent = parent.removeMembersWithID(id2);
+          parent = parent.removeMembersWithID(id3);
           graph = graph.replace(parent);
           if (parent.isDegenerate()) {
             graph = actionDeleteRelation(parent.id)(graph);
           }
         });
       }
-      return graph.revert(id2);
+      return graph.revert(id3);
     };
     return action;
   }
@@ -34387,7 +37502,7 @@ ${source}
     "modules/actions/rotate.js"() {
       "use strict";
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -34418,7 +37533,7 @@ ${source}
   var init_scale = __esm({
     "modules/actions/scale.js"() {
       "use strict";
-      init_util2();
+      init_util3();
     }
   });
 
@@ -34446,8 +37561,8 @@ ${source}
     var action = function(graph, t4) {
       if (t4 === null || !isFinite(t4)) t4 = 1;
       t4 = Math.min(Math.max(+t4, 0), 1);
-      var nodes = nodeIDs.map(function(id2) {
-        return graph.entity(id2);
+      var nodes = nodeIDs.map(function(id3) {
+        return graph.entity(id3);
       });
       var points2 = nodes.map(function(n3) {
         return projection2(n3.loc);
@@ -34466,8 +37581,8 @@ ${source}
       return graph;
     };
     action.disabled = function(graph) {
-      var nodes = nodeIDs.map(function(id2) {
-        return graph.entity(id2);
+      var nodes = nodeIDs.map(function(id3) {
+        return graph.entity(id3);
       });
       var points2 = nodes.map(function(n3) {
         return projection2(n3.loc);
@@ -34633,7 +37748,7 @@ ${source}
       "use strict";
       init_delete_node();
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -34884,7 +37999,7 @@ ${source}
       init_src6();
       init_presets();
       init_osm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -35083,7 +38198,7 @@ ${source}
       init_edit();
       init_hover();
       init_geo2();
-      init_util2();
+      init_util3();
       _disableSpace = false;
       _lastSpace = null;
     }
@@ -35235,19 +38350,19 @@ ${source}
   var init_package = __esm({
     "package.json"() {
       package_default = {
-        name: "@openstreetmap/id",
+        name: "@openhistoricalmap/id",
         version: "2.39.5",
-        description: "A friendly editor for OpenStreetMap",
+        description: "The OpenHistoricalMap fork of a friendly editor for OpenStreetMap",
         main: "dist/iD.min.js",
         repository: {
           type: "git",
-          url: "git+https://github.com/openstreetmap/iD.git"
+          url: "git+https://github.com/OpenHistoricalMap/iD.git"
         },
-        homepage: "https://github.com/openstreetmap/iD",
-        bugs: "https://github.com/openstreetmap/iD/issues",
+        homepage: "https://github.com/OpenHistoricalMap/iD",
+        bugs: "https://github.com/OpenHistoricalMap/issues/issues",
         keywords: [
           "editor",
-          "openstreetmap"
+          "openhistoricalmap"
         ],
         license: "ISC",
         type: "module",
@@ -35299,6 +38414,7 @@ ${source}
           "alif-toolkit": "^1.3.0",
           "core-js-bundle": "^3.46.0",
           diacritics: "1.3.0",
+          edtf: "^4.7.1",
           "es-toolkit": "^1.45.0",
           exifr: "^7.1.3",
           "fast-deep-equal": "~3.1.3",
@@ -35366,6 +38482,7 @@ ${source}
           "netlify-cli": "^24.0.0",
           nise: "^6.1.1",
           "npm-run-all": "^4.0.0",
+          "ohm-editor-layer-index": "github:openhistoricalmap/ohm-editor-layer-index#dist",
           "osm-community-index": "6.0.0",
           postcss: "^8.5.6",
           "postcss-prefix-selector": "^2.1.1",
@@ -35397,38 +38514,38 @@ ${source}
     var _changes = {};
     var _didChange = {};
     var _diff = {};
-    function checkEntityID(id2) {
-      var h2 = head3.entities[id2];
-      var b11 = base.entities[id2];
+    function checkEntityID(id3) {
+      var h2 = head3.entities[id3];
+      var b11 = base.entities[id3];
       if (h2 === b11) return;
-      if (_changes[id2]) return;
+      if (_changes[id3]) return;
       if (!h2 && b11) {
-        _changes[id2] = { base: b11, head: h2 };
+        _changes[id3] = { base: b11, head: h2 };
         _didChange.deletion = true;
         return;
       }
       if (h2 && !b11) {
-        _changes[id2] = { base: b11, head: h2 };
+        _changes[id3] = { base: b11, head: h2 };
         _didChange.addition = true;
         return;
       }
       if (h2 && b11) {
         if (h2.members && b11.members && !deepEqual(h2.members, b11.members)) {
-          _changes[id2] = { base: b11, head: h2 };
+          _changes[id3] = { base: b11, head: h2 };
           _didChange.geometry = true;
           _didChange.properties = true;
           return;
         }
         if (h2.loc && b11.loc && !geoVecEqual(h2.loc, b11.loc)) {
-          _changes[id2] = { base: b11, head: h2 };
+          _changes[id3] = { base: b11, head: h2 };
           _didChange.geometry = true;
         }
         if (h2.nodes && b11.nodes && !deepEqual(h2.nodes, b11.nodes)) {
-          _changes[id2] = { base: b11, head: h2 };
+          _changes[id3] = { base: b11, head: h2 };
           _didChange.geometry = true;
         }
         if (h2.tags && b11.tags && !deepEqual(h2.tags, b11.tags)) {
-          _changes[id2] = { base: b11, head: h2 };
+          _changes[id3] = { base: b11, head: h2 };
           _didChange.properties = true;
         }
       }
@@ -35449,12 +38566,12 @@ ${source}
     _diff.didChange = _didChange;
     _diff.extantIDs = function extantIDs(includeRelMembers) {
       var result2 = /* @__PURE__ */ new Set();
-      Object.keys(_changes).forEach(function(id2) {
-        if (_changes[id2].head) {
-          result2.add(id2);
+      Object.keys(_changes).forEach(function(id3) {
+        if (_changes[id3].head) {
+          result2.add(id3);
         }
-        var h2 = _changes[id2].head;
-        var b11 = _changes[id2].base;
+        var h2 = _changes[id3].head;
+        var b11 = _changes[id3].base;
         var entity = h2 || b11;
         if (includeRelMembers && entity.type === "relation") {
           var mh = h2 ? h2.members.map(function(m3) {
@@ -35501,9 +38618,9 @@ ${source}
     };
     _diff.summary = function summary() {
       var relevant = {};
-      var keys4 = Object.keys(_changes);
-      for (var i3 = 0; i3 < keys4.length; i3++) {
-        var change = _changes[keys4[i3]];
+      var keys5 = Object.keys(_changes);
+      for (var i3 = 0; i3 < keys5.length; i3++) {
+        var change = _changes[keys5[i3]];
         if (change.head && change.head.geometry(head3) !== "vertex") {
           addEntity(change.head, head3, change.base ? "modified" : "created");
         } else if (change.base && change.base.geometry(base) !== "vertex") {
@@ -35543,9 +38660,9 @@ ${source}
     };
     _diff.complete = function complete(extent2) {
       var result2 = {};
-      var id2, change;
-      for (id2 in _changes) {
-        change = _changes[id2];
+      var id3, change;
+      for (id3 in _changes) {
+        change = _changes[id3];
         var h2 = change.head;
         var b11 = change.base;
         var entity = h2 || b11;
@@ -35553,7 +38670,7 @@ ${source}
         if (extent2 && (!h2 || !h2.intersects(extent2, head3)) && (!b11 || !b11.intersects(extent2, base))) {
           continue;
         }
-        result2[id2] = h2;
+        result2[id3] = h2;
         if (entity.type === "way") {
           var nh = h2 ? h2.nodes : [];
           var nb = b11 ? b11.nodes : [];
@@ -35783,15 +38900,15 @@ ${source}
           }
           return false;
         }
-        load(data) {
-          if (!(data && data.length)) return this;
-          if (data.length < this._minEntries) {
-            for (let i3 = 0; i3 < data.length; i3++) {
-              this.insert(data[i3]);
+        load(data2) {
+          if (!(data2 && data2.length)) return this;
+          if (data2.length < this._minEntries) {
+            for (let i3 = 0; i3 < data2.length; i3++) {
+              this.insert(data2[i3]);
             }
             return this;
           }
-          let node = this._build(data.slice(), 0, data.length - 1, 0);
+          let node = this._build(data2.slice(), 0, data2.length - 1, 0);
           if (!this.data.children.length) {
             this.data = node;
           } else if (this.data.height === node.height) {
@@ -35863,8 +38980,8 @@ ${source}
         toJSON() {
           return this.data;
         }
-        fromJSON(data) {
-          this.data = data;
+        fromJSON(data2) {
+          this.data = data2;
           return this;
         }
         _all(node, result2) {
@@ -36243,7 +39360,7 @@ ${source}
       init_src6();
       init_localizer();
       init_icon();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -36579,13 +39696,13 @@ ${source}
           var copy2 = copyIntroEntity(entity);
           baseEntities[copy2.id] = copy2;
         });
-        Object.keys(graph.entities).forEach(function(id2) {
-          var entity = graph.entities[id2];
+        Object.keys(graph.entities).forEach(function(id3) {
+          var entity = graph.entities[id3];
           if (entity) {
             var copy2 = copyIntroEntity(entity);
             baseEntities[copy2.id] = copy2;
           } else {
-            delete baseEntities[id2];
+            delete baseEntities[id3];
           }
         });
         Object.values(baseEntities).forEach(function(entity) {
@@ -36632,17 +39749,17 @@ ${source}
         var s2 = _stack.map(function(i3) {
           var modified = [];
           var deleted = [];
-          Object.keys(i3.graph.entities).forEach(function(id2) {
-            var entity = i3.graph.entities[id2];
+          Object.keys(i3.graph.entities).forEach(function(id3) {
+            var entity = i3.graph.entities[id3];
             if (entity) {
               var key = osmEntity.key(entity);
               allEntities[key] = entity;
               modified.push(key);
             } else {
-              deleted.push(id2);
+              deleted.push(id3);
             }
-            if (id2 in base.graph.entities) {
-              baseEntities[id2] = base.graph.entities[id2];
+            if (id3 in base.graph.entities) {
+              baseEntities[id3] = base.graph.entities[id3];
             }
             if (entity && entity.nodes) {
               entity.nodes.forEach(function(nodeID) {
@@ -36651,7 +39768,7 @@ ${source}
                 }
               });
             }
-            var baseParents = base.graph._parentWays[id2];
+            var baseParents = base.graph._parentWays[id3];
             if (baseParents) {
               baseParents.forEach(function(parentID) {
                 if (parentID in base.graph.entities) {
@@ -36755,8 +39872,8 @@ ${source}
               });
             }
             if (d2.deleted) {
-              d2.deleted.forEach(function(id2) {
-                entities[id2] = void 0;
+              d2.deleted.forEach(function(id3) {
+                entities[id3] = void 0;
               });
             }
             return {
@@ -36856,7 +39973,7 @@ ${source}
       init_tree();
       init_entity();
       init_loading();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -36881,7 +39998,7 @@ ${source}
     "modules/util/utilDisplayLabel.js"() {
       "use strict";
       init_presets();
-      init_util();
+      init_util2();
     }
   });
 
@@ -37007,7 +40124,7 @@ ${source}
     } else if (m.escapeTestNoEncode.test(u4)) return u4.replace(m.escapeReplaceNoEncode, de);
     return u4;
   }
-  function X3(u4) {
+  function X5(u4) {
     try {
       u4 = encodeURI(u4).replace(m.percentDecode, "%");
     } catch {
@@ -37076,7 +40193,7 @@ ${source}
   function g2(u4, e3) {
     return L.parse(u4, e3);
   }
-  var _a, T, _, Re, m, Te, Oe, we, A5, ye, N, re2, se, Pe, Q, Se, j, $e, _e, q, F, Le, ie, Me, U, te, ze, Ee, Ie, Ae, oe, Ce, v, K2, ae, Be, le, De, qe, ue, ve, He, Ge, pe, Ze, Ne, ce, Qe, je, Fe, Ue, Ke, We, Xe, Je, Ve, Ye, D2, et, he, ke, tt, ne, W, nt, Z, rt, C2, z, st, de, w, x, y, $, b, P, B2, L, Ut, Kt, Wt, Xt, Jt, Vt, Yt, en;
+  var _a, T, _, Re, m, Te, Oe, we, A7, ye, N, re2, se, Pe, Q, Se, j, $e, _e, q, F, Le, ie, Me, U3, te, ze, Ee, Ie, Ae, oe, Ce, v, K2, ae, Be, le, De, qe, ue, ve, He, Ge, pe, Ze, Ne, ce, Qe, je, Fe, Ue, Ke, We, Xe, Je, Ve, Ye, D2, et, he, ke, tt, ne, W, nt, Z3, rt, C2, z, st, de, w, x, y, $, b, P2, B2, L, Ut, Kt, Wt, Xt, Jt, Vt, Yt, en;
   var init_marked_esm = __esm({
     "node_modules/marked/lib/marked.esm.js"() {
       T = M2();
@@ -37087,8 +40204,8 @@ ${source}
         } catch {
           return false;
         }
-      })(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] +\S/, listReplaceTask: /^\[[ xX]\] +/, listTaskCheckbox: /\[[ xX]\]/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (u4) => new RegExp(`^( {0,3}${u4})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}#`), htmlBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}<(?:[a-z].*>|!--)`, "i"), blockquoteBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}>`) }, Te = /^(?:[ \t]*(?:\n|$))+/, Oe = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, we = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, A5 = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, ye = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, N = / {0,3}(?:[*+-]|\d{1,9}[.)])/, re2 = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, se = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), Pe = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), Q = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Se = /^[^\n]+/, j = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, $e = k(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", j).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), _e = k(/^(bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, N).getRegex(), q = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", F = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, Le = k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", F).replace("tag", q).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), ie = k(Q).replace("hr", A5).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), Me = k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", ie).getRegex(), U = { blockquote: Me, code: Oe, def: $e, fences: we, heading: ye, hr: A5, html: Le, lheading: se, list: _e, newline: Te, paragraph: ie, table: _, text: Se }, te = k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", A5).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), ze = { ...U, lheading: Pe, table: te, paragraph: k(Q).replace("hr", A5).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", te).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex() }, Ee = { ...U, html: k(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", F).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: _, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: k(Q).replace("hr", A5).replace("heading", ` *#{1,6} *[^
-]`).replace("lheading", se).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ie = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ae = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, oe = /^( {2,}|\\)\n(?!\s*$)/, Ce = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, v = /[\p{P}\p{S}]/u, K2 = /[\s\p{P}\p{S}]/u, ae = /[^\s\p{P}\p{S}]/u, Be = k(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, K2).getRegex(), le = /(?!~)[\p{P}\p{S}]/u, De = /(?!~)[\s\p{P}\p{S}]/u, qe = /(?:[^\s\p{P}\p{S}]|~)/u, ue = /(?![*_])[\p{P}\p{S}]/u, ve = /(?![*_])[\s\p{P}\p{S}]/u, He = /(?:[^\s\p{P}\p{S}]|[*_])/u, Ge = k(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", Re ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), pe = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/, Ze = k(pe, "u").replace(/punct/g, v).getRegex(), Ne = k(pe, "u").replace(/punct/g, le).getRegex(), ce = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Qe = k(ce, "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), je = k(ce, "gu").replace(/notPunctSpace/g, qe).replace(/punctSpace/g, De).replace(/punct/g, le).getRegex(), Fe = k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), Ue = k(/^~~?(?:((?!~)punct)|[^\s~])/, "u").replace(/punct/g, ue).getRegex(), Ke = "^[^~]+(?=[^~])|(?!~)punct(~~?)(?=[\\s]|$)|notPunctSpace(~~?)(?!~)(?=punctSpace|$)|(?!~)punctSpace(~~?)(?=notPunctSpace)|[\\s](~~?)(?!~)(?=punct)|(?!~)punct(~~?)(?!~)(?=punct)|notPunctSpace(~~?)(?=notPunctSpace)", We = k(Ke, "gu").replace(/notPunctSpace/g, He).replace(/punctSpace/g, ve).replace(/punct/g, ue).getRegex(), Xe = k(/\\(punct)/, "gu").replace(/punct/g, v).getRegex(), Je = k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), Ve = k(F).replace("(?:-->|$)", "-->").getRegex(), Ye = k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", Ve).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), D2 = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/, et = k(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)(title))?\s*\)/).replace("label", D2).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), he = k(/^!?\[(label)\]\[(ref)\]/).replace("label", D2).replace("ref", j).getRegex(), ke = k(/^!?\[(ref)\](?:\[\])?/).replace("ref", j).getRegex(), tt = k("reflink|nolink(?!\\()", "g").replace("reflink", he).replace("nolink", ke).getRegex(), ne = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, W = { _backpedal: _, anyPunctuation: Xe, autolink: Je, blockSkip: Ge, br: oe, code: Ae, del: _, delLDelim: _, delRDelim: _, emStrongLDelim: Ze, emStrongRDelimAst: Qe, emStrongRDelimUnd: Fe, escape: Ie, link: et, nolink: ke, punctuation: Be, reflink: he, reflinkSearch: tt, tag: Ye, text: Ce, url: _ }, nt = { ...W, link: k(/^!?\[(label)\]\((.*?)\)/).replace("label", D2).getRegex(), reflink: k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", D2).getRegex() }, Z = { ...W, emStrongRDelimAst: je, emStrongLDelim: Ne, delLDelim: Ue, delRDelim: We, url: k(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", ne).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: k(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", ne).getRegex() }, rt = { ...Z, br: k(oe).replace("{2,}", "*").getRegex(), text: k(Z.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, C2 = { normal: U, gfm: ze, pedantic: Ee }, z = { normal: W, gfm: Z, breaks: rt, pedantic: nt };
+      })(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] +\S/, listReplaceTask: /^\[[ xX]\] +/, listTaskCheckbox: /\[[ xX]\]/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (u4) => new RegExp(`^( {0,3}${u4})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}#`), htmlBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}<(?:[a-z].*>|!--)`, "i"), blockquoteBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}>`) }, Te = /^(?:[ \t]*(?:\n|$))+/, Oe = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, we = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, A7 = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, ye = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, N = / {0,3}(?:[*+-]|\d{1,9}[.)])/, re2 = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, se = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), Pe = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), Q = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Se = /^[^\n]+/, j = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, $e = k(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", j).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), _e = k(/^(bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, N).getRegex(), q = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", F = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, Le = k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", F).replace("tag", q).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), ie = k(Q).replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), Me = k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", ie).getRegex(), U3 = { blockquote: Me, code: Oe, def: $e, fences: we, heading: ye, hr: A7, html: Le, lheading: se, list: _e, newline: Te, paragraph: ie, table: _, text: Se }, te = k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), ze = { ...U3, lheading: Pe, table: te, paragraph: k(Q).replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", te).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex() }, Ee = { ...U3, html: k(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", F).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: _, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: k(Q).replace("hr", A7).replace("heading", ` *#{1,6} *[^
+]`).replace("lheading", se).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ie = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ae = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, oe = /^( {2,}|\\)\n(?!\s*$)/, Ce = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, v = /[\p{P}\p{S}]/u, K2 = /[\s\p{P}\p{S}]/u, ae = /[^\s\p{P}\p{S}]/u, Be = k(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, K2).getRegex(), le = /(?!~)[\p{P}\p{S}]/u, De = /(?!~)[\s\p{P}\p{S}]/u, qe = /(?:[^\s\p{P}\p{S}]|~)/u, ue = /(?![*_])[\p{P}\p{S}]/u, ve = /(?![*_])[\s\p{P}\p{S}]/u, He = /(?:[^\s\p{P}\p{S}]|[*_])/u, Ge = k(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", Re ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), pe = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/, Ze = k(pe, "u").replace(/punct/g, v).getRegex(), Ne = k(pe, "u").replace(/punct/g, le).getRegex(), ce = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Qe = k(ce, "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), je = k(ce, "gu").replace(/notPunctSpace/g, qe).replace(/punctSpace/g, De).replace(/punct/g, le).getRegex(), Fe = k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), Ue = k(/^~~?(?:((?!~)punct)|[^\s~])/, "u").replace(/punct/g, ue).getRegex(), Ke = "^[^~]+(?=[^~])|(?!~)punct(~~?)(?=[\\s]|$)|notPunctSpace(~~?)(?!~)(?=punctSpace|$)|(?!~)punctSpace(~~?)(?=notPunctSpace)|[\\s](~~?)(?!~)(?=punct)|(?!~)punct(~~?)(?!~)(?=punct)|notPunctSpace(~~?)(?=notPunctSpace)", We = k(Ke, "gu").replace(/notPunctSpace/g, He).replace(/punctSpace/g, ve).replace(/punct/g, ue).getRegex(), Xe = k(/\\(punct)/, "gu").replace(/punct/g, v).getRegex(), Je = k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), Ve = k(F).replace("(?:-->|$)", "-->").getRegex(), Ye = k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", Ve).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), D2 = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/, et = k(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)(title))?\s*\)/).replace("label", D2).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), he = k(/^!?\[(label)\]\[(ref)\]/).replace("label", D2).replace("ref", j).getRegex(), ke = k(/^!?\[(ref)\](?:\[\])?/).replace("ref", j).getRegex(), tt = k("reflink|nolink(?!\\()", "g").replace("reflink", he).replace("nolink", ke).getRegex(), ne = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, W = { _backpedal: _, anyPunctuation: Xe, autolink: Je, blockSkip: Ge, br: oe, code: Ae, del: _, delLDelim: _, delRDelim: _, emStrongLDelim: Ze, emStrongRDelimAst: Qe, emStrongRDelimUnd: Fe, escape: Ie, link: et, nolink: ke, punctuation: Be, reflink: he, reflinkSearch: tt, tag: Ye, text: Ce, url: _ }, nt = { ...W, link: k(/^!?\[(label)\]\((.*?)\)/).replace("label", D2).getRegex(), reflink: k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", D2).getRegex() }, Z3 = { ...W, emStrongRDelimAst: je, emStrongLDelim: Ne, delLDelim: Ue, delRDelim: We, url: k(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", ne).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: k(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", ne).getRegex() }, rt = { ...Z3, br: k(oe).replace("{2,}", "*").getRegex(), text: k(Z3.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, C2 = { normal: U3, gfm: ze, pedantic: Ee }, z = { normal: W, gfm: Z3, breaks: rt, pedantic: nt };
       st = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }, de = (u4) => st[u4];
       w = class {
         options;
@@ -37157,14 +40274,14 @@ ${c2}` : c2;
               if (h2?.type === "blockquote") {
                 let R2 = h2, f2 = R2.raw + `
 ` + n3.join(`
-`), S2 = this.blockquote(f2);
-                s2[s2.length - 1] = S2, r2 = r2.substring(0, r2.length - R2.raw.length) + S2.raw, i3 = i3.substring(0, i3.length - R2.text.length) + S2.text;
+`), S3 = this.blockquote(f2);
+                s2[s2.length - 1] = S3, r2 = r2.substring(0, r2.length - R2.raw.length) + S3.raw, i3 = i3.substring(0, i3.length - R2.text.length) + S3.text;
                 break;
               } else if (h2?.type === "list") {
                 let R2 = h2, f2 = R2.raw + `
 ` + n3.join(`
-`), S2 = this.list(f2);
-                s2[s2.length - 1] = S2, r2 = r2.substring(0, r2.length - h2.raw.length) + S2.raw, i3 = i3.substring(0, i3.length - R2.raw.length) + S2.raw, n3 = f2.substring(s2.at(-1).raw.length).split(`
+`), S3 = this.list(f2);
+                s2[s2.length - 1] = S3, r2 = r2.substring(0, r2.length - h2.raw.length) + S3.raw, i3 = i3.substring(0, i3.length - R2.raw.length) + S3.raw, n3 = f2.substring(s2.at(-1).raw.length).split(`
 `);
                 continue;
               }
@@ -37187,15 +40304,15 @@ ${c2}` : c2;
 `, 1)[0], R2 = !d2.trim(), f2 = 0;
               if (this.options.pedantic ? (f2 = 2, c2 = d2.trimStart()) : R2 ? f2 = t4[1].length + 1 : (f2 = d2.search(this.rules.other.nonSpaceChar), f2 = f2 > 4 ? 1 : f2, c2 = d2.slice(f2), f2 += t4[1].length), R2 && this.rules.other.blankLine.test(h2) && (p2 += h2 + `
 `, e3 = e3.substring(h2.length + 1), l2 = true), !l2) {
-                let S2 = this.rules.other.nextBulletRegex(f2), V2 = this.rules.other.hrRegex(f2), Y4 = this.rules.other.fencesBeginRegex(f2), ee2 = this.rules.other.headingBeginRegex(f2), xe2 = this.rules.other.htmlBeginRegex(f2), be2 = this.rules.other.blockquoteBeginRegex(f2);
+                let S3 = this.rules.other.nextBulletRegex(f2), V8 = this.rules.other.hrRegex(f2), Y4 = this.rules.other.fencesBeginRegex(f2), ee2 = this.rules.other.headingBeginRegex(f2), xe2 = this.rules.other.htmlBeginRegex(f2), be2 = this.rules.other.blockquoteBeginRegex(f2);
                 for (; e3; ) {
                   let H2 = e3.split(`
 `, 1)[0], I2;
-                  if (h2 = H2, this.options.pedantic ? (h2 = h2.replace(this.rules.other.listReplaceNesting, "  "), I2 = h2) : I2 = h2.replace(this.rules.other.tabCharGlobal, "    "), Y4.test(h2) || ee2.test(h2) || xe2.test(h2) || be2.test(h2) || S2.test(h2) || V2.test(h2)) break;
+                  if (h2 = H2, this.options.pedantic ? (h2 = h2.replace(this.rules.other.listReplaceNesting, "  "), I2 = h2) : I2 = h2.replace(this.rules.other.tabCharGlobal, "    "), Y4.test(h2) || ee2.test(h2) || xe2.test(h2) || be2.test(h2) || S3.test(h2) || V8.test(h2)) break;
                   if (I2.search(this.rules.other.nonSpaceChar) >= f2 || !h2.trim()) c2 += `
 ` + I2.slice(f2);
                   else {
-                    if (R2 || d2.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || Y4.test(d2) || ee2.test(d2) || V2.test(d2)) break;
+                    if (R2 || d2.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || Y4.test(d2) || ee2.test(d2) || V8.test(d2)) break;
                     c2 += `
 ` + h2;
                   }
@@ -37711,7 +40828,7 @@ ${e3}</tr>
           return `<del>${this.parser.parseInline(e3)}</del>`;
         }
         link({ href: e3, title: t4, tokens: n3 }) {
-          let r2 = this.parser.parseInline(n3), i3 = X3(e3);
+          let r2 = this.parser.parseInline(n3), i3 = X5(e3);
           if (i3 === null) return r2;
           e3 = i3;
           let s2 = '<a href="' + e3 + '"';
@@ -37719,7 +40836,7 @@ ${e3}</tr>
         }
         image({ href: e3, title: t4, text: n3, tokens: r2 }) {
           r2 && (n3 = this.parser.parseInline(r2, this.parser.textRenderer));
-          let i3 = X3(e3);
+          let i3 = X5(e3);
           if (i3 === null) return O(n3);
           e3 = i3;
           let s2 = `<img src="${e3}" alt="${O(n3)}"`;
@@ -37911,7 +41028,7 @@ ${e3}</tr>
           return n3;
         }
       };
-      P = (_a = class {
+      P2 = (_a = class {
         options;
         block;
         constructor(e3) {
@@ -37946,7 +41063,7 @@ ${e3}</tr>
         TextRenderer = $;
         Lexer = x;
         Tokenizer = w;
-        Hooks = P;
+        Hooks = P2;
         constructor(...e3) {
           this.use(...e3);
         }
@@ -38020,13 +41137,13 @@ ${e3}</tr>
               r2.tokenizer = i3;
             }
             if (n3.hooks) {
-              let i3 = this.defaults.hooks || new P();
+              let i3 = this.defaults.hooks || new P2();
               for (let s2 in n3.hooks) {
                 if (!(s2 in i3)) throw new Error(`hook '${s2}' does not exist`);
                 if (["options", "block"].includes(s2)) continue;
                 let a2 = s2, o2 = n3.hooks[a2], l2 = i3[a2];
-                P.passThroughHooks.has(s2) ? i3[a2] = (p2) => {
-                  if (this.defaults.async && P.passThroughHooksRespectAsync.has(s2)) return (async () => {
+                P2.passThroughHooks.has(s2) ? i3[a2] = (p2) => {
+                  if (this.defaults.async && P2.passThroughHooksRespectAsync.has(s2)) return (async () => {
                     let d2 = await o2.call(i3, p2);
                     return l2.call(i3, d2);
                   })();
@@ -38117,7 +41234,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       g2.Lexer = x;
       g2.lexer = x.lex;
       g2.Tokenizer = w;
-      g2.Hooks = P;
+      g2.Hooks = P2;
       g2.parse = g2;
       Ut = g2.options, Kt = g2.setOptions, Wt = g2.use, Xt = g2.walkTokens, Jt = g2.parseInline, Vt = g2, Yt = b.parse, en = x.lex;
     }
@@ -38436,8 +41553,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return this.readVarint(true);
         }
         readSVarint() {
-          const num = this.readVarint();
-          return num % 2 === 1 ? (num + 1) / -2 : num / 2;
+          const num2 = this.readVarint();
+          return num2 % 2 === 1 ? (num2 + 1) / -2 : num2 / 2;
         }
         readBoolean() {
           return Boolean(this.readVarint());
@@ -38536,9 +41653,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           this.writeVarint(tag << 3 | type2);
         }
         /** @param {number} min */
-        realloc(min4) {
+        realloc(min5) {
           let length2 = this.length || 16;
-          while (length2 < this.pos + min4) length2 *= 2;
+          while (length2 < this.pos + min5) length2 *= 2;
           if (length2 !== this.length) {
             const buf = new Uint8Array(length2);
             buf.set(this.buf);
@@ -39189,14 +42306,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
          * @param {string[]} keys
          * @param {(number | string | boolean)[]} values
          */
-        constructor(pbf, end, extent2, keys4, values3) {
+        constructor(pbf, end, extent2, keys5, values3) {
           this.properties = {};
           this.extent = extent2;
           this.type = 0;
           this.id = void 0;
           this._pbf = pbf;
           this._geometry = -1;
-          this._keys = keys4;
+          this._keys = keys5;
           this._values = values3;
           pbf.readFields(readFeature, this, end);
         }
@@ -39402,7 +42519,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_localizer();
       init_geo2();
       init_osm();
-      init_util2();
+      init_util3();
       tiler = utilTiler();
       dispatch2 = dispatch_default("loaded");
       _tileZoom = 14;
@@ -39453,23 +42570,23 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             let url = `${_osmoseUrlRoot}/issues/${z3}/${x3}/${y3}.mvt?` + utilQsString(params);
             let controller = new AbortController();
             _cache.inflightTile[tile.id] = controller;
-            fetch(url, { signal: controller.signal }).then((data) => data.arrayBuffer()).then((data) => {
+            fetch(url, { signal: controller.signal }).then((data2) => data2.arrayBuffer()).then((data2) => {
               delete _cache.inflightTile[tile.id];
               _cache.loadedTile[tile.id] = true;
-              var vectorTile = new VectorTile(new Pbf(data));
-              data = vectorTile.layers.issues;
+              var vectorTile = new VectorTile(new Pbf(data2));
+              data2 = vectorTile.layers.issues;
               const features = [];
-              for (let i3 = 0; i3 < data.length; i3++) {
-                features.push(data.feature(i3).toGeoJSON(x3, y3, z3));
+              for (let i3 = 0; i3 < data2.length; i3++) {
+                features.push(data2.feature(i3).toGeoJSON(x3, y3, z3));
               }
               if (features.length > 0) {
                 features.forEach((issue) => {
-                  const { item, class: cl, uuid: id2 } = issue.properties;
+                  const { item, class: cl, uuid: id3 } = issue.properties;
                   const itemType = `${item}-${cl}`;
                   if (itemType in _osmoseData.icons) {
                     let loc = issue.geometry.coordinates;
                     loc = preventCoincident(loc);
-                    let d2 = new QAItem(loc, this, itemType, id2, { item });
+                    let d2 = new QAItem(loc, this, itemType, id3, { item });
                     if (item === 8300 || item === 8360) {
                       d2.elems = [];
                     }
@@ -39490,9 +42607,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return Promise.resolve(issue);
           }
           const url = `${_osmoseUrlRoot}/issue/${issue.id}?langs=${_mainLocalizer.localeCode()}`;
-          const cacheDetails = (data) => {
-            issue.elems = data.elems.map((e3) => e3.type.substring(0, 1) + e3.id);
-            issue.detail = data.subtitle ? g2(data.subtitle.auto) : "";
+          const cacheDetails = (data2) => {
+            issue.elems = data2.elems.map((e3) => e3.type.substring(0, 1) + e3.id);
+            issue.detail = data2.subtitle ? g2(data2.subtitle.auto) : "";
             this.replaceItem(issue);
           };
           return json_default(url).then(cacheDetails).then(() => issue);
@@ -39507,8 +42624,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           const allRequests = items.map((itemType) => {
             if (itemType in _cache.strings[locale3]) return null;
-            const cacheData = (data) => {
-              const [cat = { items: [] }] = data.categories;
+            const cacheData = (data2) => {
+              const [cat = { items: [] }] = data2.categories;
               const [item2 = { class: [] }] = cat.items;
               const [cl2 = null] = item2.class;
               if (!cl2) {
@@ -39565,15 +42682,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         // Get all cached QAItems covering the viewport
         getItems(projection2) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           return _cache.rtree.search(bbox2).map((d2) => d2.data);
         },
         // Get a QAItem from cache
         // NOTE: Don't change method name until UI v3 is merged
-        getError(id2) {
-          return _cache.data[id2];
+        getError(id3) {
+          return _cache.data[id3];
         },
         // get the name of the icon to display for this item
         getIcon(itemType) {
@@ -39615,9 +42732,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     let tiler7 = utilTiler().zoomExtent([z22, z22]);
     return (tiler7.getTiles(projection2) || []).map((tile) => tile.extent);
   }
-  function searchLimited(limit, projection2, rtree) {
-    limit ||= 5;
-    return partitionViewport(projection2).flatMap((extent2) => rtree.search(extent2.bbox()).slice(0, limit)).map((result2) => result2.data);
+  function searchLimited(limit2, projection2, rtree) {
+    limit2 ||= 5;
+    return partitionViewport(projection2).flatMap((extent2) => rtree.search(extent2.bbox()).slice(0, limit2)).map((result2) => result2.data);
   }
   var init_partition2 = __esm({
     "modules/util/partition.ts"() {
@@ -39653,11 +42770,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (!data) {
+    }).then(function(data2) {
+      if (!data2) {
         throw new Error("No Data");
       }
-      loadTileDataToCache(data, tile, which);
+      loadTileDataToCache(data2, tile, which);
       if (which === "images") {
         dispatch3.call("loadedImages");
       } else if (which === "signs") {
@@ -39670,8 +42787,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       delete cache.inflight[tileId];
     });
   }
-  function loadTileDataToCache(data, tile, which) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache(data2, tile, which) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     let features, cache, layer, i3, feature3, loc, d2;
     if (vectorTile.layers.hasOwnProperty("image")) {
       features = [];
@@ -39792,7 +42909,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_rbush();
       init_vector_tile();
       init_geo2();
-      init_util2();
+      init_util3();
       init_services();
       init_partition2();
       accessToken = "MLY|4100327730013843|5bb78b81720791946a9a7b956c57b7cf";
@@ -39837,18 +42954,18 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         },
         // Get visible images
         images: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _mlyCache.images.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _mlyCache.images.rtree);
         },
         // Get visible traffic signs
         signs: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _mlyCache.signs.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _mlyCache.signs.rtree);
         },
         // Get visible map (point) features
         mapFeatures: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _mlyCache.points.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _mlyCache.points.rtree);
         },
         // Get cached image by id
         cachedImage: function(imageId) {
@@ -39857,9 +42974,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         // Get visible sequences
         sequences: function(projection2) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           const sequenceIds = {};
           let lineStrings2 = [];
           _mlyCache.images.rtree.search(bbox2).forEach(function(d2) {
@@ -40093,8 +43210,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return _mlyActiveImage;
         },
         // Return a list of detection objects for the given id
-        getDetections: function(id2) {
-          return loadData(`${apiUrl}/${id2}/detections?access_token=${accessToken}&fields=id,value,image`);
+        getDetections: function(id3) {
+          return loadData(`${apiUrl}/${id3}/detections?access_token=${accessToken}&fields=id,value,image`);
         },
         // Set the currently visible image
         setActiveImage: function(image) {
@@ -40152,20 +43269,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           function showDetections(detections) {
             const tagComponent = _mlyViewer.getComponent("tag");
-            detections.forEach(function(data) {
-              const tag = makeTag(data);
+            detections.forEach(function(data2) {
+              const tag = makeTag(data2);
               if (tag) {
                 tagComponent.add([tag]);
               }
             });
           }
-          function makeTag(data) {
-            const valueParts = data.value.split("--");
+          function makeTag(data2) {
+            const valueParts = data2.value.split("--");
             if (!valueParts.length) return;
             let tag;
             let text;
             let color2 = 16777215;
-            if (_mlyHighlightedDetection === data.id) {
+            if (_mlyHighlightedDetection === data2.id) {
               color2 = 16776960;
               text = valueParts[1];
               if (text === "flat" || text === "discrete" || text === "sign") {
@@ -40175,7 +43292,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               text = text.charAt(0).toUpperCase() + text.slice(1);
               _mlyHighlightedDetection = null;
             }
-            var decodedGeometry = window.atob(data.geometry);
+            var decodedGeometry = window.atob(data2.geometry);
             var uintArray = new Uint8Array(decodedGeometry.length);
             for (var i3 = 0; i3 < decodedGeometry.length; i3++) {
               uintArray[i3] = decodedGeometry.charCodeAt(i3);
@@ -40185,7 +43302,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             const geometries = layer.feature(0).loadGeometry();
             const polygon2 = geometries.map((ring) => ring.map((point3) => [point3.x / layer.extent, point3.y / layer.extent]));
             tag = new mapillary.OutlineTag(
-              data.id,
+              data2.id,
               new mapillary.PolygonGeometry(polygon2[0]),
               {
                 text,
@@ -40217,7 +43334,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     "modules/services/maprules.js"() {
       "use strict";
       init_tags2();
-      init_util2();
+      init_util3();
       init_validation();
       buildRuleChecks = function() {
         return {
@@ -40447,7 +43564,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_src21();
       init_rbush();
       init_geo2();
-      init_util2();
+      init_util3();
       init_core();
       init_id();
       apibase = nominatimApiUrl;
@@ -40601,12 +43718,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       module.exports = rbush;
       module.exports.default = rbush;
       var quickselect3 = require_quickselect();
-      function rbush(maxEntries, format2) {
-        if (!(this instanceof rbush)) return new rbush(maxEntries, format2);
+      function rbush(maxEntries, format3) {
+        if (!(this instanceof rbush)) return new rbush(maxEntries, format3);
         this._maxEntries = Math.max(4, maxEntries || 9);
         this._minEntries = Math.max(2, Math.ceil(this._maxEntries * 0.4));
-        if (format2) {
-          this._initFormat(format2);
+        if (format3) {
+          this._initFormat(format3);
         }
         this.clear();
       }
@@ -40649,15 +43766,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           return false;
         },
-        load: function(data) {
-          if (!(data && data.length)) return this;
-          if (data.length < this._minEntries) {
-            for (var i3 = 0, len = data.length; i3 < len; i3++) {
-              this.insert(data[i3]);
+        load: function(data2) {
+          if (!(data2 && data2.length)) return this;
+          if (data2.length < this._minEntries) {
+            for (var i3 = 0, len = data2.length; i3 < len; i3++) {
+              this.insert(data2[i3]);
             }
             return this;
           }
-          var node = this._build(data.slice(), 0, data.length - 1, 0);
+          var node = this._build(data2.slice(), 0, data2.length - 1, 0);
           if (!this.data.children.length) {
             this.data = node;
           } else if (this.data.height === node.height) {
@@ -40721,8 +43838,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         toJSON: function() {
           return this.data;
         },
-        fromJSON: function(data) {
-          this.data = data;
+        fromJSON: function(data2) {
+          this.data = data2;
           return this;
         },
         _all: function(node, result2) {
@@ -40875,13 +43992,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             } else calcBBox2(path[i3], this.toBBox);
           }
         },
-        _initFormat: function(format2) {
+        _initFormat: function(format3) {
           var compareArr = ["return a", " - b", ";"];
-          this.compareMinX = new Function("a", "b", compareArr.join(format2[0]));
-          this.compareMinY = new Function("a", "b", compareArr.join(format2[1]));
+          this.compareMinX = new Function("a", "b", compareArr.join(format3[0]));
+          this.compareMinY = new Function("a", "b", compareArr.join(format3[1]));
           this.toBBox = new Function(
             "a",
-            "return {minX: a" + format2[0] + ", minY: a" + format2[1] + ", maxX: a" + format2[2] + ", maxY: a" + format2[3] + "};"
+            "return {minX: a" + format3[0] + ", minY: a" + format3[1] + ", maxX: a" + format3[2] + ", maxY: a" + format3[3] + "};"
           );
         }
       };
@@ -41058,10 +44175,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var rbush = require_rbush();
       var lineclip2 = require_lineclip();
       module.exports = whichPolygon5;
-      function whichPolygon5(data) {
+      function whichPolygon5(data2) {
         var bboxes = [];
-        for (var i3 = 0; i3 < data.features.length; i3++) {
-          var feature3 = data.features[i3];
+        for (var i3 = 0; i3 < data2.features.length; i3++) {
+          var feature3 = data2.features[i3];
           if (!feature3.geometry) continue;
           var coords = feature3.geometry.coordinates;
           if (feature3.geometry.type === "Polygon") {
@@ -41569,14 +44686,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           this.locationIndex = void 0;
           this.warnings = [];
         }
-        buildMatchIndex(data) {
+        buildMatchIndex(data2) {
           const that = this;
           if (that.matchIndex)
             return;
           that.matchIndex = /* @__PURE__ */ new Map();
           const seenTree = /* @__PURE__ */ new Map();
-          Object.keys(data).forEach((tkv) => {
-            const category = data[tkv];
+          Object.keys(data2).forEach((tkv) => {
+            const category = data2[tkv];
             const parts = tkv.split("/", 3);
             const t4 = parts[0];
             const k3 = parts[1];
@@ -41701,14 +44818,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return t4 === "flags" || t4 === "transit" || k3 === "landuse" || v3 === "atm" || v3 === "bicycle_parking" || v3 === "car_sharing" || v3 === "caravan_site" || v3 === "charging_station" || v3 === "dog_park" || v3 === "parking" || v3 === "phone" || v3 === "playground" || v3 === "post_box" || v3 === "public_bookcase" || v3 === "recycling" || v3 === "vending_machine";
           }
         }
-        buildLocationIndex(data, loco) {
+        buildLocationIndex(data2, loco) {
           const that = this;
           if (that.locationIndex)
             return;
           that.itemLocation = /* @__PURE__ */ new Map();
           that.locationSets = /* @__PURE__ */ new Map();
-          Object.keys(data).forEach((tkv) => {
-            const items = data[tkv].items;
+          Object.keys(data2).forEach((tkv) => {
+            const items = data2[tkv].items;
             if (!Array.isArray(items) || !items.length)
               return;
             items.forEach((item) => {
@@ -42349,8 +45466,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     localeDateString: () => localeDateString,
     localeTimestamp: () => localeTimestamp
   });
-  function timeSince(date) {
-    const seconds2 = Math.floor((+/* @__PURE__ */ new Date() - +date) / 1e3);
+  function timeSince(date2) {
+    const seconds2 = Math.floor((+/* @__PURE__ */ new Date() - +date2) / 1e3);
     const s2 = (n3) => Math.floor(seconds2 / n3);
     if (s2(60 * 60 * 24 * 365) > 1) return [s2(60 * 60 * 24 * 365), "years"];
     if (s2(60 * 60 * 24 * 30) > 1) return [s2(60 * 60 * 24 * 30), "months"];
@@ -42359,27 +45476,27 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (s2(60) > 1) return [s2(60), "minutes"];
     return [s2(1), "seconds"];
   }
-  function getRelativeDate(date) {
+  function getRelativeDate(date2) {
     const preferredLanguage = _mainLocalizer.localeCode();
     if (typeof Intl === "undefined" || typeof Intl.RelativeTimeFormat === "undefined") {
-      return `on ${date.toLocaleDateString(preferredLanguage)}`;
+      return `on ${date2.toLocaleDateString(preferredLanguage)}`;
     }
-    const [number4, units] = timeSince(date);
+    const [number4, units] = timeSince(date2);
     if (!Number.isFinite(number4)) return "-";
     return new Intl.RelativeTimeFormat(preferredLanguage).format(-number4, units);
   }
-  function localeDateString(date) {
-    if (!date) return null;
+  function localeDateString(date2) {
+    if (!date2) return null;
     const options = {
       day: "numeric",
       month: "short",
       year: "numeric"
     };
-    const d2 = new Date(date);
+    const d2 = new Date(date2);
     if (Number.isNaN(d2.getTime())) return null;
     return d2.toLocaleDateString(_mainLocalizer.localeCode(), options);
   }
-  function localeTimestamp(date) {
+  function localeTimestamp(date2) {
     const options = {
       day: "2-digit",
       month: "2-digit",
@@ -42388,9 +45505,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       minute: "numeric",
       second: "numeric"
     };
-    return date.toLocaleString(_mainLocalizer.localeCode(), options);
+    return date2.toLocaleString(_mainLocalizer.localeCode(), options);
   }
-  var init_date2 = __esm({
+  var init_date3 = __esm({
     "modules/util/date.ts"() {
       "use strict";
       init_localizer();
@@ -42443,23 +45560,23 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       bbBottomRight: [bbox2.minY, bbox2.maxX].join(",")
     }, true);
     if (nextPage > maxPages) return;
-    var id2 = tile.id + "," + String(nextPage);
-    if (cache.loaded[id2] || cache.inflight[id2]) return;
+    var id3 = tile.id + "," + String(nextPage);
+    if (cache.loaded[id3] || cache.inflight[id3]) return;
     var controller = new AbortController();
-    cache.inflight[id2] = controller;
+    cache.inflight[id3] = controller;
     var options = {
       method: "POST",
       signal: controller.signal,
       body: params,
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     };
-    json_default(url, options).then(function(data) {
-      cache.loaded[id2] = true;
-      delete cache.inflight[id2];
-      if (!data || !data.currentPageItems || !data.currentPageItems.length) {
+    json_default(url, options).then(function(data2) {
+      cache.loaded[id3] = true;
+      delete cache.inflight[id3];
+      if (!data2 || !data2.currentPageItems || !data2.currentPageItems.length) {
         throw new Error("No Data");
       }
-      var features = data.currentPageItems.map(function(item) {
+      var features = data2.currentPageItems.map(function(item) {
         var loc = [+item.lng, +item.lat];
         var d2;
         if (which === "images") {
@@ -42491,7 +45608,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         };
       });
       cache.rtree.load(features);
-      if (data.currentPageItems.length === maxResults) {
+      if (data2.currentPageItems.length === maxResults) {
         cache.nextPage[tile.id] = nextPage + 1;
         loadNextTilePage(which, currZoom, url, tile);
       } else {
@@ -42501,8 +45618,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         dispatch4.call("loadedImages");
       }
     }).catch(function() {
-      cache.loaded[id2] = true;
-      delete cache.inflight[id2];
+      cache.loaded[id3] = true;
+      delete cache.inflight[id3];
     });
   }
   var apibase2, maxResults, tileZoom, tiler2, dispatch4, imgZoom, _oscCache, _oscSelectedImage, _loadViewerPromise2, kartaview_default;
@@ -42514,10 +45631,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_src13();
       init_rbush();
       init_geo2();
-      init_util2();
+      init_util3();
       init_services();
       init_partition2();
-      init_date2();
+      init_date3();
       apibase2 = "https://kartaview.org";
       maxResults = 1e3;
       tileZoom = 14;
@@ -42541,14 +45658,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           };
         },
         images: function(projection2) {
-          var limit = 5;
-          return searchLimited(limit, projection2, _oscCache.images.rtree);
+          var limit2 = 5;
+          return searchLimited(limit2, projection2, _oscCache.images.rtree);
         },
         sequences: function(projection2) {
           var viewport = projection2.clipExtent();
-          var min4 = [viewport[0][0], viewport[1][1]];
-          var max4 = [viewport[1][0], viewport[0][1]];
-          var bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          var min5 = [viewport[0][0], viewport[1][1]];
+          var max5 = [viewport[1][0], viewport[0][1]];
+          var bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           var sequenceKeys = {};
           _oscCache.images.rtree.search(bbox2).forEach(function(d2) {
             sequenceKeys[d2.data.sequence_id] = true;
@@ -42744,8 +45861,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   });
 
   // node_modules/@rapideditor/country-coder/dist/country-coder.mjs
-  function canonicalID(id2) {
-    const s2 = id2 || "";
+  function canonicalID(id3) {
+    const s2 = id3 || "";
     if (s2.charAt(0) === ".") {
       return s2.toUpperCase();
     } else {
@@ -42787,10 +45904,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         return levels.indexOf(_featuresByCode[groupID1].properties.level) - levels.indexOf(_featuresByCode[groupID2].properties.level);
       });
       if (feature3.properties.members) {
-        feature3.properties.members.sort((id1, id2) => {
-          const diff = levels.indexOf(_featuresByCode[id1].properties.level) - levels.indexOf(_featuresByCode[id2].properties.level);
+        feature3.properties.members.sort((id1, id22) => {
+          const diff = levels.indexOf(_featuresByCode[id1].properties.level) - levels.indexOf(_featuresByCode[id22].properties.level);
           if (diff === 0) {
-            return borders2.features.indexOf(_featuresByCode[id1]) - borders2.features.indexOf(_featuresByCode[id2]);
+            return borders2.features.indexOf(_featuresByCode[id1]) - borders2.features.indexOf(_featuresByCode[id22]);
           }
           return diff;
         });
@@ -42878,8 +45995,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (!props.roadSpeedUnit)
           props.roadSpeedUnit = "km/h";
       } else if (props.members) {
-        const vals = Array.from(new Set(props.members.map((id2) => {
-          const member = _featuresByCode[id2];
+        const vals = Array.from(new Set(props.members.map((id3) => {
+          const member = _featuresByCode[id3];
           if (member.geometry) {
             return member.properties.roadSpeedUnit || "km/h";
           } else {
@@ -42896,8 +46013,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (!props.roadHeightUnit)
           props.roadHeightUnit = "m";
       } else if (props.members) {
-        const vals = Array.from(new Set(props.members.map((id2) => {
-          const member = _featuresByCode[id2];
+        const vals = Array.from(new Set(props.members.map((id3) => {
+          const member = _featuresByCode[id3];
           if (member.geometry) {
             return member.properties.roadHeightUnit || "m";
           } else {
@@ -42914,8 +46031,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (!props.driveSide)
           props.driveSide = "right";
       } else if (props.members) {
-        const vals = Array.from(new Set(props.members.map((id2) => {
-          const member = _featuresByCode[id2];
+        const vals = Array.from(new Set(props.members.map((id3) => {
+          const member = _featuresByCode[id3];
           if (member.geometry) {
             return member.properties.driveSide || "right";
           } else {
@@ -42929,8 +46046,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     function loadCallingCodes(feature3) {
       const props = feature3.properties;
       if (!feature3.geometry && props.members) {
-        props.callingCodes = Array.from(new Set(props.members.reduce((array2, id2) => {
-          const member = _featuresByCode[id2];
+        props.callingCodes = Array.from(new Set(props.members.reduce((array2, id3) => {
+          const member = _featuresByCode[id3];
           if (member.geometry && member.properties.callingCodes) {
             return array2.concat(member.properties.callingCodes);
           }
@@ -42980,16 +46097,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     function cacheFeatureByIDs(feature3) {
       const ids = [];
       for (const prop of identifierProps) {
-        const id2 = feature3.properties[prop];
-        if (id2) {
-          ids.push(id2);
+        const id3 = feature3.properties[prop];
+        if (id3) {
+          ids.push(id3);
         }
       }
-      for (const alias of feature3.properties.aliases || []) {
-        ids.push(alias);
+      for (const alias2 of feature3.properties.aliases || []) {
+        ids.push(alias2);
       }
-      for (const id2 of ids) {
-        const cid = canonicalID(id2);
+      for (const id3 of ids) {
+        const cid = canonicalID(id3);
         _featuresByCode[cid] = feature3;
       }
     }
@@ -43049,17 +46166,17 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     });
     return match || null;
   }
-  function featureForID(id2) {
+  function featureForID(id3) {
     let stringID;
-    if (typeof id2 === "number") {
-      stringID = id2.toString();
+    if (typeof id3 === "number") {
+      stringID = id3.toString();
       if (stringID.length === 1) {
         stringID = "00" + stringID;
       } else if (stringID.length === 2) {
         stringID = "0" + stringID;
       }
     } else {
-      stringID = canonicalID(id2);
+      stringID = canonicalID(id3);
     }
     return _featuresByCode[stringID] || null;
   }
@@ -43179,8 +46296,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     return returnFeatures;
   }
-  function featuresIn(id2, strict) {
-    const feature22 = featureForID(id2);
+  function featuresIn(id3, strict) {
+    const feature22 = featureForID(id3);
     if (!feature22)
       return [];
     const features = [];
@@ -43193,8 +46310,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     return features;
   }
-  function aggregateFeature(id2) {
-    const features = featuresIn(id2, false);
+  function aggregateFeature(id3) {
+    const features = featuresIn(id3, false);
     if (features.length === 0)
       return null;
     let aggregateCoordinates = [];
@@ -43724,8 +46841,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       viewerContext.select("photo-frame.pannellum-frame").classed("hide", false);
       return module;
     };
-    module.selectPhoto = function(data, keepOrientation) {
-      const key = data.image_path;
+    module.selectPhoto = function(data2, keepOrientation) {
+      const key = data2.image_path;
       _activeSceneKey = key;
       if (!_currScenes.includes(key)) {
         let newSceneOptions = {
@@ -43734,9 +46851,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           compass: false,
           yaw: 0,
           type: "equirectangular",
-          preview: data.preview_path,
-          panorama: data.image_path,
-          northOffset: data.ca
+          preview: data2.preview_path,
+          panorama: data2.image_path,
+          northOffset: data2.ca
         };
         _currScenes.push(key);
         _pannellumViewer3.addScene(key, newSceneOptions);
@@ -43788,7 +46905,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_src6();
       init_src();
-      init_util2();
+      init_util3();
       pannellumViewerCSS = "pannellum/pannellum.css";
       pannellumViewerJS = "pannellum/pannellum.js";
       ;
@@ -43860,11 +46977,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       context2.select("photo-frame.plane-frame").classed("hide", false);
       return module;
     };
-    module.selectPhoto = function(data) {
+    module.selectPhoto = function(data2) {
       dispatch11.call("viewerChanged");
       loadImage2(_photo, "");
       _planeWrapper.classed("show-loader", true);
-      loadImage2(_photo, data.image_path).then((selection3) => {
+      loadImage2(_photo, data2.image_path).then((selection3) => {
         _planeWrapper.classed("show-loader", false);
         const { naturalWidth, naturalHeight } = selection3.node();
         _photoDimensions = [naturalWidth, naturalHeight];
@@ -43882,7 +46999,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_src();
       init_src13();
-      init_util2();
+      init_util3();
       ;
     }
   });
@@ -43988,7 +47105,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       } = properties;
       const lane_number = parseInt((lane_code.match(/^[0-9]+/) || [])[0], 10);
       const direction = lane_number % 2 === 0 ? directionEnum.backward : directionEnum.forward;
-      const data = {
+      const data2 = {
         service: "photo",
         loc,
         key,
@@ -44002,13 +47119,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         captured_at: new Date(captured_at),
         is_sphere: image_type === "360"
       };
-      cache.points.set(key, data);
+      cache.points.set(key, data2);
       return {
         minX: loc[0],
         minY: loc[1],
         maxX: loc[0],
         maxY: loc[1],
-        data
+        data: data2
       };
     });
     _vegbilderCache.rtree.load(features);
@@ -44091,10 +47208,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       KRYSSDEL: junction_part,
       SIDEANLEGGSDEL: services_part,
       ANKERPUNKT: anker_point,
-      AAR: year
+      AAR: year2
     } = properties;
     let reference;
-    if (year >= 2020) {
+    if (year2 >= 2020) {
       reference = `${road_class}${road_status}${road_number} S${section}D${subsection}`;
       if (junction_part) {
         reference = `${reference} M${anker_point} KD${junction_part}`;
@@ -44116,9 +47233,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_rbush();
       init_country_coder();
       init_localizer();
-      init_util2();
+      init_util3();
       init_partition2();
-      init_date2();
+      init_date3();
       init_geo2();
       init_pannellum_photo();
       init_plane_photo();
@@ -44162,18 +47279,18 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
         },
         images: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _vegbilderCache.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _vegbilderCache.rtree);
         },
         sequences: function(projection2) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           const seen = /* @__PURE__ */ new Set();
           const line_strings = [];
-          for (const { data } of _vegbilderCache.rtree.search(bbox2)) {
-            const sequence = _vegbilderCache.image2sequence_map.get(data.key);
+          for (const { data: data2 } of _vegbilderCache.rtree.search(bbox2)) {
+            const sequence = _vegbilderCache.image2sequence_map.get(data2.key);
             if (!sequence) continue;
             const { key, geometry: geometry2, images } = sequence;
             if (seen.has(key)) continue;
@@ -44589,7 +47706,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
       }
     };
-    oauth2.rawxhr = function(method2, url, access_token, data, headers, callback) {
+    oauth2.rawxhr = function(method2, url, access_token, data2, headers, callback) {
       headers = headers || { "Content-Type": "application/x-www-form-urlencoded" };
       if (access_token) {
         headers.Authorization = "Bearer " + access_token;
@@ -44610,7 +47727,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       xhr.open(method2, url, true);
       for (var h2 in headers)
         xhr.setRequestHeader(h2, headers[h2]);
-      xhr.send(data);
+      xhr.send(data2);
       return xhr;
     };
     oauth2.preauth = function(val) {
@@ -44921,15 +48038,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     });
     _deferred.add(handle);
     function parseChild(child) {
-      var parser2 = jsonparsers[child.type];
-      if (!parser2) return null;
+      var parser3 = jsonparsers[child.type];
+      if (!parser3) return null;
       var uid;
       uid = osmEntity.id.fromOSM(child.type, child.id);
       if (options.skipSeen) {
         if (_tileCache.seen[uid]) return null;
         _tileCache.seen[uid] = true;
       }
-      return parser2(child, uid);
+      return parser3(child, uid);
     }
   }
   function parseUserJSON(payload, callback, options) {
@@ -45032,9 +48149,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_jxon();
       init_geo2();
       init_osm();
-      init_util2();
+      init_util3();
       init_localizer();
-      init_util();
+      init_util2();
       init_id();
       tiler4 = utilTiler();
       dispatch6 = dispatch_default("apiStatusChange", "authLoading", "authDone", "change", "loading", "loaded", "loadedNotes");
@@ -45204,8 +48321,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           } else {
             var url = apiUrlroot + path;
             var controller = new AbortController();
-            json_default(url, { signal: controller.signal }).then(function(data) {
-              done(null, data);
+            json_default(url, { signal: controller.signal }).then(function(data2) {
+              done(null, data2);
             }).catch(function(err) {
               if (err.name === "AbortError") return;
               var match = err.message.match(/^\d{3}/);
@@ -45222,9 +48339,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         // nodes and members). Parent relations are not included, see `loadEntityRelations`.
         // GET /api/0.6/node/#id
         // GET /api/0.6/[way|relation]/#id/full
-        loadEntity: function(id2, callback) {
-          var type2 = osmEntity.id.type(id2);
-          var osmID = osmEntity.id.toOSM(id2);
+        loadEntity: function(id3, callback) {
+          var type2 = osmEntity.id.type(id3);
+          var osmID = osmEntity.id.toOSM(id3);
           var options = { skipSeen: false };
           this.loadFromAPI(
             "/api/0.6/" + type2 + "/" + osmID + (type2 !== "node" ? "/full" : "") + ".json",
@@ -45236,10 +48353,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         },
         // Load a single note by id , XML format
         // GET /api/0.6/notes/#id
-        loadEntityNote: function(id2, callback) {
+        loadEntityNote: function(id3, callback) {
           var options = { skipSeen: false };
           this.loadFromAPI(
-            `/api/0.6/notes/${id2}.json`,
+            `/api/0.6/notes/${id3}.json`,
             function(err, entities) {
               if (callback) callback(err, { data: entities });
             },
@@ -45248,9 +48365,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         },
         // Load a single entity with a specific version
         // GET /api/0.6/[node|way|relation]/#id/#version
-        loadEntityVersion: function(id2, version, callback) {
-          var type2 = osmEntity.id.type(id2);
-          var osmID = osmEntity.id.toOSM(id2);
+        loadEntityVersion: function(id3, version, callback) {
+          var type2 = osmEntity.id.type(id3);
+          var osmID = osmEntity.id.toOSM(id3);
           var options = { skipSeen: false };
           this.loadFromAPI(
             "/api/0.6/" + type2 + "/" + osmID + "/" + version + ".json",
@@ -45262,9 +48379,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         },
         // Load the relations of a single entity with the given.
         // GET /api/0.6/[node|way|relation]/#id/relations
-        loadEntityRelations: function(id2, callback) {
-          var type2 = osmEntity.id.type(id2);
-          var osmID = osmEntity.id.toOSM(id2);
+        loadEntityRelations: function(id3, callback) {
+          var type2 = osmEntity.id.type(id3);
+          var osmID = osmEntity.id.toOSM(id3);
           var options = { skipSeen: false };
           this.loadFromAPI(
             "/api/0.6/" + type2 + "/" + osmID + "/relations.json",
@@ -45283,8 +48400,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           var groups2 = utilArrayGroupBy(utilArrayUniq(ids), osmEntity.id.type);
           Object.keys(groups2).forEach(function(k3) {
             var type2 = k3 + "s";
-            var osmIDs = groups2[k3].map(function(id2) {
-              return osmEntity.id.toOSM(id2);
+            var osmIDs = groups2[k3].map(function(id3) {
+              return osmEntity.id.toOSM(id3);
             });
             var options = { skipSeen: false };
             utilArrayChunk(osmIDs, 150).forEach(function(arr) {
@@ -45474,8 +48591,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         status: function(callback) {
           const url = `${apiUrlroot}/api/capabilities.json`;
           var errback = wrapcb(this, done, _connectionID);
-          json_default(url).then(function(data) {
-            errback(null, data);
+          json_default(url).then(function(data2) {
+            errback(null, data2);
           }).catch(function(err) {
             errback(err.message);
           });
@@ -45755,8 +48872,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
                 target.rtree = new RBush().fromJSON(source.rtree.toJSON());
               } else if (k3 === "note") {
                 target.note = {};
-                Object.keys(source.note).forEach(function(id2) {
-                  target.note[id2] = osmNote(source.note[id2]);
+                Object.keys(source.note).forEach(function(id3) {
+                  target.note[id3] = osmNote(source.note[id3]);
                 });
               } else {
                 target[k3] = JSON.parse(JSON.stringify(source[k3]));
@@ -45840,16 +48957,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         // get all cached notes covering the viewport
         notes: function(projection2) {
           var viewport = projection2.clipExtent();
-          var min4 = [viewport[0][0], viewport[1][1]];
-          var max4 = [viewport[1][0], viewport[0][1]];
-          var bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          var min5 = [viewport[0][0], viewport[1][1]];
+          var max5 = [viewport[1][0], viewport[0][1]];
+          var bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           return _noteCache.rtree.search(bbox2).map(function(d2) {
             return d2.data;
           });
         },
         // get a single note from the cache
-        getNote: function(id2) {
-          return _noteCache.note[id2];
+        getNote: function(id3) {
+          return _noteCache.note[id3];
         },
         // remove a single note from the cache
         removeNote: function(note) {
@@ -45898,7 +49015,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_compat2();
       init_src21();
       init_localizer();
-      init_util2();
+      init_util3();
       apibase3 = "https://wiki.openstreetmap.org/w/api.php";
       _inflight2 = {};
       _wikibaseCache = {};
@@ -45955,9 +49072,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return acc;
           }, {});
         },
-        toSitelink: function(key, value) {
-          var result2 = value ? "Tag:" + key + "=" + value : "Key:" + key;
-          return result2.replace(/_/g, " ").trim();
+        toSitelink: function(key, value, isHistorical) {
+          var type2 = value ? "Tag" : "Key";
+          var prefix = "";
+          if (isHistorical) {
+            prefix = `OpenHistoricalMap/Tags/${type2}/`;
+          } else {
+            prefix = type2 + ":";
+          }
+          return (prefix + (value ? `${key}=${value}` : key).replace(/_/g, " ")).trim();
         },
         /**
          * Converts text like `tag:...=...` into clickable links
@@ -45992,8 +49115,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           var titles = [];
           var result2 = {};
           var rtypeSitelink = params.key === "type" && params.value ? ("Relation:" + params.value).replace(/_/g, " ").trim() : false;
+          var rtypeSitelinkHistorical = params.key === "type" && params.value ? "OpenHistoricalMap/Tags/Relation/" + params.value.replace(/_/g, " ").trim() : false;
           var keySitelink = params.key ? this.toSitelink(params.key) : false;
+          var keySitelinkHistorical = params.key ? this.toSitelink(params.key, null, true) : false;
           var tagSitelink = params.key && params.value ? this.toSitelink(params.key, params.value) : false;
+          var tagSitelinkHistorical = params.key && params.value ? this.toSitelink(params.key, params.value, true) : false;
           if (params.langCodes) {
             params.langCodes.forEach(function(langCode) {
               if (_localeIDs[langCode] === void 0) {
@@ -46004,24 +49130,30 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             });
           }
           if (rtypeSitelink) {
-            if (_wikibaseCache[rtypeSitelink]) {
+            if (_wikibaseCache[rtypeSitelinkHistorical]) {
+              result2.rtype = _wikibaseCache[rtypeSitelinkHistorical];
+            } else if (_wikibaseCache[rtypeSitelink]) {
               result2.rtype = _wikibaseCache[rtypeSitelink];
             } else {
-              titles.push(rtypeSitelink);
+              titles.push(rtypeSitelink, rtypeSitelinkHistorical);
             }
           }
           if (keySitelink) {
-            if (_wikibaseCache[keySitelink]) {
+            if (_wikibaseCache[keySitelinkHistorical]) {
+              result2.key = _wikibaseCache[keySitelinkHistorical];
+            } else if (_wikibaseCache[keySitelink]) {
               result2.key = _wikibaseCache[keySitelink];
             } else {
-              titles.push(keySitelink);
+              titles.push(keySitelink, keySitelinkHistorical);
             }
           }
           if (tagSitelink) {
-            if (_wikibaseCache[tagSitelink]) {
+            if (_wikibaseCache[tagSitelinkHistorical]) {
+              result2.tag = _wikibaseCache[tagSitelinkHistorical];
+            } else if (_wikibaseCache[tagSitelink]) {
               result2.tag = _wikibaseCache[tagSitelink];
             } else {
-              titles.push(tagSitelink);
+              titles.push(tagSitelink, tagSitelinkHistorical);
             }
           }
           if (!titles.length) {
@@ -46051,12 +49183,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               Object.values(d2.entities).forEach(function(res) {
                 if (res.missing !== "") {
                   var title = res.sitelinks.wiki.title;
-                  if (title === rtypeSitelink) {
+                  if (title === rtypeSitelinkHistorical) {
+                    _wikibaseCache[rtypeSitelinkHistorical] = res;
+                    result2.rtype = res;
+                  } else if (title === rtypeSitelink) {
                     _wikibaseCache[rtypeSitelink] = res;
                     result2.rtype = res;
+                  } else if (title === keySitelinkHistorical) {
+                    _wikibaseCache[keySitelinkHistorical] = res;
+                    result2.key = res;
                   } else if (title === keySitelink) {
                     _wikibaseCache[keySitelink] = res;
                     result2.key = res;
+                  } else if (title === tagSitelinkHistorical) {
+                    _wikibaseCache[tagSitelinkHistorical] = res;
+                    result2.tag = res;
                   } else if (title === tagSitelink) {
                     _wikibaseCache[tagSitelink] = res;
                     result2.tag = res;
@@ -46094,12 +49235,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return code.toLowerCase();
           });
           params.langCodes = langCodes;
-          this.getEntity(params, function(err, data) {
+          this.getEntity(params, function(err, data2) {
             if (err) {
               callback(err);
               return;
             }
-            var entity = data.rtype || data.tag || data.key;
+            var entity = data2.rtype || data2.tag || data2.key;
             if (!entity) {
               callback("No entity");
               return;
@@ -46138,9 +49279,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
                 });
               }
             }
-            var rtypeWiki = that.monolingualClaimToValueObj(data.rtype, "P31");
-            var tagWiki = that.monolingualClaimToValueObj(data.tag, "P31");
-            var keyWiki = that.monolingualClaimToValueObj(data.key, "P31");
+            var rtypeWiki = that.monolingualClaimToValueObj(data2.rtype, "P31");
+            var tagWiki = that.monolingualClaimToValueObj(data2.tag, "P31");
+            var keyWiki = that.monolingualClaimToValueObj(data2.key, "P31");
             var wikis = [rtypeWiki, tagWiki, keyWiki];
             for (i3 in wikis) {
               var wiki = wikis[i3];
@@ -46203,11 +49344,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function loadNextTilePage2(which, url, tile) {
     const cache = _ssCache[which];
     const nextPage = cache.nextPage[tile.id] || 0;
-    const id2 = tile.id + "," + String(nextPage);
-    if (cache.loaded[id2] || cache.inflight[id2]) return;
-    cache.inflight[id2] = getBubbles(url, tile, (response) => {
-      cache.loaded[id2] = true;
-      delete cache.inflight[id2];
+    const id3 = tile.id + "," + String(nextPage);
+    if (cache.loaded[id3] || cache.inflight[id3]) return;
+    cache.inflight[id3] = getBubbles(url, tile, (response) => {
+      cache.loaded[id3] = true;
+      delete cache.inflight[id3];
       if (!response) return;
       if (response.resourceSets[0].resources.length === maxResults2) {
         const split2 = tile.extent.split();
@@ -46288,12 +49429,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     });
   }
   function loadCanvas(imageGroup) {
-    return Promise.all(imageGroup.map(loadImage)).then((data) => {
-      let canvas = document.getElementById("ideditor-canvas" + data[0].imgInfo.face);
+    return Promise.all(imageGroup.map(loadImage)).then((data2) => {
+      let canvas = document.getElementById("ideditor-canvas" + data2[0].imgInfo.face);
       const which = { "01": 0, "02": 1, "03": 2, "10": 3, "11": 4, "12": 5 };
-      let face = data[0].imgInfo.face;
+      let face = data2[0].imgInfo.face;
       _sceneOptions.cubeMap[which[face]] = canvas.toDataURL("image/jpeg", 1);
-      return { status: "loadCanvas for face " + data[0].imgInfo.face + "ok" };
+      return { status: "loadCanvas for face " + data2[0].imgInfo.face + "ok" };
     });
   }
   function loadFaces(faceGroup) {
@@ -46687,10 +49828,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_rbush();
       init_localizer();
       init_geo2();
-      init_util2();
+      init_util3();
       init_services();
       init_partition2();
-      init_date2();
+      init_date3();
       streetsideApi = "https://dev.virtualearth.net/REST/v1/Imagery/MetaData/Streetside?mapArea={bbox}&key={key}&count={count}&uriScheme=https";
       maxResults2 = 500;
       bubbleAppKey = utilAesDecrypt("5c875730b09c6b422433e807e1ff060b6536c791dbfffcffc4c6b18a1bdba1f14593d151adb50e19e1be1ab19aef813bf135d0f103475e5c724dec94389e45d0");
@@ -46742,17 +49883,17 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
          * bubbles()
          */
         bubbles: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _ssCache.bubbles.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _ssCache.bubbles.rtree);
         },
         cachedImage: function(imageKey) {
           return _ssCache.bubbles.points[imageKey];
         },
         sequences: function(projection2) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           let seen = {};
           let results = [];
           _ssCache.bubbles.rtree.search(bbox2).forEach((d2) => {
@@ -47152,7 +50293,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_compat2();
       init_src21();
-      init_util2();
+      init_util3();
       init_localizer();
       init_tags2();
       init_id();
@@ -47202,9 +50343,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             debounce: false,
             lang: _mainLocalizer.languageCode()
           };
-          this.keys(params, function(err, data) {
+          this.keys(params, function(err, data2) {
             if (err) return;
-            data.forEach(function(d2) {
+            data2.forEach(function(d2) {
               if (d2.value === "opening_hours") return;
               _popularKeys[d2.value] = true;
             });
@@ -47485,12 +50626,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     };
     return feature2(geom, properties, options);
   }
-  function round2(num, precision3 = 0) {
+  function round2(num2, precision3 = 0) {
     if (precision3 && !(precision3 >= 0)) {
       throw new Error("precision must be a positive number");
     }
     const multiplier = Math.pow(10, precision3 || 0);
-    return Math.round(num * multiplier) / multiplier;
+    return Math.round(num2 * multiplier) / multiplier;
   }
   function radiansToLength(radians3, units = "kilometers") {
     const factor = factors[units];
@@ -47553,8 +50694,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     return area / startFactor * finalFactor;
   }
-  function isNumber2(num) {
-    return !isNaN(num) && num !== null && !Array.isArray(num);
+  function isNumber2(num2) {
+    return !isNaN(num2) && num2 !== null && !Array.isArray(num2);
   }
   function isObject2(input) {
     return input !== null && typeof input === "object" && !Array.isArray(input);
@@ -47569,17 +50710,17 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (bbox2.length !== 4 && bbox2.length !== 6) {
       throw new Error("bbox must be an Array of 4 or 6 numbers");
     }
-    bbox2.forEach((num) => {
-      if (!isNumber2(num)) {
+    bbox2.forEach((num2) => {
+      if (!isNumber2(num2)) {
         throw new Error("bbox must only contain numbers");
       }
     });
   }
-  function validateId(id2) {
-    if (!id2) {
+  function validateId(id3) {
+    if (!id3) {
       throw new Error("id is required");
     }
-    if (["string", "number"].indexOf(typeof id2) === -1) {
+    if (["string", "number"].indexOf(typeof id3) === -1) {
       throw new Error("id must be a number or a string");
     }
   }
@@ -47874,7 +51015,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   var require_fast_json_stable_stringify = __commonJS({
     "node_modules/fast-json-stable-stringify/index.js"(exports, module) {
       "use strict";
-      module.exports = function(data, opts) {
+      module.exports = function(data2, opts) {
         if (!opts) opts = {};
         if (typeof opts === "function") opts = { cmp: opts };
         var cycles = typeof opts.cycles === "boolean" ? opts.cycles : false;
@@ -47910,10 +51051,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             throw new TypeError("Converting circular structure to JSON");
           }
           var seenIndex = seen.push(node) - 1;
-          var keys4 = Object.keys(node).sort(cmp && cmp(node));
+          var keys5 = Object.keys(node).sort(cmp && cmp(node));
           out = "";
-          for (i3 = 0; i3 < keys4.length; i3++) {
-            var key = keys4[i3];
+          for (i3 = 0; i3 < keys5.length; i3++) {
+            var key = keys5[i3];
             var value = stringify4(node[key]);
             if (!value) continue;
             if (out) out += ",";
@@ -47921,7 +51062,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           seen.splice(seenIndex, 1);
           return "{" + out + "}";
-        })(data);
+        })(data2);
       };
     }
   });
@@ -48020,10 +51161,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         var Node = (
           /** @class */
           /* @__PURE__ */ (function() {
-            function Node2(key, data) {
+            function Node2(key, data2) {
               this.next = null;
               this.key = key;
-              this.data = data;
+              this.data = data2;
               this.left = null;
               this.right = null;
             }
@@ -48071,8 +51212,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           t4.right = N3.left;
           return t4;
         }
-        function insert(i3, data, t4, comparator) {
-          var node = new Node(i3, data);
+        function insert(i3, data2, t4, comparator) {
+          var node = new Node(i3, data2);
           if (t4 === null) {
             node.left = node.right = null;
             return node;
@@ -48114,7 +51255,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             right
           };
         }
-        function merge4(left, right, comparator) {
+        function merge5(left, right, comparator) {
           if (right === null) return left;
           if (left === null) return right;
           right = splay(left.key, right, comparator);
@@ -48140,12 +51281,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               this._size = 0;
               this._comparator = comparator;
             }
-            Tree2.prototype.insert = function(key, data) {
+            Tree2.prototype.insert = function(key, data2) {
               this._size++;
-              return this._root = insert(key, data, this._root, this._comparator);
+              return this._root = insert(key, data2, this._root, this._comparator);
             };
-            Tree2.prototype.add = function(key, data) {
-              var node = new Node(key, data);
+            Tree2.prototype.add = function(key, data2) {
+              var node = new Node(key, data2);
               if (this._root === null) {
                 node.left = node.right = null;
                 this._size++;
@@ -48273,18 +51414,18 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               return this;
             };
             Tree2.prototype.keys = function() {
-              var keys4 = [];
+              var keys5 = [];
               this.forEach(function(_a2) {
                 var key = _a2.key;
-                return keys4.push(key);
+                return keys5.push(key);
               });
-              return keys4;
+              return keys5;
             };
             Tree2.prototype.values = function() {
               var values3 = [];
               this.forEach(function(_a2) {
-                var data = _a2.data;
-                return values3.push(data);
+                var data2 = _a2.data;
+                return values3.push(data2);
               });
               return values3;
             };
@@ -48377,21 +51518,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             Tree2.prototype.toList = function() {
               return toList(this._root);
             };
-            Tree2.prototype.load = function(keys4, values3, presort) {
+            Tree2.prototype.load = function(keys5, values3, presort) {
               if (values3 === void 0) {
                 values3 = [];
               }
               if (presort === void 0) {
                 presort = false;
               }
-              var size2 = keys4.length;
+              var size2 = keys5.length;
               var comparator = this._comparator;
-              if (presort) sort2(keys4, values3, 0, size2 - 1, comparator);
+              if (presort) sort2(keys5, values3, 0, size2 - 1, comparator);
               if (this._root === null) {
-                this._root = loadRecursive(keys4, values3, 0, size2);
+                this._root = loadRecursive(keys5, values3, 0, size2);
                 this._size = size2;
               } else {
-                var mergedList = mergeLists(this.toList(), createList(keys4, values3), comparator);
+                var mergedList = mergeLists(this.toList(), createList(keys5, values3), comparator);
                 size2 = this._size + size2;
                 this._root = sortedListToBST({
                   head: mergedList
@@ -48436,7 +51577,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               } else {
                 left = insert(newKey, newData, left, comparator);
               }
-              this._root = merge4(left, right, comparator);
+              this._root = merge5(left, right, comparator);
             };
             Tree2.prototype.split = function(key) {
               return split2(key, this._root, this._comparator);
@@ -48480,24 +51621,24 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return Tree2;
           })()
         );
-        function loadRecursive(keys4, values3, start2, end) {
+        function loadRecursive(keys5, values3, start2, end) {
           var size2 = end - start2;
           if (size2 > 0) {
             var middle = start2 + Math.floor(size2 / 2);
-            var key = keys4[middle];
-            var data = values3[middle];
-            var node = new Node(key, data);
-            node.left = loadRecursive(keys4, values3, start2, middle);
-            node.right = loadRecursive(keys4, values3, middle + 1, end);
+            var key = keys5[middle];
+            var data2 = values3[middle];
+            var node = new Node(key, data2);
+            node.left = loadRecursive(keys5, values3, start2, middle);
+            node.right = loadRecursive(keys5, values3, middle + 1, end);
             return node;
           }
           return null;
         }
-        function createList(keys4, values3) {
+        function createList(keys5, values3) {
           var head3 = new Node(null, null);
           var p2 = head3;
-          for (var i3 = 0; i3 < keys4.length; i3++) {
-            p2 = p2.next = new Node(keys4[i3], values3[i3]);
+          for (var i3 = 0; i3 < keys5.length; i3++) {
+            p2 = p2.next = new Node(keys5[i3], values3[i3]);
           }
           p2.next = null;
           return head3.next;
@@ -48522,15 +51663,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           p2.next = null;
           return head3.next;
         }
-        function sortedListToBST(list, start2, end) {
+        function sortedListToBST(list2, start2, end) {
           var size2 = end - start2;
           if (size2 > 0) {
             var middle = start2 + Math.floor(size2 / 2);
-            var left = sortedListToBST(list, start2, middle);
-            var root2 = list.head;
+            var left = sortedListToBST(list2, start2, middle);
+            var root2 = list2.head;
             root2.left = left;
-            list.head = list.head.next;
-            root2.right = sortedListToBST(list, middle + 1, end);
+            list2.head = list2.head.next;
+            root2.right = sortedListToBST(list2, middle + 1, end);
             return root2;
           }
           return null;
@@ -48557,28 +51698,28 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           return head3.next;
         }
-        function sort2(keys4, values3, left, right, compare2) {
+        function sort2(keys5, values3, left, right, compare2) {
           if (left >= right) return;
-          var pivot = keys4[left + right >> 1];
+          var pivot = keys5[left + right >> 1];
           var i3 = left - 1;
           var j3 = right + 1;
           while (true) {
             do
               i3++;
-            while (compare2(keys4[i3], pivot) < 0);
+            while (compare2(keys5[i3], pivot) < 0);
             do
               j3--;
-            while (compare2(keys4[j3], pivot) > 0);
+            while (compare2(keys5[j3], pivot) > 0);
             if (i3 >= j3) break;
-            var tmp = keys4[i3];
-            keys4[i3] = keys4[j3];
-            keys4[j3] = tmp;
+            var tmp = keys5[i3];
+            keys5[i3] = keys5[j3];
+            keys5[j3] = tmp;
             tmp = values3[i3];
             values3[i3] = values3[j3];
             values3[j3] = tmp;
           }
-          sort2(keys4, values3, left, j3, compare2);
-          sort2(keys4, values3, j3 + 1, right, compare2);
+          sort2(keys5, values3, left, j3, compare2);
+          sort2(keys5, values3, j3 + 1, right, compare2);
         }
         const isInBbox2 = (bbox2, point3) => {
           return bbox2.ll.x <= point3.x && point3.x <= bbox2.ur.x && bbox2.ll.y <= point3.y && point3.y <= bbox2.ur.y;
@@ -49999,8 +53140,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function abortRequest5(controller) {
     controller.abort();
   }
-  function vtToGeoJSON(data, tile, mergeCache) {
-    var vectorTile = new VectorTile(new Pbf(data));
+  function vtToGeoJSON(data2, tile, mergeCache) {
+    var vectorTile = new VectorTile(new Pbf(data2));
     var layers = Object.keys(vectorTile.layers);
     if (!Array.isArray(layers)) {
       layers = [layers];
@@ -50071,15 +53212,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       source.loaded[tile.id] = [];
       delete source.inflight[tile.id];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (!data) {
+    }).then(function(data2) {
+      if (!data2) {
         throw new Error("No Data");
       }
       var z3 = tile.xyz[2];
       if (!source.canMerge[z3]) {
         source.canMerge[z3] = {};
       }
-      source.loaded[tile.id] = vtToGeoJSON(data, tile, source.canMerge[z3]);
+      source.loaded[tile.id] = vtToGeoJSON(data2, tile, source.canMerge[z3]);
       dispatch8.call("loadedData");
     }).catch(function() {
       source.loaded[tile.id] = [];
@@ -50097,7 +53238,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       import_polygon_clipping = __toESM(require_polygon_clipping_umd(), 1);
       init_pbf();
       init_vector_tile();
-      init_util2();
+      init_util3();
       tiler6 = utilTiler().tileSize(512).margin(1);
       dispatch8 = dispatch_default("loadedData");
       vector_tile_default = {
@@ -50175,7 +53316,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     "modules/services/wikidata.js"() {
       "use strict";
       init_src21();
-      init_util2();
+      init_util3();
       init_localizer();
       apibase5 = "https://www.wikidata.org/w/api.php?";
       _wikidataCache = {};
@@ -50376,7 +53517,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     "modules/services/wikipedia.js"() {
       "use strict";
       init_src21();
-      init_util2();
+      init_util3();
       endpoint = "https://en.wikipedia.org/w/api.php?";
       wikipedia_default = {
         init: function() {
@@ -50469,11 +53610,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (data.byteLength === 0) {
+    }).then(function(data2) {
+      if (data2.byteLength === 0) {
         throw new Error("No Data");
       }
-      loadTileDataToCache2(data, tile, which);
+      loadTileDataToCache2(data2, tile, which);
       if (which === "images") {
         dispatch9.call("loadedImages");
       } else {
@@ -50487,8 +53628,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     });
   }
-  function loadTileDataToCache2(data, tile) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache2(data2, tile) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     if (vectorTile.layers.hasOwnProperty(pointLayer)) {
       const features = [];
       const cache = _cache2.images;
@@ -50549,9 +53690,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         throw new Error(response.status + " " + response.statusText);
       }
       return response.json();
-    }).then(function(data) {
-      let index2 = data.data.findIndex((feature3) => feature3.id === imageId);
-      const { filename, uploaded_hash } = data.data[index2];
+    }).then(function(data2) {
+      let index2 = data2.data.findIndex((feature3) => feature3.id === imageId);
+      const { filename, uploaded_hash } = data2.data[index2];
       _sceneOptions2.panorama = imageBaseUrl + "/" + uploaded_hash + "/" + filename + "/" + resolution;
     });
   }
@@ -50561,8 +53702,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         throw new Error(response.status + " " + response.statusText);
       }
       return response.json();
-    }).then(function(data) {
-      return data.data[0].username;
+    }).then(function(data2) {
+      return data2.data[0].username;
     });
   }
   var apiUrl2, imageBaseUrl, baseTileUrl2, pointLayer, lineLayer, tileStyle, minZoom2, dispatch9, imgZoom2, pannellumViewerCSS3, pannellumViewerJS3, resolution, _activeImage, _cache2, _loadViewerPromise5, _pannellumViewer2, _sceneOptions2, _currScene2, mapilio_default;
@@ -50576,11 +53717,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_pbf();
       init_rbush();
       init_vector_tile();
-      init_util2();
+      init_util3();
       init_geo2();
       init_services();
       init_partition2();
-      init_date2();
+      init_date3();
       apiUrl2 = "https://end.mapilio.com";
       imageBaseUrl = "https://cdn.mapilio.com/im";
       baseTileUrl2 = "https://geo.mapilio.com/geoserver/gwc/service/wmts?REQUEST=GetTile&SERVICE=WMTS&VERSION=1.0.0&LAYER=mapilio:";
@@ -50625,8 +53766,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         },
         // Get visible images
         images: function(projection2) {
-          const limit = 5;
-          return searchLimited(limit, projection2, _cache2.images.rtree);
+          const limit2 = 5;
+          return searchLimited(limit2, projection2, _cache2.images.rtree);
         },
         cachedImage: function(imageKey) {
           return _cache2.images.forImageId[imageKey];
@@ -50644,9 +53785,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         // Get visible sequences
         sequences: function(projection2) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           const sequenceIds = {};
           let lineStrings2 = [];
           _cache2.images.rtree.search(bbox2).forEach(function(d2) {
@@ -50715,9 +53856,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           options.scenes[sceneID] = _sceneOptions2;
           _pannellumViewer2 = window.pannellum.viewer("ideditor-viewer-mapilio-pnlm", options);
         },
-        selectImage: function(context, id2) {
+        selectImage: function(context, id3) {
           let that = this;
-          let d2 = this.cachedImage(id2);
+          let d2 = this.cachedImage(id3);
           this.setActiveImage(d2);
           this.updateUrlImage(d2.id);
           let viewer = context.container().select(".photoviewer");
@@ -50740,8 +53881,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           });
           wrap3.transition().duration(100).call(imgZoom2.transform, identity2);
           wrap3.selectAll("img").remove();
-          wrap3.selectAll("button.back").classed("hide", !_cache2.images.forImageId.hasOwnProperty(+id2 - 1));
-          wrap3.selectAll("button.forward").classed("hide", !_cache2.images.forImageId.hasOwnProperty(+id2 + 1));
+          wrap3.selectAll("button.back").classed("hide", !_cache2.images.forImageId.hasOwnProperty(+id3 - 1));
+          wrap3.selectAll("button.forward").classed("hide", !_cache2.images.forImageId.hasOwnProperty(+id3 + 1));
           getImageData(d2.id, d2.sequence_id).then(function() {
             if (d2.isPano) {
               if (!_pannellumViewer2) {
@@ -50866,16 +54007,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   __export(panoramax_exports, {
     default: () => panoramax_default
   });
-  function searchLimited2(limit, projection2, rtree) {
-    limit = limit || 5;
+  function searchLimited2(limit2, projection2, rtree) {
+    limit2 = limit2 || 5;
     return partitionViewport(projection2).reduce(function(result2, extent2) {
       let found = rtree.search(extent2.bbox());
-      const spacing = Math.max(1, Math.floor(found.length / limit));
+      const spacing = Math.max(1, Math.floor(found.length / limit2));
       found = found.filter((d2, idx) => idx % spacing === 0 || d2.data.id === _activeImage2?.id).sort((a2, b11) => {
         if (a2.data.id === _activeImage2?.id) return -1;
         if (b11.data.id === _activeImage2?.id) return 1;
         return 0;
-      }).slice(0, limit).map((d2) => d2.data);
+      }).slice(0, limit2).map((d2) => d2.data);
       return found.length ? result2.concat(found) : result2;
     }, []);
   }
@@ -50900,11 +54041,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (data.byteLength === 0) {
+    }).then(function(data2) {
+      if (data2.byteLength === 0) {
         throw new Error("No Data");
       }
-      loadTileDataToCache3(data, tile, zoom);
+      loadTileDataToCache3(data2, tile, zoom);
       if (which === "images") {
         dispatch10.call("loadedImages");
       } else {
@@ -50918,8 +54059,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     });
   }
-  function loadTileDataToCache3(data, tile, zoom) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache3(data2, tile, zoom) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     let features, cache, layer, i3, feature3, loc, d2;
     if (vectorTile.layers.hasOwnProperty(pictureLayer)) {
       features = [];
@@ -50976,9 +54117,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (!response.ok) {
       throw new Error(response.status + " " + response.statusText);
     }
-    const data = await response.json();
-    cache[userId] = data;
-    return data.name;
+    const data2 = await response.json();
+    cache[userId] = data2;
+    return data2.name;
   }
   var apiUrl3, tileUrl2, imageDataUrl, sequenceDataUrl, userIdUrl, usernameURL, viewerUrl, highDefinition, standardDefinition, pictureLayer, sequenceLayer, minZoom3, imageMinZoom, lineMinZoom, dispatch10, _cache3, _loadViewerPromise6, _definition, _isHD, _planeFrame2, _pannellumFrame2, _currentFrame2, _currentScene, _activeImage2, _isViewerOpen2, panoramax_default;
   var init_panoramax = __esm({
@@ -50988,14 +54129,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_pbf();
       init_rbush();
       init_vector_tile();
-      init_util2();
+      init_util3();
       init_geo2();
       init_localizer();
       init_pannellum_photo();
       init_plane_photo();
       init_services();
       init_partition2();
-      init_date2();
+      init_date3();
       apiUrl3 = "https://api.panoramax.xyz/";
       tileUrl2 = apiUrl3 + "api/map/{z}/{x}/{y}.mvt";
       imageDataUrl = apiUrl3 + "api/collections/{collectionId}/items/{itemId}";
@@ -51046,8 +54187,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
          * @returns images data for the current projection
          */
         images: function(projection2) {
-          const limit = 5;
-          return searchLimited2(limit, projection2, _cache3.images.rtree);
+          const limit2 = 5;
+          return searchLimited2(limit2, projection2, _cache3.images.rtree);
         },
         /**
          * Get a specific image from cache
@@ -51083,8 +54224,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             const response = responses.find((response2) => !response2.ok);
             throw new Error(response.status + " " + response.statusText);
           }
-          const data = await Promise.all(responses.map((response) => response.json()));
-          return data.flatMap((d2, i3) => d2.features.filter((f2) => f2.name === usernames[i3]).map((f2) => f2.id));
+          const data2 = await Promise.all(responses.map((response) => response.json()));
+          return data2.flatMap((d2, i3) => d2.features.filter((f2) => f2.name === usernames[i3]).map((f2) => f2.id));
         },
         /**
          * Get visible sequences from cache
@@ -51094,9 +54235,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
          */
         sequences: function(projection2, zoom) {
           const viewport = projection2.clipExtent();
-          const min4 = [viewport[0][0], viewport[1][1]];
-          const max4 = [viewport[1][0], viewport[0][1]];
-          const bbox2 = geoExtent(projection2.invert(min4), projection2.invert(max4)).bbox();
+          const min5 = [viewport[0][0], viewport[1][1]];
+          const max5 = [viewport[1][0], viewport[0][1]];
+          const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           const sequenceIds = {};
           let lineStrings2 = [];
           if (zoom >= imageMinZoom) {
@@ -51195,9 +54336,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
          * @param {*} id of the selected image
          * @returns
          */
-        selectImage: function(context, id2) {
+        selectImage: function(context, id3) {
           let that = this;
-          let d2 = that.cachedImage(id2);
+          let d2 = that.cachedImage(id3);
           that.setActiveImage(d2);
           that.updateUrlImage(d2.id);
           const viewerLink = `${viewerUrl}#pic=${d2.id}&focus=pic`;
@@ -51224,20 +54365,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           attribution.append("a").attr("class", "report-photo").attr("href", "mailto:signalement.ign@panoramax.fr").call(_t.append("panoramax.report"));
           attribution.append("span").text("|");
           attribution.append("a").attr("class", "image-link").attr("target", "_blank").attr("href", viewerLink).text("panoramax.xyz");
-          this.getImageData(d2.sequence_id, d2.id).then(function(data) {
+          this.getImageData(d2.sequence_id, d2.id).then(function(data2) {
             _currentScene = {
               currentImage: null,
               nextImage: null,
               prevImage: null
             };
-            _currentScene.currentImage = data.assets[_definition];
-            const nextIndex = data.links.findIndex((x3) => x3.rel === "next");
-            const prevIndex = data.links.findIndex((x3) => x3.rel === "prev");
+            _currentScene.currentImage = data2.assets[_definition];
+            const nextIndex = data2.links.findIndex((x3) => x3.rel === "next");
+            const prevIndex = data2.links.findIndex((x3) => x3.rel === "prev");
             if (nextIndex !== -1) {
-              _currentScene.nextImage = data.links[nextIndex];
+              _currentScene.nextImage = data2.links[nextIndex];
             }
             if (prevIndex !== -1) {
-              _currentScene.prevImage = data.links[prevIndex];
+              _currentScene.prevImage = data2.links[prevIndex];
             }
             d2.image_path = _currentScene.currentImage.href;
             wrap3.selectAll("button.back").classed("hide", _currentScene.prevImage === null);
@@ -51276,8 +54417,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             if (!response.ok) {
               throw new Error(response.status + " " + response.statusText);
             }
-            const data = (await response.json()).features;
-            cache[collectionId] = data;
+            const data2 = (await response.json()).features;
+            cache[collectionId] = data2;
           }
           const result2 = cache[collectionId].find((d2) => d2.id === imageId);
           if (result2) return result2;
@@ -51545,6 +54686,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             }
           }));
         }
+        fixes.push(new validationIssueFix({
+          icon: "iD-operation-change-date-range",
+          title: _t.append("issues.fix.change_date_range.title")
+        }));
         return fixes;
       }
       function showReference(selection2) {
@@ -51621,6 +54766,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (layer1 !== layer2) return false;
         const level1 = way.tags.level || "0", level2 = way2.tags.level || "0";
         if (level1 !== level2) return false;
+        if ((way.tags.start_date || way.tags.end_date) && (way2.tags.start_date || way2.tags.end_date)) {
+          if (!utilDatesOverlap(way.tags, way2.tags)) return false;
+        }
         return true;
       }
       function canConnectByExtend(way, endNodeIdx) {
@@ -51674,6 +54822,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_merge_nodes();
       init_localizer();
       init_utilDisplayLabel();
+      init_util3();
       init_tags2();
       init_validation();
       init_services();
@@ -51800,6 +54949,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               }
             }
             if (zAxisDifferentiates) continue;
+            if ((node.tags.start_date || node.tags.end_date) && (nearby.tags.start_date || nearby.tags.end_date)) {
+              if (!utilDatesOverlap(node.tags, nearby.tags)) continue;
+            }
             issues.push(new validationIssue({
               type: type2,
               subtype: "detached",
@@ -51822,6 +54974,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
                   new validationIssueFix({
                     icon: "iD-icon-layers",
                     title: _t.append("issues.fix.use_different_layers_or_levels.title")
+                  }),
+                  new validationIssueFix({
+                    icon: "iD-operation-change-date-range",
+                    title: _t.append("issues.fix.change_date_range.title")
                   })
                 ];
               }
@@ -51894,6 +55050,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_merge_nodes();
       init_utilDisplayLabel();
+      init_util3();
       init_localizer();
       init_validation();
       init_tags2();
@@ -51959,6 +55116,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
       if (featureType1 === "waterway" && featureType2 === "highway" && tags2.man_made === "pier") return true;
       if (featureType2 === "waterway" && featureType1 === "highway" && tags1.man_made === "pier") return true;
+      if ((tags1.start_date || tags1.end_date) && (tags2.start_date || tags2.end_date)) {
+        if (!utilDatesOverlap(tags1, tags2)) return true;
+      }
       if (tags1.layer !== void 0 && tags1.layer === tags2.layer) return false;
       const isElement1Bridge = allowsBridge(featureType1) && hasTag(tags1, "bridge");
       const isElement2Bridge = allowsBridge(featureType2) && hasTag(tags2, "bridge");
@@ -52256,6 +55416,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             }
           }
           fixes.push(new validationIssueFix({
+            icon: "iD-operation-change-date-range",
+            title: _t.append("issues.fix.change_date_range.title")
+          }));
+          fixes.push(new validationIssueFix({
             icon: "iD-operation-move",
             title: _t.append("issues.fix.reposition_features.title")
           }));
@@ -52386,8 +55550,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             }
             var structEndNode1 = determineEndpoint(edge, edgeNodes[1], endpointLocGetter1);
             var structEndNode2 = determineEndpoint([edgeNodes[0].id, structEndNode1.id], edgeNodes[0], endpointLocGetter2);
-            var structureWay = resultWayIDs.map(function(id2) {
-              return graph.entity(id2);
+            var structureWay = resultWayIDs.map(function(id3) {
+              return graph.entity(id3);
             }).find(function(way) {
               return way.nodes.indexOf(structEndNode1.id) !== -1 && way.nodes.indexOf(structEndNode2.id) !== -1;
             });
@@ -52519,6 +55683,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_tags2();
       init_localizer();
       init_utilDisplayLabel();
+      init_util3();
       init_validation();
     }
   });
@@ -52859,7 +56024,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_select5();
       init_node2();
       init_rebind();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -52977,14 +56142,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var nextSelectedID;
       var nextSelectedLoc;
       if (selectedIDs.length === 1) {
-        var id2 = selectedIDs[0];
-        var entity = context.entity(id2);
+        var id3 = selectedIDs[0];
+        var entity = context.entity(id3);
         var geometry2 = entity.geometry(context.graph());
         var parents = context.graph().parentWays(entity);
         var parent = parents[0];
         if (geometry2 === "vertex") {
           var nodes2 = parent.nodes;
-          var i3 = nodes2.indexOf(id2);
+          var i3 = nodes2.indexOf(id3);
           if (i3 === 0) {
             i3++;
           } else if (i3 === nodes2.length - 1) {
@@ -53045,22 +56210,22 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
         return false;
       }
-      function hasWikidataTag(id2) {
-        var entity = context.entity(id2);
+      function hasWikidataTag(id3) {
+        var entity = context.entity(id3);
         return entity.tags.wikidata && entity.tags.wikidata.trim().length > 0;
       }
-      function incompleteRelation(id2) {
-        var entity = context.entity(id2);
+      function incompleteRelation(id3) {
+        var entity = context.entity(id3);
         return entity.type === "relation" && !entity.isComplete(context.graph());
       }
-      function protectedMember(id2) {
-        var entity = context.entity(id2);
+      function protectedMember(id3) {
+        var entity = context.entity(id3);
         if (entity.type !== "way") return false;
         var parents = context.graph().parentRelations(entity);
         for (var i3 = 0; i3 < parents.length; i3++) {
           var parent = parents[i3];
           var type2 = parent.tags.type;
-          var role = parent.memberById(id2).role || "outer";
+          var role = parent.memberById(id3).role || "outer";
           if (type2 === "route" || type2 === "boundary" || type2 === "multipolygon" && role === "outer") {
             return true;
           }
@@ -53091,7 +56256,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_browse();
       init_select5();
       init_cmd();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -53144,8 +56309,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             title: _t.append("issues.fix.delete_feature.title"),
             entityIds: [singleEntity.id],
             onClick: function(context2) {
-              var id2 = this.issue.entityIds[0];
-              var operation2 = operationDelete(context2, [id2]);
+              var id3 = this.issue.entityIds[0];
+              var operation2 = operationDelete(context2, [id3]);
               if (!operation2.disabled()) {
                 operation2();
               }
@@ -53261,6 +56426,57 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
   });
 
+  // modules/validations/missing_start_date.js
+  var missing_start_date_exports = {};
+  __export(missing_start_date_exports, {
+    validationMissingStartDate: () => validationMissingStartDate
+  });
+  function validationMissingStartDate(context) {
+    const type2 = "missing_start_date";
+    const validation = function checkMissingStartDate(entity, graph) {
+      if (entity.tags && (entity.tags.start_date || entity.tags["start_date:edtf"])) return [];
+      if (Object.keys(entity.tags).length === 0) return [];
+      if (entity.tags && (entity.tags.natural && osmTimelessFeatureTagValues[entity.tags.natural] || entity.tags.waterway && osmTimelessFeatureTagValues[entity.tags.waterway] || entity.tags.water && osmTimelessFeatureTagValues[entity.tags.water])) return [];
+      var osm = context.connection();
+      var isUnloadedNode = entity.type === "node" && osm && !osm.isDataLoaded(entity.loc);
+      if (isUnloadedNode || // allow untagged nodes that are part of ways
+      entity.geometry(graph) === "vertex" || // allow untagged entities that are part of relations
+      entity.hasParentRelations(graph)) return [];
+      const entityID = entity.id;
+      function showReference(selection2) {
+        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.missing_start_date.reference"));
+      }
+      return [new validationIssue({
+        type: type2,
+        severity: "warning",
+        message: (context2) => {
+          const entity2 = context2.hasEntity(entityID);
+          return entity2 ? _t.append("issues.missing_start_date.message", {
+            feature: utilDisplayLabel(entity2, context2.graph())
+          }) : "";
+        },
+        reference: showReference,
+        entityIds: [entityID],
+        dynamicFixes: () => {
+          return [
+            new validationIssueFix({ title: _t.append("issues.fix.add_start_date.title") })
+          ];
+        }
+      })];
+    };
+    validation.type = type2;
+    return validation;
+  }
+  var init_missing_start_date = __esm({
+    "modules/validations/missing_start_date.js"() {
+      "use strict";
+      init_localizer();
+      init_utilDisplayLabel();
+      init_validation();
+      init_tags2();
+    }
+  });
+
   // modules/validations/invalid_format.js
   var invalid_format_exports = {};
   __export(invalid_format_exports, {
@@ -53270,6 +56486,146 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     var type2 = "invalid_format";
     var validation = function(entity) {
       var issues = [];
+      function showReferenceDate(selection2) {
+        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.invalid_format.date.reference"));
+      }
+      function validateDate(key, msgKey) {
+        if (!entity.tags[key]) return;
+        var normalized = utilNormalizeDateString(entity.tags[key]);
+        if (normalized !== null && entity.tags[key] === normalized.value) return;
+        issues.push(new validationIssue({
+          type: type2,
+          subtype: "date",
+          severity: "error",
+          message: function(context) {
+            var entity2 = context.hasEntity(this.entityIds[0]);
+            return entity2 ? _t.append(
+              "issues.invalid_format.date.message_" + msgKey,
+              { feature: utilDisplayLabel(entity2, context.graph()) }
+            ) : "";
+          },
+          reference: showReferenceDate,
+          entityIds: [entity.id],
+          hash: key + entity.tags[key],
+          dynamicFixes: function() {
+            var fixes = [];
+            let alternatives = [];
+            if (normalized !== null) {
+              let label = normalized.date.toLocaleDateString(_mainLocalizer.localeCodes(), normalized.localeOptions);
+              alternatives.push({
+                date: normalized.value,
+                label: label || normalized.value
+              });
+            }
+            let edtfFromOSM = utilEDTFFromOSMDateString(entity.tags[key]);
+            if (edtfFromOSM) {
+              let label;
+              try {
+                label = edtf(edtfFromOSM).format(_mainLocalizer.localeCode());
+              } catch {
+                label = edtfFromOSM;
+              }
+              alternatives.push({
+                edtf: edtfFromOSM,
+                label
+              });
+            }
+            fixes.push(...alternatives.map((alt) => new validationIssueFix({
+              title: _t.append("issues.fix.reformat_date.title", { date: alt.label }),
+              onClick: function(context) {
+                context.perform(function(graph) {
+                  var entityInGraph = graph.hasEntity(entity.id);
+                  if (!entityInGraph) return graph;
+                  var newTags = Object.assign({}, entityInGraph.tags);
+                  if (alt.date) {
+                    newTags[key] = alt.date;
+                  } else {
+                    delete newTags[key];
+                  }
+                  newTags[key + ":edtf"] = alt.edtf;
+                  return actionChangeTags(entityInGraph.id, newTags)(graph);
+                }, _t("issues.fix.reformat_date.annotation"));
+              }
+            })));
+            fixes.push(new validationIssueFix({
+              icon: "iD-operation-delete",
+              title: _t.append("issues.fix.remove_tag.title"),
+              onClick: function(context) {
+                context.perform(function(graph) {
+                  var entityInGraph = graph.hasEntity(entity.id);
+                  if (!entityInGraph) return graph;
+                  var newTags = Object.assign({}, entityInGraph.tags);
+                  delete newTags[key];
+                  return actionChangeTags(entityInGraph.id, newTags)(graph);
+                }, _t("issues.fix.remove_tag.annotation"));
+              }
+            }));
+            return fixes;
+          }
+        }));
+      }
+      validateDate("start_date", "start");
+      validateDate("end_date", "end");
+      function showReferenceEDTF(selection2, parserError) {
+        let message2;
+        if (typeof parserError.offset === "number" && parserError.token) {
+          message2 = _t.append("issues.invalid_format.edtf.reference", {
+            token: parserError.token.value,
+            position: (parserError.offset + 1).toLocaleString(_mainLocalizer.localeCodes())
+          });
+        } else if (parserError.message) {
+          message2 = (selection3) => selection3.append("span").attr("class", "localized-text").attr("lang", "en").text(parserError.message.replace(/^edtf: /, ""));
+        }
+        if (!message2) {
+          return;
+        }
+        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(message2);
+      }
+      function validateEDTF(key, msgKey) {
+        key += ":edtf";
+        if (!entity.tags[key]) return;
+        let parserError;
+        try {
+          parse(entity.tags[key]);
+          return;
+        } catch (e3) {
+          parserError = e3;
+        }
+        issues.push(new validationIssue({
+          type: type2,
+          subtype: "date",
+          severity: "warning",
+          message: function(context) {
+            var entity2 = context.hasEntity(this.entityIds[0]);
+            return entity2 ? _t.append(
+              "issues.invalid_format.edtf.message_" + msgKey,
+              { feature: utilDisplayLabel(entity2, context.graph()) }
+            ) : "";
+          },
+          reference: (selection2) => showReferenceEDTF(selection2, parserError),
+          entityIds: [entity.id],
+          hash: key + entity.tags[key],
+          dynamicFixes: function() {
+            var fixes = [];
+            fixes.push(new validationIssueFix({
+              icon: "iD-operation-delete",
+              title: _t.append("issues.fix.remove_tag.title"),
+              onClick: function(context) {
+                context.perform(function(graph) {
+                  var entityInGraph = graph.hasEntity(entity.id);
+                  if (!entityInGraph) return graph;
+                  var newTags = Object.assign({}, entityInGraph.tags);
+                  delete newTags[key];
+                  return actionChangeTags(entityInGraph.id, newTags)(graph);
+                }, _t("issues.fix.remove_tag.annotation"));
+              }
+            }));
+            return fixes;
+          }
+        }));
+      }
+      validateEDTF("start_date", "start");
+      validateEDTF("end_date", "end");
       function isValidEmail(email) {
         var valid_email = /^[^\(\)\\,":;<>@\[\]]+@[^\(\)\\,":;<>@\[\]\.]+(?:\.[a-z0-9-]+)*$/i;
         return !email || valid_email.test(email);
@@ -53414,8 +56770,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_localizer();
       init_utilDisplayLabel();
+      init_util3();
       init_validation();
       init_change_tags();
+      init_edtf2();
     }
   });
 
@@ -53590,8 +56948,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
                 title: _t.append("issues.fix.reverse_feature.title"),
                 entityIds: [way.id],
                 onClick: function(context) {
-                  var id2 = this.issue.entityIds[0];
-                  context.perform(actionReverse(id2), _t("operations.reverse.annotation.line", { n: 1 }));
+                  var id3 = this.issue.entityIds[0];
+                  context.perform(actionReverse(id3), _t("operations.reverse.annotation.line", { n: 1 }));
                 }
               }));
             }
@@ -53689,9 +57047,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
         }))
       );
-      function getReference(id2) {
+      function getReference(id3) {
         return function showReference(selection2) {
-          selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append(`issues.incompatible_source.reference.${id2}`));
+          selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append(`issues.incompatible_source.reference.${id3}`));
         };
       }
     };
@@ -53717,7 +57075,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         {
           id: "google",
           regex: /(google)/i,
-          exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)/i
+          exceptRegex: /((books|drive)\.google|google\s?(books|drive|plus))|(esri\/Google_(Africa|Open)_Buildings)|(:\/\/\S+\/\S+(google)\S+)/i
         }
       ];
     }
@@ -53747,6 +57105,134 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     "modules/validations/maprules.js"() {
       "use strict";
       init_services();
+    }
+  });
+
+  // modules/validations/mismatched_dates.js
+  var mismatched_dates_exports = {};
+  __export(mismatched_dates_exports, {
+    validationMismatchedDates: () => validationMismatchedDates
+  });
+  function validationMismatchedDates() {
+    let type2 = "mismatched_dates";
+    function parseEDTF(value) {
+      try {
+        let parsed = edtf(value);
+        if (parsed.lower === null) {
+          parsed.lower = Infinity;
+        }
+        if (parsed.upper === null) {
+          parsed.upper = Infinity;
+        }
+        return parsed;
+      } catch {
+        return;
+      }
+    }
+    function getReplacementDates(parsed) {
+      let likelyDates = /* @__PURE__ */ new Set();
+      let valueFromDate = (date2, precision3) => {
+        date2.precision = precision3;
+        return date2.edtf.split("T")[0];
+      };
+      if (Number.isFinite(parsed.min)) {
+        let min5 = edtf(parsed.min);
+        let precision3 = (parsed.lower || parsed.first || parsed).precision;
+        likelyDates.add(valueFromDate(min5, precision3));
+      }
+      if (Number.isFinite(parsed.max)) {
+        let max5 = edtf(parsed.max);
+        let precision3 = (parsed.upper || parsed.last || parsed).precision;
+        likelyDates.add(valueFromDate(max5, precision3));
+      }
+      let sortedDates = [...likelyDates];
+      sortedDates.sort();
+      return sortedDates;
+    }
+    let validation = function(entity) {
+      let issues = [];
+      function showReferenceEDTF(selection2) {
+        selection2.selectAll(".issue-reference").data([0]).enter().append("div").attr("class", "issue-reference").call(_t.append("issues.mismatched_dates.edtf.reference"));
+      }
+      function getDynamicFixes(key, parsed) {
+        let fixes = [];
+        let replacementDates = getReplacementDates(parsed);
+        fixes.push(...replacementDates.map((value) => {
+          let normalized = utilNormalizeDateString(value);
+          let localeDateString2 = normalized.date.toLocaleDateString(_mainLocalizer.languageCode(), normalized.localeOptions);
+          return new validationIssueFix({
+            title: _t.append("issues.fix.reformat_date.title", { date: localeDateString2 }),
+            onClick: function(context) {
+              context.perform(function(graph) {
+                var entityInGraph = graph.hasEntity(entity.id);
+                if (!entityInGraph) return graph;
+                var newTags = Object.assign({}, entityInGraph.tags);
+                newTags[key] = normalized.value;
+                return actionChangeTags(entityInGraph.id, newTags)(graph);
+              }, _t("issues.fix.reformat_date.annotation"));
+            }
+          });
+        }));
+        fixes.push(new validationIssueFix({
+          icon: "iD-operation-delete",
+          title: _t.append("issues.fix.remove_tag.title"),
+          onClick: function(context) {
+            context.perform(function(graph) {
+              var entityInGraph = graph.hasEntity(entity.id);
+              if (!entityInGraph) return graph;
+              var newTags = Object.assign({}, entityInGraph.tags);
+              delete newTags[key];
+              return actionChangeTags(entityInGraph.id, newTags)(graph);
+            }, _t("issues.fix.remove_tag.annotation"));
+          }
+        }));
+        return fixes;
+      }
+      function validateEDTF(key, msgKey) {
+        if (!entity.tags[key] || !entity.tags[key + ":edtf"]) return;
+        let basic = entity.tags[key];
+        let basicAsEDTF = parseEDTF(basic);
+        let parsed = parseEDTF(entity.tags[key + ":edtf"]);
+        if (!basicAsEDTF || !parsed || parsed.covers(basicAsEDTF) || basicAsEDTF.covers(parsed)) return;
+        if (basic.match("^-?[0-9]+-[0-9]{2}-[0-9]{2}$")) {
+          let basicTime = parseEDTF(`${basic}T00:00:00/${basic}T24:00:00`);
+          if (basicTime && (parsed.covers(basicTime) || basicTime.covers(parsed))) return;
+        }
+        issues.push(new validationIssue({
+          type: type2,
+          subtype: "date",
+          severity: "warning",
+          message: function(context) {
+            let entity2 = context.hasEntity(this.entityIds[0]);
+            return entity2 ? _t.append(
+              "issues.mismatched_dates.edtf.message_" + msgKey,
+              { feature: utilDisplayLabel(entity2, context.graph()) }
+            ) : "";
+          },
+          reference: showReferenceEDTF,
+          entityIds: [entity.id],
+          hash: key + entity.tags[key + ":edtf"],
+          dynamicFixes: () => getDynamicFixes(key, parsed)
+        }));
+      }
+      validateEDTF("start_date", "start");
+      validateEDTF("end_date", "end");
+      return issues;
+    };
+    validation.type = type2;
+    validation.parseEDTF = parseEDTF;
+    validation.getReplacementDates = getReplacementDates;
+    return validation;
+  }
+  var init_mismatched_dates = __esm({
+    "modules/validations/mismatched_dates.js"() {
+      "use strict";
+      init_change_tags();
+      init_localizer();
+      init_utilDisplayLabel();
+      init_ohm_date();
+      init_validation();
+      init_edtf2();
     }
   });
 
@@ -54101,7 +57587,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_presets();
       init_geo2();
       init_localizer();
-      init_util2();
+      init_util3();
       init_utilDisplayLabel();
       init_validation();
     }
@@ -54281,13 +57767,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             }
           }));
           var deleteOnClick;
-          var id2 = this.entityIds[0];
-          var operation2 = operationDelete(context2, [id2]);
+          var id3 = this.entityIds[0];
+          var operation2 = operationDelete(context2, [id3]);
           var disabledReasonID = operation2.disabled();
           if (!disabledReasonID) {
             deleteOnClick = function(context3) {
-              var id3 = this.issue.entityIds[0];
-              var operation3 = operationDelete(context3, [id3]);
+              var id4 = this.issue.entityIds[0];
+              var operation3 = operationDelete(context3, [id4]);
               if (!operation3.disabled()) {
                 operation3();
               }
@@ -54408,11 +57894,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     operationSplit: () => operationSplit
   });
   function operationSplit(context, selectedIDs) {
-    var _vertexIds = selectedIDs.filter(function(id2) {
-      return context.graph().geometry(id2) === "vertex";
+    var _vertexIds = selectedIDs.filter(function(id3) {
+      return context.graph().geometry(id3) === "vertex";
     });
-    var _selectedWayIds = selectedIDs.filter(function(id2) {
-      var entity = context.graph().hasEntity(id2);
+    var _selectedWayIds = selectedIDs.filter(function(id3) {
+      var entity = context.graph().hasEntity(id3);
       return entity && entity.type === "way";
     });
     var _isAvailable = _vertexIds.length > 0 && _vertexIds.length + _selectedWayIds.length === selectedIDs.length;
@@ -54435,8 +57921,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     var operation2 = function() {
       var difference5 = context.perform(_action, operation2.annotation());
-      var idsToSelect = _vertexIds.concat(difference5.extantIDs().filter(function(id2) {
-        return context.entity(id2).type === "way";
+      var idsToSelect = _vertexIds.concat(difference5.extantIDs().filter(function(id3) {
+        return context.entity(id3).type === "way";
       }));
       context.enter(modeSelect(context, idsToSelect));
     };
@@ -54867,7 +58353,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_core();
       init_presets();
       init_services();
-      init_util2();
+      init_util3();
       init_utilDisplayLabel();
       init_validation();
       init_deprecated();
@@ -54979,7 +58465,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_change_tags();
       init_localizer();
-      init_util2();
+      init_util3();
       init_utilDisplayLabel();
       init_validation();
     }
@@ -55040,7 +58526,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       if (!preset) return false;
       if (ignoredPresets.has(preset.id)) return false;
       name = name.toLowerCase();
-      return name === preset.name().toLowerCase() || preset.aliases().some((alias) => name === alias.toLowerCase());
+      return name === preset.name().toLowerCase() || preset.aliases().some((alias2) => name === alias2.toLowerCase());
     }
     function isGenericName(name, tags, preset) {
       name = name.toLowerCase();
@@ -55239,8 +58725,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     validationImpossibleOneway: () => validationImpossibleOneway,
     validationIncompatibleSource: () => validationIncompatibleSource,
     validationMaprules: () => validationMaprules,
+    validationMismatchedDates: () => validationMismatchedDates,
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
+    validationMissingStartDate: () => validationMissingStartDate,
     validationMissingTag: () => validationMissingTag,
     validationMutuallyExclusiveTags: () => validationMutuallyExclusiveTags,
     validationOsmApiLimits: () => validationOsmApiLimits,
@@ -55256,11 +58744,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_close_nodes();
       init_crossing_ways();
       init_disconnected_way();
+      init_missing_start_date();
       init_invalid_format();
       init_help_request();
       init_impossible_oneway();
       init_incompatible_source();
       init_maprules2();
+      init_mismatched_dates();
       init_mismatched_geometry();
       init_missing_role();
       init_missing_tag();
@@ -55373,7 +58863,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       let results = [];
       if (_headCache.graph && _headCache.graph !== _baseCache.graph) {
         Object.values(_headCache.issuesByIssueID).forEach((issue) => {
-          const userModified = (issue.entityIds || []).some((id2) => _completeDiff.hasOwnProperty(id2));
+          const userModified = (issue.entityIds || []).some((id3) => _completeDiff.hasOwnProperty(id3));
           if (opts.what === "edited" && !userModified) return;
           if (!filter4(issue)) return;
           seen.add(issue.id);
@@ -55396,7 +58886,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (!opts.includeDisabledRules && _disabledRules[issue.type]) return false;
         if (opts.includeIgnored === "only" && !_ignoredIssueIDs.has(issue.id)) return false;
         if (!opts.includeIgnored && _ignoredIssueIDs.has(issue.id)) return false;
-        if ((issue.entityIds || []).some((id2) => !context.hasEntity(id2))) return false;
+        if ((issue.entityIds || []).some((id3) => !context.hasEntity(id3))) return false;
         if (opts.where === "visible") {
           const extent2 = issue.extent(context.graph());
           if (!view.intersects(extent2)) return false;
@@ -55415,9 +58905,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         selectID = issue.entityIds[0];
         if (selectID && selectID.charAt(0) === "r") {
           const ids = utilEntityAndDeepMemberIDs([selectID], graph);
-          let nodeID = ids.find((id2) => id2.charAt(0) === "n" && graph.hasEntity(id2));
+          let nodeID = ids.find((id3) => id3.charAt(0) === "n" && graph.hasEntity(id3));
           if (!nodeID) {
-            const wayID = ids.find((id2) => id2.charAt(0) === "w" && graph.hasEntity(id2));
+            const wayID = ids.find((id3) => id3.charAt(0) === "w" && graph.hasEntity(id3));
             if (wayID) {
               nodeID = graph.entity(wayID).first();
             }
@@ -55493,9 +58983,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       corePreferences("validate-disabledRules", Object.keys(_disabledRules).join(","));
       validator.validate();
     };
-    validator.disableRules = (keys4) => {
+    validator.disableRules = (keys5) => {
       _disabledRules = {};
-      keys4.forEach((k3) => _disabledRules[k3] = true);
+      keys5.forEach((k3) => _disabledRules[k3] = true);
       corePreferences("validate-disabledRules", Object.keys(_disabledRules).join(","));
       validator.validate();
     };
@@ -55534,7 +59024,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         const bm = baseEntity.members.map((m3) => m3.id);
         const hm = headEntity.members.map((m3) => m3.id);
         const symDiff = utilArrayDifference(utilArrayUnion(bm, hm), utilArrayIntersection(bm, hm));
-        symDiff.forEach((id2) => entityIDs.add(id2));
+        symDiff.forEach((id3) => entityIDs.add(id3));
       });
       _headPromise = validateEntitiesAsync(entityIDs, _headCache).then(() => updateResolvedIssues(entityIDs)).then(() => dispatch11.call("validated")).catch(() => {
       }).then(() => {
@@ -55612,7 +59102,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         if (!baseIssues) return;
         baseIssues.forEach((issueID) => {
           const issue = _baseCache.issuesByIssueID[issueID];
-          const userModified = (issue.entityIds || []).some((id2) => _completeDiff.hasOwnProperty(id2));
+          const userModified = (issue.entityIds || []).some((id3) => _completeDiff.hasOwnProperty(id3));
           if (userModified && !_headCache.issuesByIssueID[issueID]) {
             _resolvedIssueIDs.add(issueID);
           } else {
@@ -55753,7 +59243,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_difference4();
       init_extent();
       init_select5();
-      init_util2();
+      init_util3();
       init_validations();
     }
   });
@@ -55849,8 +59339,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var _toLoadTotal = _toLoad.length;
       if (_toCheck.length) {
         dispatch11.call("progressChanged", this, _toLoadCount, _toLoadTotal);
-        _toLoad.forEach(function(id2) {
-          _loaded[id2] = false;
+        _toLoad.forEach(function(id3) {
+          _loaded[id3] = false;
         });
         osm.loadMultiple(_toLoad, loaded);
       } else {
@@ -55859,8 +59349,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       return;
       function withChildNodes(ids, graph) {
         var s2 = new Set(ids);
-        ids.forEach(function(id2) {
-          var entity = graph.entity(id2);
+        ids.forEach(function(id3) {
+          var entity = graph.entity(id3);
           if (entity.type !== "way") return;
           graph.childNodes(entity).forEach(function(child) {
             if (child.version !== void 0) {
@@ -55887,21 +59377,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               return val !== entity.id;
             });
             if (!entity.visible) return;
-            var i4, id2;
+            var i4, id3;
             if (entity.type === "way") {
               for (i4 = 0; i4 < entity.nodes.length; i4++) {
-                id2 = entity.nodes[i4];
-                if (_loaded[id2] === void 0) {
-                  _loaded[id2] = false;
-                  loadMore.push(id2);
+                id3 = entity.nodes[i4];
+                if (_loaded[id3] === void 0) {
+                  _loaded[id3] = false;
+                  loadMore.push(id3);
                 }
               }
             } else if (entity.type === "relation" && entity.isMultipolygon()) {
               for (i4 = 0; i4 < entity.members.length; i4++) {
-                id2 = entity.members[i4].id;
-                if (_loaded[id2] === void 0) {
-                  _loaded[id2] = false;
-                  loadMore.push(id2);
+                id3 = entity.members[i4].id;
+                if (_loaded[id3] === void 0) {
+                  _loaded[id3] = false;
+                  loadMore.push(id3);
                 }
               }
             }
@@ -55920,9 +59410,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
       }
       function detectConflicts() {
-        function choice(id2, text, action) {
+        function choice(id3, text, action) {
           return {
-            id: id2,
+            id: id3,
             text,
             action: function() {
               history.replace(action);
@@ -55947,29 +59437,29 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           return true;
         }
-        _toCheck.forEach(function(id2) {
-          var local3 = localGraph.entity(id2);
-          var remote = remoteGraph.entity(id2);
+        _toCheck.forEach(function(id3) {
+          var local3 = localGraph.entity(id3);
+          var remote = remoteGraph.entity(id3);
           if (sameVersions(local3, remote)) return;
-          var merge4 = actionMergeRemoteChanges(id2, localGraph, remoteGraph, _discardTags, formatUser);
-          history.replace(merge4);
-          var mergeConflicts = merge4.conflicts();
+          var merge5 = actionMergeRemoteChanges(id3, localGraph, remoteGraph, _discardTags, formatUser);
+          history.replace(merge5);
+          var mergeConflicts = merge5.conflicts();
           if (!mergeConflicts.length) {
             _anyConflictsAutomaticallyResolved = true;
             return;
           }
-          var forceLocal = actionMergeRemoteChanges(id2, localGraph, remoteGraph, _discardTags).withOption("force_local");
-          var forceRemote = actionMergeRemoteChanges(id2, localGraph, remoteGraph, _discardTags).withOption("force_remote");
+          var forceLocal = actionMergeRemoteChanges(id3, localGraph, remoteGraph, _discardTags).withOption("force_local");
+          var forceRemote = actionMergeRemoteChanges(id3, localGraph, remoteGraph, _discardTags).withOption("force_remote");
           var keepMine = _t("save.conflict." + (remote.visible ? "keep_local" : "restore"));
           var keepTheirs = _t("save.conflict." + (remote.visible ? "keep_remote" : "delete"));
           _conflicts.push({
-            id: id2,
+            id: id3,
             name: entityName(local3),
             details: mergeConflicts,
             chosen: 1,
             choices: [
-              choice(id2, keepMine, forceLocal),
-              choice(id2, keepTheirs, forceRemote)
+              choice(id3, keepMine, forceLocal),
+              choice(id3, keepTheirs, forceRemote)
             ]
           });
         });
@@ -56079,7 +59569,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_revert();
       init_graph();
       init_localizer();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -56463,7 +59953,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_geo2();
       init_osm();
       init_rebind();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -56738,8 +60228,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       if (wasPoint) {
         context.enter(modeSelect(context, [entity.id]));
       } else {
-        var reselection = _restoreSelectedIDs.filter(function(id2) {
-          return context.graph().hasEntity(id2);
+        var reselection = _restoreSelectedIDs.filter(function(id3) {
+          return context.graph().hasEntity(id3);
         });
         if (reselection.length) {
           context.enter(modeSelect(context, reselection));
@@ -56811,7 +60301,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_browse();
       init_select5();
       init_osm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -57318,7 +60808,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_src();
       init_src6();
-      init_util2();
+      init_util3();
       uiCombobox.off = function(input, context) {
         _hide(context.container());
         input.on("focus.combo-input", null).on("blur.combo-input", null).on("keydown.combo-input", null).on("keyup.combo-input", null).on("input.combo-input", null).on("mousedown.combo-input", null).on("mouseup.combo-input", null);
@@ -57446,7 +60936,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_src();
       init_preferences();
       init_icon();
-      init_util2();
+      init_util3();
       init_rebind();
       init_toggle();
       init_localizer();
@@ -57458,7 +60948,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   __export(section_exports, {
     uiSection: () => uiSection
   });
-  function uiSection(id2, context) {
+  function uiSection(id3, context) {
     var _classes = utilFunctor("");
     var _shouldDisplay;
     var _content;
@@ -57469,7 +60959,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     var _disclosureExpanded;
     var _containerSelection = select_default2(null);
     var section = {
-      id: id2
+      id: id3
     };
     section.classes = function(val) {
       if (!arguments.length) return _classes;
@@ -57507,8 +60997,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       return section;
     };
     section.render = function(selection2) {
-      _containerSelection = selection2.selectAll(".section-" + id2).data([0]);
-      var sectionEnter = _containerSelection.enter().append("div").attr("class", "section section-" + id2 + " " + (_classes && _classes() || ""));
+      _containerSelection = selection2.selectAll(".section-" + id3).data([0]);
+      var sectionEnter = _containerSelection.enter().append("div").attr("class", "section section-" + id3 + " " + (_classes && _classes() || ""));
       _containerSelection = sectionEnter.merge(_containerSelection);
       _containerSelection.call(renderContent);
     };
@@ -57532,7 +61022,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
       if (_disclosureContent) {
         if (!_disclosure) {
-          _disclosure = uiDisclosure(context, id2.replace(/-/g, "_"), _expandedByDefault()).label(_label || "").content(_disclosureContent);
+          _disclosure = uiDisclosure(context, id3.replace(/-/g, "_"), _expandedByDefault()).label(_label || "").content(_disclosureContent);
         }
         if (_disclosureExpanded !== void 0) {
           _disclosure.expanded(_disclosureExpanded);
@@ -57552,7 +61042,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_src6();
       init_disclosure();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -57677,8 +61167,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   __export(raw_tag_editor_exports, {
     uiSectionRawTagEditor: () => uiSectionRawTagEditor
   });
-  function uiSectionRawTagEditor(id2, context) {
-    var section = uiSection(id2, context).classes("raw-tag-editor").label(function() {
+  function uiSectionRawTagEditor(id3, context) {
+    var section = uiSection(id3, context).classes("raw-tag-editor").label(function() {
       var count2 = Object.keys(_tags).filter(function(d2) {
         return d2;
       }).length;
@@ -57749,9 +61239,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var textarea = wrap3.selectAll(".tag-text").data([0]);
       textarea = textarea.enter().append("textarea").attr("class", "tag-text" + (_tagView !== "text" ? " hide" : "")).call(utilNoAuto).attr("placeholder", _t("inspector.key_value")).attr("spellcheck", "false").style("direction", "ltr").merge(textarea);
       textarea.call(utilGetSetValue, textData).each(setTextareaHeight).on("input", setTextareaHeight).on("focus", interacted).on("blur", textChanged).on("change", textChanged);
-      var list = wrap3.selectAll(".tag-list").data([0]);
-      list = list.enter().append("ul").attr("class", "tag-list" + (_tagView !== "list" ? " hide" : "")).merge(list);
-      var items = list.selectAll(".tag-row").data(rowData, (d2) => d2.key);
+      var list2 = wrap3.selectAll(".tag-list").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "tag-list" + (_tagView !== "list" ? " hide" : "")).merge(list2);
+      var items = list2.selectAll(".tag-row").data(rowData, (d2) => d2.key);
       items.exit().each(unbind).remove();
       var itemsEnter = items.enter().append("li").attr("class", "tag-row").classed("readonly", isReadOnly);
       var innerWrap = itemsEnter.append("div").attr("class", "inner-wrap");
@@ -57900,7 +61390,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         value.call(uiCombobox(context, "tag-value").minItems(1).fetcher(function(value2, callback) {
           var keyString = utilGetSetValue(key);
           if (!_tags[keyString]) return;
-          var data = _tags[keyString].map(function(tagValue) {
+          var data2 = _tags[keyString].map(function(tagValue) {
             if (!tagValue) {
               return {
                 value: " ",
@@ -57913,7 +61403,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               title: tagValue
             };
           });
-          callback(data);
+          callback(data2);
         }));
         return;
       }
@@ -57923,9 +61413,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           debounce: true,
           geometry: geometry2,
           query: value2
-        }, function(err, data) {
+        }, function(err, data2) {
           if (!err) {
-            const filtered = data.filter((d2) => _tags[d2.value] === void 0).filter((d2) => !(d2.value in _discardTags)).filter((d2) => !/_\d$/.test(d2.value)).filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
+            const filtered = data2.filter((d2) => _tags[d2.value] === void 0).filter((d2) => !(d2.value in _discardTags)).filter((d2) => !/_\d$/.test(d2.value)).filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
             callback(sort2(value2, filtered));
           }
         });
@@ -57936,21 +61426,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           key: utilGetSetValue(key),
           geometry: geometry2,
           query: value2
-        }, function(err, data) {
+        }, function(err, data2) {
           if (!err) {
-            const filtered = data.filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
+            const filtered = data2.filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
             callback(sort2(value2, filtered));
           }
         });
       }).caseSensitive(allowUpperCaseTagValues.test(utilGetSetValue(key))));
-      function sort2(value2, data) {
+      function sort2(value2, data2) {
         var sameletter = [];
         var other = [];
-        for (var i3 = 0; i3 < data.length; i3++) {
-          if (data[i3].value.substring(0, value2.length) === value2) {
-            sameletter.push(data[i3]);
+        for (var i3 = 0; i3 < data2.length; i3++) {
+          if (data2[i3].value.substring(0, value2.length) === value2) {
+            sameletter.push(data2[i3]);
           } else {
-            other.push(data[i3]);
+            other.push(data2[i3]);
           }
         }
         return sameletter.concat(other);
@@ -58084,7 +61574,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_preferences();
       init_localizer();
       init_array3();
-      init_util2();
+      init_util3();
       init_tags2();
       init_core();
     }
@@ -58208,7 +61698,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_drag_node();
       init_drag_note();
       init_data_editor();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -58315,7 +61805,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_select5();
       init_localizer();
       init_services();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -58469,7 +61959,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_osmose_details();
       init_osmose_header();
       init_view_on_osmose();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -58572,7 +62062,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_drag_node();
       init_drag_note();
       init_osmose_editor();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -58636,20 +62126,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     }
     function pointerdown(d3_event) {
-      var id2 = (d3_event.pointerId || "mouse").toString();
+      var id3 = (d3_event.pointerId || "mouse").toString();
       cancelLongPress();
       if (d3_event.buttons && d3_event.buttons !== 1) return;
       context.ui().closeEditMenu();
       if (d3_event.pointerType !== "mouse") {
-        _longPressTimeout = window.setTimeout(didLongPress, 500, id2, "longdown-" + (d3_event.pointerType || "mouse"));
+        _longPressTimeout = window.setTimeout(didLongPress, 500, id3, "longdown-" + (d3_event.pointerType || "mouse"));
       }
-      _downPointers[id2] = {
+      _downPointers[id3] = {
         firstEvent: d3_event,
         lastEvent: d3_event
       };
     }
-    function didLongPress(id2, interactionType) {
-      var pointer = _downPointers[id2];
+    function didLongPress(id3, interactionType) {
+      var pointer = _downPointers[id3];
       if (!pointer) return;
       for (var i3 in _downPointers) {
         _downPointers[i3].done = true;
@@ -58657,12 +62147,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       _longPressTimeout = null;
       _lastInteractionType = interactionType;
       _showMenu = true;
-      click(pointer.firstEvent, pointer.lastEvent, id2);
+      click(pointer.firstEvent, pointer.lastEvent, id3);
     }
     function pointermove(d3_event) {
-      var id2 = (d3_event.pointerId || "mouse").toString();
-      if (_downPointers[id2]) {
-        _downPointers[id2].lastEvent = d3_event;
+      var id3 = (d3_event.pointerId || "mouse").toString();
+      if (_downPointers[id3]) {
+        _downPointers[id3].lastEvent = d3_event;
       }
       if (!d3_event.pointerType || d3_event.pointerType === "mouse") {
         _lastMouseEvent = d3_event;
@@ -58672,21 +62162,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     }
     function pointerup(d3_event) {
-      var id2 = (d3_event.pointerId || "mouse").toString();
-      var pointer = _downPointers[id2];
+      var id3 = (d3_event.pointerId || "mouse").toString();
+      var pointer = _downPointers[id3];
       if (!pointer) return;
-      delete _downPointers[id2];
-      if (_multiselectionPointerId === id2) {
+      delete _downPointers[id3];
+      if (_multiselectionPointerId === id3) {
         _multiselectionPointerId = null;
       }
       if (pointer.done) return;
-      click(pointer.firstEvent, d3_event, id2);
+      click(pointer.firstEvent, d3_event, id3);
     }
     function pointercancel(d3_event) {
-      var id2 = (d3_event.pointerId || "mouse").toString();
-      if (!_downPointers[id2]) return;
-      delete _downPointers[id2];
-      if (_multiselectionPointerId === id2) {
+      var id3 = (d3_event.pointerId || "mouse").toString();
+      if (!_downPointers[id3]) return;
+      delete _downPointers[id3];
+      if (_multiselectionPointerId === id3) {
         _multiselectionPointerId = null;
       }
     }
@@ -58789,8 +62279,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         } else {
           if (selectedIDs.indexOf(datum2.id) !== -1) {
             if (!showMenu) {
-              selectedIDs = selectedIDs.filter(function(id2) {
-                return id2 !== datum2.id;
+              selectedIDs = selectedIDs.filter(function(id3) {
+                return id3 !== datum2.id;
               });
               newMode = selectedIDs.length ? mode2.selectedIDs(selectedIDs) : modeBrowse(context).selectBehavior(behavior);
               context.enter(newMode);
@@ -58858,7 +62348,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_select_note();
       init_select_error();
       init_osm();
-      init_util();
+      init_util2();
     }
   });
 
@@ -58933,7 +62423,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_localizer();
       init_icon();
       init_services();
-      init_date2();
+      init_date3();
     }
   });
 
@@ -59050,8 +62540,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       } else if (_what instanceof osmNote) {
         url = context.connection().noteURL(_what);
       }
-      var data = !_what || _what.isNew() ? [] : [_what];
-      var link2 = selection2.selectAll(".view-on-osm").data(data, function(d2) {
+      var data2 = !_what || _what.isNew() ? [] : [_what];
+      var link2 = selection2.selectAll(".view-on-osm").data(data2, function(d2) {
         return d2.id;
       });
       link2.exit().remove();
@@ -59079,7 +62569,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_localizer();
       init_osm();
       init_icon();
-      init_date2();
+      init_date3();
       uiViewOnOSM.findLastModifiedChild = (graph, feature3) => {
         let latest = feature3;
         function recurseChilds(obj) {
@@ -59087,7 +62577,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             latest = obj;
           }
           if (obj instanceof osmWay) {
-            obj.nodes.map((id2) => graph.hasEntity(id2)).filter(Boolean).forEach(recurseChilds);
+            obj.nodes.map((id3) => graph.hasEntity(id3)).filter(Boolean).forEach(recurseChilds);
           } else if (obj instanceof osmRelation) {
             obj.members.map((m3) => graph.hasEntity(m3.id)).filter((e3) => e3 instanceof osmWay || e3 instanceof osmRelation).forEach(recurseChilds);
           }
@@ -59298,7 +62788,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_note_header();
       init_note_report();
       init_view_on_osm();
-      init_util2();
+      init_util3();
       init_osm();
     }
   });
@@ -59402,7 +62892,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_drag_note();
       init_services();
       init_note_editor();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -59495,8 +62985,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
         return false;
       }
-      function incompleteRelation(id2) {
-        var entity = context.entity(id2);
+      function incompleteRelation(id3) {
+        var entity = context.entity(id3);
         return entity.type === "relation" && !entity.isComplete(context.graph());
       }
     };
@@ -59520,7 +63010,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_localizer();
       init_operation();
       init_move3();
-      init_util();
+      init_util2();
     }
   });
 
@@ -59538,7 +63028,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (!activeID) return 1;
     if (activeID === node.id) return 0;
     var parents = graph.parentWays(node);
-    var i3, j3, nodes, isClosed, ix1, ix2, ix3, ix4, max4;
+    var i3, j3, nodes, isClosed, ix1, ix2, ix3, ix4, max5;
     for (i3 = 0; i3 < parents.length; i3++) {
       nodes = parents[i3].nodes;
       isClosed = parents[i3].isClosed();
@@ -59549,11 +63039,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           ix3 = j3 + 1;
           ix4 = j3 + 2;
           if (isClosed) {
-            max4 = nodes.length - 1;
-            if (ix1 < 0) ix1 = max4 + ix1;
-            if (ix2 < 0) ix2 = max4 + ix2;
-            if (ix3 > max4) ix3 = ix3 - max4;
-            if (ix4 > max4) ix4 = ix4 - max4;
+            max5 = nodes.length - 1;
+            if (ix1 < 0) ix1 = max5 + ix1;
+            if (ix2 < 0) ix2 = max5 + ix2;
+            if (ix3 > max5) ix3 = ix3 - max5;
+            if (ix4 > max5) ix4 = ix4 - max5;
           }
           if (nodes[ix1] === activeID) return 0;
           else if (nodes[ix2] === activeID) return 2;
@@ -60079,13 +63569,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var getPath = svgPath(projection2).geojson;
       var activeID = context.activeID();
       var base = context.history().base();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(way) {
         var features = svgSegmentWay(way, graph, activeID);
-        data.targets.push.apply(data.targets, features.passive);
-        data.nopes.push.apply(data.nopes, features.active);
+        data2.targets.push.apply(data2.targets, features.passive);
+        data2.nopes.push.apply(data2.nopes, features.active);
       });
-      var targetData = data.targets.filter(getPath);
+      var targetData = data2.targets.filter(getPath);
       var targets = selection2.selectAll(".area.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(targetData, function key(d2) {
@@ -60104,7 +63594,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       targets.enter().append("path").merge(targets).attr("d", getPath).attr("class", function(d2) {
         return "way area target target-allowed " + targetClass + d2.id;
       }).classed("segment-edited", segmentWasEdited);
-      var nopeData = data.nopes.filter(getPath);
+      var nopeData = data2.nopes.filter(getPath);
       var nopes = selection2.selectAll(".area.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(nopeData, function key(d2) {
@@ -60141,13 +63631,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var strokes = fills.filter(function(area) {
         return area.type === "way";
       });
-      var data = {
+      var data2 = {
         clip: fills,
         shadow: strokes,
         stroke: strokes,
         fill: fills
       };
-      var clipPaths = context.surface().selectAll("defs").selectAll(".clipPath-osm").filter(filter4).data(data.clip, osmEntity.key);
+      var clipPaths = context.surface().selectAll("defs").selectAll(".clipPath-osm").filter(filter4).data(data2.clip, osmEntity.key);
       clipPaths.exit().remove();
       var clipPathsEnter = clipPaths.enter().append("clipPath").attr("class", "clipPath-osm").attr("id", function(entity2) {
         return "ideditor-" + entity2.id + "-clippath";
@@ -60161,7 +63651,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         return "areagroup area-" + d2;
       }).merge(areagroup);
       var paths = areagroup.selectAll("path").filter(filter4).data(function(layer) {
-        return data[layer];
+        return data2[layer];
       }, osmEntity.key);
       paths.exit().remove();
       var fillpaths = selection2.selectAll(".area-fill path.area").nodes();
@@ -60188,7 +63678,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }).classed("retagged", function(d2) {
         return graph.entities[d2.id] && base.entities[d2.id] && !deepEqual(graph.entities[d2.id].tags, base.entities[d2.id].tags);
       }).call(svgTagClasses()).attr("d", path);
-      touchLayer.call(drawTargets, graph, data.stroke, filter4);
+      touchLayer.call(drawTargets, graph, data2.stroke, filter4);
     }
     return drawAreas;
   }
@@ -60208,8 +63698,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function $2(element, tagName) {
     return Array.from(element.getElementsByTagName(tagName));
   }
-  function normalizeId(id2) {
-    return id2[0] === "#" ? id2 : `#${id2}`;
+  function normalizeId(id3) {
+    return id3[0] === "#" ? id3 : `#${id3}`;
   }
   function $ns(element, tagName, ns) {
     return Array.from(element.getElementsByTagNameNS(ns, tagName));
@@ -60291,8 +63781,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     return ["heart", "gpxtpx:hr", "hr"].includes(name) ? "heart" : name;
   }
   function parseNumeric(val) {
-    const num = Number.parseFloat(val);
-    return Number.isNaN(num) ? val : num;
+    const num2 = Number.parseFloat(val);
+    return Number.isNaN(num2) ? val : num2;
   }
   function coordPair$1(node) {
     const ll = [
@@ -60488,7 +63978,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   }
   function getProperties(node, attributeNames) {
     const properties = [];
-    for (const [tag, alias] of attributeNames) {
+    for (const [tag, alias2] of attributeNames) {
       let elem = get1(node, tag);
       if (!elem) {
         const elements = node.getElementsByTagNameNS(EXTENSIONS_NS, tag);
@@ -60498,7 +63988,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
       const val = Number.parseFloat(nodeVal(elem));
       if (!Number.isNaN(val)) {
-        properties.push([alias, val]);
+        properties.push([alias2, val]);
       }
     }
     return properties;
@@ -60542,11 +64032,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         times2.push(time2);
       if (heartRate)
         heartRates.push(heartRate);
-      for (const [alias, value] of extensions) {
-        if (!extendedProperties[alias]) {
-          extendedProperties[alias] = Array(pts.length).fill(null);
+      for (const [alias2, value] of extensions) {
+        if (!extendedProperties[alias2]) {
+          extendedProperties[alias2] = Array(pts.length).fill(null);
         }
-        extendedProperties[alias][i3] = value;
+        extendedProperties[alias2][i3] = value;
       }
     }
     if (line.length < 2)
@@ -60705,7 +64195,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     return Object.assign({}, extractPoly(node), extractLine(node), extractLabel(node), extractIcon(node));
   }
   function coord1(value) {
-    return value.replace(removeSpace, "").split(",").map(Number.parseFloat).filter((num) => !Number.isNaN(num)).slice(0, 3);
+    return value.replace(removeSpace, "").split(",").map(Number.parseFloat).filter((num2) => !Number.isNaN(num2)).slice(0, 3);
   }
   function coord(value) {
     return value.replace(trimSpace, "").split(splitSpace).map(coord1).filter((coord2) => {
@@ -60739,14 +64229,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       return ring;
     const first = ring[0];
     const last3 = ring[ring.length - 1];
-    let equal = true;
+    let equal2 = true;
     for (let i3 = 0; i3 < Math.max(first.length, last3.length); i3++) {
       if (first[i3] !== last3[i3]) {
-        equal = false;
+        equal2 = false;
         break;
       }
     }
-    if (!equal) {
+    if (!equal2) {
       return ring.concat([ring[0]]);
     }
     return ring;
@@ -60827,8 +64317,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   }
   function extractExtendedData(node, schema) {
     return get5(node, "ExtendedData", (extendedData, properties) => {
-      for (const data of $2(extendedData, "Data")) {
-        properties[data.getAttribute("name") || ""] = nodeVal(get1(data, "value"));
+      for (const data2 of $2(extendedData, "Data")) {
+        properties[data2.getAttribute("name") || ""] = nodeVal(get1(data2, "value"));
       }
       for (const simpleData of $2(extendedData, "SimpleData")) {
         const name = simpleData.getAttribute("name") || "";
@@ -60995,9 +64485,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (feature3.properties?.visibility !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
-    const id2 = node.getAttribute("id");
-    if (id2 !== null && id2 !== "")
-      feature3.id = id2;
+    const id3 = node.getAttribute("id");
+    if (id3 !== null && id3 !== "")
+      feature3.id = id3;
     return feature3;
   }
   function getNetworkLinkRegion(node) {
@@ -61119,9 +64609,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (feature3.properties?.visibility !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
-    const id2 = node.getAttribute("id");
-    if (id2 !== null && id2 !== "")
-      feature3.id = id2;
+    const id3 = node.getAttribute("id");
+    if (id3 !== null && id3 !== "")
+      feature3.id = id3;
     return feature3;
   }
   function geometryListToGeometry(geometries) {
@@ -61155,18 +64645,18 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (feature3.properties?.visibility !== void 0) {
       feature3.properties.visibility = feature3.properties.visibility !== "0";
     }
-    const id2 = node.getAttribute("id");
-    if (id2 !== null && id2 !== "")
-      feature3.id = id2;
+    const id3 = node.getAttribute("id");
+    if (id3 !== null && id3 !== "")
+      feature3.id = id3;
     return feature3;
   }
   function getStyleId(style) {
-    let id2 = style.getAttribute("id");
+    let id3 = style.getAttribute("id");
     const parentNode = style.parentNode;
-    if (!id2 && isElement2(parentNode) && parentNode.localName === "CascadingStyle") {
-      id2 = parentNode.getAttribute("kml:id") || parentNode.getAttribute("id");
+    if (!id3 && isElement2(parentNode) && parentNode.localName === "CascadingStyle") {
+      id3 = parentNode.getAttribute("kml:id") || parentNode.getAttribute("id");
     }
-    return normalizeId(id2 || "");
+    return normalizeId(id3 || "");
   }
   function buildStyleMap(node) {
     const styleMap = {};
@@ -61174,11 +64664,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       styleMap[getStyleId(style)] = extractStyle(style);
     }
     for (const map4 of $2(node, "StyleMap")) {
-      const id2 = normalizeId(map4.getAttribute("id") || "");
+      const id3 = normalizeId(map4.getAttribute("id") || "");
       val1(map4, "styleUrl", (styleUrl) => {
         styleUrl = normalizeId(styleUrl);
         if (styleMap[styleUrl]) {
-          styleMap[id2] = styleMap[styleUrl];
+          styleMap[id3] = styleMap[styleUrl];
         }
       });
     }
@@ -61496,9 +64986,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         return datagroup === "fill" ? getAreaPath(d2) : getPath(d2);
       });
       layer.call(drawLabels, "label-halo", geoData).call(drawLabels, "label", geoData);
-      function drawLabels(selection3, textClass, data) {
+      function drawLabels(selection3, textClass, data2) {
         var labelPath = path_default(projection2);
-        var labelData = data.filter(function(d2) {
+        var labelData = data2.filter(function(d2) {
           return _showLabels && d2.properties && (d2.properties.desc || d2.properties.name);
         });
         var labels = selection3.selectAll("text." + textClass).data(labelData, featureKey);
@@ -61538,7 +65028,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
       }
     }
-    drawData.setFile = function(extension, data) {
+    drawData.setFile = function(extension, data2) {
       _template = null;
       _fileList = null;
       _geojson = null;
@@ -61546,14 +65036,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var gj;
       switch (extension) {
         case ".gpx":
-          gj = gpx(xmlToDom(data));
+          gj = gpx(xmlToDom(data2));
           break;
         case ".kml":
-          gj = kml(xmlToDom(data));
+          gj = kml(xmlToDom(data2));
           break;
         case ".geojson":
         case ".json":
-          gj = JSON.parse(data);
+          gj = JSON.parse(data2);
           if (gj.type === "FeatureCollection") {
             gj.features.forEach(stringifyGeojsonProperties);
           } else if (gj.type === "Feature") {
@@ -61649,8 +65139,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var extension = getExtension(testUrl) || defaultExtension;
       if (extension) {
         _template = null;
-        text_default3(url).then(function(data) {
-          drawData.setFile(extension, data);
+        text_default3(url).then(function(data2) {
+          drawData.setFile(extension, data2);
         }).catch(function() {
         });
       } else {
@@ -61708,7 +65198,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_services();
       init_helpers();
       init_detect();
-      init_util2();
+      init_util3();
       _initialized = false;
       _enabled = false;
     }
@@ -61922,7 +65412,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       "use strict";
       init_src21();
       init_src6();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -62340,9 +65830,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           for (var j4 = 0; j4 < sub.length - 1; j4++) {
             var a2 = sub[j4];
             var b11 = sub[j4 + 1];
-            var num = Math.max(1, Math.floor(geoVecLength(a2, b11) / boxsize / 2));
-            for (var box = 0; box < num; box++) {
-              var p3 = geoVecInterp(a2, b11, box / num);
+            var num2 = Math.max(1, Math.floor(geoVecLength(a2, b11) / boxsize / 2));
+            for (var box = 0; box < num2; box++) {
+              var p3 = geoVecInterp(a2, b11, box / num2);
               var x05 = p3[0] - boxsize - padding;
               var y05 = p3[1] - boxsize - padding;
               var x12 = p3[0] + boxsize + padding;
@@ -62458,27 +65948,27 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return false;
         }
       }
-      function doInsert(bbox3, id2) {
-        bbox3.id = id2;
-        var oldbox = _entitybboxes[id2];
+      function doInsert(bbox3, id3) {
+        bbox3.id = id3;
+        var oldbox = _entitybboxes[id3];
         if (oldbox) {
           _rdrawn.remove(oldbox);
         }
-        _entitybboxes[id2] = bbox3;
+        _entitybboxes[id3] = bbox3;
         _rdrawn.insert(bbox3);
       }
-      function undoInsert(id2) {
-        var oldbox = _entitybboxes[id2];
+      function undoInsert(id3) {
+        var oldbox = _entitybboxes[id3];
         if (oldbox) {
           _rdrawn.remove(oldbox);
         }
-        delete _entitybboxes[id2];
+        delete _entitybboxes[id3];
       }
-      function tryInsert(bboxes, id2, saveSkipped) {
+      function tryInsert(bboxes, id3, saveSkipped) {
         var skipped = false;
         for (var i4 = 0; i4 < bboxes.length; i4++) {
           var bbox3 = bboxes[i4];
-          bbox3.id = id2;
+          bbox3.id = id3;
           if (bbox3.minX < 0 || bbox3.minY < 0 || bbox3.maxX > dimensions[0] || bbox3.maxY > dimensions[1]) {
             skipped = true;
             break;
@@ -62488,7 +65978,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             break;
           }
         }
-        _entitybboxes[id2] = bboxes;
+        _entitybboxes[id3] = bboxes;
         if (skipped) {
           if (saveSkipped) {
             _rskipped.load(bboxes);
@@ -62527,16 +66017,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       let bbox2;
       let hideIds = [];
       if (mouse && context.mode().id !== "browse") {
-        const pad6 = 20;
-        bbox2 = { minX: mouse[0] - pad6, minY: mouse[1] - pad6, maxX: mouse[0] + pad6, maxY: mouse[1] + pad6 };
-        const nearMouse = _rdrawn.search(bbox2).map((entity) => entity.id).filter((id2) => context.mode().id !== "select" || // in select mode: hide labels of currently selected line(s)
+        const pad7 = 20;
+        bbox2 = { minX: mouse[0] - pad7, minY: mouse[1] - pad7, maxX: mouse[0] + pad7, maxY: mouse[1] + pad7 };
+        const nearMouse = _rdrawn.search(bbox2).map((entity) => entity.id).filter((id3) => context.mode().id !== "select" || // in select mode: hide labels of currently selected line(s)
         // to still allow accessing midpoints
         // https://github.com/openstreetmap/iD/issues/11220
-        context.mode().selectedIDs().includes(id2) && graph.hasEntity(id2)?.geometry(graph) === "line");
+        context.mode().selectedIDs().includes(id3) && graph.hasEntity(id3)?.geometry(graph) === "line");
         hideIds.push.apply(hideIds, nearMouse);
         hideIds = utilArrayUniq(hideIds);
       }
-      const selected = (context.mode()?.selectedIDs?.() || []).filter((id2) => graph.hasEntity(id2)?.geometry(graph) !== "line");
+      const selected = (context.mode()?.selectedIDs?.() || []).filter((id3) => graph.hasEntity(id3)?.geometry(graph) !== "line");
       hideIds = utilArrayDifference(hideIds, selected);
       layers.selectAll(utilEntitySelector(hideIds)).classed("nolabel", true);
       var debug2 = selection2.selectAll(".labels-group.debug");
@@ -62588,10 +66078,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     return c2[text];
   }
   function isAddressPoint(tags) {
-    const keys4 = Object.keys(tags).filter(
+    const keys5 = Object.keys(tags).filter(
       (key) => osmIsInterestingTag(key) && !nonPrimaryKeys.has(key) && !nonPrimaryKeysRegex.test(key)
     );
-    return keys4.length > 0 && keys4.every(
+    return keys5.length > 0 && keys5.every(
       (key) => key.startsWith("addr:")
     );
   }
@@ -62607,7 +66097,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       init_presets();
       init_osm();
       init_detect();
-      init_util2();
+      init_util3();
       _textWidthCache = {};
       nonPrimaryKeys = /* @__PURE__ */ new Set([
         "building:flats",
@@ -62649,7 +66139,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       return e4;
     })(e3).trim()) ? void 0 : e3;
   }
-  function S(e3) {
+  function S2(e3) {
     let t4 = (function(e4) {
       let t5 = 0;
       return e4.ifd0.enabled && (t5 += 1024), e4.exif.enabled && (t5 += 2048), e4.makerNote && (t5 += 2048), e4.userComment && (t5 += 1024), e4.gps.enabled && (t5 += 512), e4.interop.enabled && (t5 += 100), e4.ifd1.enabled && (t5 += 1024), t5 + 2048;
@@ -62659,7 +66149,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function b10(e3) {
     return y2 ? y2.decode(e3) : a ? Buffer.from(e3).toString("utf8") : decodeURIComponent(escape(C3(e3)));
   }
-  function P2(e3, t4) {
+  function P3(e3, t4) {
     g3(`${e3} '${t4}' was not loaded, try using full build of exifr.`);
   }
   function D3(e3, n3) {
@@ -62670,16 +66160,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     var s2;
   }
   async function x2(e3, t4, i3, n3) {
-    return A6.has(i3) ? v2(e3, t4, i3) : n3 ? (async function(e4, t5) {
+    return A8.has(i3) ? v2(e3, t4, i3) : n3 ? (async function(e4, t5) {
       let i4 = await t5(e4);
       return new I(i4);
     })(e3, n3) : void g3(`Parser ${i3} is not loaded`);
   }
   async function v2(e3, t4, i3) {
-    let n3 = new (A6.get(i3))(e3, t4);
+    let n3 = new (A8.get(i3))(e3, t4);
     return await n3.read(), n3;
   }
-  function U2(e3, t4, i3) {
+  function U4(e3, t4, i3) {
     let n3 = new L2();
     for (let [e4, t5] of i3) n3.set(e4, t5);
     if (Array.isArray(t4)) for (let i4 of t4) e3.set(i4, n3);
@@ -62698,7 +66188,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     return a2;
   }
-  function Z3(e3, t4) {
+  function Z4(e3, t4) {
     return void 0 !== e3 ? e3 : void 0 !== t4 ? t4 : void 0;
   }
   function ee(e3, t4) {
@@ -62831,7 +66321,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function mt(e3, t4) {
     return m2(e3.getString(t4, 4));
   }
-  var e, t, i2, n2, s, r, a, o, h, u3, f, d, C3, y2, I, k2, w2, T2, A6, M3, R, L2, E3, B3, N2, G2, V, z2, H, j2, W2, K3, X4, _2, Y3, $3, J2, q2, te2, ne2, se2, re3, he2, ue2, ce2, fe2, pe2, ge2, me2, Ce2, Ie2, ke2, we2, Te2, De2, Oe2, ve2, Me2, Re2, Le2, Ue2, Fe2, Ee2, Be2, Ne2, We2, Ke2, Xe2, Ye2, $e2, Je2, Ze2, et2, tt2, it2, nt2, at2, ot, lt2, ht, ut, ct, ft, dt, pt, gt2, St, Ct, yt, full_esm_default;
+  var e, t, i2, n2, s, r, a, o, h, u3, f, d, C3, y2, I, k2, w2, T2, A8, M3, R, L2, E3, B3, N2, G2, V7, z2, H, j2, W2, K3, X6, _2, Y3, $3, J2, q2, te2, ne2, se2, re3, he2, ue2, ce2, fe2, pe2, ge2, me2, Ce2, Ie2, ke2, we2, Te2, De2, Oe2, ve2, Me2, Re2, Le2, Ue2, Fe2, Ee2, Be2, Ne2, We2, Ke2, Xe2, Ye2, $e2, Je2, Ze2, et2, tt2, it2, nt2, at2, ot, lt2, ht, ut, ct, ft, dt, pt, gt2, St, Ct, yt, full_esm_default;
   var init_full_esm = __esm({
     "node_modules/exifr/dist/full.esm.mjs"() {
       e = "undefined" != typeof self ? self : global;
@@ -62979,15 +66469,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           super(), this.kind = e3;
         }
         get(e3, t4) {
-          return this.has(e3) || P2(this.kind, e3), t4 && (e3 in t4 || (function(e4, t5) {
+          return this.has(e3) || P3(this.kind, e3), t4 && (e3 in t4 || (function(e4, t5) {
             g3(`Unknown ${e4} '${t5}'.`);
-          })(this.kind, e3), t4[e3].enabled || P2(this.kind, e3)), super.get(e3);
+          })(this.kind, e3), t4[e3].enabled || P3(this.kind, e3)), super.get(e3);
         }
         keyList() {
           return Array.from(this.keys());
         }
       };
-      w2 = new k2("file parser"), T2 = new k2("segment parser"), A6 = new k2("file reader");
+      w2 = new k2("file parser"), T2 = new k2("segment parser"), A8 = new k2("file reader");
       M3 = (e3) => h(e3).then(((e4) => e4.arrayBuffer())), R = (e3) => new Promise(((t4, i3) => {
         let n3 = new FileReader();
         n3.onloadend = () => t4(n3.result || new ArrayBuffer()), n3.onerror = i3, n3.readAsArrayBuffer(e3);
@@ -63000,7 +66490,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return this.allValues || (this.allValues = Array.from(this.values())), this.allValues;
         }
       };
-      E3 = /* @__PURE__ */ new Map(), B3 = /* @__PURE__ */ new Map(), N2 = /* @__PURE__ */ new Map(), G2 = ["chunked", "firstChunkSize", "firstChunkSizeNode", "firstChunkSizeBrowser", "chunkSize", "chunkLimit"], V = ["jfif", "xmp", "icc", "iptc", "ihdr"], z2 = ["tiff", ...V], H = ["ifd0", "ifd1", "exif", "gps", "interop"], j2 = [...z2, ...H], W2 = ["makerNote", "userComment"], K3 = ["translateKeys", "translateValues", "reviveValues", "multiSegment"], X4 = [...K3, "sanitize", "mergeOutput", "silentErrors"];
+      E3 = /* @__PURE__ */ new Map(), B3 = /* @__PURE__ */ new Map(), N2 = /* @__PURE__ */ new Map(), G2 = ["chunked", "firstChunkSize", "firstChunkSizeNode", "firstChunkSizeBrowser", "chunkSize", "chunkLimit"], V7 = ["jfif", "xmp", "icc", "iptc", "ihdr"], z2 = ["tiff", ...V7], H = ["ifd0", "ifd1", "exif", "gps", "interop"], j2 = [...z2, ...H], W2 = ["makerNote", "userComment"], K3 = ["translateKeys", "translateValues", "reviveValues", "multiSegment"], X6 = [...K3, "sanitize", "mergeOutput", "silentErrors"];
       _2 = class {
         get translate() {
           return this.translateKeys || this.translateValues || this.reviveValues;
@@ -63046,30 +66536,30 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         setupFromUndefined() {
           let e3;
           for (e3 of G2) this[e3] = $3[e3];
-          for (e3 of X4) this[e3] = $3[e3];
+          for (e3 of X6) this[e3] = $3[e3];
           for (e3 of W2) this[e3] = $3[e3];
           for (e3 of j2) this[e3] = new Y3(e3, $3[e3], void 0, this);
         }
         setupFromTrue() {
           let e3;
           for (e3 of G2) this[e3] = $3[e3];
-          for (e3 of X4) this[e3] = $3[e3];
+          for (e3 of X6) this[e3] = $3[e3];
           for (e3 of W2) this[e3] = true;
           for (e3 of j2) this[e3] = new Y3(e3, true, void 0, this);
         }
         setupFromArray(e3) {
           let t4;
           for (t4 of G2) this[t4] = $3[t4];
-          for (t4 of X4) this[t4] = $3[t4];
+          for (t4 of X6) this[t4] = $3[t4];
           for (t4 of W2) this[t4] = $3[t4];
           for (t4 of j2) this[t4] = new Y3(t4, false, void 0, this);
           this.setupGlobalFilters(e3, void 0, H);
         }
         setupFromObject(e3) {
           let t4;
-          for (t4 of (H.ifd0 = H.ifd0 || H.image, H.ifd1 = H.ifd1 || H.thumbnail, Object.assign(this, e3), G2)) this[t4] = Z3(e3[t4], $3[t4]);
-          for (t4 of X4) this[t4] = Z3(e3[t4], $3[t4]);
-          for (t4 of W2) this[t4] = Z3(e3[t4], $3[t4]);
+          for (t4 of (H.ifd0 = H.ifd0 || H.image, H.ifd1 = H.ifd1 || H.thumbnail, Object.assign(this, e3), G2)) this[t4] = Z4(e3[t4], $3[t4]);
+          for (t4 of X6) this[t4] = Z4(e3[t4], $3[t4]);
+          for (t4 of W2) this[t4] = Z4(e3[t4], $3[t4]);
           for (t4 of z2) this[t4] = new Y3(t4, $3[t4], e3[t4], this);
           for (t4 of H) this[t4] = new Y3(t4, $3[t4], e3[t4], this.tiff);
           this.setupGlobalFilters(e3.pick, e3.skip, H, j2), true === e3.tiff ? this.batchEnableWithBool(H, true) : false === e3.tiff ? this.batchEnableWithUserValue(H, e3) : Array.isArray(e3.tiff) ? this.setupGlobalFilters(e3.tiff, void 0, H) : "object" == typeof e3.tiff && this.setupGlobalFilters(e3.tiff.pick, e3.tiff.skip, H);
@@ -63103,10 +66593,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           for (let e4 of H) this[e4].finalizeFilters();
         }
         get onlyTiff() {
-          return !V.map(((e3) => this[e3].enabled)).some(((e3) => true === e3)) && this.tiff.enabled;
+          return !V7.map(((e3) => this[e3].enabled)).some(((e3) => true === e3)) && this.tiff.enabled;
         }
         checkLoadedPlugins() {
-          for (let e3 of z2) this[e3].enabled && !T2.has(e3) && P2("segment parser", e3);
+          for (let e3 of z2) this[e3].enabled && !T2.has(e3) && P3("segment parser", e3);
         }
       };
       c(q2, "default", $3);
@@ -63145,7 +66635,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return t4.close && t4.close(), a2;
         }
       };
-      ne2 = Object.freeze({ __proto__: null, parse: ie2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A6, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U2, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X4, Options: q2 });
+      ne2 = Object.freeze({ __proto__: null, parse: ie2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2 });
       se2 = class {
         constructor(e3, t4, i3) {
           c(this, "errors", []), c(this, "ensureSegmentChunk", (async (e4) => {
@@ -63404,14 +66894,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           if (this.ifd0) return;
           let { file: e3 } = this;
           this.findIfd0Offset(), this.ifd0Offset < 8 && g3("Malformed EXIF data"), !e3.chunked && this.ifd0Offset > e3.byteLength && g3(`IFD0 offset points to outside of file.
-this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tiff && await e3.ensureChunk(this.ifd0Offset, S(this.options));
+this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tiff && await e3.ensureChunk(this.ifd0Offset, S2(this.options));
           let t4 = this.parseBlock(this.ifd0Offset, "ifd0");
           return 0 !== t4.size ? (this.exifOffset = t4.get(34665), this.interopOffset = t4.get(40965), this.gpsOffset = t4.get(34853), this.xmp = t4.get(700), this.iptc = t4.get(33723), this.icc = t4.get(34675), this.options.sanitize && (t4.delete(34665), t4.delete(40965), t4.delete(34853), t4.delete(700), t4.delete(33723), t4.delete(34675)), t4) : void 0;
         }
         async parseExifBlock() {
           if (this.exif) return;
           if (this.ifd0 || await this.parseIfd0Block(), void 0 === this.exifOffset) return;
-          this.file.tiff && await this.file.ensureChunk(this.exifOffset, S(this.options));
+          this.file.tiff && await this.file.ensureChunk(this.exifOffset, S2(this.options));
           let e3 = this.parseBlock(this.exifOffset, "exif");
           return this.interopOffset || (this.interopOffset = e3.get(40965)), this.makerNote = e3.get(37500), this.userComment = e3.get(37510), this.options.sanitize && (e3.delete(40965), e3.delete(37500), e3.delete(37510)), this.unpack(e3, 41728), this.unpack(e3, 41729), e3;
         }
@@ -63456,7 +66946,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
       };
       c(fe2, "type", "tiff"), c(fe2, "headerLength", 10), T2.set("tiff", fe2);
-      pe2 = Object.freeze({ __proto__: null, default: ne2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A6, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U2, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X4, Options: q2, parse: ie2 });
+      pe2 = Object.freeze({ __proto__: null, default: ne2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2 });
       ge2 = { ifd0: false, ifd1: false, exif: false, gps: false, interop: false, sanitize: false, reviveValues: true, translateKeys: false, translateValues: false, mergeOutput: false }, me2 = Object.assign({}, ge2, { firstChunkSize: 4e4, gps: [1, 2, 3, 4] });
       Ce2 = Object.assign({}, ge2, { tiff: false, ifd1: true, mergeOutput: false });
       Ie2 = Object.assign({}, ge2, { firstChunkSize: 4e4, ifd0: [274] });
@@ -63575,7 +67065,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         close() {
         }
       };
-      A6.set("blob", class extends ve2 {
+      A8.set("blob", class extends ve2 {
         async readWhole() {
           this.chunked = false;
           let e3 = await R(this.input);
@@ -63589,12 +67079,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return this.set(s2, e3, true);
         }
       });
-      Me2 = Object.freeze({ __proto__: null, default: pe2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A6, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U2, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X4, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
+      Me2 = Object.freeze({ __proto__: null, default: pe2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
         return we2;
       }, get rotateCss() {
         return Te2;
       }, rotation: Ae2 });
-      A6.set("url", class extends ve2 {
+      A8.set("url", class extends ve2 {
         async readWhole() {
           this.chunked = false;
           let e3 = await M3(this.input);
@@ -63705,14 +67195,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       c(Ue2, "type", "heic");
       Fe2 = class extends Le2 {
       };
-      c(Fe2, "type", "avif"), w2.set("heic", Ue2), w2.set("avif", Fe2), U2(E3, ["ifd0", "ifd1"], [[256, "ImageWidth"], [257, "ImageHeight"], [258, "BitsPerSample"], [259, "Compression"], [262, "PhotometricInterpretation"], [270, "ImageDescription"], [271, "Make"], [272, "Model"], [273, "StripOffsets"], [274, "Orientation"], [277, "SamplesPerPixel"], [278, "RowsPerStrip"], [279, "StripByteCounts"], [282, "XResolution"], [283, "YResolution"], [284, "PlanarConfiguration"], [296, "ResolutionUnit"], [301, "TransferFunction"], [305, "Software"], [306, "ModifyDate"], [315, "Artist"], [316, "HostComputer"], [317, "Predictor"], [318, "WhitePoint"], [319, "PrimaryChromaticities"], [513, "ThumbnailOffset"], [514, "ThumbnailLength"], [529, "YCbCrCoefficients"], [530, "YCbCrSubSampling"], [531, "YCbCrPositioning"], [532, "ReferenceBlackWhite"], [700, "ApplicationNotes"], [33432, "Copyright"], [33723, "IPTC"], [34665, "ExifIFD"], [34675, "ICC"], [34853, "GpsIFD"], [330, "SubIFD"], [40965, "InteropIFD"], [40091, "XPTitle"], [40092, "XPComment"], [40093, "XPAuthor"], [40094, "XPKeywords"], [40095, "XPSubject"]]), U2(E3, "exif", [[33434, "ExposureTime"], [33437, "FNumber"], [34850, "ExposureProgram"], [34852, "SpectralSensitivity"], [34855, "ISO"], [34858, "TimeZoneOffset"], [34859, "SelfTimerMode"], [34864, "SensitivityType"], [34865, "StandardOutputSensitivity"], [34866, "RecommendedExposureIndex"], [34867, "ISOSpeed"], [34868, "ISOSpeedLatitudeyyy"], [34869, "ISOSpeedLatitudezzz"], [36864, "ExifVersion"], [36867, "DateTimeOriginal"], [36868, "CreateDate"], [36873, "GooglePlusUploadCode"], [36880, "OffsetTime"], [36881, "OffsetTimeOriginal"], [36882, "OffsetTimeDigitized"], [37121, "ComponentsConfiguration"], [37122, "CompressedBitsPerPixel"], [37377, "ShutterSpeedValue"], [37378, "ApertureValue"], [37379, "BrightnessValue"], [37380, "ExposureCompensation"], [37381, "MaxApertureValue"], [37382, "SubjectDistance"], [37383, "MeteringMode"], [37384, "LightSource"], [37385, "Flash"], [37386, "FocalLength"], [37393, "ImageNumber"], [37394, "SecurityClassification"], [37395, "ImageHistory"], [37396, "SubjectArea"], [37500, "MakerNote"], [37510, "UserComment"], [37520, "SubSecTime"], [37521, "SubSecTimeOriginal"], [37522, "SubSecTimeDigitized"], [37888, "AmbientTemperature"], [37889, "Humidity"], [37890, "Pressure"], [37891, "WaterDepth"], [37892, "Acceleration"], [37893, "CameraElevationAngle"], [40960, "FlashpixVersion"], [40961, "ColorSpace"], [40962, "ExifImageWidth"], [40963, "ExifImageHeight"], [40964, "RelatedSoundFile"], [41483, "FlashEnergy"], [41486, "FocalPlaneXResolution"], [41487, "FocalPlaneYResolution"], [41488, "FocalPlaneResolutionUnit"], [41492, "SubjectLocation"], [41493, "ExposureIndex"], [41495, "SensingMethod"], [41728, "FileSource"], [41729, "SceneType"], [41730, "CFAPattern"], [41985, "CustomRendered"], [41986, "ExposureMode"], [41987, "WhiteBalance"], [41988, "DigitalZoomRatio"], [41989, "FocalLengthIn35mmFormat"], [41990, "SceneCaptureType"], [41991, "GainControl"], [41992, "Contrast"], [41993, "Saturation"], [41994, "Sharpness"], [41996, "SubjectDistanceRange"], [42016, "ImageUniqueID"], [42032, "OwnerName"], [42033, "SerialNumber"], [42034, "LensInfo"], [42035, "LensMake"], [42036, "LensModel"], [42037, "LensSerialNumber"], [42080, "CompositeImage"], [42081, "CompositeImageCount"], [42082, "CompositeImageExposureTimes"], [42240, "Gamma"], [59932, "Padding"], [59933, "OffsetSchema"], [65e3, "OwnerName"], [65001, "SerialNumber"], [65002, "Lens"], [65100, "RawFile"], [65101, "Converter"], [65102, "WhiteBalance"], [65105, "Exposure"], [65106, "Shadows"], [65107, "Brightness"], [65108, "Contrast"], [65109, "Saturation"], [65110, "Sharpness"], [65111, "Smoothness"], [65112, "MoireFilter"], [40965, "InteropIFD"]]), U2(E3, "gps", [[0, "GPSVersionID"], [1, "GPSLatitudeRef"], [2, "GPSLatitude"], [3, "GPSLongitudeRef"], [4, "GPSLongitude"], [5, "GPSAltitudeRef"], [6, "GPSAltitude"], [7, "GPSTimeStamp"], [8, "GPSSatellites"], [9, "GPSStatus"], [10, "GPSMeasureMode"], [11, "GPSDOP"], [12, "GPSSpeedRef"], [13, "GPSSpeed"], [14, "GPSTrackRef"], [15, "GPSTrack"], [16, "GPSImgDirectionRef"], [17, "GPSImgDirection"], [18, "GPSMapDatum"], [19, "GPSDestLatitudeRef"], [20, "GPSDestLatitude"], [21, "GPSDestLongitudeRef"], [22, "GPSDestLongitude"], [23, "GPSDestBearingRef"], [24, "GPSDestBearing"], [25, "GPSDestDistanceRef"], [26, "GPSDestDistance"], [27, "GPSProcessingMethod"], [28, "GPSAreaInformation"], [29, "GPSDateStamp"], [30, "GPSDifferential"], [31, "GPSHPositioningError"]]), U2(B3, ["ifd0", "ifd1"], [[274, { 1: "Horizontal (normal)", 2: "Mirror horizontal", 3: "Rotate 180", 4: "Mirror vertical", 5: "Mirror horizontal and rotate 270 CW", 6: "Rotate 90 CW", 7: "Mirror horizontal and rotate 90 CW", 8: "Rotate 270 CW" }], [296, { 1: "None", 2: "inches", 3: "cm" }]]);
-      Ee2 = U2(B3, "exif", [[34850, { 0: "Not defined", 1: "Manual", 2: "Normal program", 3: "Aperture priority", 4: "Shutter priority", 5: "Creative program", 6: "Action program", 7: "Portrait mode", 8: "Landscape mode" }], [37121, { 0: "-", 1: "Y", 2: "Cb", 3: "Cr", 4: "R", 5: "G", 6: "B" }], [37383, { 0: "Unknown", 1: "Average", 2: "CenterWeightedAverage", 3: "Spot", 4: "MultiSpot", 5: "Pattern", 6: "Partial", 255: "Other" }], [37384, { 0: "Unknown", 1: "Daylight", 2: "Fluorescent", 3: "Tungsten (incandescent light)", 4: "Flash", 9: "Fine weather", 10: "Cloudy weather", 11: "Shade", 12: "Daylight fluorescent (D 5700 - 7100K)", 13: "Day white fluorescent (N 4600 - 5400K)", 14: "Cool white fluorescent (W 3900 - 4500K)", 15: "White fluorescent (WW 3200 - 3700K)", 17: "Standard light A", 18: "Standard light B", 19: "Standard light C", 20: "D55", 21: "D65", 22: "D75", 23: "D50", 24: "ISO studio tungsten", 255: "Other" }], [37385, { 0: "Flash did not fire", 1: "Flash fired", 5: "Strobe return light not detected", 7: "Strobe return light detected", 9: "Flash fired, compulsory flash mode", 13: "Flash fired, compulsory flash mode, return light not detected", 15: "Flash fired, compulsory flash mode, return light detected", 16: "Flash did not fire, compulsory flash mode", 24: "Flash did not fire, auto mode", 25: "Flash fired, auto mode", 29: "Flash fired, auto mode, return light not detected", 31: "Flash fired, auto mode, return light detected", 32: "No flash function", 65: "Flash fired, red-eye reduction mode", 69: "Flash fired, red-eye reduction mode, return light not detected", 71: "Flash fired, red-eye reduction mode, return light detected", 73: "Flash fired, compulsory flash mode, red-eye reduction mode", 77: "Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected", 79: "Flash fired, compulsory flash mode, red-eye reduction mode, return light detected", 89: "Flash fired, auto mode, red-eye reduction mode", 93: "Flash fired, auto mode, return light not detected, red-eye reduction mode", 95: "Flash fired, auto mode, return light detected, red-eye reduction mode" }], [41495, { 1: "Not defined", 2: "One-chip color area sensor", 3: "Two-chip color area sensor", 4: "Three-chip color area sensor", 5: "Color sequential area sensor", 7: "Trilinear sensor", 8: "Color sequential linear sensor" }], [41728, { 1: "Film Scanner", 2: "Reflection Print Scanner", 3: "Digital Camera" }], [41729, { 1: "Directly photographed" }], [41985, { 0: "Normal", 1: "Custom", 2: "HDR (no original saved)", 3: "HDR (original saved)", 4: "Original (for HDR)", 6: "Panorama", 7: "Portrait HDR", 8: "Portrait" }], [41986, { 0: "Auto", 1: "Manual", 2: "Auto bracket" }], [41987, { 0: "Auto", 1: "Manual" }], [41990, { 0: "Standard", 1: "Landscape", 2: "Portrait", 3: "Night", 4: "Other" }], [41991, { 0: "None", 1: "Low gain up", 2: "High gain up", 3: "Low gain down", 4: "High gain down" }], [41996, { 0: "Unknown", 1: "Macro", 2: "Close", 3: "Distant" }], [42080, { 0: "Unknown", 1: "Not a Composite Image", 2: "General Composite Image", 3: "Composite Image Captured While Shooting" }]]);
+      c(Fe2, "type", "avif"), w2.set("heic", Ue2), w2.set("avif", Fe2), U4(E3, ["ifd0", "ifd1"], [[256, "ImageWidth"], [257, "ImageHeight"], [258, "BitsPerSample"], [259, "Compression"], [262, "PhotometricInterpretation"], [270, "ImageDescription"], [271, "Make"], [272, "Model"], [273, "StripOffsets"], [274, "Orientation"], [277, "SamplesPerPixel"], [278, "RowsPerStrip"], [279, "StripByteCounts"], [282, "XResolution"], [283, "YResolution"], [284, "PlanarConfiguration"], [296, "ResolutionUnit"], [301, "TransferFunction"], [305, "Software"], [306, "ModifyDate"], [315, "Artist"], [316, "HostComputer"], [317, "Predictor"], [318, "WhitePoint"], [319, "PrimaryChromaticities"], [513, "ThumbnailOffset"], [514, "ThumbnailLength"], [529, "YCbCrCoefficients"], [530, "YCbCrSubSampling"], [531, "YCbCrPositioning"], [532, "ReferenceBlackWhite"], [700, "ApplicationNotes"], [33432, "Copyright"], [33723, "IPTC"], [34665, "ExifIFD"], [34675, "ICC"], [34853, "GpsIFD"], [330, "SubIFD"], [40965, "InteropIFD"], [40091, "XPTitle"], [40092, "XPComment"], [40093, "XPAuthor"], [40094, "XPKeywords"], [40095, "XPSubject"]]), U4(E3, "exif", [[33434, "ExposureTime"], [33437, "FNumber"], [34850, "ExposureProgram"], [34852, "SpectralSensitivity"], [34855, "ISO"], [34858, "TimeZoneOffset"], [34859, "SelfTimerMode"], [34864, "SensitivityType"], [34865, "StandardOutputSensitivity"], [34866, "RecommendedExposureIndex"], [34867, "ISOSpeed"], [34868, "ISOSpeedLatitudeyyy"], [34869, "ISOSpeedLatitudezzz"], [36864, "ExifVersion"], [36867, "DateTimeOriginal"], [36868, "CreateDate"], [36873, "GooglePlusUploadCode"], [36880, "OffsetTime"], [36881, "OffsetTimeOriginal"], [36882, "OffsetTimeDigitized"], [37121, "ComponentsConfiguration"], [37122, "CompressedBitsPerPixel"], [37377, "ShutterSpeedValue"], [37378, "ApertureValue"], [37379, "BrightnessValue"], [37380, "ExposureCompensation"], [37381, "MaxApertureValue"], [37382, "SubjectDistance"], [37383, "MeteringMode"], [37384, "LightSource"], [37385, "Flash"], [37386, "FocalLength"], [37393, "ImageNumber"], [37394, "SecurityClassification"], [37395, "ImageHistory"], [37396, "SubjectArea"], [37500, "MakerNote"], [37510, "UserComment"], [37520, "SubSecTime"], [37521, "SubSecTimeOriginal"], [37522, "SubSecTimeDigitized"], [37888, "AmbientTemperature"], [37889, "Humidity"], [37890, "Pressure"], [37891, "WaterDepth"], [37892, "Acceleration"], [37893, "CameraElevationAngle"], [40960, "FlashpixVersion"], [40961, "ColorSpace"], [40962, "ExifImageWidth"], [40963, "ExifImageHeight"], [40964, "RelatedSoundFile"], [41483, "FlashEnergy"], [41486, "FocalPlaneXResolution"], [41487, "FocalPlaneYResolution"], [41488, "FocalPlaneResolutionUnit"], [41492, "SubjectLocation"], [41493, "ExposureIndex"], [41495, "SensingMethod"], [41728, "FileSource"], [41729, "SceneType"], [41730, "CFAPattern"], [41985, "CustomRendered"], [41986, "ExposureMode"], [41987, "WhiteBalance"], [41988, "DigitalZoomRatio"], [41989, "FocalLengthIn35mmFormat"], [41990, "SceneCaptureType"], [41991, "GainControl"], [41992, "Contrast"], [41993, "Saturation"], [41994, "Sharpness"], [41996, "SubjectDistanceRange"], [42016, "ImageUniqueID"], [42032, "OwnerName"], [42033, "SerialNumber"], [42034, "LensInfo"], [42035, "LensMake"], [42036, "LensModel"], [42037, "LensSerialNumber"], [42080, "CompositeImage"], [42081, "CompositeImageCount"], [42082, "CompositeImageExposureTimes"], [42240, "Gamma"], [59932, "Padding"], [59933, "OffsetSchema"], [65e3, "OwnerName"], [65001, "SerialNumber"], [65002, "Lens"], [65100, "RawFile"], [65101, "Converter"], [65102, "WhiteBalance"], [65105, "Exposure"], [65106, "Shadows"], [65107, "Brightness"], [65108, "Contrast"], [65109, "Saturation"], [65110, "Sharpness"], [65111, "Smoothness"], [65112, "MoireFilter"], [40965, "InteropIFD"]]), U4(E3, "gps", [[0, "GPSVersionID"], [1, "GPSLatitudeRef"], [2, "GPSLatitude"], [3, "GPSLongitudeRef"], [4, "GPSLongitude"], [5, "GPSAltitudeRef"], [6, "GPSAltitude"], [7, "GPSTimeStamp"], [8, "GPSSatellites"], [9, "GPSStatus"], [10, "GPSMeasureMode"], [11, "GPSDOP"], [12, "GPSSpeedRef"], [13, "GPSSpeed"], [14, "GPSTrackRef"], [15, "GPSTrack"], [16, "GPSImgDirectionRef"], [17, "GPSImgDirection"], [18, "GPSMapDatum"], [19, "GPSDestLatitudeRef"], [20, "GPSDestLatitude"], [21, "GPSDestLongitudeRef"], [22, "GPSDestLongitude"], [23, "GPSDestBearingRef"], [24, "GPSDestBearing"], [25, "GPSDestDistanceRef"], [26, "GPSDestDistance"], [27, "GPSProcessingMethod"], [28, "GPSAreaInformation"], [29, "GPSDateStamp"], [30, "GPSDifferential"], [31, "GPSHPositioningError"]]), U4(B3, ["ifd0", "ifd1"], [[274, { 1: "Horizontal (normal)", 2: "Mirror horizontal", 3: "Rotate 180", 4: "Mirror vertical", 5: "Mirror horizontal and rotate 270 CW", 6: "Rotate 90 CW", 7: "Mirror horizontal and rotate 90 CW", 8: "Rotate 270 CW" }], [296, { 1: "None", 2: "inches", 3: "cm" }]]);
+      Ee2 = U4(B3, "exif", [[34850, { 0: "Not defined", 1: "Manual", 2: "Normal program", 3: "Aperture priority", 4: "Shutter priority", 5: "Creative program", 6: "Action program", 7: "Portrait mode", 8: "Landscape mode" }], [37121, { 0: "-", 1: "Y", 2: "Cb", 3: "Cr", 4: "R", 5: "G", 6: "B" }], [37383, { 0: "Unknown", 1: "Average", 2: "CenterWeightedAverage", 3: "Spot", 4: "MultiSpot", 5: "Pattern", 6: "Partial", 255: "Other" }], [37384, { 0: "Unknown", 1: "Daylight", 2: "Fluorescent", 3: "Tungsten (incandescent light)", 4: "Flash", 9: "Fine weather", 10: "Cloudy weather", 11: "Shade", 12: "Daylight fluorescent (D 5700 - 7100K)", 13: "Day white fluorescent (N 4600 - 5400K)", 14: "Cool white fluorescent (W 3900 - 4500K)", 15: "White fluorescent (WW 3200 - 3700K)", 17: "Standard light A", 18: "Standard light B", 19: "Standard light C", 20: "D55", 21: "D65", 22: "D75", 23: "D50", 24: "ISO studio tungsten", 255: "Other" }], [37385, { 0: "Flash did not fire", 1: "Flash fired", 5: "Strobe return light not detected", 7: "Strobe return light detected", 9: "Flash fired, compulsory flash mode", 13: "Flash fired, compulsory flash mode, return light not detected", 15: "Flash fired, compulsory flash mode, return light detected", 16: "Flash did not fire, compulsory flash mode", 24: "Flash did not fire, auto mode", 25: "Flash fired, auto mode", 29: "Flash fired, auto mode, return light not detected", 31: "Flash fired, auto mode, return light detected", 32: "No flash function", 65: "Flash fired, red-eye reduction mode", 69: "Flash fired, red-eye reduction mode, return light not detected", 71: "Flash fired, red-eye reduction mode, return light detected", 73: "Flash fired, compulsory flash mode, red-eye reduction mode", 77: "Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected", 79: "Flash fired, compulsory flash mode, red-eye reduction mode, return light detected", 89: "Flash fired, auto mode, red-eye reduction mode", 93: "Flash fired, auto mode, return light not detected, red-eye reduction mode", 95: "Flash fired, auto mode, return light detected, red-eye reduction mode" }], [41495, { 1: "Not defined", 2: "One-chip color area sensor", 3: "Two-chip color area sensor", 4: "Three-chip color area sensor", 5: "Color sequential area sensor", 7: "Trilinear sensor", 8: "Color sequential linear sensor" }], [41728, { 1: "Film Scanner", 2: "Reflection Print Scanner", 3: "Digital Camera" }], [41729, { 1: "Directly photographed" }], [41985, { 0: "Normal", 1: "Custom", 2: "HDR (no original saved)", 3: "HDR (original saved)", 4: "Original (for HDR)", 6: "Panorama", 7: "Portrait HDR", 8: "Portrait" }], [41986, { 0: "Auto", 1: "Manual", 2: "Auto bracket" }], [41987, { 0: "Auto", 1: "Manual" }], [41990, { 0: "Standard", 1: "Landscape", 2: "Portrait", 3: "Night", 4: "Other" }], [41991, { 0: "None", 1: "Low gain up", 2: "High gain up", 3: "Low gain down", 4: "High gain down" }], [41996, { 0: "Unknown", 1: "Macro", 2: "Close", 3: "Distant" }], [42080, { 0: "Unknown", 1: "Not a Composite Image", 2: "General Composite Image", 3: "Composite Image Captured While Shooting" }]]);
       Be2 = { 1: "No absolute unit of measurement", 2: "Inch", 3: "Centimeter" };
       Ee2.set(37392, Be2), Ee2.set(41488, Be2);
       Ne2 = { 0: "Normal", 1: "Low", 2: "High" };
-      Ee2.set(41992, Ne2), Ee2.set(41993, Ne2), Ee2.set(41994, Ne2), U2(N2, ["ifd0", "ifd1"], [[50827, function(e3) {
+      Ee2.set(41992, Ne2), Ee2.set(41993, Ne2), Ee2.set(41994, Ne2), U4(N2, ["ifd0", "ifd1"], [[50827, function(e3) {
         return "string" != typeof e3 ? b10(e3) : e3;
-      }], [306, ze2], [40091, He2], [40092, He2], [40093, He2], [40094, He2], [40095, He2]]), U2(N2, "exif", [[40960, Ve2], [36864, Ve2], [36867, ze2], [36868, ze2], [40962, Ge2], [40963, Ge2]]), U2(N2, "gps", [[0, (e3) => Array.from(e3).join(".")], [7, (e3) => Array.from(e3).join(":")]]);
+      }], [306, ze2], [40091, He2], [40092, He2], [40093, He2], [40094, He2], [40095, He2]]), U4(N2, "exif", [[40960, Ve2], [36864, Ve2], [36867, ze2], [36868, ze2], [40962, Ge2], [40963, Ge2]]), U4(N2, "gps", [[0, (e3) => Array.from(e3).join(".")], [7, (e3) => Array.from(e3).join(":")]]);
       We2 = class extends re3 {
         static canHandle(e3, t4) {
           return 225 === e3.getUint8(t4 + 1) && 1752462448 === e3.getUint32(t4 + 4) && "http://ns.adobe.com/" === e3.getString(t4 + 4, "http://ns.adobe.com/".length);
@@ -63826,7 +67316,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       };
       Ye2 = (e3) => e3.serialize(), $e2 = (e3) => 1 === e3.length ? e3[0] : e3, Je2 = (e3, t4) => t4[e3] ? t4[e3] : t4[e3] = {};
       Ze2 = ["rdf:li", "rdf:Seq", "rdf:Bag", "rdf:Alt", "rdf:Description"], et2 = new RegExp(`(<|\\/)(${Ze2.join("|")})`, "g");
-      tt2 = Object.freeze({ __proto__: null, default: Me2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A6, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U2, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X4, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
+      tt2 = Object.freeze({ __proto__: null, default: Me2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
         return we2;
       }, get rotateCss() {
         return Te2;
@@ -63834,7 +67324,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       it2 = ["xmp", "icc", "iptc", "tiff"], nt2 = () => {
       };
       at2 = l("fs", ((e3) => e3.promises));
-      A6.set("fs", class extends ve2 {
+      A8.set("fs", class extends ve2 {
         async readWhole() {
           this.chunked = false, this.fs = await at2;
           let e3 = await this.fs.readFile(this.input);
@@ -63858,7 +67348,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           }
         }
       });
-      A6.set("base64", class extends ve2 {
+      A8.set("base64", class extends ve2 {
         constructor(...e3) {
           super(...e3), this.input = this.input.replace(/^data:([^;]+);base64,/gim, ""), this.size = this.input.length / 4 * 3, this.input.endsWith("==") ? this.size -= 2 : this.input.endsWith("=") && (this.size -= 1);
         }
@@ -63890,7 +67380,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         async parse() {
           let { tiff: e3, xmp: t4, iptc: i3, icc: n3 } = this.options;
           if (e3.enabled || t4.enabled || i3.enabled || n3.enabled) {
-            let e4 = Math.max(S(this.options), this.options.chunkSize);
+            let e4 = Math.max(S2(this.options), this.options.chunkSize);
             await this.file.ensureChunk(0, e4), this.createParser("tiff", this.file), this.parsers.tiff.parseHeader(), await this.parsers.tiff.parseIfd0Block(), this.adaptTiffPropAsSegment("xmp"), this.adaptTiffPropAsSegment("iptc"), this.adaptTiffPropAsSegment("icc");
           }
         }
@@ -63959,9 +67449,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           }
         }
       };
-      c(ut, "type", "png"), w2.set("png", ut), U2(E3, "interop", [[1, "InteropIndex"], [2, "InteropVersion"], [4096, "RelatedImageFileFormat"], [4097, "RelatedImageWidth"], [4098, "RelatedImageHeight"]]), F2(E3, "ifd0", [[11, "ProcessingSoftware"], [254, "SubfileType"], [255, "OldSubfileType"], [263, "Thresholding"], [264, "CellWidth"], [265, "CellLength"], [266, "FillOrder"], [269, "DocumentName"], [280, "MinSampleValue"], [281, "MaxSampleValue"], [285, "PageName"], [286, "XPosition"], [287, "YPosition"], [290, "GrayResponseUnit"], [297, "PageNumber"], [321, "HalftoneHints"], [322, "TileWidth"], [323, "TileLength"], [332, "InkSet"], [337, "TargetPrinter"], [18246, "Rating"], [18249, "RatingPercent"], [33550, "PixelScale"], [34264, "ModelTransform"], [34377, "PhotoshopSettings"], [50706, "DNGVersion"], [50707, "DNGBackwardVersion"], [50708, "UniqueCameraModel"], [50709, "LocalizedCameraModel"], [50736, "DNGLensInfo"], [50739, "ShadowScale"], [50740, "DNGPrivateData"], [33920, "IntergraphMatrix"], [33922, "ModelTiePoint"], [34118, "SEMInfo"], [34735, "GeoTiffDirectory"], [34736, "GeoTiffDoubleParams"], [34737, "GeoTiffAsciiParams"], [50341, "PrintIM"], [50721, "ColorMatrix1"], [50722, "ColorMatrix2"], [50723, "CameraCalibration1"], [50724, "CameraCalibration2"], [50725, "ReductionMatrix1"], [50726, "ReductionMatrix2"], [50727, "AnalogBalance"], [50728, "AsShotNeutral"], [50729, "AsShotWhiteXY"], [50730, "BaselineExposure"], [50731, "BaselineNoise"], [50732, "BaselineSharpness"], [50734, "LinearResponseLimit"], [50735, "CameraSerialNumber"], [50741, "MakerNoteSafety"], [50778, "CalibrationIlluminant1"], [50779, "CalibrationIlluminant2"], [50781, "RawDataUniqueID"], [50827, "OriginalRawFileName"], [50828, "OriginalRawFileData"], [50831, "AsShotICCProfile"], [50832, "AsShotPreProfileMatrix"], [50833, "CurrentICCProfile"], [50834, "CurrentPreProfileMatrix"], [50879, "ColorimetricReference"], [50885, "SRawType"], [50898, "PanasonicTitle"], [50899, "PanasonicTitle2"], [50931, "CameraCalibrationSig"], [50932, "ProfileCalibrationSig"], [50933, "ProfileIFD"], [50934, "AsShotProfileName"], [50936, "ProfileName"], [50937, "ProfileHueSatMapDims"], [50938, "ProfileHueSatMapData1"], [50939, "ProfileHueSatMapData2"], [50940, "ProfileToneCurve"], [50941, "ProfileEmbedPolicy"], [50942, "ProfileCopyright"], [50964, "ForwardMatrix1"], [50965, "ForwardMatrix2"], [50966, "PreviewApplicationName"], [50967, "PreviewApplicationVersion"], [50968, "PreviewSettingsName"], [50969, "PreviewSettingsDigest"], [50970, "PreviewColorSpace"], [50971, "PreviewDateTime"], [50972, "RawImageDigest"], [50973, "OriginalRawFileDigest"], [50981, "ProfileLookTableDims"], [50982, "ProfileLookTableData"], [51043, "TimeCodes"], [51044, "FrameRate"], [51058, "TStop"], [51081, "ReelName"], [51089, "OriginalDefaultFinalSize"], [51090, "OriginalBestQualitySize"], [51091, "OriginalDefaultCropSize"], [51105, "CameraLabel"], [51107, "ProfileHueSatMapEncoding"], [51108, "ProfileLookTableEncoding"], [51109, "BaselineExposureOffset"], [51110, "DefaultBlackRender"], [51111, "NewRawImageDigest"], [51112, "RawToPreviewGain"]]);
+      c(ut, "type", "png"), w2.set("png", ut), U4(E3, "interop", [[1, "InteropIndex"], [2, "InteropVersion"], [4096, "RelatedImageFileFormat"], [4097, "RelatedImageWidth"], [4098, "RelatedImageHeight"]]), F2(E3, "ifd0", [[11, "ProcessingSoftware"], [254, "SubfileType"], [255, "OldSubfileType"], [263, "Thresholding"], [264, "CellWidth"], [265, "CellLength"], [266, "FillOrder"], [269, "DocumentName"], [280, "MinSampleValue"], [281, "MaxSampleValue"], [285, "PageName"], [286, "XPosition"], [287, "YPosition"], [290, "GrayResponseUnit"], [297, "PageNumber"], [321, "HalftoneHints"], [322, "TileWidth"], [323, "TileLength"], [332, "InkSet"], [337, "TargetPrinter"], [18246, "Rating"], [18249, "RatingPercent"], [33550, "PixelScale"], [34264, "ModelTransform"], [34377, "PhotoshopSettings"], [50706, "DNGVersion"], [50707, "DNGBackwardVersion"], [50708, "UniqueCameraModel"], [50709, "LocalizedCameraModel"], [50736, "DNGLensInfo"], [50739, "ShadowScale"], [50740, "DNGPrivateData"], [33920, "IntergraphMatrix"], [33922, "ModelTiePoint"], [34118, "SEMInfo"], [34735, "GeoTiffDirectory"], [34736, "GeoTiffDoubleParams"], [34737, "GeoTiffAsciiParams"], [50341, "PrintIM"], [50721, "ColorMatrix1"], [50722, "ColorMatrix2"], [50723, "CameraCalibration1"], [50724, "CameraCalibration2"], [50725, "ReductionMatrix1"], [50726, "ReductionMatrix2"], [50727, "AnalogBalance"], [50728, "AsShotNeutral"], [50729, "AsShotWhiteXY"], [50730, "BaselineExposure"], [50731, "BaselineNoise"], [50732, "BaselineSharpness"], [50734, "LinearResponseLimit"], [50735, "CameraSerialNumber"], [50741, "MakerNoteSafety"], [50778, "CalibrationIlluminant1"], [50779, "CalibrationIlluminant2"], [50781, "RawDataUniqueID"], [50827, "OriginalRawFileName"], [50828, "OriginalRawFileData"], [50831, "AsShotICCProfile"], [50832, "AsShotPreProfileMatrix"], [50833, "CurrentICCProfile"], [50834, "CurrentPreProfileMatrix"], [50879, "ColorimetricReference"], [50885, "SRawType"], [50898, "PanasonicTitle"], [50899, "PanasonicTitle2"], [50931, "CameraCalibrationSig"], [50932, "ProfileCalibrationSig"], [50933, "ProfileIFD"], [50934, "AsShotProfileName"], [50936, "ProfileName"], [50937, "ProfileHueSatMapDims"], [50938, "ProfileHueSatMapData1"], [50939, "ProfileHueSatMapData2"], [50940, "ProfileToneCurve"], [50941, "ProfileEmbedPolicy"], [50942, "ProfileCopyright"], [50964, "ForwardMatrix1"], [50965, "ForwardMatrix2"], [50966, "PreviewApplicationName"], [50967, "PreviewApplicationVersion"], [50968, "PreviewSettingsName"], [50969, "PreviewSettingsDigest"], [50970, "PreviewColorSpace"], [50971, "PreviewDateTime"], [50972, "RawImageDigest"], [50973, "OriginalRawFileDigest"], [50981, "ProfileLookTableDims"], [50982, "ProfileLookTableData"], [51043, "TimeCodes"], [51044, "FrameRate"], [51058, "TStop"], [51081, "ReelName"], [51089, "OriginalDefaultFinalSize"], [51090, "OriginalBestQualitySize"], [51091, "OriginalDefaultCropSize"], [51105, "CameraLabel"], [51107, "ProfileHueSatMapEncoding"], [51108, "ProfileLookTableEncoding"], [51109, "BaselineExposureOffset"], [51110, "DefaultBlackRender"], [51111, "NewRawImageDigest"], [51112, "RawToPreviewGain"]]);
       ct = [[273, "StripOffsets"], [279, "StripByteCounts"], [288, "FreeOffsets"], [289, "FreeByteCounts"], [291, "GrayResponseCurve"], [292, "T4Options"], [293, "T6Options"], [300, "ColorResponseUnit"], [320, "ColorMap"], [324, "TileOffsets"], [325, "TileByteCounts"], [326, "BadFaxLines"], [327, "CleanFaxData"], [328, "ConsecutiveBadFaxLines"], [330, "SubIFD"], [333, "InkNames"], [334, "NumberofInks"], [336, "DotRange"], [338, "ExtraSamples"], [339, "SampleFormat"], [340, "SMinSampleValue"], [341, "SMaxSampleValue"], [342, "TransferRange"], [343, "ClipPath"], [344, "XClipPathUnits"], [345, "YClipPathUnits"], [346, "Indexed"], [347, "JPEGTables"], [351, "OPIProxy"], [400, "GlobalParametersIFD"], [401, "ProfileType"], [402, "FaxProfile"], [403, "CodingMethods"], [404, "VersionYear"], [405, "ModeNumber"], [433, "Decode"], [434, "DefaultImageColor"], [435, "T82Options"], [437, "JPEGTables"], [512, "JPEGProc"], [515, "JPEGRestartInterval"], [517, "JPEGLosslessPredictors"], [518, "JPEGPointTransforms"], [519, "JPEGQTables"], [520, "JPEGDCTables"], [521, "JPEGACTables"], [559, "StripRowCounts"], [999, "USPTOMiscellaneous"], [18247, "XP_DIP_XML"], [18248, "StitchInfo"], [28672, "SonyRawFileType"], [28688, "SonyToneCurve"], [28721, "VignettingCorrection"], [28722, "VignettingCorrParams"], [28724, "ChromaticAberrationCorrection"], [28725, "ChromaticAberrationCorrParams"], [28726, "DistortionCorrection"], [28727, "DistortionCorrParams"], [29895, "SonyCropTopLeft"], [29896, "SonyCropSize"], [32781, "ImageID"], [32931, "WangTag1"], [32932, "WangAnnotation"], [32933, "WangTag3"], [32934, "WangTag4"], [32953, "ImageReferencePoints"], [32954, "RegionXformTackPoint"], [32955, "WarpQuadrilateral"], [32956, "AffineTransformMat"], [32995, "Matteing"], [32996, "DataType"], [32997, "ImageDepth"], [32998, "TileDepth"], [33300, "ImageFullWidth"], [33301, "ImageFullHeight"], [33302, "TextureFormat"], [33303, "WrapModes"], [33304, "FovCot"], [33305, "MatrixWorldToScreen"], [33306, "MatrixWorldToCamera"], [33405, "Model2"], [33421, "CFARepeatPatternDim"], [33422, "CFAPattern2"], [33423, "BatteryLevel"], [33424, "KodakIFD"], [33445, "MDFileTag"], [33446, "MDScalePixel"], [33447, "MDColorTable"], [33448, "MDLabName"], [33449, "MDSampleInfo"], [33450, "MDPrepDate"], [33451, "MDPrepTime"], [33452, "MDFileUnits"], [33589, "AdventScale"], [33590, "AdventRevision"], [33628, "UIC1Tag"], [33629, "UIC2Tag"], [33630, "UIC3Tag"], [33631, "UIC4Tag"], [33918, "IntergraphPacketData"], [33919, "IntergraphFlagRegisters"], [33921, "INGRReserved"], [34016, "Site"], [34017, "ColorSequence"], [34018, "IT8Header"], [34019, "RasterPadding"], [34020, "BitsPerRunLength"], [34021, "BitsPerExtendedRunLength"], [34022, "ColorTable"], [34023, "ImageColorIndicator"], [34024, "BackgroundColorIndicator"], [34025, "ImageColorValue"], [34026, "BackgroundColorValue"], [34027, "PixelIntensityRange"], [34028, "TransparencyIndicator"], [34029, "ColorCharacterization"], [34030, "HCUsage"], [34031, "TrapIndicator"], [34032, "CMYKEquivalent"], [34152, "AFCP_IPTC"], [34232, "PixelMagicJBIGOptions"], [34263, "JPLCartoIFD"], [34306, "WB_GRGBLevels"], [34310, "LeafData"], [34687, "TIFF_FXExtensions"], [34688, "MultiProfiles"], [34689, "SharedData"], [34690, "T88Options"], [34732, "ImageLayer"], [34750, "JBIGOptions"], [34856, "Opto-ElectricConvFactor"], [34857, "Interlace"], [34908, "FaxRecvParams"], [34909, "FaxSubAddress"], [34910, "FaxRecvTime"], [34929, "FedexEDR"], [34954, "LeafSubIFD"], [37387, "FlashEnergy"], [37388, "SpatialFrequencyResponse"], [37389, "Noise"], [37390, "FocalPlaneXResolution"], [37391, "FocalPlaneYResolution"], [37392, "FocalPlaneResolutionUnit"], [37397, "ExposureIndex"], [37398, "TIFF-EPStandardID"], [37399, "SensingMethod"], [37434, "CIP3DataFile"], [37435, "CIP3Sheet"], [37436, "CIP3Side"], [37439, "StoNits"], [37679, "MSDocumentText"], [37680, "MSPropertySetStorage"], [37681, "MSDocumentTextPosition"], [37724, "ImageSourceData"], [40965, "InteropIFD"], [40976, "SamsungRawPointersOffset"], [40977, "SamsungRawPointersLength"], [41217, "SamsungRawByteOrder"], [41218, "SamsungRawUnknown"], [41484, "SpatialFrequencyResponse"], [41485, "Noise"], [41489, "ImageNumber"], [41490, "SecurityClassification"], [41491, "ImageHistory"], [41494, "TIFF-EPStandardID"], [41995, "DeviceSettingDescription"], [42112, "GDALMetadata"], [42113, "GDALNoData"], [44992, "ExpandSoftware"], [44993, "ExpandLens"], [44994, "ExpandFilm"], [44995, "ExpandFilterLens"], [44996, "ExpandScanner"], [44997, "ExpandFlashLamp"], [46275, "HasselbladRawImage"], [48129, "PixelFormat"], [48130, "Transformation"], [48131, "Uncompressed"], [48132, "ImageType"], [48256, "ImageWidth"], [48257, "ImageHeight"], [48258, "WidthResolution"], [48259, "HeightResolution"], [48320, "ImageOffset"], [48321, "ImageByteCount"], [48322, "AlphaOffset"], [48323, "AlphaByteCount"], [48324, "ImageDataDiscard"], [48325, "AlphaDataDiscard"], [50215, "OceScanjobDesc"], [50216, "OceApplicationSelector"], [50217, "OceIDNumber"], [50218, "OceImageLogic"], [50255, "Annotations"], [50459, "HasselbladExif"], [50547, "OriginalFileName"], [50560, "USPTOOriginalContentType"], [50656, "CR2CFAPattern"], [50710, "CFAPlaneColor"], [50711, "CFALayout"], [50712, "LinearizationTable"], [50713, "BlackLevelRepeatDim"], [50714, "BlackLevel"], [50715, "BlackLevelDeltaH"], [50716, "BlackLevelDeltaV"], [50717, "WhiteLevel"], [50718, "DefaultScale"], [50719, "DefaultCropOrigin"], [50720, "DefaultCropSize"], [50733, "BayerGreenSplit"], [50737, "ChromaBlurRadius"], [50738, "AntiAliasStrength"], [50752, "RawImageSegmentation"], [50780, "BestQualityScale"], [50784, "AliasLayerMetadata"], [50829, "ActiveArea"], [50830, "MaskedAreas"], [50935, "NoiseReductionApplied"], [50974, "SubTileBlockSize"], [50975, "RowInterleaveFactor"], [51008, "OpcodeList1"], [51009, "OpcodeList2"], [51022, "OpcodeList3"], [51041, "NoiseProfile"], [51114, "CacheVersion"], [51125, "DefaultUserCrop"], [51157, "NikonNEFInfo"], [65024, "KdcIFD"]];
-      F2(E3, "ifd0", ct), F2(E3, "exif", ct), U2(B3, "gps", [[23, { M: "Magnetic North", T: "True North" }], [25, { K: "Kilometers", M: "Miles", N: "Nautical Miles" }]]);
+      F2(E3, "ifd0", ct), F2(E3, "exif", ct), U4(B3, "gps", [[23, { M: "Magnetic North", T: "True North" }], [25, { K: "Kilometers", M: "Miles", N: "Nautical Miles" }]]);
       ft = class extends re3 {
         static canHandle(e3, t4) {
           return 224 === e3.getUint8(t4 + 1) && 1246120262 === e3.getUint32(t4 + 4) && 0 === e3.getUint8(t4 + 8);
@@ -63973,7 +67463,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           this.raw = /* @__PURE__ */ new Map([[0, this.chunk.getUint16(0)], [2, this.chunk.getUint8(2)], [3, this.chunk.getUint16(3)], [5, this.chunk.getUint16(5)], [7, this.chunk.getUint8(7)], [8, this.chunk.getUint8(8)]]);
         }
       };
-      c(ft, "type", "jfif"), c(ft, "headerLength", 9), T2.set("jfif", ft), U2(E3, "jfif", [[0, "JFIFVersion"], [2, "ResolutionUnit"], [3, "XResolution"], [5, "YResolution"], [7, "ThumbnailWidth"], [8, "ThumbnailHeight"]]);
+      c(ft, "type", "jfif"), c(ft, "headerLength", 9), T2.set("jfif", ft), U4(E3, "jfif", [[0, "JFIFVersion"], [2, "ResolutionUnit"], [3, "XResolution"], [5, "YResolution"], [7, "ThumbnailWidth"], [8, "ThumbnailHeight"]]);
       dt = class extends re3 {
         parse() {
           return this.parseTags(), this.translate(), this.output;
@@ -63982,7 +67472,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           this.raw = new Map([[0, this.chunk.getUint32(0)], [4, this.chunk.getUint32(4)], [8, this.chunk.getUint8(8)], [9, this.chunk.getUint8(9)], [10, this.chunk.getUint8(10)], [11, this.chunk.getUint8(11)], [12, this.chunk.getUint8(12)], ...Array.from(this.raw)]);
         }
       };
-      c(dt, "type", "ihdr"), T2.set("ihdr", dt), U2(E3, "ihdr", [[0, "ImageWidth"], [4, "ImageHeight"], [8, "BitDepth"], [9, "ColorType"], [10, "Compression"], [11, "Filter"], [12, "Interlace"]]), U2(B3, "ihdr", [[9, { 0: "Grayscale", 2: "RGB", 3: "Palette", 4: "Grayscale with Alpha", 6: "RGB with Alpha", DEFAULT: "Unknown" }], [10, { 0: "Deflate/Inflate", DEFAULT: "Unknown" }], [11, { 0: "Adaptive", DEFAULT: "Unknown" }], [12, { 0: "Noninterlaced", 1: "Adam7 Interlace", DEFAULT: "Unknown" }]]);
+      c(dt, "type", "ihdr"), T2.set("ihdr", dt), U4(E3, "ihdr", [[0, "ImageWidth"], [4, "ImageHeight"], [8, "BitDepth"], [9, "ColorType"], [10, "Compression"], [11, "Filter"], [12, "Interlace"]]), U4(B3, "ihdr", [[9, { 0: "Grayscale", 2: "RGB", 3: "Palette", 4: "Grayscale with Alpha", 6: "RGB with Alpha", DEFAULT: "Unknown" }], [10, { 0: "Deflate/Inflate", DEFAULT: "Unknown" }], [11, { 0: "Adaptive", DEFAULT: "Unknown" }], [12, { 0: "Noninterlaced", 1: "Adam7 Interlace", DEFAULT: "Unknown" }]]);
       pt = class extends re3 {
         static canHandle(e3, t4) {
           return 226 === e3.getUint8(t4 + 1) && 1229144927 === e3.getUint32(t4 + 4);
@@ -64064,9 +67554,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         const i3 = e3.getUint16(t4), n3 = e3.getUint16(t4 + 2) - 1, s2 = e3.getUint16(t4 + 4), r2 = e3.getUint16(t4 + 6), a2 = e3.getUint16(t4 + 8), o2 = e3.getUint16(t4 + 10);
         return new Date(Date.UTC(i3, n3, s2, r2, a2, o2));
       }, 36: mt, 40: mt, 48: mt, 52: mt, 64: (e3, t4) => e3.getUint32(t4), 80: mt };
-      T2.set("icc", pt), U2(E3, "icc", [[4, "ProfileCMMType"], [8, "ProfileVersion"], [12, "ProfileClass"], [16, "ColorSpaceData"], [20, "ProfileConnectionSpace"], [24, "ProfileDateTime"], [36, "ProfileFileSignature"], [40, "PrimaryPlatform"], [44, "CMMFlags"], [48, "DeviceManufacturer"], [52, "DeviceModel"], [56, "DeviceAttributes"], [64, "RenderingIntent"], [68, "ConnectionSpaceIlluminant"], [80, "ProfileCreator"], [84, "ProfileID"], ["Header", "ProfileHeader"], ["MS00", "WCSProfiles"], ["bTRC", "BlueTRC"], ["bXYZ", "BlueMatrixColumn"], ["bfd", "UCRBG"], ["bkpt", "MediaBlackPoint"], ["calt", "CalibrationDateTime"], ["chad", "ChromaticAdaptation"], ["chrm", "Chromaticity"], ["ciis", "ColorimetricIntentImageState"], ["clot", "ColorantTableOut"], ["clro", "ColorantOrder"], ["clrt", "ColorantTable"], ["cprt", "ProfileCopyright"], ["crdi", "CRDInfo"], ["desc", "ProfileDescription"], ["devs", "DeviceSettings"], ["dmdd", "DeviceModelDesc"], ["dmnd", "DeviceMfgDesc"], ["dscm", "ProfileDescriptionML"], ["fpce", "FocalPlaneColorimetryEstimates"], ["gTRC", "GreenTRC"], ["gXYZ", "GreenMatrixColumn"], ["gamt", "Gamut"], ["kTRC", "GrayTRC"], ["lumi", "Luminance"], ["meas", "Measurement"], ["meta", "Metadata"], ["mmod", "MakeAndModel"], ["ncl2", "NamedColor2"], ["ncol", "NamedColor"], ["ndin", "NativeDisplayInfo"], ["pre0", "Preview0"], ["pre1", "Preview1"], ["pre2", "Preview2"], ["ps2i", "PS2RenderingIntent"], ["ps2s", "PostScript2CSA"], ["psd0", "PostScript2CRD0"], ["psd1", "PostScript2CRD1"], ["psd2", "PostScript2CRD2"], ["psd3", "PostScript2CRD3"], ["pseq", "ProfileSequenceDesc"], ["psid", "ProfileSequenceIdentifier"], ["psvm", "PS2CRDVMSize"], ["rTRC", "RedTRC"], ["rXYZ", "RedMatrixColumn"], ["resp", "OutputResponse"], ["rhoc", "ReflectionHardcopyOrigColorimetry"], ["rig0", "PerceptualRenderingIntentGamut"], ["rig2", "SaturationRenderingIntentGamut"], ["rpoc", "ReflectionPrintOutputColorimetry"], ["sape", "SceneAppearanceEstimates"], ["scoe", "SceneColorimetryEstimates"], ["scrd", "ScreeningDesc"], ["scrn", "Screening"], ["targ", "CharTarget"], ["tech", "Technology"], ["vcgt", "VideoCardGamma"], ["view", "ViewingConditions"], ["vued", "ViewingCondDesc"], ["wtpt", "MediaWhitePoint"]]);
+      T2.set("icc", pt), U4(E3, "icc", [[4, "ProfileCMMType"], [8, "ProfileVersion"], [12, "ProfileClass"], [16, "ColorSpaceData"], [20, "ProfileConnectionSpace"], [24, "ProfileDateTime"], [36, "ProfileFileSignature"], [40, "PrimaryPlatform"], [44, "CMMFlags"], [48, "DeviceManufacturer"], [52, "DeviceModel"], [56, "DeviceAttributes"], [64, "RenderingIntent"], [68, "ConnectionSpaceIlluminant"], [80, "ProfileCreator"], [84, "ProfileID"], ["Header", "ProfileHeader"], ["MS00", "WCSProfiles"], ["bTRC", "BlueTRC"], ["bXYZ", "BlueMatrixColumn"], ["bfd", "UCRBG"], ["bkpt", "MediaBlackPoint"], ["calt", "CalibrationDateTime"], ["chad", "ChromaticAdaptation"], ["chrm", "Chromaticity"], ["ciis", "ColorimetricIntentImageState"], ["clot", "ColorantTableOut"], ["clro", "ColorantOrder"], ["clrt", "ColorantTable"], ["cprt", "ProfileCopyright"], ["crdi", "CRDInfo"], ["desc", "ProfileDescription"], ["devs", "DeviceSettings"], ["dmdd", "DeviceModelDesc"], ["dmnd", "DeviceMfgDesc"], ["dscm", "ProfileDescriptionML"], ["fpce", "FocalPlaneColorimetryEstimates"], ["gTRC", "GreenTRC"], ["gXYZ", "GreenMatrixColumn"], ["gamt", "Gamut"], ["kTRC", "GrayTRC"], ["lumi", "Luminance"], ["meas", "Measurement"], ["meta", "Metadata"], ["mmod", "MakeAndModel"], ["ncl2", "NamedColor2"], ["ncol", "NamedColor"], ["ndin", "NativeDisplayInfo"], ["pre0", "Preview0"], ["pre1", "Preview1"], ["pre2", "Preview2"], ["ps2i", "PS2RenderingIntent"], ["ps2s", "PostScript2CSA"], ["psd0", "PostScript2CRD0"], ["psd1", "PostScript2CRD1"], ["psd2", "PostScript2CRD2"], ["psd3", "PostScript2CRD3"], ["pseq", "ProfileSequenceDesc"], ["psid", "ProfileSequenceIdentifier"], ["psvm", "PS2CRDVMSize"], ["rTRC", "RedTRC"], ["rXYZ", "RedMatrixColumn"], ["resp", "OutputResponse"], ["rhoc", "ReflectionHardcopyOrigColorimetry"], ["rig0", "PerceptualRenderingIntentGamut"], ["rig2", "SaturationRenderingIntentGamut"], ["rpoc", "ReflectionPrintOutputColorimetry"], ["sape", "SceneAppearanceEstimates"], ["scoe", "SceneColorimetryEstimates"], ["scrd", "ScreeningDesc"], ["scrn", "Screening"], ["targ", "CharTarget"], ["tech", "Technology"], ["vcgt", "VideoCardGamma"], ["view", "ViewingConditions"], ["vued", "ViewingCondDesc"], ["wtpt", "MediaWhitePoint"]]);
       St = { "4d2p": "Erdt Systems", AAMA: "Aamazing Technologies", ACER: "Acer", ACLT: "Acolyte Color Research", ACTI: "Actix Sytems", ADAR: "Adara Technology", ADBE: "Adobe", ADI: "ADI Systems", AGFA: "Agfa Graphics", ALMD: "Alps Electric", ALPS: "Alps Electric", ALWN: "Alwan Color Expertise", AMTI: "Amiable Technologies", AOC: "AOC International", APAG: "Apago", APPL: "Apple Computer", AST: "AST", "AT&T": "AT&T", BAEL: "BARBIERI electronic", BRCO: "Barco NV", BRKP: "Breakpoint", BROT: "Brother", BULL: "Bull", BUS: "Bus Computer Systems", "C-IT": "C-Itoh", CAMR: "Intel", CANO: "Canon", CARR: "Carroll Touch", CASI: "Casio", CBUS: "Colorbus PL", CEL: "Crossfield", CELx: "Crossfield", CGS: "CGS Publishing Technologies International", CHM: "Rochester Robotics", CIGL: "Colour Imaging Group, London", CITI: "Citizen", CL00: "Candela", CLIQ: "Color IQ", CMCO: "Chromaco", CMiX: "CHROMiX", COLO: "Colorgraphic Communications", COMP: "Compaq", COMp: "Compeq/Focus Technology", CONR: "Conrac Display Products", CORD: "Cordata Technologies", CPQ: "Compaq", CPRO: "ColorPro", CRN: "Cornerstone", CTX: "CTX International", CVIS: "ColorVision", CWC: "Fujitsu Laboratories", DARI: "Darius Technology", DATA: "Dataproducts", DCP: "Dry Creek Photo", DCRC: "Digital Contents Resource Center, Chung-Ang University", DELL: "Dell Computer", DIC: "Dainippon Ink and Chemicals", DICO: "Diconix", DIGI: "Digital", "DL&C": "Digital Light & Color", DPLG: "Doppelganger", DS: "Dainippon Screen", DSOL: "DOOSOL", DUPN: "DuPont", EPSO: "Epson", ESKO: "Esko-Graphics", ETRI: "Electronics and Telecommunications Research Institute", EVER: "Everex Systems", EXAC: "ExactCODE", Eizo: "Eizo", FALC: "Falco Data Products", FF: "Fuji Photo Film", FFEI: "FujiFilm Electronic Imaging", FNRD: "Fnord Software", FORA: "Fora", FORE: "Forefront Technology", FP: "Fujitsu", FPA: "WayTech Development", FUJI: "Fujitsu", FX: "Fuji Xerox", GCC: "GCC Technologies", GGSL: "Global Graphics Software", GMB: "Gretagmacbeth", GMG: "GMG", GOLD: "GoldStar Technology", GOOG: "Google", GPRT: "Giantprint", GTMB: "Gretagmacbeth", GVC: "WayTech Development", GW2K: "Sony", HCI: "HCI", HDM: "Heidelberger Druckmaschinen", HERM: "Hermes", HITA: "Hitachi America", HP: "Hewlett-Packard", HTC: "Hitachi", HiTi: "HiTi Digital", IBM: "IBM", IDNT: "Scitex", IEC: "Hewlett-Packard", IIYA: "Iiyama North America", IKEG: "Ikegami Electronics", IMAG: "Image Systems", IMI: "Ingram Micro", INTC: "Intel", INTL: "N/A (INTL)", INTR: "Intra Electronics", IOCO: "Iocomm International Technology", IPS: "InfoPrint Solutions Company", IRIS: "Scitex", ISL: "Ichikawa Soft Laboratory", ITNL: "N/A (ITNL)", IVM: "IVM", IWAT: "Iwatsu Electric", Idnt: "Scitex", Inca: "Inca Digital Printers", Iris: "Scitex", JPEG: "Joint Photographic Experts Group", JSFT: "Jetsoft Development", JVC: "JVC Information Products", KART: "Scitex", KFC: "KFC Computek Components", KLH: "KLH Computers", KMHD: "Konica Minolta", KNCA: "Konica", KODA: "Kodak", KYOC: "Kyocera", Kart: "Scitex", LCAG: "Leica", LCCD: "Leeds Colour", LDAK: "Left Dakota", LEAD: "Leading Technology", LEXM: "Lexmark International", LINK: "Link Computer", LINO: "Linotronic", LITE: "Lite-On", Leaf: "Leaf", Lino: "Linotronic", MAGC: "Mag Computronic", MAGI: "MAG Innovision", MANN: "Mannesmann", MICN: "Micron Technology", MICR: "Microtek", MICV: "Microvitec", MINO: "Minolta", MITS: "Mitsubishi Electronics America", MITs: "Mitsuba", MNLT: "Minolta", MODG: "Modgraph", MONI: "Monitronix", MONS: "Monaco Systems", MORS: "Morse Technology", MOTI: "Motive Systems", MSFT: "Microsoft", MUTO: "MUTOH INDUSTRIES", Mits: "Mitsubishi Electric", NANA: "NANAO", NEC: "NEC", NEXP: "NexPress Solutions", NISS: "Nissei Sangyo America", NKON: "Nikon", NONE: "none", OCE: "Oce Technologies", OCEC: "OceColor", OKI: "Oki", OKID: "Okidata", OKIP: "Okidata", OLIV: "Olivetti", OLYM: "Olympus", ONYX: "Onyx Graphics", OPTI: "Optiquest", PACK: "Packard Bell", PANA: "Matsushita Electric Industrial", PANT: "Pantone", PBN: "Packard Bell", PFU: "PFU", PHIL: "Philips Consumer Electronics", PNTX: "HOYA", POne: "Phase One A/S", PREM: "Premier Computer Innovations", PRIN: "Princeton Graphic Systems", PRIP: "Princeton Publishing Labs", QLUX: "Hong Kong", QMS: "QMS", QPCD: "QPcard AB", QUAD: "QuadLaser", QUME: "Qume", RADI: "Radius", RDDx: "Integrated Color Solutions", RDG: "Roland DG", REDM: "REDMS Group", RELI: "Relisys", RGMS: "Rolf Gierling Multitools", RICO: "Ricoh", RNLD: "Edmund Ronald", ROYA: "Royal", RPC: "Ricoh Printing Systems", RTL: "Royal Information Electronics", SAMP: "Sampo", SAMS: "Samsung", SANT: "Jaime Santana Pomares", SCIT: "Scitex", SCRN: "Dainippon Screen", SDP: "Scitex", SEC: "Samsung", SEIK: "Seiko Instruments", SEIk: "Seikosha", SGUY: "ScanGuy.com", SHAR: "Sharp Laboratories", SICC: "International Color Consortium", SONY: "Sony", SPCL: "SpectraCal", STAR: "Star", STC: "Sampo Technology", Scit: "Scitex", Sdp: "Scitex", Sony: "Sony", TALO: "Talon Technology", TAND: "Tandy", TATU: "Tatung", TAXA: "TAXAN America", TDS: "Tokyo Denshi Sekei", TECO: "TECO Information Systems", TEGR: "Tegra", TEKT: "Tektronix", TI: "Texas Instruments", TMKR: "TypeMaker", TOSB: "Toshiba", TOSH: "Toshiba", TOTK: "TOTOKU ELECTRIC", TRIU: "Triumph", TSBT: "Toshiba", TTX: "TTX Computer Products", TVM: "TVM Professional Monitor", TW: "TW Casper", ULSX: "Ulead Systems", UNIS: "Unisys", UTZF: "Utz Fehlau & Sohn", VARI: "Varityper", VIEW: "Viewsonic", VISL: "Visual communication", VIVO: "Vivo Mobile Communication", WANG: "Wang", WLBR: "Wilbur Imaging", WTG2: "Ware To Go", WYSE: "WYSE Technology", XERX: "Xerox", XRIT: "X-Rite", ZRAN: "Zoran", Zebr: "Zebra Technologies", appl: "Apple Computer", bICC: "basICColor", berg: "bergdesign", ceyd: "Integrated Color Solutions", clsp: "MacDermid ColorSpan", ds: "Dainippon Screen", dupn: "DuPont", ffei: "FujiFilm Electronic Imaging", flux: "FluxData", iris: "Scitex", kart: "Scitex", lcms: "Little CMS", lino: "Linotronic", none: "none", ob4d: "Erdt Systems", obic: "Medigraph", quby: "Qubyx Sarl", scit: "Scitex", scrn: "Dainippon Screen", sdp: "Scitex", siwi: "SIWI GRAFIKA", yxym: "YxyMaster" }, Ct = { scnr: "Scanner", mntr: "Monitor", prtr: "Printer", link: "Device Link", abst: "Abstract", spac: "Color Space Conversion Profile", nmcl: "Named Color", cenc: "ColorEncodingSpace profile", mid: "MultiplexIdentification profile", mlnk: "MultiplexLink profile", mvis: "MultiplexVisualization profile", nkpf: "Nikon Input Device Profile (NON-STANDARD!)" };
-      U2(B3, "icc", [[4, St], [12, Ct], [40, Object.assign({}, St, Ct)], [48, St], [80, St], [64, { 0: "Perceptual", 1: "Relative Colorimetric", 2: "Saturation", 3: "Absolute Colorimetric" }], ["tech", { amd: "Active Matrix Display", crt: "Cathode Ray Tube Display", kpcd: "Photo CD", pmd: "Passive Matrix Display", dcam: "Digital Camera", dcpj: "Digital Cinema Projector", dmpc: "Digital Motion Picture Camera", dsub: "Dye Sublimation Printer", epho: "Electrophotographic Printer", esta: "Electrostatic Printer", flex: "Flexography", fprn: "Film Writer", fscn: "Film Scanner", grav: "Gravure", ijet: "Ink Jet Printer", imgs: "Photo Image Setter", mpfr: "Motion Picture Film Recorder", mpfs: "Motion Picture Film Scanner", offs: "Offset Lithography", pjtv: "Projection Television", rpho: "Photographic Paper Printer", rscn: "Reflective Scanner", silk: "Silkscreen", twax: "Thermal Wax Printer", vidc: "Video Camera", vidm: "Video Monitor" }]]);
+      U4(B3, "icc", [[4, St], [12, Ct], [40, Object.assign({}, St, Ct)], [48, St], [80, St], [64, { 0: "Perceptual", 1: "Relative Colorimetric", 2: "Saturation", 3: "Absolute Colorimetric" }], ["tech", { amd: "Active Matrix Display", crt: "Cathode Ray Tube Display", kpcd: "Photo CD", pmd: "Passive Matrix Display", dcam: "Digital Camera", dcpj: "Digital Cinema Projector", dmpc: "Digital Motion Picture Camera", dsub: "Dye Sublimation Printer", epho: "Electrophotographic Printer", esta: "Electrostatic Printer", flex: "Flexography", fprn: "Film Writer", fscn: "Film Scanner", grav: "Gravure", ijet: "Ink Jet Printer", imgs: "Photo Image Setter", mpfr: "Motion Picture Film Recorder", mpfs: "Motion Picture Film Scanner", offs: "Offset Lithography", pjtv: "Projection Television", rpho: "Photographic Paper Printer", rscn: "Reflective Scanner", silk: "Silkscreen", twax: "Thermal Wax Printer", vidc: "Video Camera", vidm: "Video Monitor" }]]);
       yt = class extends re3 {
         static canHandle(e3, t4, i3) {
           return 237 === e3.getUint8(t4 + 1) && "Photoshop" === e3.getString(t4 + 4, 9) && void 0 !== this.containsIptc8bim(e3, t4, i3);
@@ -64094,7 +67584,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return void 0 !== e3 ? e3 instanceof Array ? (e3.push(t4), e3) : [e3, t4] : t4;
         }
       };
-      c(yt, "type", "iptc"), c(yt, "translateValues", false), c(yt, "reviveValues", false), T2.set("iptc", yt), U2(E3, "iptc", [[0, "ApplicationRecordVersion"], [3, "ObjectTypeReference"], [4, "ObjectAttributeReference"], [5, "ObjectName"], [7, "EditStatus"], [8, "EditorialUpdate"], [10, "Urgency"], [12, "SubjectReference"], [15, "Category"], [20, "SupplementalCategories"], [22, "FixtureIdentifier"], [25, "Keywords"], [26, "ContentLocationCode"], [27, "ContentLocationName"], [30, "ReleaseDate"], [35, "ReleaseTime"], [37, "ExpirationDate"], [38, "ExpirationTime"], [40, "SpecialInstructions"], [42, "ActionAdvised"], [45, "ReferenceService"], [47, "ReferenceDate"], [50, "ReferenceNumber"], [55, "DateCreated"], [60, "TimeCreated"], [62, "DigitalCreationDate"], [63, "DigitalCreationTime"], [65, "OriginatingProgram"], [70, "ProgramVersion"], [75, "ObjectCycle"], [80, "Byline"], [85, "BylineTitle"], [90, "City"], [92, "Sublocation"], [95, "State"], [100, "CountryCode"], [101, "Country"], [103, "OriginalTransmissionReference"], [105, "Headline"], [110, "Credit"], [115, "Source"], [116, "CopyrightNotice"], [118, "Contact"], [120, "Caption"], [121, "LocalCaption"], [122, "Writer"], [125, "RasterizedCaption"], [130, "ImageType"], [131, "ImageOrientation"], [135, "LanguageIdentifier"], [150, "AudioType"], [151, "AudioSamplingRate"], [152, "AudioSamplingResolution"], [153, "AudioDuration"], [154, "AudioOutcue"], [184, "JobID"], [185, "MasterDocumentID"], [186, "ShortDocumentID"], [187, "UniqueDocumentID"], [188, "OwnerID"], [200, "ObjectPreviewFileFormat"], [201, "ObjectPreviewFileVersion"], [202, "ObjectPreviewData"], [221, "Prefs"], [225, "ClassifyState"], [228, "SimilarityIndex"], [230, "DocumentNotes"], [231, "DocumentHistory"], [232, "ExifCameraInfo"], [255, "CatalogSets"]]), U2(B3, "iptc", [[10, { 0: "0 (reserved)", 1: "1 (most urgent)", 2: "2", 3: "3", 4: "4", 5: "5 (normal urgency)", 6: "6", 7: "7", 8: "8 (least urgent)", 9: "9 (user-defined priority)" }], [75, { a: "Morning", b: "Both Morning and Evening", p: "Evening" }], [131, { L: "Landscape", P: "Portrait", S: "Square" }]]);
+      c(yt, "type", "iptc"), c(yt, "translateValues", false), c(yt, "reviveValues", false), T2.set("iptc", yt), U4(E3, "iptc", [[0, "ApplicationRecordVersion"], [3, "ObjectTypeReference"], [4, "ObjectAttributeReference"], [5, "ObjectName"], [7, "EditStatus"], [8, "EditorialUpdate"], [10, "Urgency"], [12, "SubjectReference"], [15, "Category"], [20, "SupplementalCategories"], [22, "FixtureIdentifier"], [25, "Keywords"], [26, "ContentLocationCode"], [27, "ContentLocationName"], [30, "ReleaseDate"], [35, "ReleaseTime"], [37, "ExpirationDate"], [38, "ExpirationTime"], [40, "SpecialInstructions"], [42, "ActionAdvised"], [45, "ReferenceService"], [47, "ReferenceDate"], [50, "ReferenceNumber"], [55, "DateCreated"], [60, "TimeCreated"], [62, "DigitalCreationDate"], [63, "DigitalCreationTime"], [65, "OriginatingProgram"], [70, "ProgramVersion"], [75, "ObjectCycle"], [80, "Byline"], [85, "BylineTitle"], [90, "City"], [92, "Sublocation"], [95, "State"], [100, "CountryCode"], [101, "Country"], [103, "OriginalTransmissionReference"], [105, "Headline"], [110, "Credit"], [115, "Source"], [116, "CopyrightNotice"], [118, "Contact"], [120, "Caption"], [121, "LocalCaption"], [122, "Writer"], [125, "RasterizedCaption"], [130, "ImageType"], [131, "ImageOrientation"], [135, "LanguageIdentifier"], [150, "AudioType"], [151, "AudioSamplingRate"], [152, "AudioSamplingResolution"], [153, "AudioDuration"], [154, "AudioOutcue"], [184, "JobID"], [185, "MasterDocumentID"], [186, "ShortDocumentID"], [187, "UniqueDocumentID"], [188, "OwnerID"], [200, "ObjectPreviewFileFormat"], [201, "ObjectPreviewFileVersion"], [202, "ObjectPreviewData"], [221, "Prefs"], [225, "ClassifyState"], [228, "SimilarityIndex"], [230, "DocumentNotes"], [231, "DocumentHistory"], [232, "ExifCameraInfo"], [255, "CatalogSets"]]), U4(B3, "iptc", [[10, { 0: "0 (reserved)", 1: "1 (most urgent)", 2: "2", 3: "3", 4: "4", 5: "5 (normal urgency)", 6: "6", 7: "7", 8: "8 (least urgent)", 9: "9 (user-defined priority)" }], [75, { a: "Morning", b: "Both Morning and Evening", p: "Evening" }], [131, { L: "Landscape", P: "Portrait", S: "Square" }]]);
       full_esm_default = tt2;
     }
   });
@@ -64280,8 +67770,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     drawPhotos.getPhotos = function() {
       return _photos;
     };
-    drawPhotos.removePhoto = function(id2) {
-      _photos = _photos.filter((i3) => i3.id !== id2);
+    drawPhotos.removePhoto = function(id3) {
+      _photos = _photos.filter((i3) => i3.id !== id3);
       dispatch11.call("change");
       return _photos;
     };
@@ -64397,9 +67887,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!layerVisible || !_layerEnabled) return;
       const service = getService();
       const selectedID = context.selectedErrorID();
-      const data = service ? service.getItems(projection2) : [];
+      const data2 = service ? service.getItems(projection2) : [];
       const getTransform = svgPointTransform(projection2);
-      const markers = drawLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
+      const markers = drawLayer.selectAll(".qaItem.osmose").data(data2, (d2) => d2.id);
       markers.exit().remove();
       const markersEnter = markers.enter().append("g").attr("class", (d2) => `qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
       markersEnter.append("polygon").call(markerPath, "shadow");
@@ -64409,7 +67899,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       markers.merge(markersEnter).sort(sortY).classed("selected", (d2) => d2.id === selectedID).attr("transform", getTransform);
       if (touchLayer.empty()) return;
       const fillClass = context.getDebug("target") ? "pink" : "nocolor";
-      const targets = touchLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
+      const targets = touchLayer.selectAll(".qaItem.osmose").data(data2, (d2) => d2.id);
       targets.exit().remove();
       targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => `qaItem ${d2.service} target ${fillClass} itemId-${d2.id}`).attr("transform", getTransform);
       function sortY(a2, b11) {
@@ -65322,10 +68812,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function update3() {
       const service = getService();
-      let data = service ? service.signs(projection2) : [];
-      data = filterData(data);
+      let data2 = service ? service.signs(projection2) : [];
+      data2 = filterData(data2);
       const transform3 = svgPointTransform(projection2);
-      const signs = layer.selectAll(".icon-sign").data(data, function(d2) {
+      const signs = layer.selectAll(".icon-sign").data(data2, function(d2) {
         return d2.id;
       });
       signs.exit().remove();
@@ -65465,17 +68955,17 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function update3() {
       const service = getService();
-      let data = service ? service.mapFeatures(projection2) : [];
-      data = filterData(data);
+      let data2 = service ? service.mapFeatures(projection2) : [];
+      data2 = filterData(data2);
       const transform3 = svgPointTransform(projection2);
-      const mapFeatures = layer.selectAll(".icon-map-feature").data(data, function(d2) {
+      const mapFeatures = layer.selectAll(".icon-map-feature").data(data2, function(d2) {
         return d2.id;
       });
       mapFeatures.exit().remove();
       const enter = mapFeatures.enter().append("g").attr("class", "icon-map-feature icon-detected").on("click", click);
       enter.append("title").text(function(d2) {
-        var id2 = d2.value.replace(/--/g, ".").replace(/-/g, "_");
-        return _t("mapillary_map_features." + id2);
+        var id3 = d2.value.replace(/--/g, ".").replace(/-/g, "_");
+        return _t("mapillary_map_features." + id3);
       });
       enter.append("use").attr("width", "24px").attr("height", "24px").attr("x", "-12px").attr("y", "-12px").attr("xlink:href", function(d2) {
         if (d2.value === "object--billboard") {
@@ -66014,8 +69504,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           _activeUsernameFilter = username;
           const tempIds = await service.getUserIds(username);
           _activeIds = {};
-          tempIds.forEach((id2) => {
-            _activeIds[id2] = true;
+          tempIds.forEach((id3) => {
+            _activeIds[id3] = true;
           });
         }
         images = images.filter(function(image) {
@@ -66052,8 +69542,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           _activeUsernameFilter = username;
           const tempIds = await service.getUserIds(username);
           _activeIds = {};
-          tempIds.forEach((id2) => {
-            _activeIds[id2] = true;
+          tempIds.forEach((id3) => {
+            _activeIds[id3] = true;
           });
         }
         sequences = sequences.filter(function(sequence) {
@@ -66332,9 +69822,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!_notesVisible || !_notesEnabled) return;
       var service = getService();
       var selectedID = context.selectedNoteID();
-      var data = service ? service.notes(projection2) : [];
+      var data2 = service ? service.notes(projection2) : [];
       var getTransform = svgPointTransform(projection2);
-      var notes = drawLayer.selectAll(".note").data(data, function(d2) {
+      var notes = drawLayer.selectAll(".note").data(data2, function(d2) {
         return d2.status + d2.id;
       });
       notes.exit().remove();
@@ -66360,7 +69850,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).attr("transform", getTransform);
       if (touchLayer.empty()) return;
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
-      var targets = touchLayer.selectAll(".note").data(data, function(d2) {
+      var targets = touchLayer.selectAll(".note").data(data2, function(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -66419,7 +69909,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_browse();
       init_helpers();
       init_services();
-      init_util2();
+      init_util3();
       hash = utilStringQs(window.location.hash);
       _notesEnabled = !!hash.notes;
     }
@@ -66523,9 +70013,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     drawLayers.all = function() {
       return _layers;
     };
-    drawLayers.layer = function(id2) {
+    drawLayers.layer = function(id3) {
       var obj = _layers.find(function(o2) {
-        return o2.id === id2;
+        return o2.id === id3;
       });
       return obj && obj.layer;
     };
@@ -66538,9 +70028,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     };
     drawLayers.remove = function(what) {
       var arr = [].concat(what);
-      arr.forEach(function(id2) {
+      arr.forEach(function(id3) {
         _layers = _layers.filter(function(o2) {
-          return o2.id !== id2;
+          return o2.id !== id3;
         });
       });
       dispatch11.call("change");
@@ -66585,7 +70075,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_osm3();
       init_notes();
       init_touch();
-      init_util2();
+      init_util3();
       init_dimensions();
     }
   });
@@ -66625,13 +70115,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var getPath = svgPath(projection2).geojson;
       var activeID = context.activeID();
       var base = context.history().base();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(way) {
         var features = svgSegmentWay(way, graph, activeID);
-        data.targets.push.apply(data.targets, features.passive);
-        data.nopes.push.apply(data.nopes, features.active);
+        data2.targets.push.apply(data2.targets, features.passive);
+        data2.nopes.push.apply(data2.nopes, features.active);
       });
-      var targetData = data.targets.filter(getPath);
+      var targetData = data2.targets.filter(getPath);
       var targets = selection2.selectAll(".line.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(targetData, function key(d2) {
@@ -66650,7 +70140,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       targets.enter().append("path").merge(targets).attr("d", getPath).attr("class", function(d2) {
         return "way line target target-allowed " + targetClass + d2.id;
       }).classed("segment-edited", segmentWasEdited);
-      var nopeData = data.nopes.filter(getPath);
+      var nopeData = data2.nopes.filter(getPath);
       var nopes = selection2.selectAll(".line.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(nopeData, function key(d2) {
@@ -66707,8 +70197,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       function getPathData(isSelected) {
         return function() {
           var layer = this.parentNode.__data__;
-          var data = pathdata[layer] || [];
-          return data.filter(function(d2) {
+          var data2 = pathdata[layer] || [];
+          return data2.filter(function(d2) {
             if (isSelected) {
               return context.selectedIDs().indexOf(d2.id) !== -1;
             } else {
@@ -66721,7 +70211,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var markergroup = layergroup.selectAll("g." + groupclass).data([pathclass]);
         markergroup = markergroup.enter().append("g").attr("class", groupclass).merge(markergroup);
         var markers = markergroup.selectAll("path").filter(filter4).data(
-          function data() {
+          function data2() {
             return groupdata[this.parentNode.__data__] || [];
           },
           function key(d2) {
@@ -66819,7 +70309,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_helpers();
       init_tag_classes();
       init_osm();
-      init_util2();
+      init_util3();
       init_detect();
     }
   });
@@ -66834,7 +70324,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function drawTargets(selection2, graph, entities, filter4) {
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
-      var data = entities.map(function(midpoint) {
+      var data2 = entities.map(function(midpoint) {
         return {
           type: "Feature",
           id: midpoint.id,
@@ -66850,7 +70340,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       var targets = selection2.selectAll(".midpoint.target").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data, function key(d2) {
+      }).data(data2, function key(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -66878,9 +70368,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         for (var j3 = 0; j3 < nodes.length - 1; j3++) {
           var a2 = nodes[j3];
           var b11 = nodes[j3 + 1];
-          var id2 = [a2.id, b11.id].sort().join("-");
-          if (midpoints[id2]) {
-            midpoints[id2].parents.push(entity);
+          var id3 = [a2.id, b11.id].sort().join("-");
+          if (midpoints[id3]) {
+            midpoints[id3].parents.push(entity);
           } else if (geoVecLength(projection2(a2.loc), projection2(b11.loc)) > 40) {
             var point3 = geoVecInterp(a2.loc, b11.loc, 0.5);
             var loc = null;
@@ -66896,9 +70386,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
               }
             }
             if (loc) {
-              midpoints[id2] = {
+              midpoints[id3] = {
                 type: "midpoint",
-                id: id2,
+                id: id3,
                 loc,
                 edge: [a2.id, b11.id],
                 parents: [entity]
@@ -66981,10 +70471,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
       var activeID = context.activeID();
-      var data = [];
+      var data2 = [];
       entities.forEach(function(node) {
         if (activeID === node.id) return;
-        data.push({
+        data2.push({
           type: "Feature",
           id: node.id,
           properties: {
@@ -66995,7 +70485,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           geometry: node.asGeoJSON()
         });
       });
-      var targets = selection2.selectAll(".point.target").filter((d2) => filter4(d2.properties.entity)).data(data, (d2) => fastEntityKey(d2.properties.entity));
+      var targets = selection2.selectAll(".point.target").filter((d2) => filter4(d2.properties.entity)).data(data2, (d2) => fastEntityKey(d2.properties.entity));
       targets.exit().remove();
       targets.enter().append("rect").attr("x", (d2) => d2.properties.isAddr ? -addressShieldWidth(d2.properties.entity, selection2) / 2 : -10).attr("y", (d2) => d2.properties.isAddr ? -8 : -26).attr("width", (d2) => d2.properties.isAddr ? addressShieldWidth(d2.properties.entity, selection2) : 20).attr("height", (d2) => d2.properties.isAddr ? 16 : 30).attr("class", function(d2) {
         return "node point target " + fillClass + d2.id;
@@ -67228,7 +70718,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).classed("retagged", function(d2) {
         return base.entities[d2.id] && !deepEqual(graph.entities[d2.id].tags, base.entities[d2.id].tags);
       }).call(svgTagClasses()).call(updateAttributes);
-      var iconUse = groups2.selectAll(".icon").data(function data(d2) {
+      var iconUse = groups2.selectAll(".icon").data(function data2(d2) {
         return zoom >= 17 && getIcon(d2) ? [d2] : [];
       }, fastEntityKey);
       iconUse.exit().remove();
@@ -67236,7 +70726,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var picon = getIcon(d2);
         return picon ? "#" + picon : "";
       });
-      var dgroups = groups2.selectAll(".viewfieldgroup").data(function data(d2) {
+      var dgroups = groups2.selectAll(".viewfieldgroup").data(function data2(d2) {
         return zoom >= 18 && getDirections(d2) ? [d2] : [];
       }, fastEntityKey);
       dgroups.exit().remove();
@@ -67252,12 +70742,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var nopeClass = context.getDebug("target") ? "red " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
       var activeID = context.activeID();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(node) {
         if (activeID === node.id) return;
         var vertexType = svgPassiveVertex(node, graph, activeID);
         if (vertexType !== 0) {
-          data.targets.push({
+          data2.targets.push({
             type: "Feature",
             id: node.id,
             properties: {
@@ -67267,7 +70757,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             geometry: node.asGeoJSON()
           });
         } else {
-          data.nopes.push({
+          data2.nopes.push({
             type: "Feature",
             id: node.id + "-nope",
             properties: {
@@ -67281,7 +70771,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       var targets = selection2.selectAll(".vertex.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data.targets, function key(d2) {
+      }).data(data2.targets, function key(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -67292,7 +70782,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).attr("transform", getTransform);
       var nopes = selection2.selectAll(".vertex.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data.nopes, function key(d2) {
+      }).data(data2.nopes, function key(d2) {
         return d2.id;
       });
       nopes.exit().remove();
@@ -67339,8 +70829,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           }
         }
       }
-      ids.forEach(function(id2) {
-        var entity = graph.hasEntity(id2);
+      ids.forEach(function(id3) {
+        var entity = graph.hasEntity(id3);
         if (!entity) return;
         if (entity.type === "node") {
           if (renderAsVertex(entity, graph, wireframe, zoom)) {
@@ -67412,8 +70902,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       _prevSelected = _currSelected || {};
       if (context.map().isInWideSelection()) {
         _currSelected = {};
-        context.selectedIDs().forEach(function(id2) {
-          var entity = graph.hasEntity(id2);
+        context.selectedIDs().forEach(function(id3) {
+          var entity = graph.hasEntity(id3);
           if (!entity) return;
           if (entity.type === "node") {
             if (renderAsVertex(entity, graph, wireframe, zoom)) {
@@ -67662,7 +71152,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_localizer();
       init_orthogonalize();
       init_operation();
-      init_util2();
+      init_util3();
       init_svg();
     }
   });
@@ -67725,8 +71215,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
         return false;
       }
-      function incompleteRelation(id2) {
-        var entity = context.entity(id2);
+      function incompleteRelation(id3) {
+        var entity = context.entity(id3);
         return entity.type === "relation" && !entity.isComplete(context.graph());
       }
     };
@@ -67767,7 +71257,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_localizer();
       init_reflect();
       init_operation();
-      init_util();
+      init_util2();
       init_svg();
     }
   });
@@ -67907,7 +71397,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_orthogonalize2();
       init_reflect2();
       init_keybinding();
-      init_util();
+      init_util2();
     }
   });
 
@@ -67945,8 +71435,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var conflictsHelpEnter = bodyEnter.append("div").attr("class", "conflicts-help").call(_t.append("save.conflict.help"));
       var changeset = new osmChangeset();
       delete changeset.id;
-      var data = JXON.stringify(changeset.osmChangeJXON(_origChanges));
-      var blob = new Blob([data], { type: "text/xml;charset=utf-8;" });
+      var data2 = JXON.stringify(changeset.osmChangeJXON(_origChanges));
+      var blob = new Blob([data2], { type: "text/xml;charset=utf-8;" });
       var fileName = "changes.osc";
       var linkEnter = conflictsHelpEnter.selectAll(".download-changes").append("a").attr("class", "download-changes");
       linkEnter.attr("href", window.URL.createObjectURL(blob)).attr("download", fileName);
@@ -68035,9 +71525,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (entity) extent2._extend(entity.extent(context.graph()));
       zoomToEntity(datum2.id, extent2);
     }
-    function zoomToEntity(id2, extent2) {
+    function zoomToEntity(id3, extent2) {
       context.surface().selectAll(".hover").classed("hover", false);
-      var entity = context.graph().hasEntity(id2);
+      var entity = context.graph().hasEntity(id3);
       if (entity) {
         if (extent2) {
           context.map().trimmedExtent(extent2);
@@ -68075,7 +71565,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       init_geo2();
       init_osm();
       init_icon();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -68387,7 +71877,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     "modules/ui/popover.js"() {
       "use strict";
       init_src6();
-      init_util();
+      init_util2();
       _popoverID = 0;
     }
   });
@@ -68430,7 +71920,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     tooltip.content(function() {
       var heading = _heading.apply(this, arguments);
       var text = _title.apply(this, arguments);
-      var keys4 = _keys.apply(this, arguments);
+      var keys5 = _keys.apply(this, arguments);
       var headingCallback = typeof heading === "function" ? heading : (s2) => s2.text(heading);
       var textCallback = typeof text === "function" ? text : (s2) => s2.text(text);
       return function(selection2) {
@@ -68440,12 +71930,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var textSelect = selection2.selectAll(".tooltip-text").data(text ? [text] : []);
         textSelect.exit().remove();
         textSelect.enter().append("div").attr("class", "tooltip-text").merge(textSelect).text("").call(textCallback);
-        var keyhintWrap = selection2.selectAll(".keyhint-wrap").data(keys4 && keys4.length ? [0] : []);
+        var keyhintWrap = selection2.selectAll(".keyhint-wrap").data(keys5 && keys5.length ? [0] : []);
         keyhintWrap.exit().remove();
         var keyhintWrapEnter = keyhintWrap.enter().append("div").attr("class", "keyhint-wrap");
         keyhintWrapEnter.append("span").call(_t.append("tooltip_keyhint"));
         keyhintWrap = keyhintWrapEnter.merge(keyhintWrap);
-        keyhintWrap.selectAll("kbd.shortcut").data(keys4 && keys4.length ? keys4 : []).enter().append("kbd").attr("class", "shortcut").text(function(d2) {
+        keyhintWrap.selectAll("kbd.shortcut").data(keys5 && keys5.length ? keys5 : []).enter().append("kbd").attr("class", "shortcut").text(function(d2) {
           return d2;
         });
       };
@@ -68455,7 +71945,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   var init_tooltip = __esm({
     "modules/ui/tooltip.js"() {
       "use strict";
-      init_util();
+      init_util2();
       init_localizer();
       init_popover();
     }
@@ -68463,7 +71953,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
 
   // node_modules/bignumber.js/bignumber.mjs
   function clone3(configObject) {
-    var div, convertBase, parseNumeric2, P3 = BigNumber2.prototype = { constructor: BigNumber2, toString: null, valueOf: null }, ONE = new BigNumber2(1), DECIMAL_PLACES = 20, ROUNDING_MODE = 4, TO_EXP_NEG = -7, TO_EXP_POS = 21, MIN_EXP = -1e7, MAX_EXP = 1e7, CRYPTO = false, MODULO_MODE = 1, POW_PRECISION = 0, FORMAT = {
+    var div, convertBase, parseNumeric2, P4 = BigNumber2.prototype = { constructor: BigNumber2, toString: null, valueOf: null }, ONE = new BigNumber2(1), DECIMAL_PLACES = 20, ROUNDING_MODE = 4, TO_EXP_NEG = -7, TO_EXP_POS = 21, MIN_EXP = -1e7, MAX_EXP = 1e7, CRYPTO = false, MODULO_MODE = 1, POW_PRECISION = 0, FORMAT = {
       prefix: "",
       groupSize: 3,
       secondaryGroupSize: 0,
@@ -69019,7 +72509,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         return q3;
       };
     })();
-    function format2(n3, i3, rm, id2) {
+    function format3(n3, i3, rm, id3) {
       var c0, e3, ne3, len, str;
       if (rm == null) rm = ROUNDING_MODE;
       else intCheck(rm, 0, 8);
@@ -69028,17 +72518,17 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       ne3 = n3.e;
       if (i3 == null) {
         str = coeffToString(n3.c);
-        str = id2 == 1 || id2 == 2 && (ne3 <= TO_EXP_NEG || ne3 >= TO_EXP_POS) ? toExponential(str, ne3) : toFixedPoint(str, ne3, "0");
+        str = id3 == 1 || id3 == 2 && (ne3 <= TO_EXP_NEG || ne3 >= TO_EXP_POS) ? toExponential(str, ne3) : toFixedPoint(str, ne3, "0");
       } else {
         n3 = round3(new BigNumber2(n3), i3, rm);
         e3 = n3.e;
         str = coeffToString(n3.c);
         len = str.length;
-        if (id2 == 1 || id2 == 2 && (i3 <= e3 || e3 <= TO_EXP_NEG)) {
+        if (id3 == 1 || id3 == 2 && (i3 <= e3 || e3 <= TO_EXP_NEG)) {
           for (; len < i3; str += "0", len++) ;
           str = toExponential(str, e3);
         } else {
-          i3 -= ne3 + (id2 === 2 && e3 > ne3);
+          i3 -= ne3 + (id3 === 2 && e3 > ne3);
           str = toFixedPoint(str, e3, "0");
           if (e3 + 1 > len) {
             if (--i3 > 0) for (str += "."; i3--; str += "0") ;
@@ -69196,15 +72686,15 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       str = e3 <= TO_EXP_NEG || e3 >= TO_EXP_POS ? toExponential(str, e3) : toFixedPoint(str, e3, "0");
       return n3.s < 0 ? "-" + str : str;
     }
-    P3.absoluteValue = P3.abs = function() {
+    P4.absoluteValue = P4.abs = function() {
       var x3 = new BigNumber2(this);
       if (x3.s < 0) x3.s = 1;
       return x3;
     };
-    P3.comparedTo = function(y3, b11) {
+    P4.comparedTo = function(y3, b11) {
       return compare(this, new BigNumber2(y3, b11));
     };
-    P3.decimalPlaces = P3.dp = function(dp, rm) {
+    P4.decimalPlaces = P4.dp = function(dp, rm) {
       var c2, n3, v3, x3 = this;
       if (dp != null) {
         intCheck(dp, 0, MAX);
@@ -69218,13 +72708,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (n3 < 0) n3 = 0;
       return n3;
     };
-    P3.dividedBy = P3.div = function(y3, b11) {
+    P4.dividedBy = P4.div = function(y3, b11) {
       return div(this, new BigNumber2(y3, b11), DECIMAL_PLACES, ROUNDING_MODE);
     };
-    P3.dividedToIntegerBy = P3.idiv = function(y3, b11) {
+    P4.dividedToIntegerBy = P4.idiv = function(y3, b11) {
       return div(this, new BigNumber2(y3, b11), 0, 1);
     };
-    P3.exponentiatedBy = P3.pow = function(n3, m3) {
+    P4.exponentiatedBy = P4.pow = function(n3, m3) {
       var half, isModExp, i3, k3, more, nIsBig, nIsNeg, nIsOdd, y3, x3 = this;
       n3 = new BigNumber2(n3);
       if (n3.c && !n3.isInteger()) {
@@ -69293,46 +72783,46 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (nIsNeg) y3 = ONE.div(y3);
       return m3 ? y3.mod(m3) : k3 ? round3(y3, POW_PRECISION, ROUNDING_MODE, more) : y3;
     };
-    P3.integerValue = function(rm) {
+    P4.integerValue = function(rm) {
       var n3 = new BigNumber2(this);
       if (rm == null) rm = ROUNDING_MODE;
       else intCheck(rm, 0, 8);
       return round3(n3, n3.e + 1, rm);
     };
-    P3.isEqualTo = P3.eq = function(y3, b11) {
+    P4.isEqualTo = P4.eq = function(y3, b11) {
       return compare(this, new BigNumber2(y3, b11)) === 0;
     };
-    P3.isFinite = function() {
+    P4.isFinite = function() {
       return !!this.c;
     };
-    P3.isGreaterThan = P3.gt = function(y3, b11) {
+    P4.isGreaterThan = P4.gt = function(y3, b11) {
       return compare(this, new BigNumber2(y3, b11)) > 0;
     };
-    P3.isGreaterThanOrEqualTo = P3.gte = function(y3, b11) {
+    P4.isGreaterThanOrEqualTo = P4.gte = function(y3, b11) {
       return (b11 = compare(this, new BigNumber2(y3, b11))) === 1 || b11 === 0;
     };
-    P3.isInteger = function() {
+    P4.isInteger = function() {
       return !!this.c && bitFloor(this.e / LOG_BASE) > this.c.length - 2;
     };
-    P3.isLessThan = P3.lt = function(y3, b11) {
+    P4.isLessThan = P4.lt = function(y3, b11) {
       return compare(this, new BigNumber2(y3, b11)) < 0;
     };
-    P3.isLessThanOrEqualTo = P3.lte = function(y3, b11) {
+    P4.isLessThanOrEqualTo = P4.lte = function(y3, b11) {
       return (b11 = compare(this, new BigNumber2(y3, b11))) === -1 || b11 === 0;
     };
-    P3.isNaN = function() {
+    P4.isNaN = function() {
       return !this.s;
     };
-    P3.isNegative = function() {
+    P4.isNegative = function() {
       return this.s < 0;
     };
-    P3.isPositive = function() {
+    P4.isPositive = function() {
       return this.s > 0;
     };
-    P3.isZero = function() {
+    P4.isZero = function() {
       return !!this.c && this.c[0] == 0;
     };
-    P3.minus = function(y3, b11) {
+    P4.minus = function(y3, b11) {
       var i3, j3, t4, xLTy, x3 = this, a2 = x3.s;
       y3 = new BigNumber2(y3, b11);
       b11 = y3.s;
@@ -69399,7 +72889,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       return normalise(y3, xc, ye3);
     };
-    P3.modulo = P3.mod = function(y3, b11) {
+    P4.modulo = P4.mod = function(y3, b11) {
       var q3, s2, x3 = this;
       y3 = new BigNumber2(y3, b11);
       if (!x3.c || !y3.s || y3.c && !y3.c[0]) {
@@ -69420,7 +72910,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!y3.c[0] && MODULO_MODE == 1) y3.s = x3.s;
       return y3;
     };
-    P3.multipliedBy = P3.times = function(y3, b11) {
+    P4.multipliedBy = P4.times = function(y3, b11) {
       var c2, e3, i3, j3, k3, m3, xcL, xlo, xhi, ycL, ylo, yhi, zc, base, sqrtBase, x3 = this, xc = x3.c, yc = (y3 = new BigNumber2(y3, b11)).c;
       if (!xc || !yc || !xc[0] || !yc[0]) {
         if (!x3.s || !y3.s || xc && !xc[0] && !yc || yc && !yc[0] && !xc) {
@@ -69472,12 +72962,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       return normalise(y3, zc, e3);
     };
-    P3.negated = function() {
+    P4.negated = function() {
       var x3 = new BigNumber2(this);
       x3.s = -x3.s || null;
       return x3;
     };
-    P3.plus = function(y3, b11) {
+    P4.plus = function(y3, b11) {
       var t4, x3 = this, a2 = x3.s;
       y3 = new BigNumber2(y3, b11);
       b11 = y3.s;
@@ -69524,7 +73014,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       return normalise(y3, xc, ye3);
     };
-    P3.precision = P3.sd = function(sd, rm) {
+    P4.precision = P4.sd = function(sd, rm) {
       var c2, n3, v3, x3 = this;
       if (sd != null && sd !== !!sd) {
         intCheck(sd, 1, MAX);
@@ -69542,11 +73032,11 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (sd && x3.e + 1 > n3) n3 = x3.e + 1;
       return n3;
     };
-    P3.shiftedBy = function(k3) {
+    P4.shiftedBy = function(k3) {
       intCheck(k3, -MAX_SAFE_INTEGER2, MAX_SAFE_INTEGER2);
       return this.times("1e" + k3);
     };
-    P3.squareRoot = P3.sqrt = function() {
+    P4.squareRoot = P4.sqrt = function() {
       var m3, n3, r2, rep, t4, x3 = this, c2 = x3.c, s2 = x3.s, e3 = x3.e, dp = DECIMAL_PLACES + 4, half = new BigNumber2("0.5");
       if (s2 !== 1 || !c2 || !c2[0]) {
         return new BigNumber2(!s2 || s2 < 0 && (!c2 || c2[0]) ? NaN : c2 ? x3 : 1 / 0);
@@ -69600,38 +73090,38 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       return round3(r2, r2.e + DECIMAL_PLACES + 1, ROUNDING_MODE, m3);
     };
-    P3.toExponential = function(dp, rm) {
+    P4.toExponential = function(dp, rm) {
       if (dp != null) {
         intCheck(dp, 0, MAX);
         dp++;
       }
-      return format2(this, dp, rm, 1);
+      return format3(this, dp, rm, 1);
     };
-    P3.toFixed = function(dp, rm) {
+    P4.toFixed = function(dp, rm) {
       if (dp != null) {
         intCheck(dp, 0, MAX);
         dp = dp + this.e + 1;
       }
-      return format2(this, dp, rm);
+      return format3(this, dp, rm);
     };
-    P3.toFormat = function(dp, rm, format3) {
+    P4.toFormat = function(dp, rm, format4) {
       var str, x3 = this;
-      if (format3 == null) {
+      if (format4 == null) {
         if (dp != null && rm && typeof rm == "object") {
-          format3 = rm;
+          format4 = rm;
           rm = null;
         } else if (dp && typeof dp == "object") {
-          format3 = dp;
+          format4 = dp;
           dp = rm = null;
         } else {
-          format3 = FORMAT;
+          format4 = FORMAT;
         }
-      } else if (typeof format3 != "object") {
-        throw Error(bignumberError + "Argument not an object: " + format3);
+      } else if (typeof format4 != "object") {
+        throw Error(bignumberError + "Argument not an object: " + format4);
       }
       str = x3.toFixed(dp, rm);
       if (x3.c) {
-        var i3, arr = str.split("."), g1 = +format3.groupSize, g22 = +format3.secondaryGroupSize, groupSeparator = format3.groupSeparator || "", intPart = arr[0], fractionPart = arr[1], isNeg = x3.s < 0, intDigits = isNeg ? intPart.slice(1) : intPart, len = intDigits.length;
+        var i3, arr = str.split("."), g1 = +format4.groupSize, g22 = +format4.secondaryGroupSize, groupSeparator = format4.groupSeparator || "", intPart = arr[0], fractionPart = arr[1], isNeg = x3.s < 0, intDigits = isNeg ? intPart.slice(1) : intPart, len = intDigits.length;
         if (g22) {
           i3 = g1;
           g1 = g22;
@@ -69645,14 +73135,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           if (g22 > 0) intPart += groupSeparator + intDigits.slice(i3);
           if (isNeg) intPart = "-" + intPart;
         }
-        str = fractionPart ? intPart + (format3.decimalSeparator || "") + ((g22 = +format3.fractionGroupSize) ? fractionPart.replace(
+        str = fractionPart ? intPart + (format4.decimalSeparator || "") + ((g22 = +format4.fractionGroupSize) ? fractionPart.replace(
           new RegExp("\\d{" + g22 + "}\\B", "g"),
-          "$&" + (format3.fractionGroupSeparator || "")
+          "$&" + (format4.fractionGroupSeparator || "")
         ) : fractionPart) : intPart;
       }
-      return (format3.prefix || "") + str + (format3.suffix || "");
+      return (format4.prefix || "") + str + (format4.suffix || "");
     };
-    P3.toFraction = function(md) {
+    P4.toFraction = function(md) {
       var d2, d0, d1, d22, e3, exp2, n3, n0, n1, q3, r2, s2, x3 = this, xc = x3.c;
       if (md != null) {
         n3 = new BigNumber2(md);
@@ -69694,14 +73184,14 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       MAX_EXP = exp2;
       return r2;
     };
-    P3.toNumber = function() {
+    P4.toNumber = function() {
       return +valueOf(this);
     };
-    P3.toPrecision = function(sd, rm) {
+    P4.toPrecision = function(sd, rm) {
       if (sd != null) intCheck(sd, 1, MAX);
-      return format2(this, sd, rm, 2);
+      return format3(this, sd, rm, 2);
     };
-    P3.toString = function(b11) {
+    P4.toString = function(b11) {
       var str, n3 = this, s2 = n3.s, e3 = n3.e;
       if (e3 === null) {
         if (s2) {
@@ -69724,12 +73214,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }
       return str;
     };
-    P3.valueOf = P3.toJSON = function() {
+    P4.valueOf = P4.toJSON = function() {
       return valueOf(this);
     };
-    P3._isBigNumber = true;
-    P3[Symbol.toStringTag] = "BigNumber";
-    P3[/* @__PURE__ */ Symbol.for("nodejs.util.inspect.custom")] = P3.valueOf;
+    P4._isBigNumber = true;
+    P4[Symbol.toStringTag] = "BigNumber";
+    P4[/* @__PURE__ */ Symbol.for("nodejs.util.inspect.custom")] = P4.valueOf;
     if (configObject != null) BigNumber2.set(configObject);
     return BigNumber2;
   }
@@ -69763,9 +73253,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     for (i3 = 0; i3 < j3; i3++) if (xc[i3] != yc[i3]) return xc[i3] > yc[i3] ^ a2 ? 1 : -1;
     return k3 == l2 ? 0 : k3 > l2 ^ a2 ? 1 : -1;
   }
-  function intCheck(n3, min4, max4, name) {
-    if (n3 < min4 || n3 > max4 || n3 !== mathfloor(n3)) {
-      throw Error(bignumberError + (name || "Argument") + (typeof n3 == "number" ? n3 < min4 || n3 > max4 ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n3));
+  function intCheck(n3, min5, max5, name) {
+    if (n3 < min5 || n3 > max5 || n3 !== mathfloor(n3)) {
+      throw Error(bignumberError + (name || "Argument") + (typeof n3 == "number" ? n3 < min5 || n3 > max5 ? " out of range: " : " not an integer: " : " not a primitive number: ") + String(n3));
     }
   }
   function isOdd(n3) {
@@ -71869,7 +75359,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
   var require_geojson_precision = __commonJS({
     "node_modules/geojson-precision/index.js"(exports, module) {
       (function() {
-        function parse(t4, coordinatePrecision, extrasPrecision) {
+        function parse2(t4, coordinatePrecision, extrasPrecision) {
           function point3(p2) {
             return p2.map(function(e3, index2) {
               if (index2 < 2) {
@@ -71947,8 +75437,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
               return t4;
           }
         }
-        module.exports = parse;
-        module.exports.parse = parse;
+        module.exports = parse2;
+        module.exports.parse = parse2;
       })();
     }
   });
@@ -72004,10 +75494,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         } else {
           start2 = "{";
           end = "}";
-          const keys4 = Object.keys(obj);
-          const { length: length3 } = keys4;
+          const keys5 = Object.keys(obj);
+          const { length: length3 } = keys5;
           for (; index2 < length3; index2++) {
-            const key = keys4[index2];
+            const key = keys5[index2];
             const keyPart = `${JSON.stringify(key)}: `;
             const value = _stringify(
               obj[key],
@@ -72089,17 +75579,17 @@ ${currentIndent}`
             for (const feature22 of fc.features) {
               feature22.properties = feature22.properties || {};
               const props = feature22.properties;
-              let id2 = feature22.id || props.id;
-              if (!id2 || !/^\S+\.geojson$/i.test(id2))
+              let id3 = feature22.id || props.id;
+              if (!id3 || !/^\S+\.geojson$/i.test(id3))
                 continue;
-              id2 = id2.toLowerCase();
-              feature22.id = id2;
-              props.id = id2;
+              id3 = id3.toLowerCase();
+              feature22.id = id3;
+              props.id = id3;
               if (!props.area) {
                 const area = import_geojson_area.default.geometry(feature22.geometry) / 1e6;
                 props.area = Number(area.toFixed(2));
               }
-              this._cache.set(id2, feature22);
+              this._cache.set(id3, feature22);
             }
           }
           const worldFeature = feature("Q2");
@@ -72119,19 +75609,19 @@ ${currentIndent}`
             const lat = location[1];
             const radius = location[2];
             if (Number.isFinite(lon) && lon >= -180 && lon <= 180 && Number.isFinite(lat) && lat >= -90 && lat <= 90 && (location.length === 2 || radius !== void 0 && Number.isFinite(radius) && radius > 0)) {
-              const id2 = "[" + location.toString() + "]";
-              return { type: "point", location, id: id2 };
+              const id3 = "[" + location.toString() + "]";
+              return { type: "point", location, id: id3 };
             }
           } else if (typeof location === "string" && /^\S+\.geojson$/i.test(location)) {
-            const id2 = location.toLowerCase();
-            if (this._cache.has(id2)) {
-              return { type: "geojson", location, id: id2 };
+            const id3 = location.toLowerCase();
+            if (this._cache.has(id3)) {
+              return { type: "geojson", location, id: id3 };
             }
           } else if (typeof location === "string" || typeof location === "number") {
             const feature22 = feature(location);
             if (feature22) {
-              const id2 = feature22.properties.wikidata;
-              return { type: "countrycoder", location, id: id2 };
+              const id3 = feature22.properties.wikidata;
+              return { type: "countrycoder", location, id: id3 };
             }
           }
           if (this.strict) {
@@ -72143,9 +75633,9 @@ ${currentIndent}`
           const valid = this.validateLocation(location);
           if (!valid)
             return null;
-          const id2 = valid.id;
-          if (this._cache.has(id2)) {
-            return { ...valid, feature: this._cache.get(id2) };
+          const id3 = valid.id;
+          if (this._cache.has(id3)) {
+            return { ...valid, feature: this._cache.get(id3) };
           }
           if (valid.type === "point" && Array.isArray(location)) {
             const lon = location[0];
@@ -72156,21 +75646,21 @@ ${currentIndent}`
             const area = Math.PI * radius * radius;
             const feature22 = (0, import_geojson_precision.default)({
               type: "Feature",
-              id: id2,
-              properties: { id: id2, area: Number(area.toFixed(2)) },
+              id: id3,
+              properties: { id: id3, area: Number(area.toFixed(2)) },
               geometry: (0, import_circle_to_polygon.default)([lon, lat], radius * 1e3, EDGES)
             }, PRECISION);
-            this._cache.set(id2, feature22);
+            this._cache.set(id3, feature22);
             return { ...valid, feature: feature22 };
           }
           if (valid.type === "geojson") {
           }
           if (valid.type === "countrycoder") {
-            const ccFeature = feature(id2);
+            const ccFeature = feature(id3);
             const feature22 = cloneDeep3(ccFeature);
             const props = feature22.properties;
             if (Array.isArray(props.members)) {
-              const aggregate = aggregateFeature(id2);
+              const aggregate = aggregateFeature(id3);
               if (aggregate) {
                 const clipped = clip([aggregate], "UNION");
                 if (clipped) {
@@ -72182,9 +75672,9 @@ ${currentIndent}`
               const area = import_geojson_area.default.geometry(feature22.geometry) / 1e6;
               props.area = Number(area.toFixed(2));
             }
-            feature22.id = id2;
-            props.id = id2;
-            this._cache.set(id2, feature22);
+            feature22.id = id3;
+            props.id = id3;
+            this._cache.set(id3, feature22);
             return { ...valid, feature: feature22 };
           }
           if (this.strict) {
@@ -72206,21 +75696,21 @@ ${currentIndent}`
             }
           }
           include.sort(sortLocations);
-          let id2 = "+[" + include.map((d2) => d2.id).join(",") + "]";
+          let id3 = "+[" + include.map((d2) => d2.id).join(",") + "]";
           if (exclude.length) {
             exclude.sort(sortLocations);
-            id2 += "-[" + exclude.map((d2) => d2.id).join(",") + "]";
+            id3 += "-[" + exclude.map((d2) => d2.id).join(",") + "]";
           }
-          return { type: "locationset", locationSet, id: id2 };
+          return { type: "locationset", locationSet, id: id3 };
         }
         resolveLocationSet(locationSet) {
           locationSet = locationSet || {};
           const valid = this.validateLocationSet(locationSet);
           if (!valid)
             return null;
-          const id2 = valid.id;
-          if (this._cache.has(id2)) {
-            return { ...valid, feature: this._cache.get(id2) };
+          const id3 = valid.id;
+          if (this._cache.has(id3)) {
+            return { ...valid, feature: this._cache.get(id3) };
           }
           const resolver = this.resolveLocation.bind(this);
           const includes2 = (locationSet.include || []).map(resolver).filter(Boolean);
@@ -72232,9 +75722,9 @@ ${currentIndent}`
           const excludeGeoJSON = clip(excludes.map((d2) => d2.feature), "UNION");
           const resultGeoJSON = excludeGeoJSON ? clip([includeGeoJSON, excludeGeoJSON], "DIFFERENCE") : includeGeoJSON;
           const area = import_geojson_area.default.geometry(resultGeoJSON.geometry) / 1e6;
-          resultGeoJSON.id = id2;
-          resultGeoJSON.properties = { id: id2, area: Number(area.toFixed(2)) };
-          this._cache.set(id2, resultGeoJSON);
+          resultGeoJSON.id = id3;
+          resultGeoJSON.properties = { id: id3, area: Number(area.toFixed(2)) };
+          this._cache.set(id3, resultGeoJSON);
           return { ...valid, feature: resultGeoJSON };
         }
         stringify(obj, options) {
@@ -72400,16 +75890,16 @@ ${currentIndent}`
           fc.features.forEach((feature3) => {
             feature3.properties = feature3.properties || {};
             let props = feature3.properties;
-            let id2 = feature3.id || props.id;
-            if (!id2 || !/^\S+\.geojson$/i.test(id2)) return;
-            id2 = id2.toLowerCase();
-            feature3.id = id2;
-            props.id = id2;
+            let id3 = feature3.id || props.id;
+            if (!id3 || !/^\S+\.geojson$/i.test(id3)) return;
+            id3 = id3.toLowerCase();
+            feature3.id = id3;
+            props.id = id3;
             if (!props.area) {
               const area = import_geojson_area2.default.geometry(feature3.geometry) / 1e6;
               props.area = Number(area.toFixed(2));
             }
-            _loco._cache.set(id2, feature3);
+            _loco._cache.set(id3, feature3);
           });
         }
         /**
@@ -72537,7 +76027,7 @@ ${currentIndent}`
     isMostlySquare: () => isMostlySquare,
     localize: () => localize,
     missingStrings: () => missingStrings,
-    pad: () => pad5,
+    pad: () => pad6,
     pointBox: () => pointBox,
     selectMenuItem: () => selectMenuItem,
     transitionTime: () => transitionTime
@@ -72552,7 +76042,7 @@ ${currentIndent}`
       height: 90
     };
   }
-  function pad5(locOrBox, padding, context) {
+  function pad6(locOrBox, padding, context) {
     var box;
     if (locOrBox instanceof Array) {
       var rect = context.surfaceRect();
@@ -72574,7 +76064,7 @@ ${currentIndent}`
   function icon(name, svgklass, useklass) {
     return '<svg class="icon ' + (svgklass || "") + '"><use xlink:href="' + name + '"' + (useklass ? ' class="' + useklass + '"' : "") + "></use></svg>";
   }
-  function helpHtml(id2, replacements) {
+  function helpHtml(id3, replacements) {
     if (!helpStringReplacements) {
       helpStringReplacements = {
         // insert icons corresponding to various UI elements
@@ -72676,7 +76166,7 @@ ${currentIndent}`
     } else {
       reps = helpStringReplacements;
     }
-    return _t.html(id2, reps).replace(/\`(.*?)\`/g, "<kbd>$1</kbd>");
+    return _t.html(id3, reps).replace(/\`(.*?)\`/g, "<kbd>$1</kbd>");
   }
   function slugify(text) {
     return text.toString().toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "").replace(/\-\-+/g, "-").replace(/^-+/, "").replace(/-+$/, "");
@@ -73082,7 +76572,7 @@ ${currentIndent}`
       init_localizer();
       init_reverse4();
       init_icon();
-      init_util2();
+      init_util3();
       init_tags2();
     }
   });
@@ -73129,7 +76619,7 @@ ${currentIndent}`
       init_src6();
       init_localizer();
       init_svg();
-      init_util2();
+      init_util3();
       init_popover();
     }
   });
@@ -73256,8 +76746,8 @@ ${currentIndent}`
         if (langName) return langName;
       }
       if (osmIsoCountryKeys.has(field.key) && tval) {
-        const data = buildCountry()[tval];
-        if (data) return data.name;
+        const data2 = buildCountry()[tval];
+        if (data2) return data2.name;
         return tval;
       }
       var stringsField = field.resolveReference("stringsCrossReference");
@@ -73277,8 +76767,8 @@ ${currentIndent}`
         if (langName) return (selection2) => selection2.text(langName);
       }
       if (osmIsoCountryKeys.has(field.key) && tval) {
-        const data = buildCountry()[tval];
-        if (data) return (selection2) => addFlagIcon(selection2, data.name, data.flag);
+        const data2 = buildCountry()[tval];
+        if (data2) return (selection2) => addFlagIcon(selection2, data2.name, data2.flag);
         return (selection2) => selection2.text(tval);
       }
       var stringsField = field.resolveReference("stringsCrossReference");
@@ -73417,10 +76907,10 @@ ${currentIndent}`
       if (_entityIDs.length) {
         params.geometry = context.graph().geometry(_entityIDs[0]);
       }
-      services.taginfo[fn](params, function(err, data) {
+      services.taginfo[fn](params, function(err, data2) {
         if (err) return;
-        data = data.filter((d2) => field.type !== "typeCombo" || d2.value !== "yes");
-        data = data.filter((d2) => {
+        data2 = data2.filter((d2) => field.type !== "typeCombo" || d2.value !== "yes");
+        data2 = data2.filter((d2) => {
           var value = d2.value;
           if (_isMulti) {
             value = value.slice(field.key.length);
@@ -73429,14 +76919,14 @@ ${currentIndent}`
         });
         var deprecatedValues = deprecatedTagValuesByKey(_dataDeprecated)[field.key];
         if (deprecatedValues) {
-          data = data.filter((d2) => !deprecatedValues.includes(d2.value));
+          data2 = data2.filter((d2) => !deprecatedValues.includes(d2.value));
         }
         if (hasCountryPrefix) {
-          data = data.filter((d2) => d2.value.toLowerCase().indexOf(_countryCode + ":") === 0);
+          data2 = data2.filter((d2) => d2.value.toLowerCase().indexOf(_countryCode + ":") === 0);
         }
-        const additionalOptions = (field.options || stringsField.options || []).filter((v3) => !data.some((dv) => dv.value === (_isMulti ? field.key + v3 : v3))).map((v3) => ({ value: v3 }));
-        _container.classed("empty-combobox", data.length === 0);
-        _comboData = data.concat(additionalOptions).map(function(d2) {
+        const additionalOptions = (field.options || stringsField.options || []).filter((v3) => !data2.some((dv) => dv.value === (_isMulti ? field.key + v3 : v3))).map((v3) => ({ value: v3 }));
+        _container.classed("empty-combobox", data2.length === 0);
+        _comboData = data2.concat(additionalOptions).map(function(d2) {
           var v3 = d2.value;
           if (_isMulti) v3 = v3.replace(field.key, "");
           const labelId = getLabelId(stringsField, v3);
@@ -73645,9 +77135,9 @@ ${currentIndent}`
       }
       container.selectAll(".tag-value-icon").remove();
       if (osmIsoCountryKeys.has(field.key) && value) {
-        const data = buildCountry()[value];
-        if (data && data.flag && showEmojiFlags) {
-          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").append("span").attr("class", "emoji").text(data.flag);
+        const data2 = buildCountry()[value];
+        if (data2 && data2.flag && showEmojiFlags) {
+          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").append("span").attr("class", "emoji").text(data2.flag);
           return;
         }
       }
@@ -73927,7 +77417,7 @@ ${currentIndent}`
       init_combobox();
       init_icon();
       init_keybinding();
-      init_util2();
+      init_util3();
       init_length_indicator();
       init_deprecated();
       init_tags2();
@@ -73953,8 +77443,8 @@ ${currentIndent}`
       );
       var newParams = {};
       delete oldParams.id;
-      var selected = context.selectedIDs().filter(function(id2) {
-        return context.hasEntity(id2);
+      var selected = context.selectedIDs().filter(function(id3) {
+        return context.hasEntity(id3);
       });
       if (selected.length) {
         newParams.id = selected.join(",");
@@ -73972,8 +77462,8 @@ ${currentIndent}`
       var contextual;
       var changeCount;
       var titleID;
-      var selected = context.selectedIDs().filter(function(id2) {
-        return context.hasEntity(id2);
+      var selected = context.selectedIDs().filter(function(id3) {
+        return context.hasEntity(id3);
       });
       if (selected.length) {
         var firstLabel = utilDisplayLabel(context.entity(selected[0]), context.graph());
@@ -74051,8 +77541,8 @@ ${currentIndent}`
         var mode2 = context.mode();
         context.map().centerZoom([mapArgs[2], Math.min(_latitudeLimit, Math.max(-_latitudeLimit, mapArgs[1]))], mapArgs[0]);
         if (q3.id && mode2) {
-          var ids = q3.id.split(",").filter(function(id2) {
-            return context.hasEntity(id2) || id2.startsWith("note/");
+          var ids = q3.id.split(",").filter(function(id3) {
+            return context.hasEntity(id3) || id3.startsWith("note/");
           });
           if (ids.length && ["browse", "select-note", "select"].includes(mode2.id)) {
             if (ids.length === 1 && ids[0].startsWith("note/")) {
@@ -74086,7 +77576,7 @@ ${currentIndent}`
         } else {
           context.zoomToEntities(
             // convert ids to short form id: node/123 -> n123
-            selectIds.map((id2) => id2.replace(/([nwr])[^/]*\//, "$1")),
+            selectIds.map((id3) => id3.replace(/([nwr])[^/]*\//, "$1")),
             !q3.map
           );
         }
@@ -74123,7 +77613,7 @@ ${currentIndent}`
       init_geo2();
       init_browse();
       init_modes2();
-      init_util2();
+      init_util3();
       init_array3();
       init_utilDisplayLabel();
       init_localizer();
@@ -74233,10 +77723,10 @@ ${currentIndent}`
   });
   function uiAttribution(context) {
     let _selection = select_default2(null);
-    function render(selection2, data, klass) {
+    function render(selection2, data2, klass) {
       let div = selection2.selectAll(`.${klass}`).data([0]);
       div = div.enter().append("div").attr("class", klass).merge(div);
-      let attributions = div.selectAll(".attribution").data(data, (d2) => d2.id);
+      let attributions = div.selectAll(".attribution").data(data2, (d2) => d2.id);
       attributions.exit().remove();
       attributions = attributions.enter().append("span").attr("class", "attribution").each((d2, i3, nodes) => {
         let attribution = select_default2(nodes[i3]);
@@ -74296,18 +77786,18 @@ ${currentIndent}`
   function uiContributors(context) {
     var osm = context.connection(), debouncedUpdate = debounce2(function() {
       update3();
-    }, 1e3), limit = 4, hidden = false, wrap3 = select_default2(null);
+    }, 1e3), limit2 = 4, hidden = false, wrap3 = select_default2(null);
     function update3() {
       if (!osm) return;
       var users = {}, entities = context.history().intersects(context.map().extent());
       entities.forEach(function(entity) {
         if (entity && entity.user) users[entity.user] = true;
       });
-      var u4 = Object.keys(users), subset2 = u4.slice(0, u4.length > limit ? limit - 1 : limit);
+      var u4 = Object.keys(users), subset2 = u4.slice(0, u4.length > limit2 ? limit2 - 1 : limit2);
       wrap3.html("").call(svgIcon("#iD-icon-nearby", "pre-text light"));
       const userList = (selection2) => selection2.selectAll().data(subset2).enter().append("a").attr("class", "user-link").attr("href", (d2) => osm.userURL(d2)).attr("target", "_blank").text(String);
-      if (u4.length > limit) {
-        var othersNum = u4.length - limit + 1;
+      if (u4.length > limit2) {
+        var othersNum = u4.length - limit2 + 1;
         const count2 = (selection2) => selection2.append("a").attr("target", "_blank").attr("href", () => osm.changesetsURL(context.map().center(), context.map().zoom())).text(othersNum);
         wrap3.append("span").call(_t.append("contributors.truncated_list", { n: othersNum, users: userList, count: count2 }));
       } else {
@@ -74553,7 +78043,7 @@ ${currentIndent}`
       init_localizer();
       init_tooltip();
       init_rebind();
-      init_util();
+      init_util2();
       init_dimensions();
       init_icon();
     }
@@ -74568,6 +78058,7 @@ ${currentIndent}`
     function update3(selection2) {
       var features = context.features();
       var stats = features.stats();
+      var dateMatchCount = features.dateMatchCount();
       var count2 = 0;
       var hiddenList = features.hidden().map(function(k3) {
         if (stats[k3]) {
@@ -74579,8 +78070,9 @@ ${currentIndent}`
         }
         return null;
       }).filter(Boolean);
+      count2 += dateMatchCount;
       selection2.text("");
-      if (hiddenList.length) {
+      if (hiddenList.length || dateMatchCount > 0) {
         var tooltipBehavior = uiTooltip().placement("top").title(function() {
           return (selection3) => {
             hiddenList.forEach((hiddenFeature) => {
@@ -74594,7 +78086,7 @@ ${currentIndent}`
           context.ui().togglePanes(context.container().select(".map-panes .map-data-pane"));
         });
       }
-      selection2.classed("hide", !hiddenList.length);
+      selection2.classed("hide", !hiddenList.length && !dateMatchCount);
     }
     return function(selection2) {
       update3(selection2);
@@ -74724,8 +78216,8 @@ ${currentIndent}`
     return function() {
       if (!isSupported()) return;
       var detected = utilDetect();
-      var keys4 = detected.os === "mac" ? [uiCmd("\u2303\u2318F"), "f11"] : ["f11"];
-      context.keybinding().on(keys4, fullScreen);
+      var keys5 = detected.os === "mac" ? [uiCmd("\u2303\u2318F"), "f11"] : ["f11"];
+      context.keybinding().on(keys5, fullScreen);
     };
   }
   var init_full_screen = __esm({
@@ -74850,10 +78342,10 @@ ${currentIndent}`
         _metadata = {};
       }
       selection2.text("");
-      var list = selection2.append("ul").attr("class", "background-info");
-      list.append("li").call(_currSource.label());
+      var list2 = selection2.append("ul").attr("class", "background-info");
+      list2.append("li").call(_currSource.label());
       _metadataKeys.forEach(function(k3) {
-        list.append("li").attr("class", "background-info-list-" + k3).classed("hide", !_metadata[k3]).call(_t.append("info_panels.background." + k3, { suffix: ":" })).append("span").attr("class", "background-info-span-" + k3).text(_metadata[k3]);
+        list2.append("li").attr("class", "background-info-list-" + k3).classed("hide", !_metadata[k3]).call(_t.append("info_panels.background." + k3, { suffix: ":" })).append("span").attr("class", "background-info-span-" + k3).text(_metadata[k3]);
       });
       debouncedGetMetadata(selection2);
       var toggleTiles = context.getDebug("tile") ? "hide_tiles" : "show_tiles";
@@ -74942,7 +78434,6 @@ ${currentIndent}`
       if (osm) {
         links.append("a").attr("class", "user-osm-link").attr("href", osm.userURL(userName)).attr("target", "_blank").call(_t.append("info_panels.history.profile_link"));
       }
-      links.append("a").attr("class", "user-hdyc-link").attr("href", "https://hdyc.neis-one.org/?" + userName).attr("target", "_blank").attr("tabindex", -1).text("HDYC");
     }
     function displayChangeset(selection2, changeset) {
       if (!changeset) {
@@ -74954,8 +78445,7 @@ ${currentIndent}`
       if (osm) {
         links.append("a").attr("class", "changeset-osm-link").attr("href", osm.changesetURL(changeset)).attr("target", "_blank").call(_t.append("info_panels.history.changeset_link"));
       }
-      links.append("a").attr("class", "changeset-osmcha-link").attr("href", "https://osmcha.org/changesets/" + changeset).attr("target", "_blank").text("OSMCha");
-      links.append("a").attr("class", "changeset-achavi-link").attr("href", "https://overpass-api.de/achavi/?changeset=" + changeset).attr("target", "_blank").text("Achavi");
+      links.append("a").attr("class", "changeset-osmcha-link").attr("href", "https://osmcha.openhistoricalmap.org/changesets/" + changeset).attr("target", "_blank").text("OSMCha");
     }
     function redraw(selection2) {
       var selectedNoteID = context.selectedNoteID();
@@ -74996,11 +78486,11 @@ ${currentIndent}`
         selection2.append("div").call(_t.append("info_panels.history.note_no_history"));
         return;
       }
-      var list = selection2.append("ul");
-      list.append("li").call(_t.append("info_panels.history.note_comments", { suffix: ":" })).append("span").text(note.comments.length);
+      var list2 = selection2.append("ul");
+      list2.append("li").call(_t.append("info_panels.history.note_comments", { suffix: ":" })).append("span").text(note.comments.length);
       if (note.comments.length) {
-        list.append("li").call(_t.append("info_panels.history.note_created_date", { suffix: ":" })).append("span").text(displayTimestamp(note.comments[0].date));
-        list.append("li").call(_t.append("info_panels.history.note_created_user", { suffix: ":" })).call(displayUser, note.comments[0].user);
+        list2.append("li").call(_t.append("info_panels.history.note_created_date", { suffix: ":" })).append("span").text(displayTimestamp(note.comments[0].date));
+        list2.append("li").call(_t.append("info_panels.history.note_created_user", { suffix: ":" })).call(displayUser, note.comments[0].user);
       }
       if (osm) {
         selection2.append("a").attr("class", "view-history-on-osm").attr("target", "_blank").attr("href", osm.noteURL(note)).call(svgIcon("#iD-icon-out-link", "inline")).append("span").call(_t.append("info_panels.history.note_link_text"));
@@ -75015,12 +78505,11 @@ ${currentIndent}`
       if (osm) {
         links.append("a").attr("class", "view-history-on-osm").attr("href", osm.historyURL(entity)).attr("target", "_blank").call(_t.append("info_panels.history.history_link"));
       }
-      links.append("a").attr("class", "pewu-history-viewer-link").attr("href", "https://pewu.github.io/osm-history/#/" + entity.type + "/" + entity.osmId()).attr("target", "_blank").attr("tabindex", -1).text("PeWu");
-      var list = selection2.append("ul");
-      list.append("li").call(_t.append("info_panels.history.version", { suffix: ":" })).append("span").text(entity.version);
-      list.append("li").call(_t.append("info_panels.history.last_edit", { suffix: ":" })).append("span").text(displayTimestamp(entity.timestamp));
-      list.append("li").call(_t.append("info_panels.history.edited_by", { suffix: ":" })).call(displayUser, entity.user);
-      list.append("li").call(_t.append("info_panels.history.changeset", { suffix: ":" })).call(displayChangeset, entity.changeset);
+      var list2 = selection2.append("ul");
+      list2.append("li").call(_t.append("info_panels.history.version", { suffix: ":" })).append("span").text(entity.version);
+      list2.append("li").call(_t.append("info_panels.history.last_edit", { suffix: ":" })).append("span").text(displayTimestamp(entity.timestamp));
+      list2.append("li").call(_t.append("info_panels.history.edited_by", { suffix: ":" })).call(displayUser, entity.user);
+      list2.append("li").call(_t.append("info_panels.history.changeset", { suffix: ":" })).call(displayChangeset, entity.changeset);
     }
     var panel = function(selection2) {
       selection2.call(redraw);
@@ -75057,12 +78546,12 @@ ${currentIndent}`
     var currLocation = "";
     function redraw(selection2) {
       selection2.html("");
-      var list = selection2.append("ul");
+      var list2 = selection2.append("ul");
       var coord2 = context.map().mouseCoordinates();
       if (coord2.some(isNaN)) {
         coord2 = context.map().center();
       }
-      list.append("li").text(dmsCoordinatePair(coord2)).append("li").text(decimalCoordinatePair(coord2));
+      list2.append("li").text(dmsCoordinatePair(coord2)).append("li").text(decimalCoordinatePair(coord2));
       selection2.append("div").attr("class", "location-info").text(currLocation || " ");
       debouncedGetLocation(selection2, coord2);
     }
@@ -75140,11 +78629,11 @@ ${currentIndent}`
         location = note.loc;
         geometry2 = "note";
       } else {
-        var selectedIDs = context.selectedIDs().filter(function(id2) {
-          return context.hasEntity(id2);
+        var selectedIDs = context.selectedIDs().filter(function(id3) {
+          return context.hasEntity(id3);
         });
-        var selected = selectedIDs.map(function(id2) {
-          return context.entity(id2);
+        var selected = selectedIDs.map(function(id3) {
+          return context.entity(id3);
         });
         heading = selected.length === 1 ? selected[0].id : _t.append("info_panels.selected", { n: selected.length });
         if (selected.length) {
@@ -75191,37 +78680,37 @@ ${currentIndent}`
       } else {
         selection2.append("h4").attr("class", "measurement-heading").text(heading);
       }
-      var list = selection2.append("ul");
+      var list2 = selection2.append("ul");
       var coordItem;
       if (geometry2) {
-        list.append("li").call(_t.append("info_panels.measurement.geometry", { suffix: ":" })).append("span").call(
+        list2.append("li").call(_t.append("info_panels.measurement.geometry", { suffix: ":" })).append("span").call(
           closed ? _t.append("info_panels.measurement.closed_" + geometry2) : _t.append("geometry." + geometry2)
         );
       }
       if (totalNodeCount) {
-        list.append("li").call(_t.append("info_panels.measurement.node_count", { suffix: ":" })).append("span").text(totalNodeCount.toLocaleString(localeCode));
+        list2.append("li").call(_t.append("info_panels.measurement.node_count", { suffix: ":" })).append("span").text(totalNodeCount.toLocaleString(localeCode));
       }
       if (area) {
-        list.append("li").call(_t.append("info_panels.measurement.area", { suffix: ":" })).append("span").text(displayArea(area, _isImperial));
+        list2.append("li").call(_t.append("info_panels.measurement.area", { suffix: ":" })).append("span").text(displayArea(area, _isImperial));
       }
       if (length2) {
-        list.append("li").call(_t.append("info_panels.measurement." + (closed ? "perimeter" : "length"), { suffix: ":" })).append("span").text(displayLength(length2, _isImperial));
+        list2.append("li").call(_t.append("info_panels.measurement." + (closed ? "perimeter" : "length"), { suffix: ":" })).append("span").text(displayLength(length2, _isImperial));
       }
       if (typeof distance === "number") {
-        list.append("li").call(_t.append("info_panels.measurement.distance", { suffix: ":" })).append("span").text(displayLength(distance, _isImperial));
+        list2.append("li").call(_t.append("info_panels.measurement.distance", { suffix: ":" })).append("span").text(displayLength(distance, _isImperial));
       }
       if (location) {
-        coordItem = list.append("li").call(_t.append("info_panels.measurement.location", { suffix: ":" }));
+        coordItem = list2.append("li").call(_t.append("info_panels.measurement.location", { suffix: ":" }));
         coordItem.append("span").text(dmsCoordinatePair(location));
         coordItem.append("span").text(decimalCoordinatePair(location));
       }
       if (centroid) {
-        coordItem = list.append("li").call(_t.append("info_panels.measurement.centroid", { suffix: ":" }));
+        coordItem = list2.append("li").call(_t.append("info_panels.measurement.centroid", { suffix: ":" }));
         coordItem.append("span").text(dmsCoordinatePair(centroid));
         coordItem.append("span").text(decimalCoordinatePair(centroid));
       }
       if (center) {
-        coordItem = list.append("li").call(_t.append("info_panels.measurement.center", { suffix: ":" }));
+        coordItem = list2.append("li").call(_t.append("info_panels.measurement.center", { suffix: ":" }));
         coordItem.append("span").text(dmsCoordinatePair(center));
         coordItem.append("span").text(decimalCoordinatePair(center));
       }
@@ -75260,7 +78749,7 @@ ${currentIndent}`
       init_units();
       init_geo2();
       init_services();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -76174,11 +79663,11 @@ ${currentIndent}`
       if (context.mode().id !== "add-point") {
         return chapter.restart();
       }
-      var pointBox2 = pad5(building, 150, context);
+      var pointBox2 = pad6(building, 150, context);
       var textId = context.lastPointerType() === "mouse" ? "place_point" : "place_point_touch";
       reveal(pointBox2, helpHtml("intro.points." + textId));
       context.map().on("move.intro drawn.intro", function() {
-        pointBox2 = pad5(building, 150, context);
+        pointBox2 = pad6(building, 150, context);
         reveal(pointBox2, helpHtml("intro.points." + textId), { duration: 0 });
       });
       context.on("enter.intro", function(mode2) {
@@ -76560,7 +80049,7 @@ ${currentIndent}`
     }
     function revealPlayground(center, text, options) {
       var padding = 180 * Math.pow(2, context.map().zoom() - 19.5);
-      var box = pad5(center, padding, context);
+      var box = pad6(center, padding, context);
       reveal(box, text, options);
     }
     function addArea() {
@@ -77021,14 +80510,14 @@ ${currentIndent}`
       if (context.mode().id !== "add-line") return chapter.restart();
       _tulipRoadID = null;
       var padding = 70 * Math.pow(2, context.map().zoom() - 18);
-      var box = pad5(tulipRoadStart, padding, context);
+      var box = pad6(tulipRoadStart, padding, context);
       box.height = box.height + 100;
       var textId = context.lastPointerType() === "mouse" ? "start_line" : "start_line_tap";
       var startLineString = helpHtml("intro.lines.missing_road") + "{br}" + helpHtml("intro.lines.line_draw_info") + helpHtml("intro.lines." + textId);
       reveal(box, startLineString);
       context.map().on("move.intro drawn.intro", function() {
         padding = 70 * Math.pow(2, context.map().zoom() - 18);
-        box = pad5(tulipRoadStart, padding, context);
+        box = pad6(tulipRoadStart, padding, context);
         box.height = box.height + 100;
         reveal(box, startLineString, { duration: 0 });
       });
@@ -77048,7 +80537,7 @@ ${currentIndent}`
       context.map().centerEase(tulipRoadMidpoint, 500);
       timeout2(function() {
         var padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
-        var box = pad5(tulipRoadMidpoint, padding, context);
+        var box = pad6(tulipRoadMidpoint, padding, context);
         box.height = box.height * 2;
         reveal(
           box,
@@ -77056,7 +80545,7 @@ ${currentIndent}`
         );
         context.map().on("move.intro drawn.intro", function() {
           padding = 200 * Math.pow(2, context.map().zoom() - 18.5);
-          box = pad5(tulipRoadMidpoint, padding, context);
+          box = pad6(tulipRoadMidpoint, padding, context);
           box.height = box.height * 2;
           reveal(
             box,
@@ -77099,7 +80588,7 @@ ${currentIndent}`
     }
     function retryIntersect() {
       select_default2(window).on("pointerdown.intro mousedown.intro", eventCancel, true);
-      var box = pad5(tulipRoadIntersection, 80, context);
+      var box = pad6(tulipRoadIntersection, 80, context);
       reveal(
         box,
         helpHtml("intro.lines.retry_intersect", { name: _t("intro.graph.name.flower-street") })
@@ -77243,7 +80732,7 @@ ${currentIndent}`
       context.map().centerZoomEase(woodRoadDragMidpoint, 19, msec);
       timeout2(function() {
         var padding = 250 * Math.pow(2, context.map().zoom() - 19);
-        var box = pad5(woodRoadDragMidpoint, padding, context);
+        var box = pad6(woodRoadDragMidpoint, padding, context);
         var advance = function() {
           continueTo(addNode);
         };
@@ -77254,7 +80743,7 @@ ${currentIndent}`
         );
         context.map().on("move.intro drawn.intro", function() {
           var padding2 = 250 * Math.pow(2, context.map().zoom() - 19);
-          var box2 = pad5(woodRoadDragMidpoint, padding2, context);
+          var box2 = pad6(woodRoadDragMidpoint, padding2, context);
           reveal(
             box2,
             helpHtml("intro.lines.update_line"),
@@ -77273,12 +80762,12 @@ ${currentIndent}`
         return chapter.restart();
       }
       var padding = 40 * Math.pow(2, context.map().zoom() - 19);
-      var box = pad5(woodRoadAddNode, padding, context);
+      var box = pad6(woodRoadAddNode, padding, context);
       var addNodeString = helpHtml("intro.lines.add_node" + (context.lastPointerType() === "mouse" ? "" : "_touch"));
       reveal(box, addNodeString);
       context.map().on("move.intro drawn.intro", function() {
         var padding2 = 40 * Math.pow(2, context.map().zoom() - 19);
-        var box2 = pad5(woodRoadAddNode, padding2, context);
+        var box2 = pad6(woodRoadAddNode, padding2, context);
         reveal(box2, addNodeString, { duration: 0 });
       });
       context.history().on("change.intro", function(changed) {
@@ -77308,7 +80797,7 @@ ${currentIndent}`
         return continueTo(updateLine);
       }
       var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-      var box = pad5(woodRoadDragEndpoint, padding, context);
+      var box = pad6(woodRoadDragEndpoint, padding, context);
       var startDragString = helpHtml("intro.lines.start_drag_endpoint" + (context.lastPointerType() === "mouse" ? "" : "_touch")) + helpHtml("intro.lines.drag_to_intersection");
       reveal(box, startDragString);
       context.map().on("move.intro drawn.intro", function() {
@@ -77316,7 +80805,7 @@ ${currentIndent}`
           return continueTo(updateLine);
         }
         var padding2 = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box2 = pad5(woodRoadDragEndpoint, padding2, context);
+        var box2 = pad6(woodRoadDragEndpoint, padding2, context);
         reveal(box2, startDragString, { duration: 0 });
         var entity = context.entity(woodRoadEndID);
         if (geoSphericalDistance(entity.loc, woodRoadDragEndpoint) <= 4) {
@@ -77333,7 +80822,7 @@ ${currentIndent}`
         return continueTo(updateLine);
       }
       var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-      var box = pad5(woodRoadDragEndpoint, padding, context);
+      var box = pad6(woodRoadDragEndpoint, padding, context);
       var finishDragString = helpHtml("intro.lines.spot_looks_good") + helpHtml("intro.lines.finish_drag_endpoint" + (context.lastPointerType() === "mouse" ? "" : "_touch"));
       reveal(box, finishDragString);
       context.map().on("move.intro drawn.intro", function() {
@@ -77341,7 +80830,7 @@ ${currentIndent}`
           return continueTo(updateLine);
         }
         var padding2 = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box2 = pad5(woodRoadDragEndpoint, padding2, context);
+        var box2 = pad6(woodRoadDragEndpoint, padding2, context);
         reveal(box2, finishDragString, { duration: 0 });
         var entity = context.entity(woodRoadEndID);
         if (geoSphericalDistance(entity.loc, woodRoadDragEndpoint) > 4) {
@@ -77365,14 +80854,14 @@ ${currentIndent}`
         context.enter(modeSelect(context, [woodRoadID]));
       }
       var padding = 80 * Math.pow(2, context.map().zoom() - 19);
-      var box = pad5(woodRoadDragMidpoint, padding, context);
+      var box = pad6(woodRoadDragMidpoint, padding, context);
       reveal(box, helpHtml("intro.lines.start_drag_midpoint"));
       context.map().on("move.intro drawn.intro", function() {
         if (!context.hasEntity(woodRoadID) || !context.hasEntity(woodRoadEndID)) {
           return continueTo(updateLine);
         }
         var padding2 = 80 * Math.pow(2, context.map().zoom() - 19);
-        var box2 = pad5(woodRoadDragMidpoint, padding2, context);
+        var box2 = pad6(woodRoadDragMidpoint, padding2, context);
         reveal(box2, helpHtml("intro.lines.start_drag_midpoint"), { duration: 0 });
       });
       context.history().on("change.intro", function(changed) {
@@ -77397,7 +80886,7 @@ ${currentIndent}`
         return continueTo(updateLine);
       }
       var padding = 100 * Math.pow(2, context.map().zoom() - 19);
-      var box = pad5(woodRoadDragEndpoint, padding, context);
+      var box = pad6(woodRoadDragEndpoint, padding, context);
       box.height += 400;
       var advance = function() {
         context.history().checkpoint("doneUpdateLine");
@@ -77413,7 +80902,7 @@ ${currentIndent}`
           return continueTo(updateLine);
         }
         var padding2 = 100 * Math.pow(2, context.map().zoom() - 19);
-        var box2 = pad5(woodRoadDragEndpoint, padding2, context);
+        var box2 = pad6(woodRoadDragEndpoint, padding2, context);
         box2.height += 400;
         reveal(
           box2,
@@ -77439,7 +80928,7 @@ ${currentIndent}`
       context.map().centerZoomEase(deleteLinesLoc, 18, msec);
       timeout2(function() {
         var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad5(deleteLinesLoc, padding, context);
+        var box = pad6(deleteLinesLoc, padding, context);
         box.top -= 200;
         box.height += 400;
         var advance = function() {
@@ -77452,7 +80941,7 @@ ${currentIndent}`
         );
         context.map().on("move.intro drawn.intro", function() {
           var padding2 = 200 * Math.pow(2, context.map().zoom() - 18);
-          var box2 = pad5(deleteLinesLoc, padding2, context);
+          var box2 = pad6(deleteLinesLoc, padding2, context);
           box2.top -= 200;
           box2.height += 400;
           reveal(
@@ -77483,11 +80972,11 @@ ${currentIndent}`
       }) + helpHtml("intro.lines." + (context.lastPointerType() === "mouse" ? "rightclick_intersection" : "edit_menu_intersection_touch"));
       timeout2(function() {
         var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-        var box = pad5(eleventhAvenueEnd, padding, context);
+        var box = pad6(eleventhAvenueEnd, padding, context);
         reveal(box, rightClickString);
         context.map().on("move.intro drawn.intro", function() {
           var padding2 = 60 * Math.pow(2, context.map().zoom() - 18);
-          var box2 = pad5(eleventhAvenueEnd, padding2, context);
+          var box2 = pad6(eleventhAvenueEnd, padding2, context);
           reveal(
             box2,
             rightClickString,
@@ -77574,7 +81063,7 @@ ${currentIndent}`
         continueTo(rightClickIntersection);
       };
       var padding = 60 * Math.pow(2, context.map().zoom() - 18);
-      var box = pad5(eleventhAvenueEnd, padding, context);
+      var box = pad6(eleventhAvenueEnd, padding, context);
       reveal(
         box,
         helpHtml("intro.lines.retry_split"),
@@ -77582,7 +81071,7 @@ ${currentIndent}`
       );
       context.map().on("move.intro drawn.intro", function() {
         var padding2 = 60 * Math.pow(2, context.map().zoom() - 18);
-        var box2 = pad5(eleventhAvenueEnd, padding2, context);
+        var box2 = pad6(eleventhAvenueEnd, padding2, context);
         reveal(
           box2,
           helpHtml("intro.lines.retry_split"),
@@ -77602,7 +81091,7 @@ ${currentIndent}`
       var string = "intro.lines.did_split_" + (ids.length > 1 ? "multi" : "single");
       var street = _t("intro.graph.name.washington-street");
       var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-      var box = pad5(twelfthAvenue, padding, context);
+      var box = pad6(twelfthAvenue, padding, context);
       box.width = box.width / 2;
       reveal(
         box,
@@ -77613,7 +81102,7 @@ ${currentIndent}`
         context.map().centerZoomEase(twelfthAvenue, 18, 500);
         context.map().on("move.intro drawn.intro", function() {
           var padding2 = 200 * Math.pow(2, context.map().zoom() - 18);
-          var box2 = pad5(twelfthAvenue, padding2, context);
+          var box2 = pad6(twelfthAvenue, padding2, context);
           box2.width = box2.width / 2;
           reveal(
             box2,
@@ -77659,13 +81148,13 @@ ${currentIndent}`
           selected = _t("intro.graph.name.washington-street");
           other = _t("intro.graph.name.12th-avenue");
           padding = 60 * Math.pow(2, context.map().zoom() - 18);
-          box = pad5(twelfthAvenueEnd, padding, context);
+          box = pad6(twelfthAvenueEnd, padding, context);
           box.width *= 3;
         } else {
           selected = _t("intro.graph.name.12th-avenue");
           other = _t("intro.graph.name.washington-street");
           padding = 200 * Math.pow(2, context.map().zoom() - 18);
-          box = pad5(twelfthAvenue, padding, context);
+          box = pad6(twelfthAvenue, padding, context);
           box.width /= 2;
         }
         reveal(
@@ -77683,13 +81172,13 @@ ${currentIndent}`
             selected = _t("intro.graph.name.washington-street");
             other = _t("intro.graph.name.12th-avenue");
             padding = 60 * Math.pow(2, context.map().zoom() - 18);
-            box = pad5(twelfthAvenueEnd, padding, context);
+            box = pad6(twelfthAvenueEnd, padding, context);
             box.width *= 3;
           } else {
             selected = _t("intro.graph.name.12th-avenue");
             other = _t("intro.graph.name.washington-street");
             padding = 200 * Math.pow(2, context.map().zoom() - 18);
-            box = pad5(twelfthAvenue, padding, context);
+            box = pad6(twelfthAvenue, padding, context);
             box.width /= 2;
           }
           reveal(
@@ -77725,12 +81214,12 @@ ${currentIndent}`
         return continueTo(rightClickIntersection);
       }
       var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-      var box = pad5(twelfthAvenue, padding, context);
+      var box = pad6(twelfthAvenue, padding, context);
       var rightClickString = helpHtml("intro.lines.multi_select_success") + helpHtml("intro.lines.multi_" + (context.lastPointerType() === "mouse" ? "rightclick" : "edit_menu_touch"));
       reveal(box, rightClickString);
       context.map().on("move.intro drawn.intro", function() {
         var padding2 = 200 * Math.pow(2, context.map().zoom() - 18);
-        var box2 = pad5(twelfthAvenue, padding2, context);
+        var box2 = pad6(twelfthAvenue, padding2, context);
         reveal(box2, rightClickString, { duration: 0 });
       });
       context.ui().editMenu().on("toggled.intro", function(open) {
@@ -77800,7 +81289,7 @@ ${currentIndent}`
     function retryDelete() {
       context.enter(modeBrowse(context));
       var padding = 200 * Math.pow(2, context.map().zoom() - 18);
-      var box = pad5(twelfthAvenue, padding, context);
+      var box = pad6(twelfthAvenue, padding, context);
       reveal(box, helpHtml("intro.lines.retry_delete"), {
         buttonText: _t.html("intro.ok"),
         buttonCallback: function() {
@@ -77885,12 +81374,12 @@ ${currentIndent}`
     }
     function revealHouse(center, text, options) {
       var padding = 160 * Math.pow(2, context.map().zoom() - 20);
-      var box = pad5(center, padding, context);
+      var box = pad6(center, padding, context);
       reveal(box, text, options);
     }
     function revealTank(center, text, options) {
       var padding = 190 * Math.pow(2, context.map().zoom() - 19.5);
-      var box = pad5(center, padding, context);
+      var box = pad6(center, padding, context);
       reveal(box, text, options);
     }
     function addHouse() {
@@ -78488,7 +81977,7 @@ ${currentIndent}`
       init_localizer();
       init_browse();
       init_select5();
-      init_util2();
+      init_util3();
       init_helper();
     }
   });
@@ -78585,9 +82074,9 @@ ${currentIndent}`
     let _currChapter;
     function intro(selection2) {
       _mainFileFetcher.get("intro_graph").then((dataIntroGraph) => {
-        for (let id2 in dataIntroGraph) {
-          if (!_introGraph[id2]) {
-            _introGraph[id2] = osmEntity(localize(dataIntroGraph[id2]));
+        for (let id3 in dataIntroGraph) {
+          if (!_introGraph[id3]) {
+            _introGraph[id3] = osmEntity(localize(dataIntroGraph[id3]));
           }
         }
         selection2.call(startIntro);
@@ -78702,7 +82191,7 @@ ${currentIndent}`
       init_entity();
       init_icon();
       init_curtain();
-      init_util2();
+      init_util3();
       init_welcome();
       init_navigation();
       init_point();
@@ -78875,16 +82364,16 @@ ${currentIndent}`
     }
     return s2;
   }
-  function rendererBackgroundSource(data) {
-    var source = Object.assign({}, data);
+  function rendererBackgroundSource(data2) {
+    var source = Object.assign({}, data2);
     var _offset = [0, 0];
     var _name = source.name;
     var _description = source.description;
     var _best = !!source.best;
     var _template = source.encrypted ? utilAesDecrypt(source.template) : source.template;
-    source.tileSize = data.tileSize || 256;
-    source.zoomExtent = data.zoomExtent || [0, 22];
-    source.overzoom = data.overzoom !== false;
+    source.tileSize = data2.tileSize || 256;
+    source.zoomExtent = data2.zoomExtent || [0, 22];
+    source.overzoom = data2.overzoom !== false;
     source.offset = function(val) {
       if (!arguments.length) return _offset;
       _offset = val;
@@ -78916,8 +82405,8 @@ ${currentIndent}`
       return _best;
     };
     source.area = function() {
-      if (!data.polygon) return Number.MAX_VALUE;
-      var area = area_default2({ type: "MultiPolygon", coordinates: [data.polygon] });
+      if (!data2.polygon) return Number.MAX_VALUE;
+      var area = area_default2({ type: "MultiPolygon", coordinates: [data2.polygon] });
       return isNaN(area) ? 0 : area;
     };
     source.imageryUsed = function() {
@@ -79001,9 +82490,9 @@ ${currentIndent}`
           var u4 = "";
           for (var zoom = coord2[2]; zoom > 0; zoom--) {
             var b11 = 0;
-            var mask = 1 << zoom - 1;
-            if ((coord2[0] & mask) !== 0) b11++;
-            if ((coord2[1] & mask) !== 0) b11 += 2;
+            var mask2 = 1 << zoom - 1;
+            if ((coord2[0] & mask2) !== 0) b11++;
+            if ((coord2[1] & mask2) !== 0) b11 += 2;
             u4 += b11.toString();
           }
           return u4;
@@ -79046,10 +82535,10 @@ ${currentIndent}`
       init_src21();
       init_localizer();
       init_geo2();
-      init_util2();
+      init_util3();
       init_aes();
       init_IntervalTasksQueue();
-      init_date2();
+      init_date3();
       isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
       window.matchMedia?.(`
         (-webkit-min-device-pixel-ratio: 2), /* Safari */
@@ -79058,9 +82547,9 @@ ${currentIndent}`
     `).addListener(function() {
         isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
       });
-      rendererBackgroundSource.Bing = function(data, dispatch11) {
-        data.template = "https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=1&pr=odbl&n=z";
-        var bing = rendererBackgroundSource(data);
+      rendererBackgroundSource.Bing = function(data2, dispatch11) {
+        data2.template = "https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=1&pr=odbl&n=z";
+        var bing = rendererBackgroundSource(data2);
         var key = utilAesDecrypt("5c875730b09c6b422433e807e1ff060b6536c791dbfffcffc4c6b18a1bdba1f14593d151adb50e19e1be1ab19aef813bf135d0f103475e5c724dec94389e45d0");
         const strictParam = "n";
         var url = "https://dev.virtualearth.net/REST/v1/Imagery/Metadata/AerialOSM?include=ImageryProviders&uriScheme=https&key=" + key;
@@ -79145,11 +82634,11 @@ ${currentIndent}`
         bing.terms_url = "https://blog.openstreetmap.org/2010/11/30/microsoft-imagery-details";
         return bing;
       };
-      rendererBackgroundSource.Esri = function(data) {
-        if (data.template.match(/blankTile/) === null) {
-          data.template = data.template + "?blankTile=false";
+      rendererBackgroundSource.Esri = function(data2) {
+        if (data2.template.match(/blankTile/) === null) {
+          data2.template = data2.template + "?blankTile=false";
         }
-        var esri = rendererBackgroundSource(data);
+        var esri = rendererBackgroundSource(data2);
         var cache = {};
         var inflight = {};
         var _prevCenter;
@@ -79177,7 +82666,11 @@ ${currentIndent}`
           });
         };
         esri.getMetadata = function(center, tileCoord, callback) {
-          if (esri.id !== "EsriWorldImagery") {
+          let mapServerUrl = esri.metadata;
+          if (esri.id === "EsriWorldImagery") {
+            mapServerUrl = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer";
+          }
+          if (!mapServerUrl) {
             return callback(null, {});
           }
           var tileID = tileCoord.slice(0, 3).join("/");
@@ -79187,7 +82680,7 @@ ${currentIndent}`
           var vintage = {};
           var metadata = {};
           if (inflight[tileID]) return;
-          var url = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/4/query";
+          var url = mapServerUrl + "/4/query";
           url += "?returnGeometry=false&geometry=" + centerPoint + "&inSR=4326&geometryType=esriGeometryPoint&outFields=*&f=json";
           if (!cache[tileID]) {
             cache[tileID] = {};
@@ -79587,7 +83080,7 @@ ${currentIndent}`
     return previousValue;
   }
   function flattenEach(geojson, callback) {
-    geomEach(geojson, function(geometry2, featureIndex, properties, bbox2, id2) {
+    geomEach(geojson, function(geometry2, featureIndex, properties, bbox2, id3) {
       var type2 = geometry2 === null ? null : geometry2.type;
       switch (type2) {
         case null:
@@ -79597,7 +83090,7 @@ ${currentIndent}`
           if (
             // @ts-expect-error: Known type conflict
             callback(
-              feature2(geometry2, properties, { bbox: bbox2, id: id2 }),
+              feature2(geometry2, properties, { bbox: bbox2, id: id3 }),
               featureIndex,
               0
             ) === false
@@ -80182,7 +83675,7 @@ ${currentIndent}`
       init_src6();
       init_localizer();
       init_geo2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -80202,8 +83695,66 @@ ${currentIndent}`
     let _saturation = 1;
     let _sharpness = 1;
     function ensureImageryIndex() {
-      return _mainFileFetcher.get("imagery").then((sources) => {
+      return _mainFileFetcher.get("wayback").then((groups2) => {
+        let extractDateFromTitle = (title) => {
+          const dateComponents = title.match(/\(Wayback (\d{4})-(\d\d)-(\d\d)\)/);
+          if (!dateComponents) return;
+          return new Date(Date.UTC(
+            parseInt(dateComponents[1], 10),
+            parseInt(dateComponents[2], 10) - 1,
+            parseInt(dateComponents[3], 10)
+          ));
+        };
+        if (!_waybackIndex) {
+          let metadataMapServersByDate = Object.fromEntries(groups2.items.filter((item) => item.type === "Map Service").map((item) => {
+            const date2 = extractDateFromTitle(item.title) || new Date(item.created);
+            const dateString = date2.toISOString().split("T")[0];
+            return [dateString, item.url];
+          }));
+          _waybackIndex = groups2.items.filter((item) => item.type === "WMTS").map((item) => {
+            const date2 = extractDateFromTitle(item.title) || new Date(item.created);
+            const dateString = date2 && date2.toISOString().split("T")[0];
+            const bbox2 = {
+              min_lon: item.extent[0][0],
+              min_lat: item.extent[0][1],
+              max_lon: item.extent[1][0],
+              max_lat: item.extent[1][1]
+            };
+            const polygon2 = [[
+              [bbox2.min_lon, bbox2.min_lat],
+              [bbox2.min_lon, bbox2.max_lat],
+              [bbox2.max_lon, bbox2.max_lat],
+              [bbox2.max_lon, bbox2.min_lat],
+              [bbox2.min_lon, bbox2.min_lat]
+            ]];
+            const template2 = item.url.replaceAll("{level}", "{zoom}").replaceAll("{row}", "{y}").replaceAll("{col}", "{x}");
+            return {
+              id: "EsriWorldImagery_" + dateString,
+              name: item.title,
+              type: "tms",
+              template: template2,
+              metadata: metadataMapServersByDate[dateString],
+              startDate: date2.toISOString(),
+              endDate: date2.toISOString(),
+              polygon: polygon2,
+              terms_text: item.accessInformation,
+              description: item.snippet,
+              // Match Esri World Imagery layer
+              "default": true,
+              zoomExtent: [0, 22],
+              terms_url: "https://wiki.openstreetmap.org/wiki/Esri",
+              icon: "https://osmlab.github.io/editor-layer-index/sources/world/EsriImageryClarity.png"
+            };
+          });
+        }
+        return _mainFileFetcher.get("imagery");
+      }).catch(() => {
+        return _mainFileFetcher.get("imagery");
+      }).then((sources) => {
         if (_imageryIndex) return _imageryIndex;
+        if (_waybackIndex) {
+          sources.push(..._waybackIndex);
+        }
         _imageryIndex = {
           imagery: sources,
           features: {}
@@ -80279,9 +83830,9 @@ ${currentIndent}`
         let brightness = number_default(1, 0.85)(_sharpness - 1);
         maskFilter += ` brightness(${brightness})`;
       }
-      let mask = base.selectAll(".layer-unsharp-mask").data(_sharpness > 1 ? [0] : []);
-      mask.exit().remove();
-      mask.enter().append("div").attr("class", "layer layer-mask layer-unsharp-mask").merge(mask).call(baseLayer).style("filter", maskFilter || null).style("mix-blend-mode", mixBlendMode || null);
+      let mask2 = base.selectAll(".layer-unsharp-mask").data(_sharpness > 1 ? [0] : []);
+      mask2.exit().remove();
+      mask2.enter().append("div").attr("class", "layer layer-mask layer-unsharp-mask").merge(mask2).call(baseLayer).style("filter", maskFilter || null).style("mix-blend-mode", mixBlendMode || null);
       let overlays = selection2.selectAll(".layer-overlay").data(_overlayLayers, (d2) => d2.source().name());
       overlays.exit().remove();
       overlays.enter().insert("div", ".layer-data").attr("class", "layer layer-overlay").merge(overlays).each((layer, i3, nodes) => select_default2(nodes[i3]).call(layer));
@@ -80295,12 +83846,12 @@ ${currentIndent}`
       const x3 = +meters[0].toFixed(2);
       const y3 = +meters[1].toFixed(2);
       let hash2 = utilStringQs(window.location.hash);
-      let id2 = currSource.id;
-      if (id2 === "custom") {
-        id2 = `custom:${currSource.template()}`;
+      let id3 = currSource.id;
+      if (id3 === "custom") {
+        id3 = `custom:${currSource.template()}`;
       }
-      if (id2) {
-        hash2.background = id2;
+      if (id3) {
+        hash2.background = id3;
       } else {
         delete hash2.background;
       }
@@ -80397,9 +83948,9 @@ ${currentIndent}`
       background.updateImagery();
       return background;
     };
-    background.findSource = (id2) => {
-      if (!id2 || !_imageryIndex) return null;
-      return _imageryIndex.backgrounds.find((d2) => d2.id && d2.id === id2);
+    background.findSource = (id3) => {
+      if (!id3 || !_imageryIndex) return null;
+      return _imageryIndex.backgrounds.find((d2) => d2.id && d2.id === id3);
     };
     background.bing = () => {
       background.baseLayerSource(background.findSource("Bing"));
@@ -80490,10 +84041,10 @@ ${currentIndent}`
         const validBackgrounds = background.sources(extent2).filter((d2) => d2.id !== "none" && d2.id !== "custom");
         const first = validBackgrounds.length && validBackgrounds[0];
         const isLastUsedValid = !!validBackgrounds.find((d2) => d2.id && d2.id === lastUsedBackground);
-        let best;
+        let best2;
         if (!requestedBackground && extent2) {
           const viewArea = extent2.area();
-          best = validBackgrounds.find((s2) => {
+          best2 = validBackgrounds.find((s2) => {
             if (!s2.best() || s2.overlay) return false;
             let bbox2 = index_default2(index_default(
               { type: "MultiPolygon", coordinates: [s2.polygon || [extent2.polygon()]] },
@@ -80510,7 +84061,7 @@ ${currentIndent}`
           corePreferences("background-custom-template", template2);
         } else {
           background.baseLayerSource(
-            background.findSource(requestedBackground) || best || isLastUsedValid && background.findSource(lastUsedBackground) || background.findSource("Bing") || first || background.findSource("none")
+            background.findSource(requestedBackground) || best2 || isLastUsedValid && background.findSource(lastUsedBackground) || background.findSource("Bing") || first || background.findSource("none")
           );
         }
         const locator = imageryIndex.backgrounds.find((d2) => d2.overlay && d2.default);
@@ -80542,7 +84093,7 @@ ${currentIndent}`
     };
     return utilRebind(background, dispatch11, "on");
   }
-  var import_which_polygon4, _imageryIndex;
+  var import_which_polygon4, _imageryIndex, _waybackIndex;
   var init_background2 = __esm({
     "modules/renderer/background.js"() {
       "use strict";
@@ -80557,9 +84108,10 @@ ${currentIndent}`
       init_geo2();
       init_background_source();
       init_tile_layer();
-      init_util2();
+      init_util3();
       init_rebind();
       _imageryIndex = null;
+      _waybackIndex = null;
     }
   });
 
@@ -80605,6 +84157,7 @@ ${currentIndent}`
     var _cullFactor = 1;
     var _cache4 = {};
     var _rules = {};
+    var _dateMatchCount = 0;
     var _stats = {};
     var _keys = [];
     var _hidden = [];
@@ -80623,7 +84176,7 @@ ${currentIndent}`
       dispatch11.call("change");
       dispatch11.call("redraw");
     }
-    function defineRule(k3, filter4, max4) {
+    function defineRule(k3, filter4, max5) {
       var isEnabled = true;
       _keys.push(k3);
       _rules[k3] = {
@@ -80631,8 +84184,8 @@ ${currentIndent}`
         enabled: isEnabled,
         // whether the user wants it enabled..
         count: 0,
-        currentMax: max4 || Infinity,
-        defaultMax: max4 || Infinity,
+        currentMax: max5 || Infinity,
+        defaultMax: max5 || Infinity,
         enable: function() {
           this.enabled = true;
           this.currentMax = this.defaultMax;
@@ -80709,8 +84262,8 @@ ${currentIndent}`
       if (traffic_roads[tags.highway] || service_roads[tags.highway] || paths[tags.highway]) {
         return false;
       }
-      const keys4 = Object.keys(tags);
-      for (const key of keys4) {
+      const keys5 = Object.keys(tags);
+      for (const key of keys5) {
         if (osmLifecyclePrefixes[tags[key]]) return true;
         const parts = key.split(":");
         if (parts.length === 1) continue;
@@ -80800,10 +84353,14 @@ ${currentIndent}`
         update3();
       }
     };
+    features.redraw = function() {
+      update3();
+    };
     features.resetStats = function() {
       for (var i3 = 0; i3 < _keys.length; i3++) {
         _rules[_keys[i3]].count = 0;
       }
+      _dateMatchCount = 0;
       dispatch11.call("change");
     };
     features.gatherStats = function(d2, resolver, dimensions) {
@@ -80814,6 +84371,7 @@ ${currentIndent}`
       for (i3 = 0; i3 < _keys.length; i3++) {
         _rules[_keys[i3]].count = 0;
       }
+      _dateMatchCount = 0;
       _cullFactor = dimensions[0] * dimensions[1] / 1e6;
       for (i3 = 0; i3 < entities.length; i3++) {
         geometry2 = entities[i3].geometry(resolver);
@@ -80821,6 +84379,7 @@ ${currentIndent}`
         for (j3 = 0; j3 < matches2.length; j3++) {
           _rules[matches2[j3]].count++;
         }
+        if (!features.featureFitsDateRange(entities[i3])) _dateMatchCount++;
       }
       currHidden = features.hidden();
       if (currHidden !== _hidden) {
@@ -80836,6 +84395,7 @@ ${currentIndent}`
       }
       return _stats;
     };
+    features.dateMatchCount = () => _dateMatchCount;
     features.clear = function(d2) {
       for (var i3 = 0; i3 < d2.length; i3++) {
         features.clearEntity(d2[i3]);
@@ -80917,7 +84477,6 @@ ${currentIndent}`
       return _cache4[ent].parents;
     };
     features.isHiddenPreset = function(preset, geometry2) {
-      if (!_hidden.length) return false;
       if (!preset.tags) return false;
       var test = preset.setTags({ ...preset.tags }, geometry2);
       for (var key in _rules) {
@@ -80931,18 +84490,18 @@ ${currentIndent}`
       return false;
     };
     features.isHiddenFeature = function(entity, resolver, geometry2) {
-      if (!_hidden.length) return false;
       if (!entity.version) return false;
       if (_forceVisible[entity.id]) return false;
+      if (!features.featureFitsDateRange(entity)) return true;
       var matches2 = Object.keys(features.getMatches(entity, resolver, geometry2));
       return matches2.length && matches2.every(function(k3) {
         return features.hidden(k3);
       });
     };
     features.isHiddenChild = function(entity, resolver, geometry2) {
-      if (!_hidden.length) return false;
       if (!entity.version || geometry2 === "point") return false;
       if (_forceVisible[entity.id]) return false;
+      if (!features.featureFitsDateRange(entity)) return true;
       var parents = features.getParents(entity, resolver, geometry2);
       if (!parents.length) return false;
       for (var i3 = 0; i3 < parents.length; i3++) {
@@ -80953,7 +84512,6 @@ ${currentIndent}`
       return true;
     };
     features.hasHiddenConnections = function(entity, resolver) {
-      if (!_hidden.length) return false;
       var childNodes, connections;
       if (entity.type === "midpoint") {
         childNodes = [resolver.entity(entity.edge[0]), resolver.entity(entity.edge[1])];
@@ -80970,13 +84528,24 @@ ${currentIndent}`
       });
     };
     features.isHidden = function(entity, resolver, geometry2) {
-      if (!_hidden.length) return false;
       if (!entity.version) return false;
       var fn = geometry2 === "vertex" ? features.isHiddenChild : features.isHiddenFeature;
       return fn(entity, resolver, geometry2);
     };
+    features.featureFitsDateRange = function(entity) {
+      if (!features.dateRange) return true;
+      const entityRange = {
+        "start_date": entity.tags.start_date,
+        "end_date": entity.tags.end_date
+      };
+      const selectedRange = {
+        "start_date": features.dateRange[0],
+        "end_date": features.dateRange[1]
+      };
+      const withinrange = utilDatesOverlap(selectedRange, entityRange, true);
+      return withinrange;
+    };
     features.filter = function(d2, resolver) {
-      if (!_hidden.length) return d2;
       var result2 = [];
       for (var i3 = 0; i3 < d2.length; i3++) {
         var entity = d2[i3];
@@ -81035,7 +84604,7 @@ ${currentIndent}`
       init_osm();
       init_tags2();
       init_rebind();
-      init_util2();
+      init_util3();
       init_labels();
     }
   });
@@ -81327,7 +84896,7 @@ ${currentIndent}`
       init_src12();
       init_src13();
       init_transform3();
-      init_util();
+      init_util2();
       init_rebind();
     }
   });
@@ -81394,7 +84963,7 @@ ${currentIndent}`
     "modules/util/double_up.js"() {
       "use strict";
       init_src();
-      init_util();
+      init_util2();
       init_rebind();
       init_vector();
     }
@@ -81541,8 +85110,8 @@ ${currentIndent}`
         if (_isTransformed) return;
         var graph = context.graph();
         var selectedAndParents = {};
-        context.selectedIDs().forEach(function(id2) {
-          var entity = graph.hasEntity(id2);
+        context.selectedIDs().forEach(function(id3) {
+          var entity = graph.hasEntity(id3);
           if (entity) {
             selectedAndParents[entity.id] = entity;
             if (entity.type === "node") {
@@ -81552,12 +85121,12 @@ ${currentIndent}`
             }
           }
         });
-        var data = Object.values(selectedAndParents);
+        var data2 = Object.values(selectedAndParents);
         var filter4 = function(d2) {
           return d2.id in selectedAndParents;
         };
-        data = context.features().filter(data, graph);
-        surface.call(drawVertices.drawSelected, graph, map4.extent()).call(drawLines, graph, data, filter4).call(drawAreas, graph, data, filter4).call(drawMidpoints, graph, data, filter4, map4.trimmedExtent());
+        data2 = context.features().filter(data2, graph);
+        surface.call(drawVertices.drawSelected, graph, map4.extent()).call(drawLines, graph, data2, filter4).call(drawAreas, graph, data2, filter4).call(drawMidpoints, graph, data2, filter4, map4.trimmedExtent());
         dispatch11.call("drawn", this, { full: false });
         scheduleRedraw();
       });
@@ -81591,54 +85160,54 @@ ${currentIndent}`
       var features = context.features();
       var all = context.history().intersects(map4.extent());
       var fullRedraw = false;
-      var data;
+      var data2;
       var set6;
       var filter4;
       var applyFeatureLayerFilters = true;
       if (map4.isInWideSelection()) {
-        data = [];
-        utilEntityAndDeepMemberIDs(mode2.selectedIDs(), context.graph()).forEach(function(id2) {
-          var entity = context.hasEntity(id2);
-          if (entity) data.push(entity);
+        data2 = [];
+        utilEntityAndDeepMemberIDs(mode2.selectedIDs(), context.graph()).forEach(function(id3) {
+          var entity = context.hasEntity(id3);
+          if (entity) data2.push(entity);
         });
         fullRedraw = true;
         filter4 = utilFunctor(true);
         applyFeatureLayerFilters = false;
       } else if (difference5) {
         var complete = difference5.complete(map4.extent());
-        data = Object.values(complete).filter(Boolean);
+        data2 = Object.values(complete).filter(Boolean);
         set6 = new Set(Object.keys(complete));
         filter4 = function(d2) {
           return set6.has(d2.id);
         };
-        features.clear(data);
+        features.clear(data2);
       } else {
         if (features.gatherStats(all, graph, _dimensions)) {
           extent2 = void 0;
         }
         if (extent2) {
-          data = context.history().intersects(map4.extent().intersection(extent2));
-          set6 = new Set(data.map(function(entity) {
+          data2 = context.history().intersects(map4.extent().intersection(extent2));
+          set6 = new Set(data2.map(function(entity) {
             return entity.id;
           }));
           filter4 = function(d2) {
             return set6.has(d2.id);
           };
         } else {
-          data = all;
+          data2 = all;
           fullRedraw = true;
           filter4 = utilFunctor(true);
         }
       }
       if (applyFeatureLayerFilters) {
-        data = features.filter(data, graph);
+        data2 = features.filter(data2, graph);
       } else {
         context.features().resetStats();
       }
       if (mode2 && mode2.id === "select") {
         surface.call(drawVertices.drawSelected, graph, map4.extent());
       }
-      surface.call(drawVertices, graph, data, filter4, map4.extent(), fullRedraw).call(drawLines, graph, data, filter4).call(drawAreas, graph, data, filter4).call(drawMidpoints, graph, data, filter4, map4.trimmedExtent()).call(drawPoints, graph, data, filter4).call(drawLabels, graph, data, filter4, _dimensions, fullRedraw);
+      surface.call(drawVertices, graph, data2, filter4, map4.extent(), fullRedraw).call(drawLines, graph, data2, filter4).call(drawAreas, graph, data2, filter4).call(drawMidpoints, graph, data2, filter4, map4.trimmedExtent()).call(drawPoints, graph, data2, filter4).call(drawLabels, graph, data2, filter4, _dimensions, fullRedraw);
       dispatch11.call("drawn", this, { full: true });
     }
     map4.init = function() {
@@ -82085,10 +85654,10 @@ ${currentIndent}`
       if (!arguments.length) {
         var headerY = 71;
         var footerY = 30;
-        var pad6 = 10;
+        var pad7 = 10;
         return new geoExtent(
-          projection2.invert([pad6, _dimensions[1] - footerY - pad6]),
-          projection2.invert([_dimensions[0] - pad6, headerY + pad6])
+          projection2.invert([pad7, _dimensions[1] - footerY - pad7]),
+          projection2.invert([_dimensions[0] - pad7, headerY + pad7])
         );
       } else {
         var extent2 = geoExtent(val);
@@ -82189,7 +85758,7 @@ ${currentIndent}`
       init_geo2();
       init_browse();
       init_svg();
-      init_util();
+      init_util2();
       init_bind_once();
       init_detect();
       init_dimensions();
@@ -82247,9 +85816,9 @@ ${currentIndent}`
       return val === _dateFilters[0] ? _fromDate : _toDate;
     };
     photos.setDateFilter = function(type2, val, updateUrl) {
-      var date = val && new Date(val);
-      if (date && !isNaN(date)) {
-        val = date.toISOString().slice(0, 10);
+      var date2 = val && new Date(val);
+      if (date2 && !isNaN(date2)) {
+        val = date2.toISOString().slice(0, 10);
       } else {
         val = null;
       }
@@ -82320,8 +85889,8 @@ ${currentIndent}`
       }
       window.history.replaceState(null, "", "#" + utilQsString(hash2, true));
     }
-    function showsLayer(id2) {
-      var layer = context.layers().layer(id2);
+    function showsLayer(id3) {
+      var layer = context.layers().layer(id3);
       return layer && layer.supported() && layer.enabled();
     }
     photos.shouldFilterDateBySlider = function() {
@@ -82371,9 +85940,9 @@ ${currentIndent}`
       }
       if (hash2.photo_overlay) {
         var hashOverlayIDs = hash2.photo_overlay.replace(/;/g, ",").split(",");
-        hashOverlayIDs.forEach(function(id2) {
-          if (id2 === "openstreetcam") id2 = "kartaview";
-          var layer2 = _layerIDs.indexOf(id2) !== -1 && context.layers().layer(id2);
+        hashOverlayIDs.forEach(function(id3) {
+          if (id3 === "openstreetcam") id3 = "kartaview";
+          var layer2 = _layerIDs.indexOf(id3) !== -1 && context.layers().layer(id3);
           if (layer2 && !layer2.enabled()) layer2.enabled(true);
         });
       }
@@ -82414,7 +85983,7 @@ ${currentIndent}`
       init_src();
       init_services();
       init_rebind();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -82622,7 +86191,7 @@ ${currentIndent}`
       init_geo2();
       init_renderer();
       init_svg();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -82744,7 +86313,7 @@ ${currentIndent}`
           if (!shouldDisplay) return;
           const activeImage = services[service2].getActiveImage();
           const graph = context.graph();
-          const entities = context.selectedIDs().map((id2) => graph.hasEntity(id2)).filter(Boolean);
+          const entities = context.selectedIDs().map((id3) => graph.hasEntity(id3)).filter(Boolean);
           if (entities.map((entity) => entity.tags[service2]).every((value) => value === activeImage?.id)) {
             buttonDisable("already_set");
           } else if (activeImage && entities.map((entity) => entity.extent(context.graph()).center()).every((loc) => geoSphericalDistance(loc, activeImage.loc) > 100)) {
@@ -82862,7 +86431,7 @@ ${currentIndent}`
       init_src();
       init_icon();
       init_dimensions();
-      init_util2();
+      init_util3();
       init_services();
       init_tooltip();
       init_actions();
@@ -82978,8 +86547,8 @@ ${currentIndent}`
       _modalSelection2.select(".modal").classed("modal-shortcuts", true);
       var content = _modalSelection2.select(".content");
       content.append("div").attr("class", "modal-section header").append("h2").call(_t.append("shortcuts.title"));
-      _mainFileFetcher.get("shortcuts").then(function(data) {
-        _dataShortcuts = data;
+      _mainFileFetcher.get("shortcuts").then(function(data2) {
+        _dataShortcuts = data2;
         content.call(render);
       }).catch(function() {
       });
@@ -83135,7 +86704,7 @@ ${currentIndent}`
       init_icon();
       init_cmd();
       init_modal();
-      init_util2();
+      init_util3();
       init_detect();
     }
   });
@@ -83145,7 +86714,7 @@ ${currentIndent}`
     "node_modules/@mapbox/sexagesimal/index.js"(exports, module) {
       module.exports = element;
       module.exports.pair = pair3;
-      module.exports.format = format2;
+      module.exports.format = format3;
       module.exports.formatPair = formatPair;
       module.exports.coordToDMS = coordToDMS;
       function element(input, dims) {
@@ -83153,18 +86722,18 @@ ${currentIndent}`
         return result2 === null ? null : result2.val;
       }
       function formatPair(input) {
-        return format2(input.lat, "lat") + " " + format2(input.lon, "lon");
+        return format3(input.lat, "lat") + " " + format3(input.lon, "lon");
       }
-      function format2(input, dim) {
+      function format3(input, dim) {
         var dms = coordToDMS(input, dim);
         return dms.whole + "\xB0 " + (dms.minutes ? dms.minutes + "' " : "") + (dms.seconds ? dms.seconds + '" ' : "") + dms.dir;
       }
       function coordToDMS(input, dim) {
         var dirs = { lat: ["N", "S"], lon: ["E", "W"] }[dim] || "";
         var dir = dirs[input >= 0 ? 0 : 1];
-        var abs3 = Math.abs(input);
-        var whole = Math.floor(abs3);
-        var fraction = abs3 - whole;
+        var abs7 = Math.abs(input);
+        var whole = Math.floor(abs7);
+        var fraction = abs7 - whole;
         var fractionMinutes = fraction * 60;
         var minutes = Math.floor(fractionMinutes);
         var seconds2 = Math.floor((fractionMinutes - minutes) * 60);
@@ -83192,12 +86761,12 @@ ${currentIndent}`
         }
         if (dim && dims.indexOf(dim) === -1) return null;
         var deg = m3[2] ? parseFloat(m3[2]) : 0;
-        var min4 = m3[3] ? parseFloat(m3[3]) / 60 : 0;
+        var min5 = m3[3] ? parseFloat(m3[3]) / 60 : 0;
         var sec = m3[4] ? parseFloat(m3[4]) / 3600 : 0;
         var sign2 = deg < 0 ? -1 : 1;
         if (dim === "S" || dim === "W") sign2 *= -1;
         return {
-          val: (Math.abs(deg) + min4 + sec) * sign2,
+          val: (Math.abs(deg) + min5 + sec) * sign2,
           dim,
           matched,
           remain: input.slice(matched.length)
@@ -83238,7 +86807,7 @@ ${currentIndent}`
       searchWrap.call(svgIcon("#iD-icon-search", "pre-text"));
       var search = searchWrap.append("input").attr("placeholder", _t("inspector.search")).attr("type", "search").call(utilNoAuto).on("keypress", keypress).on("keydown", keydown).on("input", inputevent);
       var listWrap = selection2.append("div").attr("class", "inspector-body");
-      var list = listWrap.append("div").attr("class", "feature-list");
+      var list2 = listWrap.append("div").attr("class", "feature-list");
       context.on("exit.feature-list", clearSearch);
       context.map().on("drawn.feature-list", mapDrawn);
       context.keybinding().on(uiCmd("\u2318F"), focusSearch);
@@ -83254,7 +86823,7 @@ ${currentIndent}`
         }
       }
       function keypress(d3_event) {
-        var q3 = search.property("value"), items = list.selectAll(".feature-list-item");
+        var q3 = search.property("value"), items = list2.selectAll(".feature-list-item");
         if (d3_event.keyCode === 13 && // ↩ Return
         q3.length && items.size()) {
           click(d3_event, items.datum());
@@ -83322,8 +86891,8 @@ ${currentIndent}`
         }
         var allEntities = graph.entities;
         const localResults = [];
-        for (var id2 in allEntities) {
-          var entity = allEntities[id2];
+        for (var id3 in allEntities) {
+          var entity = allEntities[id3];
           if (!entity) continue;
           var matched = _mainPresetIndex.match(entity, graph);
           var name = utilDisplayName(entity, { hideNetwork: matched.suggestion }) || "";
@@ -83345,17 +86914,17 @@ ${currentIndent}`
         const geocodeResults = [];
         (_geocodeResults || []).forEach(function(d2) {
           if (d2.osm_type && d2.osm_id) {
-            var id3 = osmEntity.id.fromOSM(d2.osm_type, d2.osm_id);
+            var id4 = osmEntity.id.fromOSM(d2.osm_type, d2.osm_id);
             var tags = {};
             tags[d2.class] = d2.type;
-            var attrs = { id: id3, type: d2.osm_type, tags };
+            var attrs = { id: id4, type: d2.osm_type, tags };
             if (d2.osm_type === "way") {
               attrs.nodes = ["a", "a"];
             }
             var tempEntity = osmEntity(attrs);
             var tempGraph = coreGraph([tempEntity]);
             var matched2 = _mainPresetIndex.match(tempEntity, tempGraph);
-            var type3 = matched2 && matched2.name() || utilDisplayType(id3);
+            var type3 = matched2 && matched2.name() || utilDisplayType(id4);
             geocodeResults.push({
               id: tempEntity.id,
               geometry: tempEntity.geometry(tempGraph),
@@ -83400,16 +86969,16 @@ ${currentIndent}`
       function drawList() {
         var value = search.property("value");
         var results = features();
-        list.classed("filtered", value.length);
-        var resultsIndicator = list.selectAll(".no-results-item").data([0]).enter().append("button").property("disabled", true).attr("class", "no-results-item").call(svgIcon("#iD-icon-alert", "pre-text"));
+        list2.classed("filtered", value.length);
+        var resultsIndicator = list2.selectAll(".no-results-item").data([0]).enter().append("button").property("disabled", true).attr("class", "no-results-item").call(svgIcon("#iD-icon-alert", "pre-text"));
         resultsIndicator.append("span").attr("class", "entity-name");
-        list.selectAll(".no-results-item .entity-name").html("").call(_t.append("geocoder.no_results_worldwide"));
+        list2.selectAll(".no-results-item .entity-name").html("").call(_t.append("geocoder.no_results_worldwide"));
         if (services.geocoder) {
-          list.selectAll(".geocode-item").data([0]).enter().append("button").attr("class", "geocode-item secondary-action").on("click", geocoderSearch).append("div").attr("class", "label").append("span").attr("class", "entity-name").call(_t.append("geocoder.search"));
+          list2.selectAll(".geocode-item").data([0]).enter().append("button").attr("class", "geocode-item secondary-action").on("click", geocoderSearch).append("div").attr("class", "label").append("span").attr("class", "entity-name").call(_t.append("geocoder.search"));
         }
-        list.selectAll(".no-results-item").style("display", value.length && !results.length ? "block" : "none");
-        list.selectAll(".geocode-item").style("display", value && _geocodeResults === void 0 ? "block" : "none");
-        var items = list.selectAll(".feature-list-item").data(results, function(d2) {
+        list2.selectAll(".no-results-item").style("display", value.length && !results.length ? "block" : "none");
+        list2.selectAll(".geocode-item").style("display", value && _geocodeResults === void 0 ? "block" : "none");
+        var items = list2.selectAll(".feature-list-item").data(results, function(d2) {
           return d2.id;
         });
         var enter = items.enter().insert("button", ".geocode-item").attr("class", "feature-list-item").on("pointerenter", mouseover).on("pointerleave", mouseout).on("focus", mouseover).on("blur", mouseout).on("click", click);
@@ -83486,7 +87055,7 @@ ${currentIndent}`
       init_services();
       init_icon();
       init_cmd();
-      init_util2();
+      init_util3();
       idMatch = (q3) => {
         const idMatchRegex = /(?:^|\W)(node|way|relation|note|[nwr])\W{0,2}0*([1-9]\d*)(?:\W|$)/i;
         const idMatch2 = q3.match(idMatchRegex);
@@ -83663,7 +87232,7 @@ ${currentIndent}`
       init_icon();
       init_array3();
       init_localizer();
-      init_util2();
+      init_util3();
       init_section();
       init_validation();
     }
@@ -83898,7 +87467,7 @@ ${currentIndent}`
       init_presets();
       init_preferences();
       init_svg();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -83987,7 +87556,7 @@ ${currentIndent}`
       init_array3();
       init_localizer();
       init_tooltip();
-      init_util2();
+      init_util3();
       init_preset_icon();
       init_section();
       init_tag_reference();
@@ -84091,7 +87660,7 @@ ${currentIndent}`
       init_src6();
       init_localizer();
       init_combobox();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -84144,8 +87713,22 @@ ${currentIndent}`
           return sharedTotalFields.indexOf(field) !== -1;
         });
         _fieldsArr = [];
+        let coreKeys = ["start_date", "end_date", "source"];
+        coreKeys.forEach((key) => {
+          let field = presetsManager.field(key);
+          if (field) {
+            _fieldsArr.push(uiField(context, field, _entityIDs));
+          }
+        });
+        let optionalCoreKeys = ["source:1", "source:2", "source:3"];
+        optionalCoreKeys.forEach((key) => {
+          let field = presetsManager.field(key);
+          if (field && !_fieldsArr.includes(field)) {
+            _fieldsArr.push(uiField(context, field, _entityIDs, { show: false }));
+          }
+        });
         sharedFields.forEach(function(field) {
-          if (field.matchAllGeometry(geometries)) {
+          if (!coreKeys.includes(field.id) && !optionalCoreKeys.includes(field.id) && field.matchAllGeometry(geometries)) {
             _fieldsArr.push(
               uiField(context, field, _entityIDs)
             );
@@ -84162,7 +87745,7 @@ ${currentIndent}`
           return field1.title().localeCompare(field2.title(), _mainLocalizer.localeCode());
         });
         additionalFields.forEach(function(field) {
-          if (sharedFields.indexOf(field) === -1 && field.matchAllGeometry(geometries)) {
+          if (sharedFields.indexOf(field) === -1 && !coreKeys.includes(field.id) && !optionalCoreKeys.includes(field.id) && field.matchAllGeometry(geometries)) {
             _fieldsArr.push(
               uiField(context, field, _entityIDs, { show: false })
             );
@@ -84171,8 +87754,8 @@ ${currentIndent}`
         _fieldsArr.forEach(function(field) {
           field.on("change", function(t4, onInput) {
             dispatch11.call("change", field, _entityIDs, t4, onInput);
-          }).on("revert", function(keys4) {
-            dispatch11.call("revert", field, keys4);
+          }).on("revert", function(keys5) {
+            dispatch11.call("revert", field, keys5);
           });
         });
       }
@@ -84218,7 +87801,7 @@ ${currentIndent}`
       init_presets();
       init_localizer();
       init_array3();
-      init_util2();
+      init_util3();
       init_extent();
       init_field();
       init_form_fields();
@@ -84312,9 +87895,9 @@ ${currentIndent}`
           domId: utilUniqueDomId(entityID + "-member-" + index2)
         });
       });
-      var list = selection2.selectAll(".member-list").data([0]);
-      list = list.enter().append("ul").attr("class", "member-list").merge(list);
-      var items = list.selectAll("li").data(memberships, function(d2) {
+      var list2 = selection2.selectAll(".member-list").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "member-list").merge(list2);
+      var items = list2.selectAll("li").data(memberships, function(d2) {
         return osmEntity.key(d2.relation) + "," + d2.index + "," + (d2.member ? osmEntity.key(d2.member) : "incomplete");
       });
       items.exit().each(unbind).remove();
@@ -84431,14 +88014,14 @@ ${currentIndent}`
         var row = select_default2(this);
         var role = row.selectAll("input.member-role");
         var origValue = role.property("value");
-        function sort2(value, data) {
+        function sort2(value, data2) {
           var sameletter = [];
           var other = [];
-          for (var i3 = 0; i3 < data.length; i3++) {
-            if (data[i3].value.substring(0, value.length) === value) {
-              sameletter.push(data[i3]);
+          for (var i3 = 0; i3 < data2.length; i3++) {
+            if (data2[i3].value.substring(0, value.length) === value) {
+              sameletter.push(data2[i3]);
             } else {
-              other.push(data[i3]);
+              other.push(data2[i3]);
             }
           }
           return sameletter.concat(other);
@@ -84461,8 +88044,8 @@ ${currentIndent}`
               rtype: rtype || "",
               geometry: geometry2,
               query: role2
-            }, function(err, data) {
-              if (!err) callback(sort2(role2, data));
+            }, function(err, data2) {
+              if (!err) callback(sort2(role2, data2));
             });
           }).on("cancel", function() {
             role.property("value", origValue);
@@ -84499,7 +88082,7 @@ ${currentIndent}`
       init_services();
       init_combobox();
       init_section();
-      init_util2();
+      init_util3();
       init_core();
     }
   });
@@ -84754,9 +88337,9 @@ ${currentIndent}`
     }
     function renderDisclosureContent(selection2) {
       var memberships = getMemberships();
-      var list = selection2.selectAll(".member-list").data([0]);
-      list = list.enter().append("ul").attr("class", "member-list").merge(list);
-      var items = list.selectAll("li.member-row-normal").data(memberships, function(d2) {
+      var list2 = selection2.selectAll(".member-list").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "member-list").merge(list2);
+      var items = list2.selectAll("li.member-row-normal").data(memberships, function(d2) {
         return d2.hash;
       });
       items.exit().each(unbind).remove();
@@ -84831,13 +88414,13 @@ ${currentIndent}`
       if (taginfo) {
         wrapEnter.each(bindTypeahead);
       }
-      var newMembership = list.selectAll(".member-row-new").data(_showBlank ? [0] : []);
+      var newMembership = list2.selectAll(".member-row-new").data(_showBlank ? [0] : []);
       newMembership.exit().remove();
       var newMembershipEnter = newMembership.enter().append("li").attr("class", "member-row member-row-new form-field");
       var newLabelEnter = newMembershipEnter.append("label").attr("class", "field-label");
       newLabelEnter.append("input").attr("placeholder", _t("inspector.choose_relation")).attr("type", "text").attr("class", "member-entity-input").call(utilNoAuto);
       newLabelEnter.append("button").attr("class", "remove member-delete").attr("title", _t("icons.remove")).call(svgIcon("#iD-operation-delete")).on("click", function() {
-        list.selectAll(".member-row-new").remove();
+        list2.selectAll(".member-row-new").remove();
       });
       var newWrapEnter = newMembershipEnter.append("div").attr("class", "form-field-input-wrap form-field-input-member");
       newWrapEnter.append("input").attr("class", "member-role").property("type", "text").attr("placeholder", _t("inspector.role")).call(utilNoAuto);
@@ -84859,7 +88442,7 @@ ${currentIndent}`
       addRow.select(".add-relation").on("click", function() {
         _showBlank = true;
         section.reRender();
-        list.selectAll(".member-entity-input").node().focus();
+        list2.selectAll(".member-entity-input").node().focus();
       });
       function acceptEntity(d2) {
         if (!d2) {
@@ -84867,7 +88450,7 @@ ${currentIndent}`
           return;
         }
         if (d2.relation) utilHighlightEntities([d2.relation.id], false, context);
-        var role = context.cleanRelationRole(list.selectAll(".member-row-new .member-role").property("value"));
+        var role = context.cleanRelationRole(list2.selectAll(".member-row-new .member-role").property("value"));
         addMembership(d2, role);
       }
       function cancelEntity() {
@@ -84879,14 +88462,14 @@ ${currentIndent}`
         var row = select_default2(this);
         var role = row.selectAll("input.member-role");
         var origValue = role.property("value");
-        function sort2(value, data) {
+        function sort2(value, data2) {
           var sameletter = [];
           var other = [];
-          for (var i3 = 0; i3 < data.length; i3++) {
-            if (data[i3].value.substring(0, value.length) === value) {
-              sameletter.push(data[i3]);
+          for (var i3 = 0; i3 < data2.length; i3++) {
+            if (data2[i3].value.substring(0, value.length) === value) {
+              sameletter.push(data2[i3]);
             } else {
-              other.push(data[i3]);
+              other.push(data2[i3]);
             }
           }
           return sameletter.concat(other);
@@ -84899,8 +88482,8 @@ ${currentIndent}`
               rtype: rtype || "",
               geometry: context.graph().geometry(_entityIDs[0]),
               query: role2
-            }, function(err, data) {
-              if (!err) callback(sort2(role2, data));
+            }, function(err, data2) {
+              if (!err) callback(sort2(role2, data2));
             });
           }).on("cancel", function() {
             role.property("value", origValue);
@@ -84943,7 +88526,7 @@ ${currentIndent}`
       init_section();
       init_tooltip();
       init_array3();
-      init_util2();
+      init_util3();
       init_core();
       init_feature_list();
     }
@@ -84983,12 +88566,12 @@ ${currentIndent}`
       }
     }
     function renderDisclosureContent(selection2) {
-      var list = selection2.selectAll(".feature-list").data([0]);
-      list = list.enter().append("ul").attr("class", "feature-list").merge(list);
-      var entities = _selectedIDs.map(function(id2) {
-        return context.hasEntity(id2);
+      var list2 = selection2.selectAll(".feature-list").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "feature-list").merge(list2);
+      var entities = _selectedIDs.map(function(id3) {
+        return context.hasEntity(id3);
       }).filter(Boolean);
-      var items = list.selectAll(".feature-list-item").data(entities, osmEntity.key);
+      var items = list2.selectAll(".feature-list-item").data(entities, osmEntity.key);
       items.exit().remove();
       var enter = items.enter().append("li").attr("class", "feature-list-item").each(function(d2) {
         select_default2(this).on("mouseover", function() {
@@ -85027,7 +88610,7 @@ ${currentIndent}`
       init_icon();
       init_section();
       init_localizer();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -85157,14 +88740,14 @@ ${currentIndent}`
         context.validator().validate();
       }
     }
-    function revertTags(keys4) {
+    function revertTags(keys5) {
       var actions = [];
       for (var i3 in _entityIDs) {
         var entityID = _entityIDs[i3];
         var original = context.graph().base().entities[entityID];
         var changed = {};
-        for (var j3 in keys4) {
-          var key = keys4[j3];
+        for (var j3 in keys5) {
+          var key = keys5[j3];
           changed[key] = original ? original.tags[key] : void 0;
         }
         var entity = context.entity(entityID);
@@ -85263,7 +88846,7 @@ ${currentIndent}`
       init_browse();
       init_icon();
       init_array3();
-      init_util2();
+      init_util3();
       init_entity_issues();
       init_feature_type();
       init_preset_fields();
@@ -85313,7 +88896,7 @@ ${currentIndent}`
         search.node().selectionStart === search.property("value").length) {
           d3_event.preventDefault();
           d3_event.stopPropagation();
-          var buttons = list.selectAll(".preset-list-button");
+          var buttons = list2.selectAll(".preset-list-button");
           if (!buttons.empty()) buttons.nodes()[0].focus();
         }
       }
@@ -85321,14 +88904,14 @@ ${currentIndent}`
         var value = search.property("value");
         if (d3_event.keyCode === 13 && // ↩ Return
         value.length) {
-          list.selectAll(".preset-list-item:first-child").each(function(d2) {
+          list2.selectAll(".preset-list-item:first-child").each(function(d2) {
             d2.choose.call(this);
           });
         }
       }
       function inputevent() {
         var value = search.property("value");
-        list.classed("filtered", value.length);
+        list2.classed("filtered", value.length);
         var results, messageText;
         if (value.length) {
           results = presets.search(value, entityGeometries()[0], _currLoc);
@@ -85341,7 +88924,7 @@ ${currentIndent}`
           results = _mainPresetIndex.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc, entityPresets2);
           messageText = _t.addOrUpdate("inspector.choose");
         }
-        list.call(drawList, results);
+        list2.call(drawList, results);
         message2.call(messageText);
       }
       var searchWrap = selection2.append("div").attr("class", "search-header");
@@ -85355,10 +88938,10 @@ ${currentIndent}`
       }
       var listWrap = selection2.append("div").attr("class", "inspector-body");
       var entityPresets = _entityIDs.map((entityID) => _mainPresetIndex.match(context.graph().entity(entityID), context.graph()));
-      var list = listWrap.append("div").attr("class", "preset-list").call(drawList, _mainPresetIndex.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc, entityPresets));
+      var list2 = listWrap.append("div").attr("class", "preset-list").call(drawList, _mainPresetIndex.defaults(entityGeometries()[0], 36, !context.inIntro(), _currLoc, entityPresets));
       context.features().on("change.preset-list", updateForFeatureHiddenState);
     }
-    function drawList(list, presets) {
+    function drawList(list2, presets) {
       presets = presets.matchAllGeometry(entityGeometries());
       var collection = presets.collection.reduce(function(collection2, preset) {
         if (!preset) return collection2;
@@ -85373,7 +88956,7 @@ ${currentIndent}`
         }
         return collection2;
       }, []);
-      var items = list.selectChildren(".preset-list-item").data(collection, function(d2) {
+      var items = list2.selectChildren(".preset-list-item").data(collection, function(d2) {
         return d2.preset.id;
       });
       items.order();
@@ -85609,7 +89192,7 @@ ${currentIndent}`
       init_extent();
       init_preset_icon();
       init_tag_reference();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -85992,7 +89575,7 @@ ${currentIndent}`
       init_src9();
       init_src6();
       init_array3();
-      init_util2();
+      init_util3();
       init_osm();
       init_services();
       init_data_editor();
@@ -86010,7 +89593,7 @@ ${currentIndent}`
     uiSourceSwitch: () => uiSourceSwitch
   });
   function uiSourceSwitch(context) {
-    var keys4;
+    var keys5;
     function click(d3_event) {
       d3_event.preventDefault();
       var osm = context.connection();
@@ -86023,14 +89606,14 @@ ${currentIndent}`
       context.history().clearSaved();
       context.flush();
       select_default2(this).classed("live", isLive).classed("chip", isLive).text("").call(isLive ? _t.append("source_switch.live") : _t.append("source_switch.dev"));
-      osm.switch(isLive ? keys4[0] : keys4[1]);
+      osm.switch(isLive ? keys5[0] : keys5[1]);
     }
     var sourceSwitch = function(selection2) {
       selection2.append("a").attr("href", "#").call(_t.append("source_switch.live")).attr("class", "live chip").on("click", click);
     };
     sourceSwitch.keys = function(_3) {
-      if (!arguments.length) return keys4;
-      keys4 = _3;
+      if (!arguments.length) return keys5;
+      keys5 = _3;
       return sourceSwitch;
     };
     return sourceSwitch;
@@ -86372,8 +89955,8 @@ ${currentIndent}`
       update3();
       function update3() {
         var showNotes = notesEnabled();
-        var data = showNotes ? [mode2] : [];
-        var buttons = selection2.selectAll("button.add-button").data(data, function(d2) {
+        var data2 = showNotes ? [mode2] : [];
+        var buttons = selection2.selectAll("button.add-button").data(data2, function(d2) {
           return d2.id;
         });
         buttons.exit().remove();
@@ -86770,9 +90353,9 @@ ${currentIndent}`
       sawVersion = currVersion;
     }
     return function(selection2) {
-      selection2.append("a").attr("target", "_blank").attr("href", "https://github.com/openstreetmap/iD").text(currVersion);
+      selection2.append("a").attr("target", "_blank").attr("href", "https://github.com/OpenHistoricalMap/iD").text(currVersion);
       if (isNewVersion && !isNewUser) {
-        selection2.append("a").attr("class", "badge").attr("target", "_blank").attr("href", `https://github.com/openstreetmap/iD/releases/tag/v${currVersion}`).call(svgIcon("#maki-gift")).call(
+        selection2.append("a").attr("class", "badge").attr("target", "_blank").attr("href", `https://github.com/OpenHistoricalMap/iD/releases/tag/v${currVersion}`).call(svgIcon("#maki-gift")).call(
           uiTooltip().title(() => _t.append("version.whats_new", { version: currVersion })).placement("top").scrollContainer(context.container().select(".main-footer-wrap"))
         );
       }
@@ -86958,7 +90541,7 @@ ${currentIndent}`
   __export(pane_exports, {
     uiPane: () => uiPane
   });
-  function uiPane(id2, context) {
+  function uiPane(id3, context) {
     var _key;
     var _label = "";
     var _description = "";
@@ -86967,7 +90550,7 @@ ${currentIndent}`
     var _paneSelection = select_default2(null);
     var _paneTooltip;
     var pane = {
-      id: id2
+      id: id3
     };
     pane.label = function(val) {
       if (!arguments.length) return _label;
@@ -87019,7 +90602,7 @@ ${currentIndent}`
       }
     };
     pane.renderPane = function(selection2) {
-      _paneSelection = selection2.append("div").attr("class", "fillL map-pane hide " + id2 + "-pane").attr("pane", id2);
+      _paneSelection = selection2.append("div").attr("class", "fillL map-pane hide " + id3 + "-pane").attr("pane", id3);
       var heading = _paneSelection.append("div").attr("class", "pane-heading");
       heading.append("h2").text("").call(_label);
       heading.append("button").attr("title", _t("icons.close")).on("click", hidePane).call(svgIcon("#iD-icon-close"));
@@ -87198,7 +90781,7 @@ ${currentIndent}`
       init_preferences();
       init_localizer();
       init_confirm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -87925,9 +91508,9 @@ ${currentIndent}`
   __export(validation_issues_exports, {
     uiSectionValidationIssues: () => uiSectionValidationIssues
   });
-  function uiSectionValidationIssues(id2, severity, context) {
+  function uiSectionValidationIssues(id3, severity, context) {
     var _issues = [];
-    var section = uiSection(id2, context).label(function() {
+    var section = uiSection(id3, context).label(function() {
       if (!_issues) return "";
       var issueCountText = _issues.length > 1e3 ? "1000+" : String(_issues.length);
       return _t.append("inspector.title_count", { title: _t.append("issues." + severity + "s.list_title"), count: issueCountText });
@@ -87957,9 +91540,9 @@ ${currentIndent}`
       selection2.call(drawIssuesList, issues);
     }
     function drawIssuesList(selection2, issues) {
-      var list = selection2.selectAll(".issues-list").data([0]);
-      list = list.enter().append("ul").attr("class", "layer-list issues-list " + severity + "s-list").merge(list);
-      var items = list.selectAll("li").data(issues, function(d2) {
+      var list2 = selection2.selectAll(".issues-list").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "layer-list issues-list " + severity + "s-list").merge(list2);
+      var items = list2.selectAll("li").data(issues, function(d2) {
         return d2.key;
       });
       items.exit().remove();
@@ -87983,14 +91566,14 @@ ${currentIndent}`
         return d2.message(context)(select_default2(this));
       });
     }
-    context.validator().on("validated.uiSectionValidationIssues" + id2, function() {
+    context.validator().on("validated.uiSectionValidationIssues" + id3, function() {
       window.requestIdleCallback(function() {
         reloadIssues();
         section.reRender();
       });
     });
     context.map().on(
-      "move.uiSectionValidationIssues" + id2,
+      "move.uiSectionValidationIssues" + id3,
       debounce2(function() {
         window.requestIdleCallback(function() {
           if (getOptions().where === "visible") {
@@ -88011,7 +91594,7 @@ ${currentIndent}`
       init_icon();
       init_preferences();
       init_localizer();
-      init_util2();
+      init_util3();
       init_section();
       init_validation();
     }
@@ -88027,11 +91610,11 @@ ${currentIndent}`
     function renderContent(selection2) {
       var container = selection2.selectAll(".issues-options-container").data([0]);
       container = container.enter().append("div").attr("class", "issues-options-container").merge(container);
-      var data = [
+      var data2 = [
         { key: "what", values: ["edited", "all"] },
         { key: "where", values: ["visible", "all"] }
       ];
-      var options = container.selectAll(".issues-option").data(data, function(d2) {
+      var options = container.selectAll(".issues-option").data(data2, function(d2) {
         return d2.key;
       });
       var optionsEnter = options.enter().append("div").attr("class", function(d2) {
@@ -88116,8 +91699,8 @@ ${currentIndent}`
       container = container.merge(containerEnter);
       container.selectAll(".issue-rules-list").call(drawListItems, _ruleKeys, "checkbox", "rule", toggleRule, isRuleEnabled);
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li");
       if (name === "rule") {
@@ -88189,7 +91772,7 @@ ${currentIndent}`
       init_src6();
       init_preferences();
       init_localizer();
-      init_util2();
+      init_util3();
       init_tooltip();
       init_section();
     }
@@ -88412,7 +91995,7 @@ ${currentIndent}`
       init_preferences();
       init_localizer();
       init_confirm();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -88685,8 +92268,8 @@ ${currentIndent}`
       container = container.merge(containerEnter);
       container.selectAll(".layer-feature-list").call(drawListItems, _features, "checkbox", "feature", clickFeature, showsFeature);
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li").call(
         uiTooltip().title(function(d2) {
@@ -88718,8 +92301,8 @@ ${currentIndent}`
     function clickFeature(d3_event, d2) {
       context.features().toggle(d2);
     }
-    function showsLayer(id2) {
-      var layer = context.layers().layer(id2);
+    function showsLayer(id3) {
+      var layer = context.layers().layer(id3);
       return layer && layer.enabled();
     }
     context.features().on("change.map_features", section.reRender);
@@ -88750,8 +92333,8 @@ ${currentIndent}`
         return context.surface().classed("highlight-edited");
       });
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li").call(
         uiTooltip().title(function(d2) {
@@ -88860,7 +92443,7 @@ ${currentIndent}`
       init_compat2();
       init_localizer();
       init_confirm();
-      init_util2();
+      init_util3();
       init_tooltip();
       init_svg();
     }
@@ -88888,7 +92471,7 @@ ${currentIndent}`
       var photoLayers = layers.all().filter(function(obj) {
         return photoKeys.indexOf(obj.id) !== -1;
       });
-      var data = photoLayers.filter(function(obj) {
+      var data2 = photoLayers.filter(function(obj) {
         if (!obj.layer.supported()) return false;
         if (layerEnabled(obj)) return true;
         if (typeof obj.layer.validHere === "function") {
@@ -88907,7 +92490,7 @@ ${currentIndent}`
       }
       var ul = selection2.selectAll(".layer-list-photos").data([0]);
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photos").merge(ul);
-      var li = ul.selectAll(".list-item-photos").data(data, (d2) => d2.id);
+      var li = ul.selectAll(".list-item-photos").data(data2, (d2) => d2.id);
       li.exit().remove();
       var liEnter = li.enter().append("li").attr("class", function(d2) {
         var classes = "list-item-photos list-item-" + d2.id;
@@ -88936,21 +92519,21 @@ ${currentIndent}`
         toggleLayer(d2.id);
       });
       labelEnter.append("span").each(function(d2) {
-        var id2 = d2.id;
-        if (id2 === "mapillary-signs") id2 = "photo_overlays.traffic_signs";
-        select_default2(this).call(_t.append(id2.replace(/-/g, "_") + ".title"));
+        var id3 = d2.id;
+        if (id3 === "mapillary-signs") id3 = "photo_overlays.traffic_signs";
+        select_default2(this).call(_t.append(id3.replace(/-/g, "_") + ".title"));
       });
       li.merge(liEnter).classed("active", layerEnabled).selectAll("input").property("disabled", (d2) => !layerRendered(d2)).property("checked", layerEnabled);
     }
     function drawPhotoTypeItems(selection2) {
-      var data = context.photos().allPhotoTypes();
+      var data2 = context.photos().allPhotoTypes();
       function typeEnabled(d2) {
         return context.photos().showsPhotoType(d2);
       }
       var ul = selection2.selectAll(".layer-list-photo-types").data([0]);
       ul.exit().remove();
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photo-types").merge(ul);
-      var li = ul.selectAll(".list-item-photo-types").data(context.photos().shouldFilterByPhotoType() ? data : []);
+      var li = ul.selectAll(".list-item-photo-types").data(context.photos().shouldFilterByPhotoType() ? data2 : []);
       li.exit().remove();
       var liEnter = li.enter().append("li").attr("class", function(d2) {
         return "list-item-photo-types list-item-" + d2;
@@ -88990,7 +92573,7 @@ ${currentIndent}`
         this.value = dateSliderValue("from");
       });
       sliderWrap.append("div").attr("class", "date-slider-label");
-      sliderWrap.append("input").attr("type", "range").attr("min", 0).attr("max", 1).attr("step", 1e-3).attr("list", "photo-overlay-date-range-inverted").attr("value", () => 1 - dateSliderValue("to")).classed("list-option-date-slider", true).classed("to-date", true).style("display", () => dateSliderValue("to") === 0 ? "none" : null).style("direction", _mainLocalizer.textDirection()).call(utilNoAuto).on("change", function() {
+      sliderWrap.append("input").attr("type", "range").attr("min", 0).attr("max", 1).attr("step", 1e-3).attr("list", "photo-overlay-date-range-inverted").attr("value", () => 1 - dateSliderValue("to")).classed("list-option-date-slider", true).classed("to-date", true).style("direction", _mainLocalizer.textDirection()).call(utilNoAuto).on("change", function() {
         let value = select_default2(this).property("value");
         setYearFilter(1 - value, true, "to");
       });
@@ -89004,8 +92587,8 @@ ${currentIndent}`
       sliderWrap.append("datalist").attr("class", "date-slider-values").attr("id", "photo-overlay-date-range-inverted");
       const dateTicks = /* @__PURE__ */ new Set();
       for (const dates of Object.values(photoDates)) {
-        dates.forEach((date) => {
-          dateTicks.add(Math.round(1e3 * Math.pow((now3 - date) / (10 * 365.25 * 86400 * 1e3), 1 / 1.45)) / 1e3);
+        dates.forEach((date2) => {
+          dateTicks.add(Math.round(1e3 * Math.pow((now3 - date2) / (10 * 365.25 * 86400 * 1e3), 1 / 1.45)) / 1e3);
         });
       }
       const ticks2 = selection2.select("datalist#photo-overlay-date-range").selectAll("option").data([...dateTicks].concat([1, 0]));
@@ -89022,15 +92605,15 @@ ${currentIndent}`
     function dateSliderValue(which) {
       const val = which === "from" ? context.photos().fromDate() : context.photos().toDate();
       if (val) {
-        const date = +new Date(val);
-        return Math.pow((now3 - date) / (10 * 365.25 * 86400 * 1e3), 1 / 1.45);
+        const date2 = +new Date(val);
+        return Math.pow((now3 - date2) / (10 * 365.25 * 86400 * 1e3), 1 / 1.45);
       } else return which === "from" ? 1 : 0;
     }
     function setYearFilter(value, updateUrl, which) {
       value = +value + (which === "from" ? 1e-3 : -1e-3);
       if (value < 1 && value > 0) {
-        const date = new Date(now3 - Math.pow(value, 1.45) * 10 * 365.25 * 86400 * 1e3).toISOString().substring(0, 10);
-        context.photos().setDateFilter(`${which}Date`, date, updateUrl);
+        const date2 = new Date(now3 - Math.pow(value, 1.45) * 10 * 365.25 * 86400 * 1e3).toISOString().substring(0, 10);
+        context.photos().setDateFilter(`${which}Date`, date2, updateUrl);
       } else {
         context.photos().setDateFilter(`${which}Date`, null, updateUrl);
       }
@@ -89142,7 +92725,7 @@ ${currentIndent}`
     context.layers().on("change.uiSectionPhotoOverlays", section.reRender);
     context.photos().on("change.uiSectionPhotoOverlays", section.reRender);
     context.layers().on("photoDatesChanged.uiSectionPhotoOverlays", function(service, dates) {
-      photoDates[service] = dates.map((date) => +new Date(date));
+      photoDates[service] = dates.map((date2) => +new Date(date2));
       section.reRender();
     });
     context.keybinding().on("\u21E7P", toggleStreetSide);
@@ -89162,9 +92745,102 @@ ${currentIndent}`
       init_localizer();
       init_tooltip();
       init_section();
-      init_util2();
+      init_util3();
       init_local_photos2();
       init_svg();
+    }
+  });
+
+  // modules/ui/sections/map_daterange.js
+  var map_daterange_exports = {};
+  __export(map_daterange_exports, {
+    uiSectionDateRange: () => uiSectionDateRange
+  });
+  function uiSectionDateRange(context) {
+    const section = uiSection("date_ranges", context).label(() => _t.append("date_ranges.title")).disclosureContent(renderDisclosureContent).expandedByDefault(false);
+    function renderDisclosureContent(selection2) {
+      const container = selection2.selectAll(".date_ranges-container").data([0]);
+      const alreadyhasinputs = container.enter().selectAll("input").size();
+      if (alreadyhasinputs) return;
+      const mindate_label = container.enter().append("label").call(_t.append("date_ranges.start_date.description")).merge(container);
+      const mindate_input = container.enter().append("input").attr("type", "text").attr("value", DEFAULT_MIN_DATE).attr("title", () => _t("date_ranges.start_date.tooltip")).attr("placeholder", () => _t("date_ranges.start_date.placeholder")).merge(container);
+      container.enter().append("br").merge(container);
+      const maxdate_label = container.enter().append("label").call(_t.append("date_ranges.end_date.description")).merge(container);
+      const maxdate_input = container.enter().append("input").attr("type", "text").attr("value", DEFAULT_MAX_DATE).attr("title", () => _t("date_ranges.end_date.tooltip")).attr("placeholder", () => _t("date_ranges.end_date.placeholder")).merge(container);
+      INPUT_STYLES.forEach(function(style) {
+        mindate_input.style(style.name, style.value);
+        maxdate_input.style(style.name, style.value);
+      });
+      LABEL_STYLES.forEach(function(style) {
+        mindate_label.style(style.name, style.value);
+        maxdate_label.style(style.name, style.value);
+      });
+      function applyDateRange() {
+        const mindate = mindate_input.property("value");
+        const maxdate = maxdate_input.property("value");
+        context.features().dateRange = [mindate, maxdate];
+        context.features().redraw();
+        updateUrlParam();
+      }
+      function ensureValidInputs() {
+        const mindate = mindate_input.property("value");
+        const maxdate = maxdate_input.property("value");
+        const mindate_clean = utilNormalizeDateString(mindate);
+        const maxdate_clean = utilNormalizeDateString(maxdate);
+        mindate_input.property("value", mindate_clean ? mindate_clean.value : DEFAULT_MIN_DATE);
+        maxdate_input.property("value", maxdate_clean ? maxdate_clean.value : DEFAULT_MAX_DATE);
+      }
+      function updateUrlParam() {
+        if (!window.mocha) {
+          const hash2 = utilStringQs(window.location.hash);
+          const daterange = context.features().dateRange;
+          if (daterange) {
+            hash2.daterange = daterange.join(",");
+          } else {
+            delete hash2.daterange;
+          }
+          window.location.replace("#" + utilQsString(hash2, true));
+        }
+      }
+      mindate_input.on("change", function() {
+        ensureValidInputs();
+        applyDateRange();
+      });
+      maxdate_input.on("change", function() {
+        ensureValidInputs();
+        applyDateRange();
+      });
+      let startingdaterange = utilStringQs(window.location.hash).daterange;
+      if (startingdaterange) {
+        startingdaterange = startingdaterange.split(",");
+        const isvalid = startingdaterange[0].match(/^\-?[\d\-]+/) && startingdaterange[1].match(/^\-?[\d\-]+/);
+        if (isvalid) {
+          mindate_input.property("value", startingdaterange[0]);
+          maxdate_input.property("value", startingdaterange[1]);
+        }
+      }
+      applyDateRange();
+    }
+    return section;
+  }
+  var DEFAULT_MIN_DATE, DEFAULT_MAX_DATE, INPUT_STYLES, LABEL_STYLES;
+  var init_map_daterange = __esm({
+    "modules/ui/sections/map_daterange.js"() {
+      "use strict";
+      init_localizer();
+      init_section();
+      init_util3();
+      DEFAULT_MIN_DATE = "-4000-01-01";
+      DEFAULT_MAX_DATE = (/* @__PURE__ */ new Date()).getFullYear() + "-12-31";
+      INPUT_STYLES = [
+        { name: "width", value: "125px" },
+        { name: "text-align", value: "center" }
+      ];
+      LABEL_STYLES = [
+        { name: "font-weight", value: "bold" },
+        { name: "display", value: "inline-block" },
+        { name: "width", value: "75px" }
+      ];
     }
   });
 
@@ -89176,6 +92852,7 @@ ${currentIndent}`
   function uiPaneMapData(context) {
     var mapDataPane = uiPane("map-data", context).key(_t("map_data.key")).label(_t.append("map_data.title")).description(_t.append("map_data.description")).iconName("iD-icon-data").sections([
       uiSectionDataLayers(context),
+      uiSectionDateRange(context),
       uiSectionPhotoOverlays(context),
       uiSectionMapStyleOptions(context),
       uiSectionMapFeatures(context)
@@ -89191,6 +92868,7 @@ ${currentIndent}`
       init_map_features();
       init_map_style_options();
       init_photo_overlays();
+      init_map_daterange();
     }
   });
 
@@ -89645,7 +93323,7 @@ ${currentIndent}`
       init_localizer();
       init_icon();
       init_tooltip();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -89700,15 +93378,100 @@ ${currentIndent}`
     }
   });
 
+  // modules/ui/source_subfield.js
+  var source_subfield_exports = {};
+  __export(source_subfield_exports, {
+    uiSourceSubfield: () => uiSourceSubfield
+  });
+  function uiSourceSubfield(context, field, tags, dispatch11) {
+    var sourceSubfield = {};
+    let sourceInput = select_default2(null);
+    let sourceKey = field.key + ":source";
+    let _sourceValue = tags[sourceKey];
+    function renderSourceInput(selection2) {
+      let entries2 = selection2.selectAll("div.entry").data(typeof _sourceValue === "string" || Array.isArray(_sourceValue) ? [_sourceValue] : []);
+      entries2.exit().style("top", "0").style("max-height", "240px").transition().duration(200).style("opacity", "0").style("max-height", "0px").remove();
+      let entriesEnter = entries2.enter().append("div").attr("class", "entry").each(function() {
+        var wrap3 = select_default2(this);
+        let domId = utilUniqueDomId("source-" + field.safeid);
+        let label = wrap3.append("label").attr("class", "field-label").attr("for", domId);
+        let text = label.append("span").attr("class", "label-text");
+        text.append("span").attr("class", "label-textvalue").call(_t.append("inspector.field_source_label", { field_name: field.title }));
+        text.append("span").attr("class", "label-textannotation");
+        label.append("button").attr("class", "remove-icon-source").attr("title", _t("icons.remove")).on("click", function(d3_event) {
+          d3_event.preventDefault();
+          _sourceValue = void 0;
+          let t4 = {};
+          t4[sourceKey] = void 0;
+          dispatch11.call("change", this, t4);
+          renderSourceInput(selection2);
+        }).call(svgIcon("#iD-operation-delete"));
+        wrap3.append("input").attr("type", "text").attr("class", "field-source-value").on("blur", changeSourceValue).on("change", changeSourceValue);
+      });
+      entriesEnter.style("margin-top", "0px").style("max-height", "0px").style("opacity", "0").transition().duration(200).style("margin-top", "10px").style("max-height", "240px").style("opacity", "1").on("end", function() {
+        select_default2(this).style("max-height", "").style("overflow", "visible");
+      });
+      entries2 = entries2.merge(entriesEnter);
+      entries2.order();
+      entries2.classed("present", true);
+      utilGetSetValue(entries2.select(".field-source-value"), function(d2) {
+        return typeof d2 === "string" ? d2 : "";
+      }).attr("title", function(d2) {
+        return Array.isArray(d2) ? d2.filter(Boolean).join("\n") : null;
+      }).attr("placeholder", function(d2) {
+        return Array.isArray(d2) ? _t("inspector.multiple_values") : _t("inspector.field_source_placeholder");
+      }).classed("mixed", function(d2) {
+        return Array.isArray(d2);
+      });
+    }
+    function changeSourceValue(d3_event, d2) {
+      let value = context.cleanTagValue(utilGetSetValue(select_default2(this))) || void 0;
+      if (!value && Array.isArray(d2.value)) return;
+      let t4 = {};
+      t4[sourceKey] = value;
+      if (d2.value !== void 0) d2.value = value;
+      dispatch11.call("change", this, t4);
+    }
+    function addSource(d3_event) {
+      d3_event.preventDefault();
+      if (typeof _sourceValue !== "string" && !Array.isArray(_sourceValue)) {
+        _sourceValue = "";
+      }
+      sourceInput.call(renderSourceInput);
+    }
+    sourceSubfield.button = function(labelEnter, container) {
+      labelEnter.append("button").attr("class", "source-icon").attr("title", function() {
+        return _t("inspector.field_source");
+      }).call(svgIcon("#fas-at", "inline"));
+      container = container.merge(labelEnter);
+      container.select(".field-label > .source-icon").on("click", addSource);
+    };
+    sourceSubfield.body = function(selection2) {
+      sourceInput = selection2.selectChild().selectAll(".field-source").data([0]);
+      sourceInput = sourceInput.enter().append("div").attr("class", "field-source").merge(sourceInput);
+      sourceInput.call(renderSourceInput);
+    };
+    return sourceSubfield;
+  }
+  var init_source_subfield = __esm({
+    "modules/ui/source_subfield.js"() {
+      "use strict";
+      init_src6();
+      init_localizer();
+      init_icon();
+      init_util3();
+    }
+  });
+
   // node_modules/osm-community-index/dist/js/oci.mjs
   function simplify2(str) {
     if (typeof str !== "string")
       return "";
     return import_diacritics3.default.remove(str.replace(/&/g, "and").replace(/(İ|i̇)/ig, "i").replace(/[\s\-=_!"#%'*{},.\/:;?\(\)\[\]@\\$\^*+<>«»~`’\u00a1\u00a7\u00b6\u00b7\u00bf\u037e\u0387\u055a-\u055f\u0589\u05c0\u05c3\u05c6\u05f3\u05f4\u0609\u060a\u060c\u060d\u061b\u061e\u061f\u066a-\u066d\u06d4\u0700-\u070d\u07f7-\u07f9\u0830-\u083e\u085e\u0964\u0965\u0970\u0af0\u0df4\u0e4f\u0e5a\u0e5b\u0f04-\u0f12\u0f14\u0f85\u0fd0-\u0fd4\u0fd9\u0fda\u104a-\u104f\u10fb\u1360-\u1368\u166d\u166e\u16eb-\u16ed\u1735\u1736\u17d4-\u17d6\u17d8-\u17da\u1800-\u1805\u1807-\u180a\u1944\u1945\u1a1e\u1a1f\u1aa0-\u1aa6\u1aa8-\u1aad\u1b5a-\u1b60\u1bfc-\u1bff\u1c3b-\u1c3f\u1c7e\u1c7f\u1cc0-\u1cc7\u1cd3\u2000-\u206f\u2cf9-\u2cfc\u2cfe\u2cff\u2d70\u2e00-\u2e7f\u3001-\u3003\u303d\u30fb\ua4fe\ua4ff\ua60d-\ua60f\ua673\ua67e\ua6f2-\ua6f7\ua874-\ua877\ua8ce\ua8cf\ua8f8-\ua8fa\ua92e\ua92f\ua95f\ua9c1-\ua9cd\ua9de\ua9df\uaa5c-\uaa5f\uaade\uaadf\uaaf0\uaaf1\uabeb\ufe10-\ufe16\ufe19\ufe30\ufe45\ufe46\ufe49-\ufe4c\ufe50-\ufe52\ufe54-\ufe57\ufe5f-\ufe61\ufe68\ufe6a\ufe6b\ufeff\uff01-\uff03\uff05-\uff07\uff0a\uff0c\uff0e\uff0f\uff1a\uff1b\uff1f\uff20\uff3c\uff61\uff64\uff65]+/g, "").toLowerCase());
   }
-  function resolveStrings(item, defaults2, localizerFn) {
+  function resolveStrings(item, defaults3, localizerFn) {
     const itemStrings = Object.assign({}, item.strings);
-    const defaultStrings = Object.assign({}, defaults2[item.type]);
+    const defaultStrings = Object.assign({}, defaults3[item.type]);
     const anyToken = new RegExp(/(\{\w+\})/, "gi");
     if (localizerFn) {
       if (itemStrings.community) {
@@ -89801,18 +93564,42 @@ ${currentIndent}`
     let _location;
     ensureOSMCommunityIndex();
     function ensureOSMCommunityIndex() {
-      const data = _mainFileFetcher;
+      const data2 = _mainFileFetcher;
       return Promise.all([
-        data.get("oci_features"),
-        data.get("oci_resources"),
-        data.get("oci_defaults")
+        data2.get("oci_features"),
+        data2.get("oci_resources"),
+        data2.get("oci_defaults")
       ]).then((vals) => {
         if (_oci) return _oci;
         if (vals[0] && Array.isArray(vals[0].features)) {
           _sharedLocationManager.mergeCustomGeoJSON(vals[0]);
         }
-        let ociResources = Object.values(vals[1].resources);
+        let ociResourcesById = vals[1].resources;
+        delete ociResourcesById["OSM-Facebook"];
+        delete ociResourcesById["OSM-Twitter"];
+        delete ociResourcesById["OSM-Mastodon"];
+        delete ociResourcesById["OSM-help"];
+        if (ociResourcesById["OSM-IRC"]) {
+          ociResourcesById["OSM-IRC"].account = "ohm";
+          ociResourcesById["OSM-IRC"].strings.community = "OpenHistoricalMap";
+          ociResourcesById["OSM-IRC"].strings.communityID = "openhistoricalmap";
+        }
+        let ociResources = Object.values(ociResourcesById);
         if (ociResources.length) {
+          ociResources = ociResources.filter((res) => res.type !== "discourse");
+          ociResources.push({
+            id: "forum",
+            type: "discourse",
+            locationSet: {
+              include: ["001"]
+            },
+            order: 7,
+            strings: {
+              name: "OpenHistoricalMap Forum",
+              description: "A shared place for conversations about OpenHistoricalMap",
+              url: "https://forum.openhistoricalmap.org/"
+            }
+          });
           return _sharedLocationManager.mergeLocationSets(ociResources).then(() => {
             _oci = {
               resources: ociResources,
@@ -89860,7 +93647,7 @@ ${currentIndent}`
         changeset_id: (selection3) => selection3.append("a").attr("target", "_blank").attr("href", changesetURL).text(_changeset2.id)
       }));
       if (showDonationMessage !== false) {
-        const donationUrl = "https://supporting.openstreetmap.org/";
+        const donationUrl = "https://openstreetmap.app.neoncrm.com/forms/ohm";
         let supporting = body.append("div").attr("class", "save-supporting");
         supporting.append("h3").call(_t.append("success.supporting.title"));
         supporting.append("p").call(_t.append("success.supporting.details"));
@@ -89878,8 +93665,11 @@ ${currentIndent}`
         oci.resources.forEach((resource) => {
           let area = validHere[resource.locationSetID];
           if (!area) return;
-          const localizer = (stringID) => _t.html(`community.${stringID}`);
-          resource.resolved = resolveStrings(resource, oci.defaults, localizer);
+          if (resource.id === "forum") {
+            area = 0;
+          }
+          const ociLocalizer = (stringID) => _t.html(_mainLocalizer.coalesceStringIds([`custom_community.${stringID}`, `community.${stringID}`]));
+          resource.resolved = resolveStrings(resource, oci.defaults, ociLocalizer);
           communities.push({
             area,
             order: resource.order || 0,
@@ -90049,6 +93839,7 @@ ${currentIndent}`
     uiRestore: () => uiRestore,
     uiScale: () => uiScale,
     uiSidebar: () => uiSidebar,
+    uiSourceSubfield: () => uiSourceSubfield,
     uiSourceSwitch: () => uiSourceSwitch,
     uiSpinner: () => uiSpinner,
     uiSplash: () => uiSplash,
@@ -90108,6 +93899,7 @@ ${currentIndent}`
       init_restore();
       init_scale2();
       init_sidebar();
+      init_source_subfield();
       init_source_switch();
       init_spinner();
       init_splash();
@@ -90181,8 +93973,8 @@ ${currentIndent}`
       } else if (field.type === "number" || field.type === "integer") {
         var rtl = _mainLocalizer.textDirection() === "rtl";
         input.attr("type", "text");
-        var inc = field.increment;
-        var buttons = wrap3.selectAll(".increment, .decrement").data(rtl ? [inc, -inc] : [-inc, inc]);
+        var inc2 = field.increment;
+        var buttons = wrap3.selectAll(".increment, .decrement").data(rtl ? [inc2, -inc2] : [-inc2, inc2]);
         buttons.enter().append("button").attr("class", function(d2) {
           var which = d2 > 0 ? "increment" : "decrement";
           return "form-field-button " + which;
@@ -90198,21 +93990,21 @@ ${currentIndent}`
           vals = vals.map(function(v3) {
             v3 = v3.trim();
             const isRawNumber = likelyRawNumberFormat.test(v3);
-            var num = isRawNumber ? parseFloat(v3) : parseLocaleFloat(v3);
+            var num2 = isRawNumber ? parseFloat(v3) : parseLocaleFloat(v3);
             if (isDirectionField) {
               const compassDir = cardinal[v3.toLowerCase()];
               if (compassDir !== void 0) {
-                num = compassDir;
+                num2 = compassDir;
               }
             }
-            if (!isFinite(num)) return v3;
-            num = parseFloat(num);
-            if (!isFinite(num)) return v3;
-            num += d2;
+            if (!isFinite(num2)) return v3;
+            num2 = parseFloat(num2);
+            if (!isFinite(num2)) return v3;
+            num2 += d2;
             if (isDirectionField) {
-              num = (num % 360 + 360) % 360;
+              num2 = (num2 % 360 + 360) % 360;
             }
-            return formatFloat(clamped(num), isRawNumber ? v3.includes(".") ? v3.split(".")[1].length : 0 : countDecimalPlaces(v3));
+            return formatFloat(clamped(num2), isRawNumber ? v3.includes(".") ? v3.split(".")[1].length : 0 : countDecimalPlaces(v3));
           });
           input.node().value = vals.join(";");
           change()();
@@ -90287,13 +94079,13 @@ ${currentIndent}`
       chooserButton.on("click", () => wrap3.select(".colour-selector").node().showPicker());
     }
     function updateDateField() {
-      function isDateValid(date2) {
-        return date2.match(/^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$/);
+      function isDateValid(date3) {
+        return date3.match(/^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$/);
       }
-      const date = utilGetSetValue(input);
+      const date2 = utilGetSetValue(input);
       const now3 = /* @__PURE__ */ new Date();
       const today = new Date(now3.getTime() - now3.getTimezoneOffset() * 6e4).toISOString().split("T")[0];
-      if ((field.key === "check_date" || field.key === "survey:date") && date !== today) {
+      if ((field.key === "check_date" || field.key === "survey:date") && date2 !== today) {
         wrap3.selectAll(".date-set-today").data([0]).enter().append("button").attr("class", "form-field-button date-set-today").call(svgIcon("#fas-rotate")).call(uiTooltip().title(() => _t.append("inspector.set_today"))).on("click", () => {
           utilGetSetValue(input, today);
           change()();
@@ -90302,7 +94094,7 @@ ${currentIndent}`
       } else {
         wrap3.selectAll(".date-set-today").remove();
       }
-      if (!isDateValid(date) && date !== "") {
+      if (!isDateValid(date2) && date2 !== "") {
         wrap3.selectAll("input.date-selector").remove();
         wrap3.selectAll(".date-calendar").remove();
         return;
@@ -90311,14 +94103,14 @@ ${currentIndent}`
         var dateSelector = wrap3.selectAll(".date-selector").data([0]);
         dateSelector.enter().append("input").attr("type", "date").attr("class", "date-selector").on("input", debounce2(function(d3_event) {
           d3_event.preventDefault();
-          var date2 = this.value;
-          if (!isDateValid(date2)) return;
+          var date3 = this.value;
+          if (!isDateValid(date3)) return;
           utilGetSetValue(input, this.value);
           change()();
           updateDateField();
         }, 100));
-        wrap3.selectAll("input.date-selector").attr("value", date);
-        var calendarButton = wrap3.selectAll(".date-calendar").data([date]);
+        wrap3.selectAll("input.date-selector").attr("value", date2);
+        var calendarButton = wrap3.selectAll(".date-calendar").data([date2]);
         calendarButton = calendarButton.enter().append("button").attr("class", "form-field-button date-calendar").call(svgIcon("#fas-calendar-days"));
         calendarButton.on("click", () => wrap3.select(".date-selector").node().showPicker());
       }
@@ -90330,15 +94122,15 @@ ${currentIndent}`
       if (!countryCode) {
         return;
       }
-      let format2 = _phoneFormats[countryCode.toLowerCase()];
-      if (!format2) {
+      let format3 = _phoneFormats[countryCode.toLowerCase()];
+      if (!format3) {
         const countryCodeSovereign = iso1A2Code(extent2.center());
         if (countryCodeSovereign !== countryCode) {
-          format2 = _phoneFormats[countryCodeSovereign.toLowerCase()];
+          format3 = _phoneFormats[countryCodeSovereign.toLowerCase()];
         }
       }
-      if (format2) {
-        input.attr("placeholder", format2);
+      if (format3) {
+        input.attr("placeholder", format3);
       }
     }
     function validIdentifierValueForLink() {
@@ -90358,19 +94150,19 @@ ${currentIndent}`
       }
       return null;
     }
-    function clamped(num) {
+    function clamped(num2) {
       if (field.minValue !== void 0) {
-        num = Math.max(num, field.minValue);
+        num2 = Math.max(num2, field.minValue);
       }
       if (field.maxValue !== void 0) {
-        num = Math.min(num, field.maxValue);
+        num2 = Math.min(num2, field.maxValue);
       }
-      return num;
+      return num2;
     }
     function getVals(tags) {
       if (field.keys) {
         const multiSelection = context.selectedIDs();
-        tags = multiSelection.length > 1 ? context.selectedIDs().map((id2) => context.graph().entity(id2)).map((entity) => entity.tags) : [tags];
+        tags = multiSelection.length > 1 ? context.selectedIDs().map((id3) => context.graph().entity(id3)).map((entity) => entity.tags) : [tags];
         return tags.map((tags2) => new Set(field.keys.reduce((acc, key) => acc.concat(tags2[key]), []).filter(Boolean))).map((vals) => vals.size === 0 ? /* @__PURE__ */ new Set([void 0]) : vals).reduce((a2, b11) => /* @__PURE__ */ new Set([...a2, ...b11]));
       } else {
         return new Set([].concat(tags[field.key]));
@@ -90399,13 +94191,13 @@ ${currentIndent}`
               };
             }
           });
-          val = numbers2.map(({ num, v: v3, fractionDigits }) => {
-            if (!isFinite(num)) return v3;
-            return clamped(num).toFixed(fractionDigits);
+          val = numbers2.map(({ num: num2, v: v3, fractionDigits }) => {
+            if (!isFinite(num2)) return v3;
+            return clamped(num2).toFixed(fractionDigits);
           }).join(";");
-          displayVal = numbers2.map(({ num, v: v3, fractionDigits }) => {
-            if (!isFinite(num)) return v3;
-            return formatFloat(clamped(num), fractionDigits);
+          displayVal = numbers2.map(({ num: num2, v: v3, fractionDigits }) => {
+            if (!isFinite(num2)) return v3;
+            return formatFloat(clamped(num2), fractionDigits);
           }).join(";");
         }
         if (!onInput) utilGetSetValue(input, displayVal);
@@ -90440,10 +94232,10 @@ ${currentIndent}`
       if ((field.type === "number" || field.type === "integer") && val) {
         const numbers2 = val.split(";").map(function(v3) {
           v3 = v3.trim();
-          const num = Number(v3);
-          if (!isFinite(num) || v3 === "") return v3;
+          const num2 = Number(v3);
+          if (!isFinite(num2) || v3 === "") return v3;
           const fractionDigits = v3.includes(".") ? v3.split(".")[1].length : 0;
-          return formatFloat(num, fractionDigits);
+          return formatFloat(num2, fractionDigits);
         });
         val = numbers2.join(";");
         shouldUpdate = (inputValue, setValue) => {
@@ -90505,7 +94297,7 @@ ${currentIndent}`
       init_presets();
       init_file_fetcher();
       init_localizer();
-      init_util2();
+      init_util3();
       init_icon();
       init_node2();
       init_tags2();
@@ -90528,9 +94320,9 @@ ${currentIndent}`
     function access(selection2) {
       var wrap3 = selection2.selectAll(".form-field-input-wrap").data([0]);
       wrap3 = wrap3.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + field.type).merge(wrap3);
-      var list = wrap3.selectAll("ul").data([0]);
-      list = list.enter().append("ul").attr("class", "rows").merge(list);
-      items = list.selectAll("li").data(field.keys);
+      var list2 = wrap3.selectAll("ul").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "rows").merge(list2);
+      items = list2.selectAll("li").data(field.keys);
       var enter = items.enter().append("li").attr("class", function(d2) {
         return "labeled-input preset-access-" + d2;
       });
@@ -90814,7 +94606,7 @@ ${currentIndent}`
       init_src();
       init_src6();
       init_combobox();
-      init_util2();
+      init_util3();
       init_localizer();
     }
   });
@@ -90964,11 +94756,11 @@ ${currentIndent}`
       if (!_countryCode) return;
       var addressFormat;
       for (var i3 = 0; i3 < _addressFormats.length; i3++) {
-        var format2 = _addressFormats[i3];
-        if (!format2.countryCodes) {
-          addressFormat = format2;
-        } else if (format2.countryCodes.indexOf(_countryCode) !== -1) {
-          addressFormat = format2;
+        var format3 = _addressFormats[i3];
+        if (!format3.countryCodes) {
+          addressFormat = format3;
+        } else if (format3.countryCodes.indexOf(_countryCode) !== -1) {
+          addressFormat = format3;
           break;
         }
       }
@@ -91186,8 +94978,278 @@ ${currentIndent}`
       init_file_fetcher();
       init_geo2();
       init_combobox();
-      init_util2();
+      init_util3();
       init_localizer();
+    }
+  });
+
+  // modules/ui/fields/date.js
+  var date_exports2 = {};
+  __export(date_exports2, {
+    uiFieldDate: () => uiFieldDate
+  });
+  function uiFieldDate(field, context) {
+    let dispatch11 = dispatch_default("change");
+    let yearInput = select_default2(null);
+    let eraInput = select_default2(null);
+    let monthInput = select_default2(null);
+    let dayInput = select_default2(null);
+    let edtfInput = select_default2(null);
+    let _entityIDs = [];
+    let _tags;
+    let _selection = select_default2(null);
+    let _edtfValue;
+    let edtfKey = field.key + ":edtf";
+    let dateTimeFormat = new Intl.DateTimeFormat(_mainLocalizer.localeCodes(), {
+      year: "numeric",
+      era: "short",
+      month: "long",
+      day: "numeric",
+      timeZone: "UTC"
+    });
+    let formatParts = dateTimeFormat.formatToParts(/* @__PURE__ */ new Date()).map((p2) => p2.type);
+    function getEraName(year2, format3) {
+      let longFormat = new Intl.DateTimeFormat(_mainLocalizer.localeCodes(), {
+        year: "numeric",
+        era: format3,
+        timeZone: "UTC"
+      });
+      let eraDate = new Date(Date.UTC(0, 0, 1));
+      eraDate.setUTCFullYear(year2);
+      let parts = longFormat.formatToParts(eraDate);
+      let eraPart = parts.find((p2) => p2.type === "era");
+      return eraPart && eraPart.value;
+    }
+    let bceName = getEraName(0, "short");
+    let ceName = getEraName(1, "short");
+    let eraNames = [
+      {
+        id: "bce",
+        value: bceName,
+        title: bceName,
+        display: (selection2) => selection2.append("span").attr("class", "localized-text").text(bceName ? bceName : "BCE"),
+        terms: [getEraName(0, "long"), getEraName(0, "narrow")]
+      },
+      {
+        id: "ce",
+        value: ceName,
+        title: ceName,
+        display: (selection2) => selection2.append("span").attr("class", "localized-text").text(ceName ? ceName : "CE"),
+        terms: [getEraName(1, "long"), getEraName(1, "narrow")]
+      }
+    ];
+    let eraCombo = uiCombobox(context, "date-era").data(eraNames);
+    function getMonthName(month, format3) {
+      let longFormat = new Intl.DateTimeFormat(_mainLocalizer.localeCodes(), {
+        month: format3,
+        timeZone: "UTC"
+      });
+      let parts = longFormat.formatToParts(new Date(Date.UTC(0, month, 1)));
+      let monthPart = parts.find((p2) => p2.type === "month");
+      return monthPart && monthPart.value;
+    }
+    let monthNames = Array.from({ length: 12 }, (_3, i3) => getMonthName(i3, "long")).filter((m3) => m3);
+    let alternativeMonthNames = Array.from({ length: 12 }, (_3, i3) => {
+      return ["numeric", "2-digit", "long", "short", "narrow"].map((format3) => getMonthName(i3, format3)).filter((m3) => m3);
+    });
+    let monthCombo = uiCombobox(context, "date-month").data(monthNames.map((monthName, i3) => {
+      return {
+        id: i3 + 1,
+        value: monthName,
+        title: monthName,
+        display: (selection2) => selection2.append("span").attr("class", "localized-text").text(monthName),
+        terms: alternativeMonthNames[i3]
+      };
+    }));
+    let buttonTip = uiTooltip().title(() => _t.append("inspector.date.edtf")).placement("left");
+    function calcEDTFValue(tags) {
+      if (_edtfValue && !tags[edtfKey]) {
+        _edtfValue = "";
+      } else {
+        _edtfValue = tags[edtfKey];
+      }
+    }
+    function date2(selection2) {
+      _selection = selection2;
+      let wrap3 = selection2.selectAll(".form-field-input-wrap").data([0]);
+      wrap3 = wrap3.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + field.type).merge(wrap3);
+      yearInput = wrap3.selectAll("input.date-year").data([0]);
+      eraInput = wrap3.selectAll("input.date-era").data([0]);
+      monthInput = wrap3.selectAll("input.date-month").data([0]);
+      dayInput = wrap3.selectAll("input.date-day").data([0]);
+      formatParts.forEach((part) => {
+        switch (part) {
+          case "year":
+            yearInput = yearInput.enter().append("input").attr("type", "number").attr("class", "date-main date-year").attr("id", field.domId).call(utilNoAuto).merge(yearInput);
+            break;
+          case "era":
+            eraInput = eraInput.enter().append("input").attr("type", "text").attr("class", "date-main date-era").call(eraCombo).merge(eraInput);
+            break;
+          case "month":
+            monthInput = monthInput.enter().append("input").attr("type", "text").attr("class", "date-main date-month").call(monthCombo).merge(monthInput);
+            break;
+          case "day":
+            dayInput = dayInput.enter().append("input").attr("type", "number").attr("class", "date-main date-day").call(utilNoAuto).merge(dayInput);
+            break;
+        }
+      });
+      yearInput.on("change", change).on("blur", change);
+      eraInput.on("change", change).on("blur", change);
+      monthInput.on("change", change).on("blur", change);
+      dayInput.on("change", change).on("blur", change);
+      if (_tags && _edtfValue === void 0) {
+        calcEDTFValue(_tags);
+      }
+      let edtfButton = wrap3.selectAll(".date-add").data([0]);
+      edtfButton = edtfButton.enter().append("button").attr("class", "date-add form-field-button").attr("aria-label", _t("icons.plus")).call(svgIcon("#iD-icon-plus")).merge(edtfButton);
+      edtfButton.classed("disabled", typeof _edtfValue === "string" || Array.isArray(_edtfValue)).call(buttonTip).on("click", addEDTF);
+      edtfInput = selection2.selectAll(".date-edtf").data([0]);
+      edtfInput = edtfInput.enter().append("div").attr("class", "date-edtf").merge(edtfInput);
+      edtfInput.call(renderEDTF);
+    }
+    function addEDTF(d3_event) {
+      d3_event.preventDefault();
+      if (typeof _edtfValue !== "string" && !Array.isArray(_edtfValue)) {
+        _edtfValue = "";
+        edtfInput.call(renderEDTF);
+      }
+    }
+    function change() {
+      var tag = {};
+      var yearValue = utilGetSetValue(yearInput).trim();
+      var eraValue = utilGetSetValue(eraInput).trim();
+      var monthValue = utilGetSetValue(monthInput).trim();
+      var dayValue = utilGetSetValue(dayInput).trim();
+      if (!yearValue && Array.isArray(_tags[field.key])) return;
+      if (!yearValue) {
+        tag[field.key] = void 0;
+      } else {
+        let value = "";
+        let year2 = parseInt(context.cleanTagValue(yearValue), 10);
+        if (!isNaN(year2)) {
+          if (eraValue === bceName) {
+            value += "-" + String(year2 - 1).padStart(4, "0");
+          } else {
+            value += String(year2).padStart(4, "0");
+          }
+          let month = context.cleanTagValue(monthValue);
+          if (monthNames.includes(month)) {
+            month = monthNames.indexOf(month) + 1;
+            value += "-" + String(month).padStart(2, "0");
+            let day = parseInt(context.cleanTagValue(dayValue), 10);
+            if (!isNaN(day)) {
+              value += "-" + String(day).padStart(2, "0");
+            }
+          }
+        } else {
+          value = context.cleanTagValue(yearValue);
+        }
+        tag[field.key] = value;
+      }
+      dispatch11.call("change", this, tag);
+    }
+    function changeEDTFValue(d3_event, d2) {
+      let value = context.cleanTagValue(utilGetSetValue(select_default2(this))) || void 0;
+      if (!value && Array.isArray(d2.value)) return;
+      let t4 = {};
+      t4[edtfKey] = value;
+      if (d2.value !== void 0) d2.value = value;
+      dispatch11.call("change", this, t4);
+    }
+    function renderEDTF(selection2) {
+      let entries2 = selection2.selectAll("div.entry").data(typeof _edtfValue === "string" || Array.isArray(_edtfValue) ? [_edtfValue] : []);
+      entries2.exit().style("top", "0").style("max-height", "240px").transition().duration(200).style("opacity", "0").style("max-height", "0px").remove();
+      let entriesEnter = entries2.enter().append("div").attr("class", "entry").each(function() {
+        var wrap3 = select_default2(this);
+        let domId = utilUniqueDomId("edtf");
+        let label = wrap3.append("label").attr("class", "field-label").attr("for", domId);
+        let text = label.append("span").attr("class", "label-text");
+        text.append("span").attr("class", "label-textvalue").call(_t.append("inspector.date.edtf_label"));
+        text.append("span").attr("class", "label-textannotation");
+        label.append("button").attr("class", "remove-icon-edtf").attr("title", _t("icons.remove")).on("click", function(d3_event) {
+          d3_event.preventDefault();
+          _edtfValue = void 0;
+          if (edtfKey && edtfKey in _tags) {
+            delete _tags[edtfKey];
+            let t4 = {};
+            t4[edtfKey] = void 0;
+            dispatch11.call("change", this, t4);
+            return;
+          }
+          renderEDTF(selection2);
+        }).call(svgIcon("#iD-operation-delete"));
+        wrap3.append("input").attr("type", "text").attr("class", "date-value").on("blur", changeEDTFValue).on("change", changeEDTFValue);
+      });
+      entriesEnter.style("margin-top", "0px").style("max-height", "0px").style("opacity", "0").transition().duration(200).style("margin-top", "10px").style("max-height", "240px").style("opacity", "1").on("end", function() {
+        select_default2(this).style("max-height", "").style("overflow", "visible");
+      });
+      entries2 = entries2.merge(entriesEnter);
+      entries2.order();
+      entries2.classed("present", true);
+      utilGetSetValue(entries2.select(".date-value"), function(d2) {
+        return typeof d2 === "string" ? d2 : "";
+      }).attr("title", function(d2) {
+        return Array.isArray(d2) ? d2.filter(Boolean).join("\n") : null;
+      }).attr("placeholder", function(d2) {
+        return Array.isArray(d2) ? _t("inspector.multiple_values") : _t("inspector.date.edtf_placeholder");
+      }).classed("mixed", function(d2) {
+        return Array.isArray(d2);
+      });
+    }
+    date2.tags = function(tags) {
+      _tags = tags;
+      var yearValue = tags[field.key];
+      var eraValue;
+      var monthValue;
+      var dayValue;
+      var isMixed = Array.isArray(yearValue);
+      if (!isMixed && yearValue) {
+        let parts = yearValue.match(/^(-?\d+)(?:-(\d\d))?(?:-(\d\d))?$/);
+        if (parts && parts[1]) {
+          yearValue = parseInt(parts[1], 10);
+          if (yearValue < 1) {
+            yearValue = -yearValue + 1;
+            eraValue = bceName;
+          } else {
+            eraValue = ceName;
+          }
+          if (parts[2]) {
+            monthValue = monthNames[parseInt(parts[2], 10) - 1] || parts[2];
+          }
+          if (parts[3]) {
+            dayValue = parseInt(parts[3], 10);
+          }
+        }
+      }
+      utilGetSetValue(yearInput, typeof yearValue === "number" || typeof yearValue === "string" ? yearValue : "").attr("title", isMixed ? yearValue.filter(Boolean).join("\n") : null).attr("placeholder", isMixed ? _t("inspector.multiple_values") : _t("inspector.date.year")).classed("mixed", isMixed);
+      utilGetSetValue(eraInput, typeof eraValue === "string" ? eraValue : "").attr("placeholder", _t("inspector.date.era"));
+      utilGetSetValue(monthInput, typeof monthValue === "string" ? monthValue : "").attr("placeholder", _t("inspector.date.month"));
+      utilGetSetValue(dayInput, typeof dayValue === "number" ? dayValue : "").attr("placeholder", _t("inspector.date.day"));
+      calcEDTFValue(tags);
+      _selection.call(date2);
+    };
+    date2.focus = function() {
+      let node = yearInput.selectAll("input").node();
+      if (node) node.focus();
+    };
+    date2.entityIDs = function(val) {
+      if (!arguments.length) return _entityIDs;
+      _entityIDs = val;
+      _edtfValue = void 0;
+      return date2;
+    };
+    return utilRebind(date2, dispatch11, "on");
+  }
+  var init_date4 = __esm({
+    "modules/ui/fields/date.js"() {
+      "use strict";
+      init_src();
+      init_src6();
+      init_svg();
+      init_tooltip();
+      init_combobox();
+      init_localizer();
+      init_util3();
     }
   });
 
@@ -91275,19 +95337,19 @@ ${currentIndent}`
       const otherCommonKey = field.key.includes(":both") ? field.key.replace(/:both(:|$)/, "$1") : `${field.key}:both`;
       const fallbackKey = commonKey.includes(":both") ? otherCommonKey : commonKey;
       const bothDirectionsKey = fallbackKey !== commonKey ? commonKey : otherCommonKey;
-      const keys4 = Object.keys(_combos);
-      const entityTags = Array.isArray(__test_tags) ? __test_tags : context.selectedIDs().map((id2) => context.graph().hasEntity(id2).tags);
+      const keys5 = Object.keys(_combos);
+      const entityTags = Array.isArray(__test_tags) ? __test_tags : context.selectedIDs().map((id3) => context.graph().hasEntity(id3).tags);
       const combinedTags = {};
-      for (const key of keys4) combinedTags[key] = /* @__PURE__ */ new Set();
+      for (const key of keys5) combinedTags[key] = /* @__PURE__ */ new Set();
       for (const tags of entityTags) {
         let hadCommonValue = false;
         if (tags[fallbackKey] === "both") {
-          for (const key of keys4) combinedTags[key].add("yes");
+          for (const key of keys5) combinedTags[key].add("yes");
           hadCommonValue = true;
         } else if (tags[fallbackKey]) {
           const directionalKeyRegExp = new RegExp(`:${tags[fallbackKey]}(:|$)`);
-          if (keys4.some((key) => directionalKeyRegExp.test(key))) {
-            for (const key of keys4) {
+          if (keys5.some((key) => directionalKeyRegExp.test(key))) {
+            for (const key of keys5) {
               if (directionalKeyRegExp.test(key)) {
                 combinedTags[key].add("yes");
               } else {
@@ -91295,15 +95357,15 @@ ${currentIndent}`
               }
             }
           } else {
-            for (const key of keys4) combinedTags[key].add(tags[fallbackKey]);
+            for (const key of keys5) combinedTags[key].add(tags[fallbackKey]);
           }
           hadCommonValue = true;
         }
         if (tags[bothDirectionsKey]) {
-          for (const key of keys4) combinedTags[key].add(tags[bothDirectionsKey]);
+          for (const key of keys5) combinedTags[key].add(tags[bothDirectionsKey]);
           hadCommonValue = true;
         }
-        for (const key of keys4) {
+        for (const key of keys5) {
           if (tags[key] || !hadCommonValue) {
             combinedTags[key].add(tags[key]);
           }
@@ -91325,7 +95387,7 @@ ${currentIndent}`
       "use strict";
       init_src();
       init_src6();
-      init_util2();
+      init_util3();
       init_combo();
     }
   });
@@ -91694,7 +95756,7 @@ ${currentIndent}`
       init_svg();
       init_tooltip();
       init_combobox();
-      init_util2();
+      init_util3();
       init_length_indicator();
       _languagesArray = [];
       LANGUAGE_SUFFIX_REGEX = /^(.*):([a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-[A-Z]{2}|-[0-9]{3})?(?:-[a-z][a-z0-9]{4,7}|-[0-9][a-z0-9]{3})?)$/;
@@ -91837,7 +95899,7 @@ ${currentIndent}`
       init_country_coder();
       init_combobox();
       init_localizer();
-      init_util2();
+      init_util3();
       init_input();
     }
   });
@@ -91950,7 +96012,7 @@ ${currentIndent}`
       init_country_coder();
       init_combobox();
       init_localizer();
-      init_util2();
+      init_util3();
       init_input();
     }
   });
@@ -92004,8 +96066,8 @@ ${currentIndent}`
       var extrasWrap = selection2.selectAll(".structure-extras-wrap").data(selected ? [0] : []);
       extrasWrap.exit().remove();
       extrasWrap = extrasWrap.enter().append("div").attr("class", "structure-extras-wrap").merge(extrasWrap);
-      var list = extrasWrap.selectAll("ul").data([0]);
-      list = list.enter().append("ul").attr("class", "rows").merge(list);
+      var list2 = extrasWrap.selectAll("ul").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "rows").merge(list2);
       if (type2) {
         if (!typeField || typeField.id !== selected) {
           typeField = uiField(context, type2, _entityIDs, { wrap: false }).on("change", changeType);
@@ -92014,7 +96076,7 @@ ${currentIndent}`
       } else {
         typeField = null;
       }
-      var typeItem = list.selectAll(".structure-type-item").data(typeField ? [typeField] : [], function(d2) {
+      var typeItem = list2.selectAll(".structure-type-item").data(typeField ? [typeField] : [], function(d2) {
         return d2.id;
       });
       typeItem.exit().remove();
@@ -92037,7 +96099,7 @@ ${currentIndent}`
           return k3 !== "layer";
         });
       }
-      var layerItem = list.selectAll(".structure-layer-item").data(layerField ? [layerField] : []);
+      var layerItem = list2.selectAll(".structure-layer-item").data(layerField ? [layerField] : []);
       layerItem.exit().remove();
       var layerEnter = layerItem.enter().append("li").attr("class", "labeled-input structure-layer-item");
       layerEnter.append("div").attr("class", "label structure-label-layer").attr("for", "preset-input-layer").call(_t.append("inspector.radio.structure.layer"));
@@ -92168,7 +96230,7 @@ ${currentIndent}`
       init_presets();
       init_localizer();
       init_field();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -92561,7 +96623,7 @@ ${currentIndent}`
       init_geo2();
       init_osm();
       init_svg();
-      init_util2();
+      init_util3();
       init_dimensions();
       uiFieldRestrictions.supportsMultiselection = false;
     }
@@ -92613,7 +96675,7 @@ ${currentIndent}`
       init_src();
       init_src6();
       init_localizer();
-      init_util2();
+      init_util3();
       init_ui();
     }
   });
@@ -92641,9 +96703,9 @@ ${currentIndent}`
       _selection = selection2;
       var wrap3 = selection2.selectAll(".form-field-input-wrap").data([0]);
       wrap3 = wrap3.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + field.type).merge(wrap3);
-      var list = wrap3.selectAll("ul").data([0]);
-      list = list.enter().append("ul").attr("class", "rows").merge(list);
-      var searchRow = list.selectAll("li.wikidata-search").data([0]);
+      var list2 = wrap3.selectAll("ul").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "rows").merge(list2);
+      var searchRow = list2.selectAll("li.wikidata-search").data([0]);
       var searchRowEnter = searchRow.enter().append("li").attr("class", "wikidata-search");
       searchRowEnter.append("input").attr("type", "text").attr("dir", "auto").attr("id", field.domId).style("flex", "1").call(utilNoAuto).on("focus", function() {
         var node = select_default2(this).node();
@@ -92666,7 +96728,7 @@ ${currentIndent}`
       searchRow = searchRow.merge(searchRowEnter);
       _searchInput = searchRow.select("input");
       var wikidataProperties = ["description", "identifier"];
-      var items = list.selectAll("li.labeled-input").data(wikidataProperties);
+      var items = list2.selectAll("li.labeled-input").data(wikidataProperties);
       var enter = items.enter().append("li").attr("class", function(d2) {
         return "labeled-input preset-wikidata-" + d2;
       });
@@ -92690,12 +96752,12 @@ ${currentIndent}`
           }
         }
       }
-      wikidata.itemsForSearchQuery(q3, function(err, data) {
+      wikidata.itemsForSearchQuery(q3, function(err, data2) {
         if (err) {
           if (err !== "No query") console.error(err);
           return;
         }
-        var result2 = data.map(function(item) {
+        var result2 = data2.map(function(item) {
           return {
             id: item.id,
             value: item.display.label.value + " (" + item.id + ")",
@@ -92862,7 +96924,7 @@ ${currentIndent}`
       init_change_tags();
       init_services();
       init_icon();
-      init_util2();
+      init_util3();
       init_combobox();
       init_localizer();
     }
@@ -92910,8 +96972,8 @@ ${currentIndent}`
         }
       }
       const searchfn = value.length > 7 ? wikipedia.search : wikipedia.suggestions;
-      searchfn(language()[2], value, (query, data) => {
-        callback(data.map((d2) => ({ value: d2 })));
+      searchfn(language()[2], value, (query, data2) => {
+        callback(data2.map((d2) => ({ value: d2 })));
       });
     });
     function wiki(selection2) {
@@ -92984,11 +97046,11 @@ ${currentIndent}`
       if (skipWikidata || !value || !language()[2]) return;
       const initGraph = context.graph();
       const initEntityIDs = _entityIDs;
-      wikidata.itemsByTitle(language()[2], value, (err, data) => {
-        if (err || !data || !Object.keys(data).length) return;
+      wikidata.itemsByTitle(language()[2], value, (err, data2) => {
+        if (err || !data2 || !Object.keys(data2).length) return;
         if (context.graph() !== initGraph) return;
-        const qids = Object.keys(data);
-        const value2 = qids && qids.find((id2) => id2.match(/^Q\d+$/));
+        const qids = Object.keys(data2);
+        const value2 = qids && qids.find((id3) => id3.match(/^Q\d+$/));
         let actions = initEntityIDs.map((entityID) => {
           let entity = context.entity(entityID).tags;
           let currTags = Object.assign({}, entity);
@@ -93075,8 +97137,89 @@ ${currentIndent}`
       init_services();
       init_icon();
       init_combobox();
-      init_util2();
+      init_util3();
       uiFieldWikipedia.supportsMultiselection = false;
+    }
+  });
+
+  // modules/ui/fields/sources.js
+  var sources_exports = {};
+  __export(sources_exports, {
+    uiFieldSources: () => uiFieldSources
+  });
+  function uiFieldSources(field, context) {
+    let dispatch11 = dispatch_default("change");
+    let items = select_default2(null);
+    let _tags = {};
+    let _selection = select_default2(null);
+    let _pendingChange;
+    const mainKey = field.key;
+    const sourceHeader = mainKey + ":";
+    const possibleSourceSubkeys = [{ key: "name" }, { key: "url" }, { key: "date" }];
+    function scheduleChange() {
+      if (!_pendingChange) return;
+      dispatch11.call("change", this, _pendingChange);
+      _pendingChange = null;
+      _selection.call(sources);
+    }
+    function valueChange(d3_event, d2) {
+      if (typeof d2.key !== "string" && !this.value) return;
+      var key = sourceHeader + d2.key;
+      _pendingChange = _pendingChange || {};
+      var value = context.cleanTagValue(this.value);
+      _pendingChange[key] = value === "" ? void 0 : value;
+      _tags[key] = value === "" ? void 0 : value;
+      scheduleChange();
+    }
+    function mainChange() {
+      _pendingChange = _pendingChange || {};
+      var value = context.cleanTagValue(this.value);
+      _pendingChange[mainKey] = value === "" ? void 0 : value;
+      _tags[mainKey] = value === "" ? void 0 : value;
+      scheduleChange();
+    }
+    function sources(selection2) {
+      _selection = selection2;
+      var wrap3 = selection2.selectAll(".form-field-input-wrap").data([0]);
+      selection2.exit().style("top", "0").style("max-height", "240px").transition().duration(200).style("opacity", "0").style("max-height", "0px").remove();
+      wrap3 = wrap3.enter().append("div").attr("class", "form-field-input-wrap form-field-input-" + field.type).merge(wrap3);
+      wrap3.selectAll("input").data([0]).enter().append("input").attr("class", "main-value").attr("type", "text").attr("placeholder", _t("inspector.source.main_input")).call(utilNoAuto).on("change", mainChange).on("blur", mainChange);
+      var list2 = wrap3.selectAll("ul").data([0]);
+      list2 = list2.enter().append("ul").attr("class", "rows").merge(list2);
+      list2 = list2.merge(list2);
+      items = list2.selectAll("li.labeled-input-source").data(possibleSourceSubkeys);
+      items = items.enter().append("li").attr("class", "labeled-input-source");
+      items.append("input").attr("type", "text").attr("class", "value").attr("placeholder", function(d2) {
+        return _t("inspector.source." + d2.key);
+      }).call(utilNoAuto).call(utilGetSetValue, function(d2) {
+        return _tags[sourceHeader + d2.key];
+      }).on("change", valueChange).on("blur", valueChange);
+      items.exit().remove();
+      utilGetSetValue(_selection.selectAll(".value"), function(d2) {
+        return _tags[sourceHeader + d2.key] === void 0 ? "" : _tags[sourceHeader + d2.key];
+      });
+      utilGetSetValue(_selection.selectAll(".main-value"), function() {
+        return _tags[mainKey] === void 0 ? "" : _tags[mainKey];
+      });
+    }
+    sources.tags = function(tags) {
+      if (!arguments.length) return _tags;
+      _tags = tags;
+      _selection.call(sources);
+    };
+    sources.focus = function() {
+      var node = _selection.selectAll("input").node();
+      if (node) node.focus();
+    };
+    return utilRebind(sources, dispatch11, "on");
+  }
+  var init_sources = __esm({
+    "modules/ui/fields/sources.js"() {
+      "use strict";
+      init_src();
+      init_src6();
+      init_localizer();
+      init_util3();
     }
   });
 
@@ -93090,6 +97233,7 @@ ${currentIndent}`
     uiFieldCheck: () => uiFieldCheck,
     uiFieldColour: () => uiFieldText,
     uiFieldCombo: () => uiFieldCombo,
+    uiFieldDate: () => uiFieldDate,
     uiFieldDefaultCheck: () => uiFieldCheck,
     uiFieldDirectionalCombo: () => uiFieldDirectionalCombo,
     uiFieldEmail: () => uiFieldText,
@@ -93126,6 +97270,7 @@ ${currentIndent}`
       init_input();
       init_access();
       init_address();
+      init_date4();
       init_directional_combo();
       init_lanes2();
       init_localized();
@@ -93142,12 +97287,14 @@ ${currentIndent}`
       init_radio();
       init_access();
       init_address();
+      init_date4();
       init_directional_combo();
       init_lanes2();
       init_localized();
       init_roadheight();
       init_roadspeed();
       init_restrictions();
+      init_sources();
       init_textarea();
       init_wikidata2();
       init_wikipedia2();
@@ -93158,7 +97305,7 @@ ${currentIndent}`
         colour: uiFieldText,
         combo: uiFieldCombo,
         cycleway: uiFieldDirectionalCombo,
-        date: uiFieldText,
+        date: uiFieldDate,
         defaultCheck: uiFieldCheck,
         directionalCombo: uiFieldDirectionalCombo,
         email: uiFieldText,
@@ -93176,6 +97323,7 @@ ${currentIndent}`
         restrictions: uiFieldRestrictions,
         schedule: uiFieldText,
         semiCombo: uiFieldCombo,
+        source: uiFieldSources,
         structureRadio: uiFieldRadio,
         tel: uiFieldText,
         text: uiFieldText,
@@ -93207,6 +97355,7 @@ ${currentIndent}`
     var _show = options.show;
     var _state = "";
     var _tags = {};
+    options.source = field.source !== void 0 ? field.source : true;
     var _entityExtent;
     if (entityIDs && entityIDs.length) {
       _entityExtent = entityIDs.reduce(function(extent2, entityID) {
@@ -93231,12 +97380,12 @@ ${currentIndent}`
       }
     }
     function allKeys() {
-      let keys4 = field.keys || [field.key];
+      let keys5 = field.keys || [field.key];
       if (field.type === "directionalCombo" && field.key) {
         const baseKey = field.key.replace(/:both$/, "");
-        keys4 = keys4.concat(baseKey, `${baseKey}:both`);
+        keys5 = keys5.concat(baseKey, `${baseKey}:both`);
       }
-      return keys4;
+      return keys5;
     }
     function isModified() {
       if (!entityIDs || !entityIDs.length) return false;
@@ -93286,6 +97435,7 @@ ${currentIndent}`
       dispatch11.call("change", d2, t4);
     }
     field.render = function(selection2) {
+      var sourceSubfield = uiSourceSubfield(context, field, _tags, dispatch11);
       var container = selection2.selectAll(".form-field").data([field]);
       var enter = container.enter().append("div").attr("class", function(d2) {
         return "form-field form-field-" + d2.safeid;
@@ -93305,6 +97455,9 @@ ${currentIndent}`
         if (options.revert) {
           labelEnter.append("button").attr("class", "modified-icon").attr("title", _t("icons.undo")).call(svgIcon(_mainLocalizer.textDirection() === "rtl" ? "#iD-icon-redo" : "#iD-icon-undo"));
         }
+        if (options.source) {
+          sourceSubfield.button(labelEnter, container);
+        }
       }
       container = container.merge(enter);
       container.select(".field-label > .remove-icon").on("click", remove4);
@@ -93322,6 +97475,9 @@ ${currentIndent}`
           var referenceKey = d2.key || "";
           if (d2.type === "multiCombo") {
             referenceKey = referenceKey.replace(/:$/, ":*");
+          }
+          if (d2.type === "source") {
+            referenceKey = referenceKey.split(":")[0];
           }
           var referenceOptions = d2.reference || {
             key: referenceKey,
@@ -93347,6 +97503,9 @@ ${currentIndent}`
       icon2.exit().remove();
       icon2.enter().append("svg").attr("class", "icon").append("use").attr("xlink:href", "#fas-lock");
       container.call(_locked ? _lockedTip : _lockedTip.destroy);
+      if (options.source) {
+        sourceSubfield.body(selection2);
+      }
     };
     field.state = function(val) {
       if (!arguments.length) return _state;
@@ -93397,6 +97556,10 @@ ${currentIndent}`
       prerequisiteTag) {
         if (!entityIDs.every(function(entityID) {
           var entity = context.graph().entity(entityID);
+          if (prerequisiteTag.keys) {
+            const inEntityTags = (e3) => e3 in entity.tags;
+            return prerequisiteTag.keys.some(inEntityTags);
+          }
           if (prerequisiteTag.key) {
             var value = entity.tags[prerequisiteTag.key] || "";
             if (prerequisiteTag.valuesNot) {
@@ -93441,7 +97604,8 @@ ${currentIndent}`
       init_fields();
       init_localized();
       init_tag_reference();
-      init_util2();
+      init_util3();
+      init_source_subfield();
     }
   });
 
@@ -93568,7 +97732,7 @@ ${currentIndent}`
       init_combobox();
       init_field();
       init_form_fields();
-      init_util2();
+      init_util3();
       init_incompatible_source();
     }
   });
@@ -93621,8 +97785,8 @@ ${currentIndent}`
       var changeset = new osmChangeset().update({ id: void 0 });
       var changes = history.changes(actionDiscardTags(history.difference(), _discardTags));
       delete changeset.id;
-      var data = JXON.stringify(changeset.osmChangeJXON(changes));
-      var blob = new Blob([data], { type: "text/xml;charset=utf-8;" });
+      var data2 = JXON.stringify(changeset.osmChangeJXON(changes));
+      var blob = new Blob([data2], { type: "text/xml;charset=utf-8;" });
       var fileName = "changes.osc";
       var linkEnter = container.selectAll(".download-changes").data([0]).enter().append("a").attr("class", "download-changes");
       linkEnter.attr("href", window.URL.createObjectURL(blob)).attr("download", fileName);
@@ -93659,7 +97823,7 @@ ${currentIndent}`
       init_osm();
       init_icon();
       init_section();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -94023,7 +98187,7 @@ ${currentIndent}`
       init_changes();
       init_commit_warnings();
       init_raw_tag_editor();
-      init_util2();
+      init_util3();
       init_detect();
       init_incompatible_source();
       readOnlyTags = [
@@ -94062,10 +98226,10 @@ ${currentIndent}`
     function cancel() {
       context.enter(modeBrowse(context));
     }
-    function showProgress(num, total) {
+    function showProgress(num2, total) {
       var modal = context.container().select(".loading-modal .modal-section");
       var progress = modal.selectAll(".progress").data([0]);
-      progress.enter().append("div").attr("class", "progress").merge(progress).text(_t("save.conflict_progress", { num, total }));
+      progress.enter().append("div").attr("class", "progress").merge(progress).text(_t("save.conflict_progress", { num: num2, total }));
     }
     function showConflicts(changeset, conflicts, origChanges) {
       var selection2 = context.container().select(".sidebar").append("div").attr("class", "sidebar-component");
@@ -94089,9 +98253,9 @@ ${currentIndent}`
       addErrors(selection2, errors);
       selection2.okButton();
     }
-    function addErrors(selection2, data) {
+    function addErrors(selection2, data2) {
       var message2 = selection2.select(".modal-section.message-text");
-      var items = message2.selectAll(".error-container").data(data);
+      var items = message2.selectAll(".error-container").data(data2);
       var enter = items.enter().append("div").attr("class", "error-container");
       enter.append("a").attr("class", "error-description").attr("href", "#").classed("hide-toggle", true).text(function(d2) {
         return d2.msg || _t("save.unknown_error_details");
@@ -94185,7 +98349,7 @@ ${currentIndent}`
       init_confirm();
       init_commit();
       init_success();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -94425,8 +98589,8 @@ ${currentIndent}`
           return;
         }
       } else {
-        canSave = context.selectedIDs().every((id2) => {
-          const entity = context.hasEntity(id2);
+        canSave = context.selectedIDs().every((id3) => {
+          const entity = context.hasEntity(id3);
           return entity && !entity.isDegenerate();
         });
       }
@@ -94445,8 +98609,8 @@ ${currentIndent}`
         return result2;
       };
     }
-    context.hasEntity = (id2) => _history.graph().hasEntity(id2);
-    context.entity = (id2) => _history.graph().entity(id2);
+    context.hasEntity = (id3) => _history.graph().hasEntity(id3);
+    context.entity = (id3) => _history.graph().entity(id3);
     let _mode;
     context.mode = () => _mode;
     context.enter = (newMode) => {
@@ -94493,9 +98657,9 @@ ${currentIndent}`
     context.background = () => _background;
     let _features;
     context.features = () => _features;
-    context.hasHiddenConnections = (id2) => {
+    context.hasHiddenConnections = (id3) => {
       const graph = _history.graph();
-      const entity = graph.entity(id2);
+      const entity = graph.entity(id3);
       return _features.hasHiddenConnections(entity, graph);
     };
     let _photos;
@@ -94681,7 +98845,7 @@ ${currentIndent}`
       init_renderer();
       init_services();
       init_init2();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -94882,7 +99046,7 @@ ${currentIndent}`
       init_localizer();
       init_circularize();
       init_operation();
-      init_util2();
+      init_util3();
       init_svg();
     }
   });
@@ -94932,8 +99096,8 @@ ${currentIndent}`
         }
         return false;
       }
-      function incompleteRelation(id2) {
-        var entity = context.entity(id2);
+      function incompleteRelation(id3) {
+        var entity = context.entity(id3);
         return entity.type === "relation" && !entity.isComplete(context.graph());
       }
     };
@@ -94957,7 +99121,7 @@ ${currentIndent}`
       init_localizer();
       init_operation();
       init_rotate2();
-      init_util();
+      init_util2();
     }
   });
 
@@ -95106,8 +99270,8 @@ ${currentIndent}`
       init_geom();
       init_browse();
       init_select5();
+      init_util3();
       init_util2();
-      init_util();
       init_circularize2();
       init_delete();
       init_orthogonalize2();
@@ -95122,8 +99286,8 @@ ${currentIndent}`
     operationContinue: () => operationContinue
   });
   function operationContinue(context, selectedIDs) {
-    var _entities = selectedIDs.map(function(id2) {
-      return context.graph().entity(id2);
+    var _entities = selectedIDs.map(function(id3) {
+      return context.graph().entity(id3);
     });
     var _geometries = Object.assign(
       { line: [], vertex: [] },
@@ -95190,7 +99354,7 @@ ${currentIndent}`
       init_localizer();
       init_draw_line();
       init_operation();
-      init_util2();
+      init_util3();
       init_actions();
     }
   });
@@ -95242,16 +99406,16 @@ ${currentIndent}`
       }
     };
     function groupEntities(ids, graph) {
-      var entities = ids.map(function(id2) {
-        return graph.entity(id2);
+      var entities = ids.map(function(id3) {
+        return graph.entity(id3);
       });
       return Object.assign(
         { relation: [], way: [], node: [] },
         utilArrayGroupBy(entities, "type")
       );
     }
-    function getDescendants(id2, graph, descendants) {
-      var entity = graph.entity(id2);
+    function getDescendants(id3, graph, descendants) {
+      var entity = graph.entity(id3);
       var children2;
       descendants = descendants || {};
       if (entity.type === "relation") {
@@ -95309,7 +99473,7 @@ ${currentIndent}`
       init_localizer();
       init_operation();
       init_cmd();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -95323,14 +99487,14 @@ ${currentIndent}`
     var _wayIDs = [];
     var _otherIDs = [];
     var _actions = [];
-    selectedIDs.forEach(function(id2) {
-      var entity = context.entity(id2);
+    selectedIDs.forEach(function(id3) {
+      var entity = context.entity(id3);
       if (entity.type === "way") {
-        _wayIDs.push(id2);
+        _wayIDs.push(id3);
       } else if (entity.geometry(context.graph()) === "vertex") {
-        _vertexIDs.push(id2);
+        _vertexIDs.push(id3);
       } else {
-        _otherIDs.push(id2);
+        _otherIDs.push(id3);
       }
     });
     var _coords, _descriptionID = "", _annotationID = "features";
@@ -95350,8 +99514,8 @@ ${currentIndent}`
         _actions.push(action);
         _disconnectingWayIds = _disconnectingWayIds.concat(context.graph().parentWays(context.graph().entity(vertexID)).map((d2) => d2.id));
       });
-      _disconnectingWayIds = utilArrayUniq(_disconnectingWayIds).filter(function(id2) {
-        return _wayIDs.indexOf(id2) === -1;
+      _disconnectingWayIds = utilArrayUniq(_disconnectingWayIds).filter(function(id3) {
+        return _wayIDs.indexOf(id3) === -1;
       });
       _descriptionID += _actions.length === 1 ? "single_point." : "multiple_points.";
       if (_wayIDs.length === 1) {
@@ -95360,8 +99524,8 @@ ${currentIndent}`
         _descriptionID += _wayIDs.length === 0 ? "no_ways" : "multiple_ways";
       }
     } else if (_wayIDs.length > 0) {
-      var ways = _wayIDs.map(function(id2) {
-        return context.entity(id2);
+      var ways = _wayIDs.map(function(id3) {
+        return context.entity(id3);
       });
       var nodes = utilGetAllNodes(_wayIDs, context.graph());
       _coords = nodes.map(function(n3) {
@@ -95485,7 +99649,7 @@ ${currentIndent}`
       init_disconnect();
       init_operation();
       init_array3();
-      init_util();
+      init_util2();
     }
   });
 
@@ -95572,8 +99736,8 @@ ${currentIndent}`
         return "has_wikidata_tag";
       }
       return false;
-      function hasWikidataTag(id2) {
-        var entity = context.entity(id2);
+      function hasWikidataTag(id3) {
+        var entity = context.entity(id3);
         return entity.tags.wikidata && entity.tags.wikidata.trim().length > 0;
       }
     };
@@ -95696,16 +99860,16 @@ ${currentIndent}`
   function operationMerge(context, selectedIDs) {
     var _action = getAction();
     function getAction() {
-      var join2 = actionJoin(selectedIDs);
-      if (!join2.disabled(context.graph())) return join2;
-      var merge4 = actionMerge(selectedIDs);
-      if (!merge4.disabled(context.graph())) return merge4;
+      var join3 = actionJoin(selectedIDs);
+      if (!join3.disabled(context.graph())) return join3;
+      var merge5 = actionMerge(selectedIDs);
+      if (!merge5.disabled(context.graph())) return merge5;
       var mergePolygon = actionMergePolygon(selectedIDs);
       if (!mergePolygon.disabled(context.graph())) return mergePolygon;
       var mergeNodes = actionMergeNodes(selectedIDs);
       if (!mergeNodes.disabled(context.graph())) return mergeNodes;
-      if (join2.disabled(context.graph()) !== "not_eligible") return join2;
-      if (merge4.disabled(context.graph()) !== "not_eligible") return merge4;
+      if (join3.disabled(context.graph()) !== "not_eligible") return join3;
+      if (merge5.disabled(context.graph()) !== "not_eligible") return merge5;
       if (mergePolygon.disabled(context.graph()) !== "not_eligible") return mergePolygon;
       return mergeNodes;
     }
@@ -95715,8 +99879,8 @@ ${currentIndent}`
       context.validator().validate();
       var resultIDs = selectedIDs.filter(context.hasEntity);
       if (resultIDs.length > 1) {
-        var interestingIDs = resultIDs.filter(function(id2) {
-          return context.entity(id2).hasInterestingTags();
+        var interestingIDs = resultIDs.filter(function(id3) {
+          return context.entity(id3).hasInterestingTags();
         });
         if (interestingIDs.length) resultIDs = interestingIDs;
       }
@@ -95795,9 +99959,9 @@ ${currentIndent}`
       Object.values(copies).forEach(function(entity) {
         originals.add(entity.id);
       });
-      for (var id2 in copies) {
-        var oldEntity = oldGraph.entity(id2);
-        var newEntity = copies[id2];
+      for (var id3 in copies) {
+        var oldEntity = oldGraph.entity(id3);
+        var newEntity = copies[id3];
         extent2._extend(oldEntity.extent(oldGraph));
         var parents = context.graph().parentWays(newEntity);
         var parentCopied = parents.some(function(parent) {
@@ -95928,11 +100092,11 @@ ${currentIndent}`
     operationStraighten: () => operationStraighten
   });
   function operationStraighten(context, selectedIDs) {
-    var _wayIDs = selectedIDs.filter(function(id2) {
-      return id2.charAt(0) === "w";
+    var _wayIDs = selectedIDs.filter(function(id3) {
+      return id3.charAt(0) === "w";
     });
-    var _nodeIDs = selectedIDs.filter(function(id2) {
-      return id2.charAt(0) === "n";
+    var _nodeIDs = selectedIDs.filter(function(id3) {
+      return id3.charAt(0) === "n";
     });
     var _amount = (_wayIDs.length ? _wayIDs : _nodeIDs).length === 1 ? "single" : "multiple";
     var _nodes = utilGetAllNodes(selectedIDs, context.graph());
@@ -96051,7 +100215,7 @@ ${currentIndent}`
       init_straighten_nodes();
       init_straighten_way();
       init_operation();
-      init_util2();
+      init_util3();
       init_svg();
     }
   });
@@ -96130,9 +100294,9 @@ ${currentIndent}`
       Object.values(copies).forEach(function(entity) {
         originals.add(entity.id);
       });
-      for (var id2 in copies) {
-        var oldEntity = oldGraph.entity(id2);
-        var newEntity = copies[id2];
+      for (var id3 in copies) {
+        var oldEntity = oldGraph.entity(id3);
+        var newEntity = copies[id3];
         extent2._extend(oldEntity.extent(oldGraph));
         var parents = context.graph().parentWays(newEntity);
         var parentCopied = parents.some(function(parent) {
@@ -96195,15 +100359,15 @@ ${currentIndent}`
       }
     }
     function selectedEntities() {
-      return selectedIDs.map(function(id2) {
-        return context.hasEntity(id2);
+      return selectedIDs.map(function(id3) {
+        return context.hasEntity(id3);
       }).filter(Boolean);
     }
     function checkSelectedIDs() {
       var ids = [];
       if (Array.isArray(selectedIDs)) {
-        ids = selectedIDs.filter(function(id2) {
-          return context.hasEntity(id2);
+        ids = selectedIDs.filter(function(id3) {
+          return context.hasEntity(id3);
         });
       }
       if (!ids.length) {
@@ -96357,8 +100521,8 @@ ${currentIndent}`
       if (_follow) {
         var extent2 = geoExtent();
         var graph = context.graph();
-        selectedIDs.forEach(function(id2) {
-          var entity = context.entity(id2);
+        selectedIDs.forEach(function(id3) {
+          var entity = context.entity(id3);
           extent2._extend(entity.extent(graph));
         });
         var loc = extent2.center();
@@ -96417,8 +100581,8 @@ ${currentIndent}`
               }
               return false;
             }
-            function incompleteRelation(id2) {
-              let entity = context.entity(id2);
+            function incompleteRelation(id3) {
+              let entity = context.entity(id3);
               return entity.type === "relation" && !entity.isComplete(context.graph());
             }
           }
@@ -96584,7 +100748,7 @@ ${currentIndent}`
       function selectChild(d3_event) {
         d3_event.preventDefault();
         var currentSelectedIds = mode2.selectedIDs();
-        var childIds = _focusedVertexIds ? _focusedVertexIds.filter((id2) => context.hasEntity(id2)) : childNodeIdsOfSelection(true);
+        var childIds = _focusedVertexIds ? _focusedVertexIds.filter((id3) => context.hasEntity(id3)) : childNodeIdsOfSelection(true);
         if (!childIds || !childIds.length) return;
         if (currentSelectedIds.length === 1) _focusedParentWayId = currentSelectedIds[0];
         context.enter(
@@ -96651,7 +100815,7 @@ ${currentIndent}`
       init_osm();
       init_operations();
       init_cmd();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -96679,7 +100843,7 @@ ${currentIndent}`
         }
         lasso.p(context.map().mouse());
       }
-      function normalize2(a2, b11) {
+      function normalize3(a2, b11) {
         return [
           [Math.min(a2[0], b11[0]), Math.min(a2[1], b11[1])],
           [Math.max(a2[0], b11[0]), Math.max(a2[1], b11[1])]
@@ -96698,7 +100862,7 @@ ${currentIndent}`
           return [];
         }
         var bounds = lasso.extent().map(context.projection.invert);
-        var extent2 = geoExtent(normalize2(bounds[0], bounds[1]));
+        var extent2 = geoExtent(normalize3(bounds[0], bounds[1]));
         var intersects2 = context.history().intersects(extent2).filter(function(entity) {
           return entity.type === "node" && (!limitToNodes || limitToNodes.has(entity)) && geoPointInPolygon(context.projection(entity.loc), lasso.coordinates) && !context.features().isHidden(entity, graph, entity.geometry(graph));
         });
@@ -96746,7 +100910,7 @@ ${currentIndent}`
       init_select5();
       init_lasso();
       init_array3();
-      init_util();
+      init_util2();
     }
   });
 
@@ -96881,13 +101045,13 @@ ${currentIndent}`
     let _this = {};
     let _memo = {};
     _this.collection = collection;
-    _this.item = (id2) => {
-      if (_memo[id2]) return _memo[id2];
-      const found = _this.collection.find((d2) => d2.id === id2);
-      if (found) _memo[id2] = found;
+    _this.item = (id3) => {
+      if (_memo[id3]) return _memo[id3];
+      const found = _this.collection.find((d2) => d2.id === id3);
+      if (found) _memo[id3] = found;
       return found;
     };
-    _this.index = (id2) => _this.collection.findIndex((d2) => d2.id === id2);
+    _this.index = (id3) => _this.collection.findIndex((d2) => d2.id === id3);
     _this.matchGeometry = (geometry2) => {
       return presetCollection(
         _this.collection.filter((d2) => d2.matchGeometry(geometry2))
@@ -96904,9 +101068,9 @@ ${currentIndent}`
       );
     };
     _this.fallback = (geometry2) => {
-      let id2 = geometry2;
-      if (id2 === "vertex") id2 = "point";
-      return _this.item(id2);
+      let id3 = geometry2;
+      if (id3 === "vertex") id3 = "point";
+      return _this.item(id3);
     };
     _this.search = (value, geometry2, loc) => {
       if (!value) return _this;
@@ -96996,7 +101160,7 @@ ${currentIndent}`
       "use strict";
       init_LocationManager();
       init_array3();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -97062,15 +101226,29 @@ ${currentIndent}`
   function presetField(fieldID, field, allFields) {
     allFields = allFields || {};
     let _this = Object.assign({}, field);
+    let localizerFieldID = fieldID;
+    if (field.baseKey && field.index) {
+      localizerFieldID = field.baseKey + "_multiple";
+    }
     _this.id = fieldID;
     _this.safeid = utilSafeClassName(fieldID);
     _this.matchGeometry = (geom) => !_this.geometry || _this.geometry.indexOf(geom) !== -1;
     _this.matchAllGeometry = (geometries) => {
       return !_this.geometry || geometries.every((geom) => _this.geometry.indexOf(geom) !== -1);
     };
-    _this.t = (scope, options) => _t(`_tagging.presets.fields.${fieldID}.${scope}`, options);
-    _this.t.append = (scope, options) => _t.append(`_tagging.presets.fields.${fieldID}.${scope}`, options);
-    _this.hasTextForStringId = (scope) => _mainLocalizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
+    _this.t = (scope, options) => _t(_mainLocalizer.coalesceStringIds([
+      `custom_presets.fields.${localizerFieldID}.${scope}`,
+      `_tagging.presets.fields.${localizerFieldID}.${scope}`
+    ]), options);
+    _this.t.html = (scope, options) => _t.html(_mainLocalizer.coalesceStringIds([
+      `custom_presets.fields.${localizerFieldID}.${scope}`,
+      `_tagging.presets.fields.${localizerFieldID}.${scope}`
+    ]), options);
+    _this.t.append = (scope, options) => _t.append(_mainLocalizer.coalesceStringIds([
+      `custom_presets.fields.${localizerFieldID}.${scope}`,
+      `_tagging.presets.fields.${localizerFieldID}.${scope}`
+    ]), options);
+    _this.hasTextForStringId = (scope) => _mainLocalizer.hasTextForStringId(`custom_presets.fields.${localizerFieldID}.${scope}`) || _mainLocalizer.hasTextForStringId(`_tagging.presets.fields.${localizerFieldID}.${scope}`);
     _this.resolveReference = (which) => {
       const referenceRegex = /^\{(.*)\}$/;
       const match = (field[which] || "").match(referenceRegex);
@@ -97083,19 +101261,25 @@ ${currentIndent}`
       }
       return _this;
     };
-    _this.title = () => _this.overrideLabel || _this.resolveReference("label").t("label", { "default": fieldID });
-    _this.label = () => _this.overrideLabel ? (selection2) => selection2.text(_this.overrideLabel) : _this.resolveReference("label").t.append("label", { "default": fieldID });
+    _this.title = () => _this.overrideLabel || _this.resolveReference("label").t("label", { "default": fieldID, "index": field.index });
+    _this.label = () => _this.overrideLabel ? (selection2) => selection2.text(_this.overrideLabel) : _this.resolveReference("label").t.append("label", { "default": fieldID, "index": field.index });
     _this.placeholder = () => _this.resolveReference("placeholder").t("placeholder", { "default": "" });
     _this.originalTerms = (_this.terms || []).join();
     _this.terms = () => _this.resolveReference("label").t("terms", { "default": _this.originalTerms }).toLowerCase().trim().split(/\s*,+\s*/);
     _this.increment = _this.type === "number" || _this.type === "integer" ? _this.increment || 1 : void 0;
+    _this.allKeys = () => {
+      const allKeys = [];
+      if (_this.key) allKeys.push(_this.key);
+      if (_this.keys) allKeys.push(..._this.keys);
+      return allKeys;
+    };
     return _this;
   }
   var init_field2 = __esm({
     "modules/presets/field.js"() {
       "use strict";
       init_localizer();
-      init_util();
+      init_util2();
     }
   });
 
@@ -97157,11 +101341,17 @@ ${currentIndent}`
       return score;
     };
     _this.t = (scope, options) => {
-      const textID = `_tagging.presets.presets.${presetID}.${scope}`;
+      const textID = _mainLocalizer.coalesceStringIds([
+        `custom_presets.presets.${presetID}.${scope}`,
+        `_tagging.presets.presets.${presetID}.${scope}`
+      ]);
       return _t(textID, options);
     };
     _this.t.append = (scope, options) => {
-      const textID = `_tagging.presets.presets.${presetID}.${scope}`;
+      const textID = _mainLocalizer.coalesceStringIds([
+        `custom_presets.presets.${presetID}.${scope}`,
+        `_tagging.presets.presets.${presetID}.${scope}`
+      ]);
       return _t.append(textID, options);
     };
     function resolveReference(which) {
@@ -97185,8 +101375,10 @@ ${currentIndent}`
       if (_this.suggestion) {
         let path = presetID.split("/");
         path.pop();
-        const basePreset = allPresets[path.join("/")];
-        return basePreset?.name();
+        return _t(_mainLocalizer.coalesceStringIds([
+          `custom_presets.presets.${path.join("/")}.name`,
+          `_tagging.presets.presets.${path.join("/")}.name`
+        ]));
       }
       return null;
     };
@@ -97194,8 +101386,10 @@ ${currentIndent}`
       if (_this.suggestion) {
         let path = presetID.split("/");
         path.pop();
-        const basePreset = allPresets[path.join("/")];
-        return basePreset?.nameLabel();
+        return _t.append(_mainLocalizer.coalesceStringIds([
+          `custom_presets.presets.${path.join("/")}.name`,
+          `_tagging.presets.presets.${path.join("/")}.name`
+        ]));
       }
       return null;
     };
@@ -97219,7 +101413,7 @@ ${currentIndent}`
     };
     _this.searchAliases = () => {
       if (!_searchAliases) {
-        _searchAliases = _this.aliases().map((alias) => alias.toLowerCase());
+        _searchAliases = _this.aliases().map((alias2) => alias2.toLowerCase());
       }
       return _searchAliases;
     };
@@ -97372,8 +101566,8 @@ ${currentIndent}`
       init_es();
       init_localizer();
       init_tags2();
+      init_util3();
       init_util2();
-      init_util();
       init_LocationManager();
     }
   });
@@ -97406,6 +101600,7 @@ ${currentIndent}`
     uiSectionBackgroundOffset: () => uiSectionBackgroundOffset,
     uiSectionChanges: () => uiSectionChanges,
     uiSectionDataLayers: () => uiSectionDataLayers,
+    uiSectionDateRange: () => uiSectionDateRange,
     uiSectionEntityIssues: () => uiSectionEntityIssues,
     uiSectionFeatureType: () => uiSectionFeatureType,
     uiSectionMapFeatures: () => uiSectionMapFeatures,
@@ -97434,6 +101629,7 @@ ${currentIndent}`
       init_entity_issues();
       init_feature_type();
       init_map_features();
+      init_map_daterange();
       init_map_style_options();
       init_overlay_list();
       init_photo_overlays();
@@ -97680,6 +101876,7 @@ ${currentIndent}`
         "../ui/fields/address.js": () => Promise.resolve().then(() => (init_address(), address_exports)),
         "../ui/fields/check.js": () => Promise.resolve().then(() => (init_check(), check_exports)),
         "../ui/fields/combo.js": () => Promise.resolve().then(() => (init_combo(), combo_exports)),
+        "../ui/fields/date.js": () => Promise.resolve().then(() => (init_date4(), date_exports2)),
         "../ui/fields/directional_combo.js": () => Promise.resolve().then(() => (init_directional_combo(), directional_combo_exports)),
         "../ui/fields/index.js": () => Promise.resolve().then(() => (init_fields(), fields_exports)),
         "../ui/fields/input.js": () => Promise.resolve().then(() => (init_input(), input_exports)),
@@ -97689,6 +101886,7 @@ ${currentIndent}`
         "../ui/fields/restrictions.js": () => Promise.resolve().then(() => (init_restrictions(), restrictions_exports)),
         "../ui/fields/roadheight.js": () => Promise.resolve().then(() => (init_roadheight(), roadheight_exports)),
         "../ui/fields/roadspeed.js": () => Promise.resolve().then(() => (init_roadspeed(), roadspeed_exports)),
+        "../ui/fields/sources.js": () => Promise.resolve().then(() => (init_sources(), sources_exports)),
         "../ui/fields/textarea.js": () => Promise.resolve().then(() => (init_textarea(), textarea_exports)),
         "../ui/fields/wikidata.js": () => Promise.resolve().then(() => (init_wikidata2(), wikidata_exports2)),
         "../ui/fields/wikipedia.js": () => Promise.resolve().then(() => (init_wikipedia2(), wikipedia_exports2)),
@@ -97751,6 +101949,7 @@ ${currentIndent}`
         "../ui/sections/entity_issues.js": () => Promise.resolve().then(() => (init_entity_issues(), entity_issues_exports)),
         "../ui/sections/feature_type.js": () => Promise.resolve().then(() => (init_feature_type(), feature_type_exports)),
         "../ui/sections/index.js": () => Promise.resolve().then(() => (init_sections(), sections_exports)),
+        "../ui/sections/map_daterange.js": () => Promise.resolve().then(() => (init_map_daterange(), map_daterange_exports)),
         "../ui/sections/map_features.js": () => Promise.resolve().then(() => (init_map_features(), map_features_exports)),
         "../ui/sections/map_style_options.js": () => Promise.resolve().then(() => (init_map_style_options(), map_style_options_exports)),
         "../ui/sections/overlay_list.js": () => Promise.resolve().then(() => (init_overlay_list(), overlay_list_exports)),
@@ -97771,6 +101970,7 @@ ${currentIndent}`
         "../ui/settings/local_photos.js": () => Promise.resolve().then(() => (init_local_photos2(), local_photos_exports2)),
         "../ui/shortcuts.js": () => Promise.resolve().then(() => (init_shortcuts(), shortcuts_exports)),
         "../ui/sidebar.js": () => Promise.resolve().then(() => (init_sidebar(), sidebar_exports)),
+        "../ui/source_subfield.js": () => Promise.resolve().then(() => (init_source_subfield(), source_subfield_exports)),
         "../ui/source_switch.js": () => Promise.resolve().then(() => (init_source_switch(), source_switch_exports)),
         "../ui/spinner.js": () => Promise.resolve().then(() => (init_spinner(), spinner_exports)),
         "../ui/splash.js": () => Promise.resolve().then(() => (init_splash(), splash_exports)),
@@ -97796,15 +101996,16 @@ ${currentIndent}`
         "../util/array.js": () => Promise.resolve().then(() => (init_array3(), array_exports)),
         "../util/bind_once.js": () => Promise.resolve().then(() => (init_bind_once(), bind_once_exports)),
         "../util/clean_tags.ts": () => Promise.resolve().then(() => (init_clean_tags(), clean_tags_exports)),
-        "../util/date.ts": () => Promise.resolve().then(() => (init_date2(), date_exports)),
+        "../util/date.ts": () => Promise.resolve().then(() => (init_date3(), date_exports)),
         "../util/detect.ts": () => Promise.resolve().then(() => (init_detect(), detect_exports)),
         "../util/dimensions.js": () => Promise.resolve().then(() => (init_dimensions(), dimensions_exports)),
         "../util/double_up.js": () => Promise.resolve().then(() => (init_double_up(), double_up_exports)),
         "../util/get_set_value.js": () => Promise.resolve().then(() => (init_get_set_value(), get_set_value_exports)),
-        "../util/index.ts": () => Promise.resolve().then(() => (init_util2(), util_exports2)),
+        "../util/index.ts": () => Promise.resolve().then(() => (init_util3(), util_exports2)),
         "../util/jxon.js": () => Promise.resolve().then(() => (init_jxon(), jxon_exports)),
         "../util/keybinding.js": () => Promise.resolve().then(() => (init_keybinding(), keybinding_exports)),
         "../util/object.js": () => Promise.resolve().then(() => (init_object2(), object_exports)),
+        "../util/ohm_date.js": () => Promise.resolve().then(() => (init_ohm_date(), ohm_date_exports)),
         "../util/partition.ts": () => Promise.resolve().then(() => (init_partition2(), partition_exports)),
         "../util/rebind.js": () => Promise.resolve().then(() => (init_rebind(), rebind_exports)),
         "../util/session_mutex.js": () => Promise.resolve().then(() => (init_session_mutex(), session_mutex_exports)),
@@ -97812,7 +102013,7 @@ ${currentIndent}`
         "../util/tiler.js": () => Promise.resolve().then(() => (init_tiler(), tiler_exports)),
         "../util/trigger_event.js": () => Promise.resolve().then(() => (init_trigger_event(), trigger_event_exports)),
         "../util/units.ts": () => Promise.resolve().then(() => (init_units(), units_exports)),
-        "../util/util.js": () => Promise.resolve().then(() => (init_util(), util_exports)),
+        "../util/util.js": () => Promise.resolve().then(() => (init_util2(), util_exports)),
         "../util/utilDisplayLabel.js": () => Promise.resolve().then(() => (init_utilDisplayLabel(), utilDisplayLabel_exports)),
         "../util/zoom_pan.js": () => Promise.resolve().then(() => (init_zoom_pan(), zoom_pan_exports)),
         "../validations/almost_junction.js": () => Promise.resolve().then(() => (init_almost_junction(), almost_junction_exports)),
@@ -97825,8 +102026,10 @@ ${currentIndent}`
         "../validations/index.js": () => Promise.resolve().then(() => (init_validations(), validations_exports)),
         "../validations/invalid_format.js": () => Promise.resolve().then(() => (init_invalid_format(), invalid_format_exports)),
         "../validations/maprules.js": () => Promise.resolve().then(() => (init_maprules2(), maprules_exports2)),
+        "../validations/mismatched_dates.js": () => Promise.resolve().then(() => (init_mismatched_dates(), mismatched_dates_exports)),
         "../validations/mismatched_geometry.js": () => Promise.resolve().then(() => (init_mismatched_geometry(), mismatched_geometry_exports)),
         "../validations/missing_role.js": () => Promise.resolve().then(() => (init_missing_role(), missing_role_exports)),
+        "../validations/missing_start_date.js": () => Promise.resolve().then(() => (init_missing_start_date(), missing_start_date_exports)),
         "../validations/missing_tag.js": () => Promise.resolve().then(() => (init_missing_tag(), missing_tag_exports)),
         "../validations/mutually_exclusive_tags.js": () => Promise.resolve().then(() => (init_mutually_exclusive_tags(), mutually_exclusive_tags_exports)),
         "../validations/osm_api_limits.js": () => Promise.resolve().then(() => (init_osm_api_limits(), osm_api_limits_exports)),
@@ -97869,6 +102072,7 @@ ${currentIndent}`
       "preset_defaults": presetsCdnUrl + "dist/preset_defaults.min.json",
       "preset_fields": presetsCdnUrl + "dist/fields.min.json",
       "preset_presets": presetsCdnUrl + "dist/presets.min.json",
+      "wayback": "https://www.arcgis.com/sharing/rest/content/groups/0f3189e1d1414edfad860b697b7d8311?f=json",
       "wmf_sitematrix": wmfSitematrixCdnUrl.replace("{version}", "0.2") + "data/wikipedia.min.json"
     };
     let _cachedData = {};
@@ -97961,6 +102165,62 @@ ${currentIndent}`
     presetManager: () => _mainPresetIndex,
     presetPreset: () => presetPreset
   });
+  function setHistoricalDefaults(defaults3) {
+    if (defaults3.relation) {
+      defaults3.relation.unshift("type/chronology");
+    }
+  }
+  function addHistoricalPresets(presets) {
+    presets["type/chronology"] = {
+      icon: "temaki-clock",
+      fields: ["name"],
+      geometry: ["relation"],
+      tags: {
+        type: "chronology"
+      }
+    };
+  }
+  function addHistoricalFields(fields) {
+    if (fields.start_date) {
+      fields.start_date.type = "date";
+      fields.end_date = {
+        ...fields.start_date,
+        key: "end_date"
+      };
+    }
+    if (fields.source) {
+      fields.source.type = "source";
+      fields.source.source = false;
+      fields.source.keys = ["source", "source:url", "source:name", "source:date"];
+      for (let i3 = 1; i3 < 4; i3++) {
+        let id3 = "source:" + i3.toString();
+        let previousId = "source" + (i3 - 1 > 0 ? ":" + (i3 - 1).toString() : "");
+        fields[id3] = {
+          ...fields.source,
+          key: id3,
+          keys: [id3, id3 + ":url", id3 + ":name", id3 + ":date"],
+          // baseKey and index will be used to create a localized label for this field
+          baseKey: "source",
+          index: i3,
+          prerequisiteTag: {
+            keys: [
+              previousId,
+              previousId + ":url",
+              previousId + ":name",
+              previousId + ":date"
+            ]
+          }
+        };
+      }
+    }
+    fields.license = {
+      key: "license",
+      type: "combo",
+      universal: true,
+      snake_case: false,
+      caseSensitive: true
+    };
+  }
   function presetIndex() {
     const dispatch11 = dispatch_default("favoritePreset", "recentsChange");
     const MAX_RECENTS_TO_STORE = 30;
@@ -97994,6 +102254,9 @@ ${currentIndent}`
         _mainFileFetcher.get("preset_presets"),
         _mainFileFetcher.get("preset_fields")
       ]).then((vals) => {
+        setHistoricalDefaults(vals[1]);
+        addHistoricalPresets(vals[2]);
+        addHistoricalFields(vals[3]);
         _this.merge({
           categories: vals[0],
           defaults: vals[1],
@@ -98054,7 +102317,7 @@ ${currentIndent}`
           const def = d2.defaults[geometry2];
           if (Array.isArray(def)) {
             _defaults[geometry2] = presetCollection(
-              def.map((id2) => _presets[id2] || _categories[id2]).filter(Boolean)
+              def.map((id3) => _presets[id3] || _categories[id3]).filter(Boolean)
             );
           } else {
             delete _defaults[geometry2];
@@ -98165,8 +102428,8 @@ ${currentIndent}`
       let areaKeys = {};
       const presets = _this.collection.filter((p2) => !p2.suggestion && !p2.replacement);
       presets.forEach((p2) => {
-        const keys4 = p2.tags && Object.keys(p2.tags);
-        const key = keys4 && keys4.length && keys4[0];
+        const keys5 = p2.tags && Object.keys(p2.tags);
+        const key = keys5 && keys5.length && keys5[0];
         if (!key) return;
         if (ignore[key]) return;
         if (p2.geometry.indexOf("area") !== -1) {
@@ -98189,8 +102452,8 @@ ${currentIndent}`
     _this.lineTags = () => {
       return _this.collection.filter((lineTags, d2) => {
         if (d2.suggestion || d2.replacement || d2.searchable === false) return lineTags;
-        const keys4 = d2.tags && Object.keys(d2.tags);
-        const key = keys4 && keys4.length && keys4[0];
+        const keys5 = d2.tags && Object.keys(d2.tags);
+        const key = keys5 && keys5.length && keys5[0];
         if (!key) return lineTags;
         if (d2.geometry.indexOf("line") !== -1) {
           lineTags[key] = lineTags[key] || [];
@@ -98202,8 +102465,8 @@ ${currentIndent}`
     _this.pointTags = () => {
       return _this.collection.reduce((pointTags, d2) => {
         if (d2.suggestion || d2.replacement || d2.searchable === false) return pointTags;
-        const keys4 = d2.tags && Object.keys(d2.tags);
-        const key = keys4 && keys4.length && keys4[0];
+        const keys5 = d2.tags && Object.keys(d2.tags);
+        const key = keys5 && keys5.length && keys5[0];
         if (!key) return pointTags;
         if (d2.geometry.indexOf("point") !== -1) {
           pointTags[key] = pointTags[key] || {};
@@ -98215,8 +102478,8 @@ ${currentIndent}`
     _this.vertexTags = () => {
       return _this.collection.reduce((vertexTags, d2) => {
         if (d2.suggestion || d2.replacement || d2.searchable === false) return vertexTags;
-        const keys4 = d2.tags && Object.keys(d2.tags);
-        const key = keys4 && keys4.length && keys4[0];
+        const keys5 = d2.tags && Object.keys(d2.tags);
+        const key = keys5 && keys5.length && keys5[0];
         if (!key) return vertexTags;
         if (d2.geometry.indexOf("vertex") !== -1) {
           vertexTags[key] = vertexTags[key] || {};
@@ -98225,7 +102488,7 @@ ${currentIndent}`
         return vertexTags;
       }, {});
     };
-    _this.field = (id2) => _fields[id2];
+    _this.field = (id3) => _fields[id3];
     _this.universal = () => _universal;
     _this.defaults = (geometry2, n3, startWithRecents, loc, extraPresets) => {
       const validHere = Array.isArray(loc) ? _sharedLocationManager.locationSetsAt(loc) : null;
@@ -98233,18 +102496,18 @@ ${currentIndent}`
       if (startWithRecents) {
         recents = _this.recent().matchGeometry(geometry2).collection.filter((a2) => !a2.locationSetID || validHere && validHere[a2.locationSetID]).slice(0, MAX_RECENTS_TO_SHOW);
       }
-      let defaults2;
+      let defaults3;
       if (_addablePresetIDs) {
-        defaults2 = Array.from(_addablePresetIDs).map(function(id2) {
-          var preset = _this.item(id2);
+        defaults3 = Array.from(_addablePresetIDs).map(function(id3) {
+          var preset = _this.item(id3);
           if (preset && preset.matchGeometry(geometry2)) return preset;
           return null;
         }).filter(Boolean).filter((a2) => !a2.locationSetID || validHere[a2.locationSetID]);
       } else {
-        defaults2 = _defaults[geometry2].collection.concat(_this.fallback(geometry2));
+        defaults3 = _defaults[geometry2].collection.concat(_this.fallback(geometry2));
       }
       let result2 = presetCollection(
-        utilArrayUniq(recents.concat(defaults2).concat(extraPresets || [])).slice(0, n3 - 1)
+        utilArrayUniq(recents.concat(defaults3).concat(extraPresets || [])).slice(0, n3 - 1)
       );
       return result2;
     };
@@ -98287,12 +102550,12 @@ ${currentIndent}`
       return null;
     }
     _this.getGenericRibbonItems = () => {
-      return ["point", "line", "area"].map((id2) => RibbonItem(_this.item(id2), "generic"));
+      return ["point", "line", "area"].map((id3) => RibbonItem(_this.item(id3), "generic"));
     };
     _this.getAddable = () => {
       if (!_addablePresetIDs) return [];
-      return _addablePresetIDs.map((id2) => {
-        const preset = _this.item(id2);
+      return _addablePresetIDs.map((id3) => {
+        const preset = _this.item(id3);
         if (preset) return RibbonItem(preset, "addable");
         return null;
       }).filter(Boolean);
@@ -98441,7 +102704,7 @@ ${currentIndent}`
       init_collection();
       init_field2();
       init_preset();
-      init_util2();
+      init_util3();
       _mainPresetIndex = presetIndex();
     }
   });
@@ -98836,7 +103099,7 @@ ${currentIndent}`
     "modules/actions/add_member.js"() {
       "use strict";
       init_multipolygon();
-      init_util2();
+      init_util3();
     }
   });
 
@@ -99102,6 +103365,7 @@ ${currentIndent}`
     osmSetPointTags: () => osmSetPointTags,
     osmSetVertexTags: () => osmSetVertexTags,
     osmTagSuggestingArea: () => osmTagSuggestingArea,
+    osmTimelessFeatureTagValues: () => osmTimelessFeatureTagValues,
     osmTurn: () => osmTurn,
     osmVertexTags: () => osmVertexTags,
     osmWay: () => osmWay,
@@ -99193,6 +103457,7 @@ ${currentIndent}`
     uiFieldCheck: () => uiFieldCheck,
     uiFieldColour: () => uiFieldText,
     uiFieldCombo: () => uiFieldCombo,
+    uiFieldDate: () => uiFieldDate,
     uiFieldDefaultCheck: () => uiFieldCheck,
     uiFieldDirectionalCombo: () => uiFieldDirectionalCombo,
     uiFieldEmail: () => uiFieldText,
@@ -99259,6 +103524,7 @@ ${currentIndent}`
     uiSectionBackgroundOffset: () => uiSectionBackgroundOffset,
     uiSectionChanges: () => uiSectionChanges,
     uiSectionDataLayers: () => uiSectionDataLayers,
+    uiSectionDateRange: () => uiSectionDateRange,
     uiSectionEntityIssues: () => uiSectionEntityIssues,
     uiSectionFeatureType: () => uiSectionFeatureType,
     uiSectionMapFeatures: () => uiSectionMapFeatures,
@@ -99278,6 +103544,7 @@ ${currentIndent}`
     uiSettingsCustomBackground: () => uiSettingsCustomBackground,
     uiSettingsCustomData: () => uiSettingsCustomData,
     uiSidebar: () => uiSidebar,
+    uiSourceSubfield: () => uiSourceSubfield,
     uiSourceSwitch: () => uiSourceSwitch,
     uiSpinner: () => uiSpinner,
     uiSplash: () => uiSplash,
@@ -99306,11 +103573,13 @@ ${currentIndent}`
     utilCleanTags: () => utilCleanTags,
     utilCombinedTags: () => utilCombinedTags,
     utilCompareIDs: () => utilCompareIDs,
+    utilDatesOverlap: () => utilDatesOverlap,
     utilDeepMemberSelector: () => utilDeepMemberSelector,
     utilDetect: () => utilDetect,
     utilDisplayName: () => utilDisplayName,
     utilDisplayNameForPath: () => utilDisplayNameForPath,
     utilDisplayType: () => utilDisplayType,
+    utilEDTFFromOSMDateString: () => utilEDTFFromOSMDateString,
     utilEditDistance: () => utilEditDistance,
     utilEntityAndDeepMemberIDs: () => utilEntityAndDeepMemberIDs,
     utilEntityOrDeepMemberSelector: () => utilEntityOrDeepMemberSelector,
@@ -99325,6 +103594,7 @@ ${currentIndent}`
     utilHighlightEntities: () => utilHighlightEntities,
     utilKeybinding: () => utilKeybinding,
     utilNoAuto: () => utilNoAuto,
+    utilNormalizeDateString: () => utilNormalizeDateString,
     utilObjectOmit: () => utilObjectOmit,
     utilOldestID: () => utilOldestID,
     utilPrefixCSSProperty: () => utilPrefixCSSProperty,
@@ -99353,8 +103623,10 @@ ${currentIndent}`
     validationImpossibleOneway: () => validationImpossibleOneway,
     validationIncompatibleSource: () => validationIncompatibleSource,
     validationMaprules: () => validationMaprules,
+    validationMismatchedDates: () => validationMismatchedDates,
     validationMismatchedGeometry: () => validationMismatchedGeometry,
     validationMissingRole: () => validationMissingRole,
+    validationMissingStartDate: () => validationMissingStartDate,
     validationMissingTag: () => validationMissingTag,
     validationMutuallyExclusiveTags: () => validationMutuallyExclusiveTags,
     validationOsmApiLimits: () => validationOsmApiLimits,
@@ -99385,7 +103657,7 @@ ${currentIndent}`
       init_sections();
       init_settings();
       init_ui();
-      init_util2();
+      init_util3();
       init_validations();
       init_src32();
       debug = false;
@@ -99423,8 +103695,8 @@ ${currentIndent}`
           });
         });
       };
-      window.cancelIdleCallback = window.cancelIdleCallback || function(id2) {
-        window.cancelAnimationFrame(id2);
+      window.cancelIdleCallback = window.cancelIdleCallback || function(id3) {
+        window.cancelAnimationFrame(id3);
       };
       window.iD = index_exports;
     }

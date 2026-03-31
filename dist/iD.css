@@ -5409,11 +5409,19 @@
     display: flex;
     flex-flow: row nowrap;
 }
-.ideditor .form-field ul.rows li.labeled-input > div {
+.ideditor .form-field ul.rows li.labeled-input > div,
+.ideditor .form-field ul.rows li.labeled-input-source > div {
     flex: 1 1 auto;
     width: 100%;
     border-radius: 0;
     line-height: 0.95rem;
+}
+.ideditor .form-field ul.rows li.labeled-input div > span,
+.ideditor .form-field ul.rows li.labeled-input-source div > span{
+    vertical-align: middle;
+}
+.ideditor .form-field ul.rows li.labeled-input-source > div {
+    width: auto;
 }
 .ideditor .form-field ul.rows li input {
     border-radius: 0;
@@ -5438,10 +5446,12 @@
     display: table;
     width: 100%;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input {
+.ideditor .form-field ul.rows.rows-table li.labeled-input,
+.ideditor .form-field ul.rows.rows-table li.labeled-input-source {
     display: table-row;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input > div:first-child {
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:first-child,
+.ideditor .form-field ul.rows.rows-table li.labeled-input-source > div:first-child {
     display: table-cell;
     width: auto;
     max-width: 170px;
@@ -5449,7 +5459,8 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.ideditor .form-field ul.rows.rows-table li.labeled-input > div:nth-child(2) {
+.ideditor .form-field ul.rows.rows-table li.labeled-input > div:nth-child(2),
+.ideditor .form-field ul.rows.rows-table li.labeled-input-source > div:nth-child(2) {
     display: table-cell;
     width: auto;
 }
@@ -5880,8 +5891,13 @@
 }
 
 
-/* Field - roadheight and roadspeed
+/* Field - date, roadheight, and roadspeed
 ------------------------------------------------------- */
+.ideditor .form-field-input-source {
+    flex-direction: column;
+}
+.ideditor .form-field-input-date input.date-year,
+.ideditor .form-field-input-date input.date-month,
 .ideditor .form-field-input-roadheight input.roadheight-number,
 .ideditor .form-field-input-roadheight input.roadheight-secondary-number,
 .ideditor .form-field-input-roadspeed input.roadspeed-number {
@@ -5893,23 +5909,29 @@
     flex: 0 1 auto;
     width: 60px;
 }
+.ideditor .form-field-input-date input.date-era,
+.ideditor .form-field-input-date input.date-day,
 .ideditor .form-field-input-roadspeed input.roadspeed-unit {
     flex: 0 1 auto;
     width: 80px;
 }
+.ideditor[dir='ltr'] .form-field-input-date > input:first-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:first-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 0 4px;
 }
+.ideditor[dir='rtl'] .form-field-input-date > input:first-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:first-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadspeed > input:first-of-type {
     border-radius: 0 0 4px 0;
 }
+.ideditor[dir='ltr'] .form-field-input-date > input:last-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadheight > input:last-of-type,
 .ideditor[dir='ltr'] .form-field-input-roadspeed > input:last-of-type {
     border-left: 0;
     border-radius: 0 0 4px 0;
 }
+.ideditor[dir='rtl'] .form-field-input-date > input:last-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadheight > input:last-of-type,
 .ideditor[dir='rtl'] .form-field-input-roadspeed > input:last-of-type {
     border-right: 0;
@@ -5917,7 +5939,7 @@
 }
 
 
-/* Field - Localized Name
+/* Field - Localized Name, Date
 ------------------------------------------------------- */
 .ideditor .form-field-input-localized > input.localized-main {
     border-radius: 0 0 0 4px;
@@ -5925,10 +5947,12 @@
 .ideditor[dir='rtl'] .form-field-input-localized > input.localized-main {
     border-radius: 0 0 4px 0;
 }
-.ideditor .form-field-input-localized > button.localized-add {
+.ideditor .form-field-input-localized > button.localized-add,
+.ideditor .form-field-input-date > button.date-add {
     border-radius: 0 0 4px 0;
 }
-.ideditor[dir='rtl'] .form-field-input-localized > button.localized-add {
+.ideditor[dir='rtl'] .form-field-input-localized > button.localized-add,
+.ideditor[dir='rtl'] .form-field-input-date > button.date-add {
     border-radius: 0 0 0 4px;
 }
 
@@ -5941,18 +5965,24 @@
     cursor: not-allowed;
 }
 
-/* nested subfields for name in different languages */
-.ideditor .localized-multilingual {
+/* nested subfields for name in different languages or date in different formats */
+.ideditor .localized-multilingual,
+.ideditor .field-source,
+.ideditor .date-edtf {
     padding: 0 10px;
     flex-basis: 100%;
 }
-.ideditor .localized-multilingual .entry {
+.ideditor .localized-multilingual .entry,
+.ideditor .field-source .entry,
+.ideditor .date-edtf .entry {
     position: relative;
     overflow: hidden;
 }
 
 /* draws a little line connecting the multilingual field up to the name field */
-.ideditor .localized-multilingual .entry::before {
+.ideditor .localized-multilingual .entry::before,
+.ideditor .field-source .entry::before,
+.ideditor .date-edtf .entry::before {
     content: "";
     display: block;
     position: absolute;
@@ -5970,10 +6000,23 @@
     border-top-width: 0;
     width: 100%;
 }
-.ideditor .localized-multilingual .entry .localized-value {
+.ideditor .localized-multilingual .entry .localized-value,
+.ideditor .field-source .entry .field-source-value,
+.ideditor .date-edtf .entry .date-value {
     border-top-width: 0;
     border-radius: 0 0 4px 4px;
     width: 100%;
+}
+
+
+/* Field - Date
+------------------------------------------------------- */
+.ideditor .form-field-input-date > input.date-main + input.date-main,
+.ideditor .form-field-input-date > .combobox-caret + input.date-main {
+    border-left: 0;
+}
+.ideditor .form-field-input-date > input.date-main:last-of-type {
+    border-radius: 0;
 }
 
 
@@ -6795,6 +6838,10 @@
 .ideditor .add-row .add-relation,
 .ideditor .add-row .space-value {
     flex: 1 1 50%;
+}
+.ideditor .add-row .add-subkey {
+    width: 32px;
+    flex: 0 1 auto;
 }
 .ideditor .add-row .space-buttons {
     flex: 0 0 62px;
