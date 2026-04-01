@@ -63,7 +63,6 @@ function addHistoricalFields(fields) {
 
     for (let i = 1; i < 4; i++){
         let id = 'source:' + i.toString();
-        let previousId = 'source' + ((i-1) > 0 ? ':' + (i-1).toString() : '');
         fields[id] = {
             ...fields.source,
             key: id,
@@ -72,11 +71,24 @@ function addHistoricalFields(fields) {
             baseKey: 'source',
             index: i,
             prerequisiteTag: {
-                keys: [
-                    previousId,
-                    previousId + ':url',
-                    previousId + ':name',
-                    previousId + ':date']}};
+                prerequisiteFunction: (tag) => {
+                    if (tag.startsWith('source') ){
+                        // allow index 1 if there are any source tags present
+                        if (i === 1){
+                            return true;
+                        } else {
+                            // for index > 1, get the index in the tag with a regex
+                            let indexRegex = /(?<=\:)\d+/;
+                            let regexMatch = parseInt(tag.match(indexRegex), 10);
+                            // allow index i if the index directly before it is present OR if any index above it is present
+                            if (regexMatch === i-1 || regexMatch > i){
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }}
+            };
     }
   }
 

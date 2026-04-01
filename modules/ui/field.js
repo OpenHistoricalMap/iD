@@ -366,6 +366,10 @@ export function uiField(context, presetField, entityIDs, options) {
 
             if (!entityIDs.every(function(entityID) {
                 var entity = context.graph().entity(entityID);
+                if (prerequisiteTag.prerequisiteFunction) {
+                    // Return true if prerequisiteFunction returns true for any tag
+                    return Object.keys(entity.tags).some(prerequisiteTag.prerequisiteFunction);
+                }
                 if (prerequisiteTag.keys) {
                     // Return true if any key in prerequisiteTag.keys is present, return false otherwise
                     // If prerequisiteTag.keys is present, prerequisiteTag.key will be ignored
