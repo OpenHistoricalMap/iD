@@ -1,6 +1,6 @@
 {
   "name": "@openhistoricalmap/id",
-  "version": "2.39.5",
+  "version": "2.39.5-ohm.2",
   "description": "The OpenHistoricalMap fork of a friendly editor for OpenStreetMap",
   "main": "dist/iD.min.js",
   "repository": {
