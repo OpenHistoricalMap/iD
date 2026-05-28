@@ -70,7 +70,7 @@ export function uiSectionPresetFields(context) {
             _fieldsArr = [];
 
             // Ideally, everything in OpenHistoricalMap is dated and sourced.
-            let coreKeys = ['start_date', 'end_date', 'source'];
+            let coreKeys = ['start_date', 'end_date', 'source_preset'];
             coreKeys.forEach(key => {
                 let field = presetsManager.field(key);
                 if (field) {
@@ -78,7 +78,7 @@ export function uiSectionPresetFields(context) {
                 }
             });
 
-            let optionalCoreKeys = ['source:1', 'source:2', 'source:3'];
+            let optionalCoreKeys = ['source_preset:1', 'source_preset:2', 'source_preset:3'];
             optionalCoreKeys.forEach(key => {
                 let field = presetsManager.field(key);
                 if (field && !_fieldsArr.includes(field)) {

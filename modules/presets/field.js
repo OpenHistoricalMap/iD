@@ -10,12 +10,6 @@ export function presetField(fieldID, field, allFields) {
   allFields = allFields || {};
   let _this = Object.assign({}, field);   // shallow copy
 
-  // This handles fields that are composed of a base key and an index, like 'source:1'
-  let localizerFieldID = fieldID;
-  if (field.baseKey && field.index){
-    localizerFieldID = field.baseKey + '_multiple';
-  }
-
   _this.id = fieldID;
 
   // for use in classes, element ids, css selectors
@@ -27,14 +21,14 @@ export function presetField(fieldID, field, allFields) {
     return !_this.geometry || geometries.every(geom => _this.geometry.indexOf(geom) !== -1);
   };
 
-  _this.t = (scope, options) => t(localizer.coalesceStringIds([`custom_presets.fields.${localizerFieldID}.${scope}`,
-                                                               `_tagging.presets.fields.${localizerFieldID}.${scope}`]), options);
-  _this.t.html = (scope, options) => t.html(localizer.coalesceStringIds([`custom_presets.fields.${localizerFieldID}.${scope}`,
-                                                                         `_tagging.presets.fields.${localizerFieldID}.${scope}`]), options);
-  _this.t.append = (scope, options) => t.append(localizer.coalesceStringIds([`custom_presets.fields.${localizerFieldID}.${scope}`,
-                                                                             `_tagging.presets.fields.${localizerFieldID}.${scope}`]), options);
-  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`custom_presets.fields.${localizerFieldID}.${scope}`) ||
-    localizer.hasTextForStringId(`_tagging.presets.fields.${localizerFieldID}.${scope}`);
+  _this.t = (scope, options) => t(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                               `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.t.html = (scope, options) => t.html(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                                         `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.t.append = (scope, options) => t.append(localizer.coalesceStringIds([`custom_presets.fields.${fieldID}.${scope}`,
+                                                                             `_tagging.presets.fields.${fieldID}.${scope}`]), options);
+  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`custom_presets.fields.${fieldID}.${scope}`) ||
+    localizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
 
   _this.resolveReference = which => {
     const referenceRegex = /^\{(.*)\}$/;
@@ -49,10 +43,36 @@ export function presetField(fieldID, field, allFields) {
     return _this;
   };
 
-  _this.title = () => _this.overrideLabel || _this.resolveReference('label').t('label', { 'default': fieldID, 'index': field.index });
-  _this.label = () => _this.overrideLabel ?
-      selection => selection.text(_this.overrideLabel) :
-      _this.resolveReference('label').t.append('label', { 'default': fieldID, 'index': field.index });
+    _this.title = () => {
+      if (_this.overrideLabel) {
+        return _this.overrideLabel;
+      }
+      if (field.index) {
+        let baseLabel = _this.resolveReference('stringsCrossReference').t('label', { 'default': fieldID });
+        let index = field.index.toLocaleString(localizer.localeCode());
+        return t('inspector.indexed_field_label', {
+          'default': `${baseLabel} (${index})`,
+          field_name: baseLabel,
+          index,
+        });
+      }
+      return _this.resolveReference('label').t('label', { 'default': fieldID });
+    };
+    _this.label = () => {
+      if (_this.overrideLabel) {
+        return selection => selection.text(_this.overrideLabel);
+      }
+      if (field.index) {
+        let baseLabel = _this.resolveReference('stringsCrossReference').t('label', { 'default': fieldID });
+        let index = field.index.toLocaleString(localizer.localeCode());
+        return t.append('inspector.indexed_field_label', {
+          'default': `${baseLabel} (${index})`,
+          field_name: baseLabel,
+          index,
+        });
+      }
+      return _this.resolveReference('label').t.append('label', { 'default': fieldID });
+    };
 
   _this.placeholder = () => _this.resolveReference('placeholder').t('placeholder', { 'default': '' });
 

@@ -826,6 +826,7 @@ en:
     field_source: add source
     field_source_label: Source for {field_name}
     field_source_placeholder: URL, newspaper article, book...
+    indexed_field_label: "{field_name} ({index})"
     source:
       main_input: Description
       name: Name
@@ -2357,10 +2358,8 @@ en:
         label: License
         placeholder: CC0
         terms: copyleft, copyright
-      source:
+      source_preset:
         label: Source
-      source_multiple:
-        label: Source {index}
     presets:
       type/chronology:
         name: Chronology

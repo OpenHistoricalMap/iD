@@ -55,28 +55,36 @@ function addHistoricalFields(fields) {
     };
   }
 
-  // A combo box would encourage mappers to choose one of the suggestions, but we want mappers to be as detailed as possible.
   if (fields.source) {
-    fields.source.type = 'source';
+    // No need to provide a source for a source.
     fields.source.source = false;
-    fields.source.keys = ['source', 'source:url', 'source:name', 'source:date'];
+
+    // A combo box would encourage mappers to choose one of the suggestions, but we want mappers to be as detailed as possible.
+    // Reserve the simple combo box for the changeset editor, which populates the field via the API.
+    const subkeys = ['', ':url', ':name', ':date'];
+    fields.source_preset = {
+      ...fields.source,
+      id: 'source_preset',
+      type: 'source',
+      usage: 'preset',
+      keys: subkeys.map(sk => `source${sk}`)
+    };
 
     for (let i = 1; i < 4; i++){
-        let id = 'source:' + i.toString();
-        let previousId = 'source' + ((i-1) > 0 ? ':' + (i-1).toString() : '');
-        fields[id] = {
-            ...fields.source,
-            key: id,
-            keys: [id, id + ':url', id + ':name', id + ':date'],
-            // baseKey and index will be used to create a localized label for this field
-            baseKey: 'source',
-            index: i,
-            prerequisiteTag: {
-                keys: [
-                    previousId,
-                    previousId + ':url',
-                    previousId + ':name',
-                    previousId + ':date']}};
+      const id = `source_preset:${i}`;
+      const key = `source:${i}`;
+      fields[id] = {
+        ...fields.source_preset,
+        id,
+        key,
+        keys: subkeys.map(sk => `${key}${sk}`),
+        // stringsCrossReference and index will be used to create a localized label for this field
+        stringsCrossReference: '{source_preset}',
+        index: i,
+        prerequisiteTag: {
+          keys: subkeys.map(sk => `source${((i-1) > 0 ? ':' + (i-1) : '')}${sk}`)
+        }
+      };
     }
   }
 
