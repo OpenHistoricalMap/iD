@@ -1,4 +1,4 @@
-import { throttle } from 'es-toolkit/compat';
+import { throttle } from 'es-toolkit';
 import { select as d3_select } from 'd3-selection';
 import { svgPointTransform } from './helpers';
 import { services } from '../services';
@@ -61,21 +61,21 @@ export function svgMapillarySigns(projection, context, dispatch) {
 
         context.map().centerEase(d.loc);
 
-        const selectedImageId = service.getActiveImage() && service.getActiveImage().id;
+        const selectedImage = service.getActiveImage();
 
         service.getDetections(d.id).then(detections => {
             if (detections.length) {
-                const imageId = detections[0].image.id;
-                if (imageId === selectedImageId) {
+                const { image } = detections[0];
+                if (selectedImage && image.id === selectedImage.id) {
                     service
                         .highlightDetection(detections[0])
-                        .selectImage(context, imageId);
+                        .selectImage(image);
                 } else {
                     service.ensureViewerLoaded(context)
                         .then(function() {
                             service
                                 .highlightDetection(detections[0])
-                                .selectImage(context, imageId)
+                                .selectImage(image)
                                 .showViewer(context);
                         });
                 }

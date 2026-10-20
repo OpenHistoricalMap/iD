@@ -16,6 +16,7 @@ jobs:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
+      - run: npm run all
       - run: npm publish --provenance --access public --tag latest
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

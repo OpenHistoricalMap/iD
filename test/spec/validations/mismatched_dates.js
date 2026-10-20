@@ -6,7 +6,7 @@ describe('iD.validations.mismatched_dates', function () {
     });
 
     function createNode(tags) {
-        let n = iD.osmNode({id: 'n-1', loc: [4,4], tags: tags});
+        let n = new iD.osmNode({id: 'n-1', loc: [4,4], tags: tags});
 
         context.perform(
             iD.actionAddEntity(n)
