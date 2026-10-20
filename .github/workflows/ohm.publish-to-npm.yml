@@ -16,6 +16,7 @@ jobs:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm publish --provenance --access public
+      - run: pkgtag=$(npm version --json | jq -r '.["@openhistoricalmap/id"]')
+      - run: npm publish --provenance --access public --tag "${pkgtag#*-}"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
