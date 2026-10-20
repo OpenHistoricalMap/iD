@@ -2175,13 +2175,13 @@
     return values3;
   }
   function Blur2(blur3) {
-    return function(data, rx, ry = rx) {
+    return function(data2, rx, ry = rx) {
       if (!((rx = +rx) >= 0)) throw new RangeError("invalid rx");
       if (!((ry = +ry) >= 0)) throw new RangeError("invalid ry");
-      let { data: values3, width, height } = data;
+      let { data: values3, width, height } = data2;
       if (!((width = Math.floor(width)) >= 0)) throw new RangeError("invalid width");
       if (!((height = Math.floor(height !== void 0 ? height : values3.length / width)) >= 0)) throw new RangeError("invalid height");
-      if (!width || !height || !rx && !ry) return data;
+      if (!width || !height || !rx && !ry) return data2;
       const blurx = rx && blur3(rx);
       const blury = ry && blur3(ry);
       const temp = values3.slice();
@@ -2201,7 +2201,7 @@
         blurv(blury, temp, values3, width, height);
         blurv(blury, values3, temp, width, height);
       }
-      return data;
+      return data2;
     };
   }
   function blurh(blur3, T3, S3, w3, h2) {
@@ -3933,12 +3933,12 @@
       var pa = cartesian(a2), pb = cartesian(b11);
       var n1 = [1, 0, 0], n22 = cartesianCross(pa, pb), n2n2 = cartesianDot(n22, n22), n1n2 = n22[0], determinant = n2n2 - n1n2 * n1n2;
       if (!determinant) return !two && a2;
-      var c1 = cr * n2n2 / determinant, c2 = -cr * n1n2 / determinant, n1xn2 = cartesianCross(n1, n22), A9 = cartesianScale(n1, c1), B4 = cartesianScale(n22, c2);
-      cartesianAddInPlace(A9, B4);
-      var u4 = n1xn2, w3 = cartesianDot(A9, u4), uu = cartesianDot(u4, u4), t22 = w3 * w3 - uu * (cartesianDot(A9, A9) - 1);
+      var c1 = cr * n2n2 / determinant, c2 = -cr * n1n2 / determinant, n1xn2 = cartesianCross(n1, n22), A8 = cartesianScale(n1, c1), B4 = cartesianScale(n22, c2);
+      cartesianAddInPlace(A8, B4);
+      var u4 = n1xn2, w3 = cartesianDot(A8, u4), uu = cartesianDot(u4, u4), t22 = w3 * w3 - uu * (cartesianDot(A8, A8) - 1);
       if (t22 < 0) return;
       var t4 = sqrt(t22), q3 = cartesianScale(u4, (-w3 - t4) / uu);
-      cartesianAddInPlace(q3, A9);
+      cartesianAddInPlace(q3, A8);
       q3 = spherical(q3);
       if (!two) return q3;
       var lambda04 = a2[0], lambda12 = b11[0], phi02 = a2[1], phi12 = b11[1], z3;
@@ -3947,7 +3947,7 @@
       if (!polar && phi12 < phi02) z3 = phi02, phi02 = phi12, phi12 = z3;
       if (meridian ? polar ? phi02 + phi12 > 0 ^ q3[1] < (abs(q3[0] - lambda04) < epsilon ? phi02 : phi12) : phi02 <= q3[1] && q3[1] <= phi12 : delta2 > pi ^ (lambda04 <= q3[0] && q3[0] <= lambda12)) {
         var q1 = cartesianScale(u4, (-w3 + t4) / uu);
-        cartesianAddInPlace(q1, A9);
+        cartesianAddInPlace(q1, A8);
         return [q3, spherical(q1)];
       }
     }
@@ -5594,14 +5594,14 @@
   });
 
   // node_modules/d3-selection/src/selection/data.js
-  function bindIndex(parent, group2, enter, update3, exit, data) {
-    var i3 = 0, node, groupLength = group2.length, dataLength = data.length;
+  function bindIndex(parent, group2, enter, update3, exit, data2) {
+    var i3 = 0, node, groupLength = group2.length, dataLength = data2.length;
     for (; i3 < dataLength; ++i3) {
       if (node = group2[i3]) {
-        node.__data__ = data[i3];
+        node.__data__ = data2[i3];
         update3[i3] = node;
       } else {
-        enter[i3] = new EnterNode(parent, data[i3]);
+        enter[i3] = new EnterNode(parent, data2[i3]);
       }
     }
     for (; i3 < groupLength; ++i3) {
@@ -5610,8 +5610,8 @@
       }
     }
   }
-  function bindKey(parent, group2, enter, update3, exit, data, key) {
-    var i3, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group2.length, dataLength = data.length, keyValues = new Array(groupLength), keyValue;
+  function bindKey(parent, group2, enter, update3, exit, data2, key) {
+    var i3, node, nodeByKeyValue = /* @__PURE__ */ new Map(), groupLength = group2.length, dataLength = data2.length, keyValues = new Array(groupLength), keyValue;
     for (i3 = 0; i3 < groupLength; ++i3) {
       if (node = group2[i3]) {
         keyValues[i3] = keyValue = key.call(node, node.__data__, i3, group2) + "";
@@ -5623,13 +5623,13 @@
       }
     }
     for (i3 = 0; i3 < dataLength; ++i3) {
-      keyValue = key.call(parent, data[i3], i3, data) + "";
+      keyValue = key.call(parent, data2[i3], i3, data2) + "";
       if (node = nodeByKeyValue.get(keyValue)) {
         update3[i3] = node;
-        node.__data__ = data[i3];
+        node.__data__ = data2[i3];
         nodeByKeyValue.delete(keyValue);
       } else {
-        enter[i3] = new EnterNode(parent, data[i3]);
+        enter[i3] = new EnterNode(parent, data2[i3]);
       }
     }
     for (i3 = 0; i3 < groupLength; ++i3) {
@@ -5646,8 +5646,8 @@
     var bind2 = key ? bindKey : bindIndex, parents = this._parents, groups2 = this._groups;
     if (typeof value !== "function") value = constant_default2(value);
     for (var m3 = groups2.length, update3 = new Array(m3), enter = new Array(m3), exit = new Array(m3), j3 = 0; j3 < m3; ++j3) {
-      var parent = parents[j3], group2 = groups2[j3], groupLength = group2.length, data = arraylike(value.call(parent, parent && parent.__data__, j3, parents)), dataLength = data.length, enterGroup = enter[j3] = new Array(dataLength), updateGroup = update3[j3] = new Array(dataLength), exitGroup = exit[j3] = new Array(groupLength);
-      bind2(parent, group2, enterGroup, updateGroup, exitGroup, data, key);
+      var parent = parents[j3], group2 = groups2[j3], groupLength = group2.length, data2 = arraylike(value.call(parent, parent && parent.__data__, j3, parents)), dataLength = data2.length, enterGroup = enter[j3] = new Array(dataLength), updateGroup = update3[j3] = new Array(dataLength), exitGroup = exit[j3] = new Array(groupLength);
+      bind2(parent, group2, enterGroup, updateGroup, exitGroup, data2, key);
       for (var i0 = 0, i1 = 0, previous, next; i0 < dataLength; ++i0) {
         if (previous = enterGroup[i0]) {
           if (i0 >= i1) i1 = i0 + 1;
@@ -5661,8 +5661,8 @@
     update3._exit = exit;
     return update3;
   }
-  function arraylike(data) {
-    return typeof data === "object" && "length" in data ? data : Array.from(data);
+  function arraylike(data2) {
+    return typeof data2 === "object" && "length" in data2 ? data2 : Array.from(data2);
   }
   var init_data = __esm({
     "node_modules/d3-selection/src/selection/data.js"() {
@@ -10198,33 +10198,33 @@
           return encrypted;
         };
         ModeOfOperationCTR.prototype.decrypt = ModeOfOperationCTR.prototype.encrypt;
-        function pkcs7pad(data) {
-          data = coerceArray(data, true);
-          var padder = 16 - data.length % 16;
-          var result2 = createArray(data.length + padder);
-          copyArray2(data, result2);
-          for (var i3 = data.length; i3 < result2.length; i3++) {
+        function pkcs7pad(data2) {
+          data2 = coerceArray(data2, true);
+          var padder = 16 - data2.length % 16;
+          var result2 = createArray(data2.length + padder);
+          copyArray2(data2, result2);
+          for (var i3 = data2.length; i3 < result2.length; i3++) {
             result2[i3] = padder;
           }
           return result2;
         }
-        function pkcs7strip(data) {
-          data = coerceArray(data, true);
-          if (data.length < 16) {
+        function pkcs7strip(data2) {
+          data2 = coerceArray(data2, true);
+          if (data2.length < 16) {
             throw new Error("PKCS#7 invalid length");
           }
-          var padder = data[data.length - 1];
+          var padder = data2[data2.length - 1];
           if (padder > 16) {
             throw new Error("PKCS#7 padding byte out of range");
           }
-          var length2 = data.length - padder;
+          var length2 = data2.length - padder;
           for (var i3 = 0; i3 < padder; i3++) {
-            if (data[length2 + i3] !== padder) {
+            if (data2[length2 + i3] !== padder) {
               throw new Error("PKCS#7 invalid padding byte");
             }
           }
           var result2 = createArray(length2);
-          copyArray2(data, result2, 0, 0, length2);
+          copyArray2(data2, result2, 0, 0, length2);
           return result2;
         }
         var aesjs2 = {
@@ -10998,28 +10998,28 @@
       return rows;
     }
     function parseRows(text, f2) {
-      var rows = [], N3 = text.length, I2 = 0, n3 = 0, t4, eof = N3 <= 0, eol = false;
+      var rows = [], N3 = text.length, I3 = 0, n3 = 0, t4, eof = N3 <= 0, eol = false;
       if (text.charCodeAt(N3 - 1) === NEWLINE) --N3;
       if (text.charCodeAt(N3 - 1) === RETURN) --N3;
       function token() {
         if (eof) return EOF;
         if (eol) return eol = false, EOL;
-        var i3, j3 = I2, c2;
+        var i3, j3 = I3, c2;
         if (text.charCodeAt(j3) === QUOTE) {
-          while (I2++ < N3 && text.charCodeAt(I2) !== QUOTE || text.charCodeAt(++I2) === QUOTE) ;
-          if ((i3 = I2) >= N3) eof = true;
-          else if ((c2 = text.charCodeAt(I2++)) === NEWLINE) eol = true;
+          while (I3++ < N3 && text.charCodeAt(I3) !== QUOTE || text.charCodeAt(++I3) === QUOTE) ;
+          if ((i3 = I3) >= N3) eof = true;
+          else if ((c2 = text.charCodeAt(I3++)) === NEWLINE) eol = true;
           else if (c2 === RETURN) {
             eol = true;
-            if (text.charCodeAt(I2) === NEWLINE) ++I2;
+            if (text.charCodeAt(I3) === NEWLINE) ++I3;
           }
           return text.slice(j3 + 1, i3 - 1).replace(/""/g, '"');
         }
-        while (I2 < N3) {
-          if ((c2 = text.charCodeAt(i3 = I2++)) === NEWLINE) eol = true;
+        while (I3 < N3) {
+          if ((c2 = text.charCodeAt(i3 = I3++)) === NEWLINE) eol = true;
           else if (c2 === RETURN) {
             eol = true;
-            if (text.charCodeAt(I2) === NEWLINE) ++I2;
+            if (text.charCodeAt(I3) === NEWLINE) ++I3;
           } else if (c2 !== DELIMITER) continue;
           return text.slice(j3, i3);
         }
@@ -11255,8 +11255,8 @@
     return Math.abs(x3 = Math.round(x3)) >= 1e21 ? x3.toLocaleString("en").replace(/,/g, "") : x3.toString(10);
   }
   function formatDecimalParts(x3, p2) {
-    if ((i3 = (x3 = p2 ? x3.toExponential(p2 - 1) : x3.toExponential()).indexOf("e")) < 0) return null;
-    var i3, coefficient = x3.slice(0, i3);
+    if (!isFinite(x3) || x3 === 0) return null;
+    var i3 = (x3 = p2 ? x3.toExponential(p2 - 1) : x3.toExponential()).indexOf("e"), coefficient = x3.slice(0, i3);
     return [
       coefficient.length > 1 ? coefficient[0] + coefficient.slice(2) : coefficient,
       +x3.slice(i3 + 1)
@@ -11375,7 +11375,7 @@
   // node_modules/d3-format/src/formatPrefixAuto.js
   function formatPrefixAuto_default(x3, p2) {
     var d2 = formatDecimalParts(x3, p2);
-    if (!d2) return x3 + "";
+    if (!d2) return prefixExponent = void 0, x3.toPrecision(p2);
     var coefficient = d2[0], exponent2 = d2[1], i3 = exponent2 - (prefixExponent = Math.max(-8, Math.min(8, Math.floor(exponent2 / 3))) * 3) + 1, n3 = coefficient.length;
     return i3 === n3 ? coefficient : i3 > n3 ? coefficient + new Array(i3 - n3 + 1).join("0") : i3 > 0 ? coefficient.slice(0, i3) + "." + coefficient.slice(i3) : "0." + new Array(1 - i3).join("0") + formatDecimalParts(x3, Math.max(0, p2 + i3 - 1))[0];
   }
@@ -11436,13 +11436,13 @@
   // node_modules/d3-format/src/locale.js
   function locale_default(locale3) {
     var group2 = locale3.grouping === void 0 || locale3.thousands === void 0 ? identity_default3 : formatGroup_default(map2.call(locale3.grouping, Number), locale3.thousands + ""), currencyPrefix = locale3.currency === void 0 ? "" : locale3.currency[0] + "", currencySuffix = locale3.currency === void 0 ? "" : locale3.currency[1] + "", decimal = locale3.decimal === void 0 ? "." : locale3.decimal + "", numerals = locale3.numerals === void 0 ? identity_default3 : formatNumerals_default(map2.call(locale3.numerals, String)), percent = locale3.percent === void 0 ? "%" : locale3.percent + "", minus = locale3.minus === void 0 ? "\u2212" : locale3.minus + "", nan = locale3.nan === void 0 ? "NaN" : locale3.nan + "";
-    function newFormat(specifier) {
+    function newFormat(specifier, options) {
       specifier = formatSpecifier(specifier);
       var fill3 = specifier.fill, align = specifier.align, sign2 = specifier.sign, symbol = specifier.symbol, zero4 = specifier.zero, width = specifier.width, comma = specifier.comma, precision3 = specifier.precision, trim3 = specifier.trim, type2 = specifier.type;
       if (type2 === "n") comma = true, type2 = "g";
       else if (!formatTypes_default[type2]) precision3 === void 0 && (precision3 = 12), trim3 = true, type2 = "g";
       if (zero4 || fill3 === "0" && align === "=") zero4 = true, fill3 = "0", align = "=";
-      var prefix = symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : "", suffix = symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "";
+      var prefix = (options && options.prefix !== void 0 ? options.prefix : "") + (symbol === "$" ? currencyPrefix : symbol === "#" && /[boxX]/.test(type2) ? "0" + type2.toLowerCase() : ""), suffix = (symbol === "$" ? currencySuffix : /[%p]/.test(type2) ? percent : "") + (options && options.suffix !== void 0 ? options.suffix : "");
       var formatType = formatTypes_default[type2], maybeSuffix = /[defgprs%]/.test(type2);
       precision3 = precision3 === void 0 ? 6 : /[gprs]/.test(type2) ? Math.max(1, Math.min(21, precision3)) : Math.max(0, Math.min(20, precision3));
       function format3(value) {
@@ -11457,7 +11457,7 @@
           if (trim3) value = formatTrim_default(value);
           if (valueNegative && +value === 0 && sign2 !== "+") valueNegative = false;
           valuePrefix = (valueNegative ? sign2 === "(" ? sign2 : minus : sign2 === "-" || sign2 === "(" ? "" : sign2) + valuePrefix;
-          valueSuffix = (type2 === "s" ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign2 === "(" ? ")" : "");
+          valueSuffix = (type2 === "s" && !isNaN(value) && prefixExponent !== void 0 ? prefixes[8 + prefixExponent / 3] : "") + valueSuffix + (valueNegative && sign2 === "(" ? ")" : "");
           if (maybeSuffix) {
             i3 = -1, n3 = value.length;
             while (++i3 < n3) {
@@ -11494,9 +11494,9 @@
       return format3;
     }
     function formatPrefix2(specifier, value) {
-      var f2 = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier)), e3 = Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3, k3 = Math.pow(10, -e3), prefix = prefixes[8 + e3 / 3];
+      var e3 = Math.max(-8, Math.min(8, Math.floor(exponent_default(value) / 3))) * 3, k3 = Math.pow(10, -e3), f2 = newFormat((specifier = formatSpecifier(specifier), specifier.type = "f", specifier), { suffix: prefixes[8 + e3 / 3] });
       return function(value2) {
-        return f2(k3 * value2) + prefix;
+        return f2(k3 * value2);
       };
     }
     return {
@@ -12511,13 +12511,13 @@
         return string.join("");
       };
     }
-    function newParse(specifier, Z5) {
+    function newParse(specifier, Z4) {
       return function(string) {
         var d2 = newDate(1900, void 0, 1), i3 = parseSpecifier(d2, specifier, string += "", 0), week, day;
         if (i3 != string.length) return null;
         if ("Q" in d2) return new Date(d2.Q);
         if ("s" in d2) return new Date(d2.s * 1e3 + ("L" in d2 ? d2.L : 0));
-        if (Z5 && !("Z" in d2)) d2.Z = 0;
+        if (Z4 && !("Z" in d2)) d2.Z = 0;
         if ("p" in d2) d2.H = d2.H % 12 + d2.p * 12;
         if (d2.m === void 0) d2.m = "q" in d2 ? d2.q : 0;
         if ("V" in d2) {
@@ -26391,12 +26391,12 @@ ${source}
         static compute(value) {
           return value.split("").reduce((memo, c2, idx) => memo | (SYMBOL.test(c2) ? pow3(2, idx) : 0), 0);
         }
-        static values(mask2, digit = 0, normalize2 = true) {
+        static values(mask2, digit = 0, normalize3 = true) {
           let num2 = _Bitmask.numbers(mask2, digit).split("");
           let values3 = [Number(num2.slice(0, 4).join(""))];
           if (num2.length > 4) values3.push(Number(num2.slice(4, 6).join("")));
           if (num2.length > 6) values3.push(Number(num2.slice(6, 8).join("")));
-          return normalize2 ? _Bitmask.normalize(values3) : values3;
+          return normalize3 ? _Bitmask.normalize(values3) : values3;
         }
         static numbers(mask2, digit = 0) {
           return mask2.replace(SYMBOLS, digit);
@@ -26726,8 +26726,8 @@ ${source}
         function StreamLexer() {
           this.reset("");
         }
-        StreamLexer.prototype.reset = function(data, state) {
-          this.buffer = data;
+        StreamLexer.prototype.reset = function(data2, state) {
+          this.buffer = data2;
           this.index = 0;
           this.line = state ? state.line : 1;
           this.lastLineBreak = state ? -state.col : 0;
@@ -27025,11 +27025,11 @@ ${source}
   });
 
   // node_modules/edtf/src/util.js
-  function num(data) {
-    return Number(Array.isArray(data) ? data.join("") : data);
+  function num(data2) {
+    return Number(Array.isArray(data2) ? data2.join("") : data2);
   }
-  function join2(data) {
-    return data.join("");
+  function join2(data2) {
+    return data2.join("");
   }
   function zero3() {
     return 0;
@@ -27038,33 +27038,33 @@ ${source}
     return null;
   }
   function pick2(...args) {
-    return args.length === 1 ? (data) => data[args[0]] : (data) => concat2(data, args);
+    return args.length === 1 ? (data2) => data2[args[0]] : (data2) => concat2(data2, args);
   }
   function pluck(...args) {
-    return (data) => args.map((i3) => data[i3]);
+    return (data2) => args.map((i3) => data2[i3]);
   }
-  function concat2(data, idx = data.keys()) {
-    return Array.from(idx).reduce((memo, i3) => data[i3] !== null ? memo.concat(data[i3]) : memo, []);
+  function concat2(data2, idx = data2.keys()) {
+    return Array.from(idx).reduce((memo, i3) => data2[i3] !== null ? memo.concat(data2[i3]) : memo, []);
   }
   function merge3(...args) {
     if (typeof args[args.length - 1] === "object")
       var extra = args.pop();
-    return (data) => assign2(args.reduce((a2, i3) => assign2(a2, data[i3]), {}), extra);
+    return (data2) => assign2(args.reduce((a2, i3) => assign2(a2, data2[i3]), {}), extra);
   }
   function interval2(level) {
-    return (data) => ({
-      values: [data[0], data[2]],
+    return (data2) => ({
+      values: [data2[0], data2[2]],
       type: "Interval",
       level
     });
   }
-  function masked(type2 = "unspecified", symbol = "X", normalize2 = true) {
-    return (data, _3, reject2) => {
-      data = data.join("");
-      let negative = data.startsWith("-");
-      let mask2 = data.replace(/-/g, "");
+  function masked(type2 = "unspecified", symbol = "X", normalize3 = true) {
+    return (data2, _3, reject2) => {
+      data2 = data2.join("");
+      let negative = data2.startsWith("-");
+      let mask2 = data2.replace(/-/g, "");
       if (mask2.indexOf(symbol) === -1) return reject2;
-      let values3 = Bitmask.values(mask2, 0, normalize2);
+      let values3 = Bitmask.values(mask2, 0, normalize3);
       if (negative) values3[0] = -values3[0];
       return {
         values: values3,
@@ -27107,9 +27107,9 @@ ${source}
     let m3 = String(abs7 % 60).padStart(2, "0");
     return `${sign2}${h2}:${m3}`;
   }
-  function datetime(data) {
-    let offset = data[3];
-    let values3 = Bitmask.normalize(data[0].map(Number)).concat(data[2]);
+  function datetime(data2) {
+    let offset = data2[3];
+    let values3 = Bitmask.normalize(data2[0].map(Number)).concat(data2[2]);
     let timeZone;
     if (offset == null && !!defaults2.offset) {
       if (typeof defaults2.offset === "number") {
@@ -27135,8 +27135,8 @@ ${source}
       values: values3.map(Number)
     };
   }
-  function list(data) {
-    return assign2({ values: data[1], level: 2 }, data[0], data[2]);
+  function list(data2) {
+    return assign2({ values: data2[1], level: 2 }, data2[0], data2[2]);
   }
   function qualified(fn, level = 2) {
     return ([parts], _3, reject2) => {
@@ -27195,19 +27195,19 @@ ${source}
         { "name": "L0", "symbols": ["century"], "postprocess": id2 },
         { "name": "L0", "symbols": ["L0i"], "postprocess": id2 },
         { "name": "L0i", "symbols": ["date_time", { "literal": "/" }, "date_time"], "postprocess": interval2(0) },
-        { "name": "century", "symbols": ["positive_century"], "postprocess": (data) => century(data[0]) },
+        { "name": "century", "symbols": ["positive_century"], "postprocess": (data2) => century(data2[0]) },
         { "name": "century$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner(d2) {
           return d2.join("");
         } },
-        { "name": "century", "symbols": ["century$string$1"], "postprocess": (data) => century(0) },
-        { "name": "century", "symbols": [{ "literal": "-" }, "positive_century"], "postprocess": (data) => century(-data[1]) },
+        { "name": "century", "symbols": ["century$string$1"], "postprocess": (data2) => century(0) },
+        { "name": "century", "symbols": [{ "literal": "-" }, "positive_century"], "postprocess": (data2) => century(-data2[1]) },
         { "name": "positive_century", "symbols": ["positive_digit", "digit"], "postprocess": num },
         { "name": "positive_century", "symbols": [{ "literal": "0" }, "positive_digit"], "postprocess": num },
         { "name": "date_time", "symbols": ["date"], "postprocess": id2 },
         { "name": "date_time", "symbols": ["datetime"], "postprocess": id2 },
-        { "name": "date", "symbols": ["year"], "postprocess": (data) => date(data) },
-        { "name": "date", "symbols": ["year_month"], "postprocess": (data) => date(data[0]) },
-        { "name": "date", "symbols": ["year_month_day"], "postprocess": (data) => date(data[0]) },
+        { "name": "date", "symbols": ["year"], "postprocess": (data2) => date(data2) },
+        { "name": "date", "symbols": ["year_month"], "postprocess": (data2) => date(data2[0]) },
+        { "name": "date", "symbols": ["year_month_day"], "postprocess": (data2) => date(data2[0]) },
         { "name": "year", "symbols": ["positive_year"], "postprocess": id2 },
         { "name": "year", "symbols": ["negative_year"], "postprocess": id2 },
         { "name": "year$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner2(d2) {
@@ -27258,11 +27258,11 @@ ${source}
         { "name": "minutes", "symbols": ["d00_59"], "postprocess": num },
         { "name": "seconds", "symbols": ["d00_59"], "postprocess": num },
         { "name": "milliseconds", "symbols": [] },
-        { "name": "milliseconds", "symbols": [{ "literal": "." }, "d3s"], "postprocess": (data) => num(data.slice(1)) },
+        { "name": "milliseconds", "symbols": [{ "literal": "." }, "d3s"], "postprocess": (data2) => num(data2.slice(1)) },
         { "name": "timezone", "symbols": [{ "literal": "Z" }], "postprocess": zero3 },
         { "name": "timezone$subexpression$1", "symbols": [{ "literal": "-" }] },
         { "name": "timezone$subexpression$1", "symbols": [{ "literal": "\u2212" }] },
-        { "name": "timezone", "symbols": ["timezone$subexpression$1", "offset"], "postprocess": (data) => -data[1] },
+        { "name": "timezone", "symbols": ["timezone$subexpression$1", "offset"], "postprocess": (data2) => -data2[1] },
         { "name": "timezone", "symbols": [{ "literal": "+" }, "positive_offset"], "postprocess": pick2(1) },
         { "name": "positive_offset", "symbols": ["offset"], "postprocess": id2 },
         { "name": "positive_offset$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner8(d2) {
@@ -27288,7 +27288,7 @@ ${source}
         { "name": "positive_offset$ebnf$2", "symbols": [], "postprocess": function(d2) {
           return null;
         } },
-        { "name": "positive_offset", "symbols": ["positive_offset$subexpression$1", "positive_offset$ebnf$2", "minutes"], "postprocess": (data) => num(data[0]) * 60 + data[2] },
+        { "name": "positive_offset", "symbols": ["positive_offset$subexpression$1", "positive_offset$ebnf$2", "minutes"], "postprocess": (data2) => num(data2[0]) * 60 + data2[2] },
         { "name": "positive_offset$string$3", "symbols": [{ "literal": "1" }, { "literal": "4" }], "postprocess": function joiner12(d2) {
           return d2.join("");
         } },
@@ -27300,12 +27300,12 @@ ${source}
           return d2.join("");
         } },
         { "name": "positive_offset", "symbols": ["positive_offset$string$3", "positive_offset$ebnf$3", "positive_offset$string$4"], "postprocess": () => 840 },
-        { "name": "positive_offset", "symbols": ["d00_14"], "postprocess": (data) => num(data[0]) * 60 },
+        { "name": "positive_offset", "symbols": ["d00_14"], "postprocess": (data2) => num(data2[0]) * 60 },
         { "name": "offset$ebnf$1", "symbols": [{ "literal": ":" }], "postprocess": id2 },
         { "name": "offset$ebnf$1", "symbols": [], "postprocess": function(d2) {
           return null;
         } },
-        { "name": "offset", "symbols": ["d01_11", "offset$ebnf$1", "minutes"], "postprocess": (data) => num(data[0]) * 60 + data[2] },
+        { "name": "offset", "symbols": ["d01_11", "offset$ebnf$1", "minutes"], "postprocess": (data2) => num(data2[0]) * 60 + data2[2] },
         { "name": "offset$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner14(d2) {
           return d2.join("");
         } },
@@ -27313,7 +27313,7 @@ ${source}
         { "name": "offset$ebnf$2", "symbols": [], "postprocess": function(d2) {
           return null;
         } },
-        { "name": "offset", "symbols": ["offset$string$1", "offset$ebnf$2", "d01_59"], "postprocess": (data) => num(data[2]) },
+        { "name": "offset", "symbols": ["offset$string$1", "offset$ebnf$2", "d01_59"], "postprocess": (data2) => num(data2[2]) },
         { "name": "offset$string$2", "symbols": [{ "literal": "1" }, { "literal": "2" }], "postprocess": function joiner15(d2) {
           return d2.join("");
         } },
@@ -27325,7 +27325,7 @@ ${source}
           return d2.join("");
         } },
         { "name": "offset", "symbols": ["offset$string$2", "offset$ebnf$3", "offset$string$3"], "postprocess": () => 720 },
-        { "name": "offset", "symbols": ["d01_12"], "postprocess": (data) => num(data[0]) * 60 },
+        { "name": "offset", "symbols": ["d01_12"], "postprocess": (data2) => num(data2[0]) * 60 },
         { "name": "L1", "symbols": ["L1d"], "postprocess": id2 },
         { "name": "L1", "symbols": ["L1Y"], "postprocess": id2 },
         { "name": "L1", "symbols": ["L1S"], "postprocess": id2 },
@@ -27372,11 +27372,11 @@ ${source}
           return d2.join("");
         } },
         { "name": "L1X", "symbols": ["L1X$string$7"], "postprocess": masked() },
-        { "name": "L1Y", "symbols": [{ "literal": "Y" }, "d5+"], "postprocess": (data) => year([num(data[1])], 1) },
+        { "name": "L1Y", "symbols": [{ "literal": "Y" }, "d5+"], "postprocess": (data2) => year([num(data2[1])], 1) },
         { "name": "L1Y$string$1", "symbols": [{ "literal": "Y" }, { "literal": "-" }], "postprocess": function joiner25(d2) {
           return d2.join("");
         } },
-        { "name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": (data) => year([-num(data[1])], 1) },
+        { "name": "L1Y", "symbols": ["L1Y$string$1", "d5+"], "postprocess": (data2) => year([-num(data2[1])], 1) },
         { "name": "UA", "symbols": [{ "literal": "?" }], "postprocess": () => ({ uncertain: true }) },
         { "name": "UA", "symbols": [{ "literal": "~" }], "postprocess": () => ({ approximate: true }) },
         { "name": "UA", "symbols": [{ "literal": "%" }], "postprocess": () => ({ approximate: true, uncertain: true }) },
@@ -27398,7 +27398,7 @@ ${source}
         { "name": "ua_date", "symbols": ["ua_year"], "postprocess": qualified(date) },
         { "name": "ua_date", "symbols": ["ua_year_month"], "postprocess": qualified(date) },
         { "name": "ua_date", "symbols": ["ua_year_month_day"], "postprocess": qualified(date) },
-        { "name": "ua_year", "symbols": ["UA", "year"], "postprocess": (data) => [data] },
+        { "name": "ua_year", "symbols": ["UA", "year"], "postprocess": (data2) => [data2] },
         { "name": "ua_year_month$macrocall$2", "symbols": ["year"] },
         { "name": "ua_year_month$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
         { "name": "ua_year_month$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
@@ -27430,7 +27430,7 @@ ${source}
           return null;
         } },
         { "name": "ua_year_month_day$macrocall$1", "symbols": ["ua_year_month_day$macrocall$1$ebnf$1", "ua_year_month_day$macrocall$2", "ua_year_month_day$macrocall$1$ebnf$2"] },
-        { "name": "ua_year_month_day", "symbols": ["ua_year_month_day$macrocall$1", { "literal": "-" }, "ua_month_day"], "postprocess": (data) => [data[0], ...data[2]] },
+        { "name": "ua_year_month_day", "symbols": ["ua_year_month_day$macrocall$1", { "literal": "-" }, "ua_month_day"], "postprocess": (data2) => [data2[0], ...data2[2]] },
         { "name": "ua_month_day$macrocall$2", "symbols": ["m31"] },
         { "name": "ua_month_day$macrocall$1$ebnf$1", "symbols": ["UA"], "postprocess": id2 },
         { "name": "ua_month_day$macrocall$1$ebnf$1", "symbols": [], "postprocess": function(d2) {
@@ -27516,21 +27516,21 @@ ${source}
         { "name": "L2Y", "symbols": ["exp_year"], "postprocess": id2 },
         { "name": "L2Y", "symbols": ["exp_year", "significant_digits"], "postprocess": merge3(0, 1) },
         { "name": "L2Y", "symbols": ["L1Y", "significant_digits"], "postprocess": merge3(0, 1, { level: 2 }) },
-        { "name": "L2Y", "symbols": ["year", "significant_digits"], "postprocess": (data) => year([data[0]], 2, data[1]) },
-        { "name": "significant_digits", "symbols": [{ "literal": "S" }, "positive_digit"], "postprocess": (data) => ({ significant: num(data[1]) }) },
-        { "name": "exp_year", "symbols": [{ "literal": "Y" }, "exp"], "postprocess": (data) => year([data[1]], 2) },
+        { "name": "L2Y", "symbols": ["year", "significant_digits"], "postprocess": (data2) => year([data2[0]], 2, data2[1]) },
+        { "name": "significant_digits", "symbols": [{ "literal": "S" }, "positive_digit"], "postprocess": (data2) => ({ significant: num(data2[1]) }) },
+        { "name": "exp_year", "symbols": [{ "literal": "Y" }, "exp"], "postprocess": (data2) => year([data2[1]], 2) },
         { "name": "exp_year$string$1", "symbols": [{ "literal": "Y" }, { "literal": "-" }], "postprocess": function joiner28(d2) {
           return d2.join("");
         } },
-        { "name": "exp_year", "symbols": ["exp_year$string$1", "exp"], "postprocess": (data) => year([-data[1]], 2) },
-        { "name": "exp", "symbols": ["digits", { "literal": "E" }, "digits"], "postprocess": (data) => num(data[0]) * Math.pow(10, num(data[2])) },
+        { "name": "exp_year", "symbols": ["exp_year$string$1", "exp"], "postprocess": (data2) => year([-data2[1]], 2) },
+        { "name": "exp", "symbols": ["digits", { "literal": "E" }, "digits"], "postprocess": (data2) => num(data2[0]) * Math.pow(10, num(data2[2])) },
         { "name": "L2S", "symbols": ["year", { "literal": "-" }, "d25_41"], "postprocess": (d2) => season([d2[0], d2[2]], 2) },
-        { "name": "decade", "symbols": ["positive_decade"], "postprocess": (data) => decade(data[0]) },
+        { "name": "decade", "symbols": ["positive_decade"], "postprocess": (data2) => decade(data2[0]) },
         { "name": "decade$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }, { "literal": "0" }], "postprocess": function joiner29(d2) {
           return d2.join("");
         } },
         { "name": "decade", "symbols": ["decade$string$1"], "postprocess": () => decade(0) },
-        { "name": "decade", "symbols": [{ "literal": "-" }, "positive_decade"], "postprocess": (data) => decade(-data[1]) },
+        { "name": "decade", "symbols": [{ "literal": "-" }, "positive_decade"], "postprocess": (data2) => decade(-data2[1]) },
         { "name": "positive_decade", "symbols": ["positive_digit", "digit", "digit"], "postprocess": num },
         { "name": "positive_decade", "symbols": [{ "literal": "0" }, "positive_digit", "digit"], "postprocess": num },
         { "name": "positive_decade$string$1", "symbols": [{ "literal": "0" }, { "literal": "0" }], "postprocess": function joiner30(d2) {
@@ -27559,8 +27559,8 @@ ${source}
           return d2.join("");
         } },
         { "name": "RLB", "symbols": ["RLB$string$1"], "postprocess": () => ({ later: true }) },
-        { "name": "OL", "symbols": ["LI"], "postprocess": (data) => [data[0]] },
-        { "name": "OL", "symbols": ["OL", "_", { "literal": "," }, "_", "LI"], "postprocess": (data) => [...data[0], data[4]] },
+        { "name": "OL", "symbols": ["LI"], "postprocess": (data2) => [data2[0]] },
+        { "name": "OL", "symbols": ["OL", "_", { "literal": "," }, "_", "LI"], "postprocess": (data2) => [...data2[0], data2[4]] },
         { "name": "LI", "symbols": ["date"], "postprocess": id2 },
         { "name": "LI", "symbols": ["ua_date"], "postprocess": id2 },
         { "name": "LI", "symbols": ["L2X"], "postprocess": id2 },
@@ -27949,9 +27949,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/en-US.json
-  var require_en_US = __commonJS({
-    "node_modules/edtf/locale-data/en-US.json"(exports, module) {
-      module.exports = {
+  var en_US_default;
+  var init_en_US = __esm({
+    "node_modules/edtf/locale-data/en-US.json"() {
+      en_US_default = {
         locale: "en-US",
         date: {
           approximate: {
@@ -27970,9 +27971,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/es-ES.json
-  var require_es_ES = __commonJS({
-    "node_modules/edtf/locale-data/es-ES.json"(exports, module) {
-      module.exports = {
+  var es_ES_default;
+  var init_es_ES = __esm({
+    "node_modules/edtf/locale-data/es-ES.json"() {
+      es_ES_default = {
         locale: "es-ES",
         date: {
           approximate: {
@@ -27991,9 +27993,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/de-DE.json
-  var require_de_DE = __commonJS({
-    "node_modules/edtf/locale-data/de-DE.json"(exports, module) {
-      module.exports = {
+  var de_DE_default;
+  var init_de_DE = __esm({
+    "node_modules/edtf/locale-data/de-DE.json"() {
+      de_DE_default = {
         locale: "de-DE",
         date: {
           approximate: {
@@ -28012,9 +28015,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/fr-FR.json
-  var require_fr_FR = __commonJS({
-    "node_modules/edtf/locale-data/fr-FR.json"(exports, module) {
-      module.exports = {
+  var fr_FR_default;
+  var init_fr_FR = __esm({
+    "node_modules/edtf/locale-data/fr-FR.json"() {
+      fr_FR_default = {
         locale: "fr-FR",
         date: {
           approximate: {
@@ -28033,9 +28037,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/it-IT.json
-  var require_it_IT = __commonJS({
-    "node_modules/edtf/locale-data/it-IT.json"(exports, module) {
-      module.exports = {
+  var it_IT_default;
+  var init_it_IT = __esm({
+    "node_modules/edtf/locale-data/it-IT.json"() {
+      it_IT_default = {
         locale: "it-IT",
         date: {
           approximate: {
@@ -28054,9 +28059,10 @@ ${source}
   });
 
   // node_modules/edtf/locale-data/ja-JA.json
-  var require_ja_JA = __commonJS({
-    "node_modules/edtf/locale-data/ja-JA.json"(exports, module) {
-      module.exports = {
+  var ja_JA_default;
+  var init_ja_JA = __esm({
+    "node_modules/edtf/locale-data/ja-JA.json"() {
+      ja_JA_default = {
         locale: "ja-JA",
         date: {
           approximate: {
@@ -28074,63 +28080,67 @@ ${source}
     }
   });
 
-  // node_modules/edtf/locale-data/index.cjs
-  var require_locale_data = __commonJS({
-    "node_modules/edtf/locale-data/index.cjs"(exports, module) {
-      var en2 = require_en_US();
-      var es = require_es_ES();
-      var de3 = require_de_DE();
-      var fr = require_fr_FR();
-      var it3 = require_it_IT();
-      var ja = require_ja_JA();
-      var alias = (lang, ...regions) => {
+  // node_modules/edtf/locale-data/index.js
+  var data, alias, locale_data_default;
+  var init_locale_data = __esm({
+    "node_modules/edtf/locale-data/index.js"() {
+      init_en_US();
+      init_es_ES();
+      init_de_DE();
+      init_fr_FR();
+      init_it_IT();
+      init_ja_JA();
+      data = { en: en_US_default, es: es_ES_default, de: de_DE_default, fr: fr_FR_default, it: it_IT_default, ja: ja_JA_default };
+      alias = (lang, ...regions) => {
         for (let region of regions)
           data[`${lang}-${region}`] = data[lang];
       };
-      var data = { en: en2, es, de: de3, fr, it: it3, ja };
       alias("en", "AU", "CA", "GB", "NZ", "SA", "US");
       alias("de", "AT", "CH", "DE");
       alias("fr", "CH", "FR");
-      module.exports = data;
+      locale_data_default = data;
     }
   });
 
   // node_modules/edtf/src/format.js
-  function getCacheId(...args) {
-    let id3 = [];
-    for (let arg of args) {
-      if (arg && typeof arg === "object") {
-        id3.push(getOrderedProps(arg));
-      } else {
-        id3.push(arg);
-      }
+  function configure(level, options) {
+    options = { ...DEFAULTS[level], ...options };
+    switch (level) {
+      case 1:
+        options.month = void 0;
+      // eslint-disable-next-line no-fallthrough
+      case 2:
+        options.day = void 0;
+        options.weekday = void 0;
+      // eslint-disable-next-line no-fallthrough
+      case 3:
+        options.hour = void 0;
+        options.minute = void 0;
+        options.second = void 0;
     }
-    return JSON.stringify(id3);
+    return options;
   }
-  function getOrderedProps(obj) {
-    let props = [];
-    let keys5 = Object.getOwnPropertyNames(obj);
-    for (let key of keys5.sort()) {
-      props.push({ [key]: obj[key] });
-    }
-    return props;
+  function getCacheId(locale3, options) {
+    return `${locale3}:${JSON.stringify(normalize2(options))}`;
+  }
+  function normalize2(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([, b11]) => b11 != null).sort(([a2], [b11]) => a2.localeCompare(b11))
+    );
   }
   function getFormat(date2, locale3, options) {
-    let opts = assign3(
-      {},
-      OPTS[date2.precision],
-      options,
-      CONS[date2.precision]
-    );
+    let opts = configure(date2.precision, options);
     let id3 = getCacheId(locale3, opts);
     if (!format2.cache.has(id3)) {
+      if (format2.cache.size >= 64)
+        format2.cache.clear();
       format2.cache.set(id3, new Intl.DateTimeFormat(locale3, opts));
     }
     return format2.cache.get(id3);
   }
   function getPatternsFor(fmt) {
     const { locale: locale3, weekday, month, year: year2 } = fmt.resolvedOptions();
-    const lc = import_locale_data.default[locale3];
+    const lc = locale_data_default[locale3];
     if (lc == null) return null;
     const variant = weekday || month === "long" ? "long" : !month || year2 === "2-digit" ? "short" : "medium";
     return {
@@ -28177,12 +28187,11 @@ ${source}
     }
     return string;
   }
-  var import_locale_data, assign3, OPTS, CONS;
+  var DEFAULTS;
   var init_format = __esm({
     "node_modules/edtf/src/format.js"() {
-      import_locale_data = __toESM(require_locale_data(), 1);
-      ({ assign: assign3 } = Object);
-      OPTS = [
+      init_locale_data();
+      DEFAULTS = [
         {
           day: "numeric",
           month: "numeric",
@@ -28209,29 +28218,6 @@ ${source}
           year: "numeric",
           timeZone: "UTC",
           timeZoneName: void 0
-        }
-      ];
-      CONS = [
-        {},
-        {
-          month: void 0,
-          day: void 0,
-          weekday: void 0,
-          hour: void 0,
-          minute: void 0,
-          second: void 0
-        },
-        {
-          day: void 0,
-          weekday: void 0,
-          hour: void 0,
-          minute: void 0,
-          second: void 0
-        },
-        {
-          hour: void 0,
-          minute: void 0,
-          second: void 0
         }
       ];
       format2.cache = /* @__PURE__ */ new Map();
@@ -29828,9 +29814,9 @@ ${source}
     var results = [];
     var errors = [];
     inputs.forEach(function(d2, i3) {
-      func(d2, function done(err, data) {
+      func(d2, function done(err, data2) {
         errors[i3] = err;
-        results[i3] = data;
+        results[i3] = data2;
         remaining--;
         if (!remaining) callback(errors, results);
       });
@@ -34000,21 +33986,21 @@ ${source}
       return validValues.indexOf(s2) === -1 ? "unknown" : s2;
     });
   }
-  function mapToLanesObj(lanesObj, data, key) {
-    if (data.forward) {
-      data.forward.forEach(function(l2, i3) {
+  function mapToLanesObj(lanesObj, data2, key) {
+    if (data2.forward) {
+      data2.forward.forEach(function(l2, i3) {
         if (!lanesObj.forward[i3]) lanesObj.forward[i3] = {};
         lanesObj.forward[i3][key] = l2;
       });
     }
-    if (data.backward) {
-      data.backward.forEach(function(l2, i3) {
+    if (data2.backward) {
+      data2.backward.forEach(function(l2, i3) {
         if (!lanesObj.backward[i3]) lanesObj.backward[i3] = {};
         lanesObj.backward[i3][key] = l2;
       });
     }
-    if (data.unspecified) {
-      data.unspecified.forEach(function(l2, i3) {
+    if (data2.unspecified) {
+      data2.unspecified.forEach(function(l2, i3) {
         if (!lanesObj.unspecified[i3]) lanesObj.unspecified[i3] = {};
         lanesObj.unspecified[i3][key] = l2;
       });
@@ -38365,7 +38351,7 @@ ${source}
     "package.json"() {
       package_default = {
         name: "@openhistoricalmap/id",
-        version: "2.39.5-ohm.2",
+        version: "2.39.5-ohm.3",
         description: "The OpenHistoricalMap fork of a friendly editor for OpenStreetMap",
         main: "dist/iD.min.js",
         repository: {
@@ -38915,15 +38901,15 @@ ${source}
           }
           return false;
         }
-        load(data) {
-          if (!(data && data.length)) return this;
-          if (data.length < this._minEntries) {
-            for (let i3 = 0; i3 < data.length; i3++) {
-              this.insert(data[i3]);
+        load(data2) {
+          if (!(data2 && data2.length)) return this;
+          if (data2.length < this._minEntries) {
+            for (let i3 = 0; i3 < data2.length; i3++) {
+              this.insert(data2[i3]);
             }
             return this;
           }
-          let node = this._build(data.slice(), 0, data.length - 1, 0);
+          let node = this._build(data2.slice(), 0, data2.length - 1, 0);
           if (!this.data.children.length) {
             this.data = node;
           } else if (this.data.height === node.height) {
@@ -38995,8 +38981,8 @@ ${source}
         toJSON() {
           return this.data;
         }
-        fromJSON(data) {
-          this.data = data;
+        fromJSON(data2) {
+          this.data = data2;
           return this;
         }
         _all(node, result2) {
@@ -40135,11 +40121,11 @@ ${source}
   }
   function O(u4, e3) {
     if (e3) {
-      if (m.escapeTest.test(u4)) return u4.replace(m.escapeReplace, de);
-    } else if (m.escapeTestNoEncode.test(u4)) return u4.replace(m.escapeReplaceNoEncode, de);
+      if (m.escapeTest.test(u4)) return u4.replace(m.escapeReplace, ke);
+    } else if (m.escapeTestNoEncode.test(u4)) return u4.replace(m.escapeReplaceNoEncode, ke);
     return u4;
   }
-  function X5(u4) {
+  function J(u4) {
     try {
       u4 = encodeURI(u4).replace(m.percentDecode, "%");
     } catch {
@@ -40147,7 +40133,7 @@ ${source}
     }
     return u4;
   }
-  function J(u4, e3) {
+  function V7(u4, e3) {
     let t4 = u4.replace(m.findPipe, (i3, s2, a2) => {
       let o2 = false, l2 = s2;
       for (; --l2 >= 0 && a2[l2] === "\\"; ) o2 = !o2;
@@ -40158,7 +40144,7 @@ ${source}
     for (; r2 < n3.length; r2++) n3[r2] = n3[r2].trim().replace(m.slashPipe, "|");
     return n3;
   }
-  function E2(u4, e3, t4) {
+  function I(u4, e3, t4) {
     let n3 = u4.length;
     if (n3 === 0) return "";
     let r2 = 0;
@@ -40170,7 +40156,7 @@ ${source}
     }
     return u4.slice(0, n3 - r2);
   }
-  function ge(u4, e3) {
+  function de(u4, e3) {
     if (u4.indexOf(e3[1]) === -1) return -1;
     let t4 = 0;
     for (let n3 = 0; n3 < u4.length; n3++) if (u4[n3] === "\\") n3++;
@@ -40178,7 +40164,7 @@ ${source}
     else if (u4[n3] === e3[1] && (t4--, t4 < 0)) return n3;
     return t4 > 0 ? -2 : -1;
   }
-  function fe(u4, e3 = 0) {
+  function ge(u4, e3 = 0) {
     let t4 = e3, n3 = "";
     for (let r2 of u4) if (r2 === "	") {
       let i3 = 4 - t4 % 4;
@@ -40186,13 +40172,13 @@ ${source}
     } else n3 += r2, t4++;
     return n3;
   }
-  function me(u4, e3, t4, n3, r2) {
+  function fe(u4, e3, t4, n3, r2) {
     let i3 = e3.href, s2 = e3.title || null, a2 = u4[1].replace(r2.other.outputLinkReplace, "$1");
     n3.state.inLink = true;
     let o2 = { type: u4[0].charAt(0) === "!" ? "image" : "link", raw: t4, href: i3, title: s2, text: a2, tokens: n3.inlineTokens(a2) };
     return n3.state.inLink = false, o2;
   }
-  function it(u4, e3, t4) {
+  function nt(u4, e3, t4) {
     let n3 = u4.match(t4.other.indentCodeCompensation);
     if (n3 === null) return e3;
     let r2 = n3[1];
@@ -40208,20 +40194,20 @@ ${source}
   function g2(u4, e3) {
     return L.parse(u4, e3);
   }
-  var _a, T, _, Re, m, Te, Oe, we, A7, ye, N, re2, se, Pe, Q, Se, j, $e, _e, q, F, Le, ie, Me, U3, te, ze, Ee, Ie, Ae, oe, Ce, v, K2, ae, Be, le, De, qe, ue, ve, He, Ge, pe, Ze, Ne, ce, Qe, je, Fe, Ue, Ke, We, Xe, Je, Ve, Ye, D2, et, he, ke, tt, ne, W, nt, Z3, rt, C2, z, st, de, w, x, y, $, b, P2, B2, L, Ut, Kt, Wt, Xt, Jt, Vt, Yt, en;
+  var _a, T, _, be, m, Re, Te, Oe, C2, we, Q, se, ie, ye, j, Pe, F, Se, $e, v, U3, _e, oe, Le, K2, ne, Me, ze, Ee, Ie, ae, Ae, z, H, W, Ce, le, Be, De, qe, ue, ve, He, pe, Ze, Ge, Ne, Qe, je, Fe, Ue, Ke, We, Xe, q, Je, ce, he, Ve, re2, X5, Ye, N, et, B2, E2, tt, ke, w, x, y, $, b, P2, D2, L, Qt, jt, Ft, Ut, Kt, Wt, Xt, Jt;
   var init_marked_esm = __esm({
     "node_modules/marked/lib/marked.esm.js"() {
       T = M2();
       _ = { exec: () => null };
-      Re = (() => {
+      be = (() => {
         try {
           return !!new RegExp("(?<=1)(?<!1)");
         } catch {
           return false;
         }
-      })(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] +\S/, listReplaceTask: /^\[[ xX]\] +/, listTaskCheckbox: /\[[ xX]\]/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (u4) => new RegExp(`^( {0,3}${u4})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}#`), htmlBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}<(?:[a-z].*>|!--)`, "i"), blockquoteBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}>`) }, Te = /^(?:[ \t]*(?:\n|$))+/, Oe = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, we = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, A7 = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, ye = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, N = / {0,3}(?:[*+-]|\d{1,9}[.)])/, re2 = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, se = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), Pe = k(re2).replace(/bull/g, N).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), Q = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Se = /^[^\n]+/, j = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, $e = k(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", j).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), _e = k(/^(bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, N).getRegex(), q = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", F = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, Le = k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", F).replace("tag", q).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), ie = k(Q).replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), Me = k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", ie).getRegex(), U3 = { blockquote: Me, code: Oe, def: $e, fences: we, heading: ye, hr: A7, html: Le, lheading: se, list: _e, newline: Te, paragraph: ie, table: _, text: Se }, te = k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex(), ze = { ...U3, lheading: Pe, table: te, paragraph: k(Q).replace("hr", A7).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", te).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", q).getRegex() }, Ee = { ...U3, html: k(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", F).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: _, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: k(Q).replace("hr", A7).replace("heading", ` *#{1,6} *[^
-]`).replace("lheading", se).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ie = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ae = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, oe = /^( {2,}|\\)\n(?!\s*$)/, Ce = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, v = /[\p{P}\p{S}]/u, K2 = /[\s\p{P}\p{S}]/u, ae = /[^\s\p{P}\p{S}]/u, Be = k(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, K2).getRegex(), le = /(?!~)[\p{P}\p{S}]/u, De = /(?!~)[\s\p{P}\p{S}]/u, qe = /(?:[^\s\p{P}\p{S}]|~)/u, ue = /(?![*_])[\p{P}\p{S}]/u, ve = /(?![*_])[\s\p{P}\p{S}]/u, He = /(?:[^\s\p{P}\p{S}]|[*_])/u, Ge = k(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", Re ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), pe = /^(?:\*+(?:((?!\*)punct)|[^\s*]))|^_+(?:((?!_)punct)|([^\s_]))/, Ze = k(pe, "u").replace(/punct/g, v).getRegex(), Ne = k(pe, "u").replace(/punct/g, le).getRegex(), ce = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Qe = k(ce, "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), je = k(ce, "gu").replace(/notPunctSpace/g, qe).replace(/punctSpace/g, De).replace(/punct/g, le).getRegex(), Fe = k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, ae).replace(/punctSpace/g, K2).replace(/punct/g, v).getRegex(), Ue = k(/^~~?(?:((?!~)punct)|[^\s~])/, "u").replace(/punct/g, ue).getRegex(), Ke = "^[^~]+(?=[^~])|(?!~)punct(~~?)(?=[\\s]|$)|notPunctSpace(~~?)(?!~)(?=punctSpace|$)|(?!~)punctSpace(~~?)(?=notPunctSpace)|[\\s](~~?)(?!~)(?=punct)|(?!~)punct(~~?)(?!~)(?=punct)|notPunctSpace(~~?)(?=notPunctSpace)", We = k(Ke, "gu").replace(/notPunctSpace/g, He).replace(/punctSpace/g, ve).replace(/punct/g, ue).getRegex(), Xe = k(/\\(punct)/, "gu").replace(/punct/g, v).getRegex(), Je = k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), Ve = k(F).replace("(?:-->|$)", "-->").getRegex(), Ye = k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", Ve).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), D2 = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+[^`]*?`+(?!`)|[^\[\]\\`])*?/, et = k(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)(title))?\s*\)/).replace("label", D2).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), he = k(/^!?\[(label)\]\[(ref)\]/).replace("label", D2).replace("ref", j).getRegex(), ke = k(/^!?\[(ref)\](?:\[\])?/).replace("ref", j).getRegex(), tt = k("reflink|nolink(?!\\()", "g").replace("reflink", he).replace("nolink", ke).getRegex(), ne = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, W = { _backpedal: _, anyPunctuation: Xe, autolink: Je, blockSkip: Ge, br: oe, code: Ae, del: _, delLDelim: _, delRDelim: _, emStrongLDelim: Ze, emStrongRDelimAst: Qe, emStrongRDelimUnd: Fe, escape: Ie, link: et, nolink: ke, punctuation: Be, reflink: he, reflinkSearch: tt, tag: Ye, text: Ce, url: _ }, nt = { ...W, link: k(/^!?\[(label)\]\((.*?)\)/).replace("label", D2).getRegex(), reflink: k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", D2).getRegex() }, Z3 = { ...W, emStrongRDelimAst: je, emStrongLDelim: Ne, delLDelim: Ue, delRDelim: We, url: k(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", ne).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: k(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", ne).getRegex() }, rt = { ...Z3, br: k(oe).replace("{2,}", "*").getRegex(), text: k(Z3.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, C2 = { normal: U3, gfm: ze, pedantic: Ee }, z = { normal: W, gfm: Z3, breaks: rt, pedantic: nt };
-      st = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }, de = (u4) => st[u4];
+      })(), m = { codeRemoveIndent: /^(?: {1,4}| {0,3}\t)/gm, outputLinkReplace: /\\([\[\]])/g, indentCodeCompensation: /^(\s+)(?:```)/, beginningSpace: /^\s+/, endingHash: /#$/, startingSpaceChar: /^ /, endingSpaceChar: / $/, nonSpaceChar: /[^ ]/, newLineCharGlobal: /\n/g, tabCharGlobal: /\t/g, multipleSpaceGlobal: /\s+/g, blankLine: /^[ \t]*$/, doubleBlankLine: /\n[ \t]*\n[ \t]*$/, blockquoteStart: /^ {0,3}>/, blockquoteSetextReplace: /\n {0,3}((?:=+|-+) *)(?=\n|$)/g, blockquoteSetextReplace2: /^ {0,3}>[ \t]?/gm, listReplaceNesting: /^ {1,4}(?=( {4})*[^ ])/g, listIsTask: /^\[[ xX]\] +\S/, listReplaceTask: /^\[[ xX]\] +/, listTaskCheckbox: /\[[ xX]\]/, anyLine: /\n.*\n/, hrefBrackets: /^<(.*)>$/, tableDelimiter: /[:|]/, tableAlignChars: /^\||\| *$/g, tableRowBlankLine: /\n[ \t]*$/, tableAlignRight: /^ *-+: *$/, tableAlignCenter: /^ *:-+: *$/, tableAlignLeft: /^ *:-+ *$/, startATag: /^<a /i, endATag: /^<\/a>/i, startPreScriptTag: /^<(pre|code|kbd|script)(\s|>)/i, endPreScriptTag: /^<\/(pre|code|kbd|script)(\s|>)/i, startAngleBracket: /^</, endAngleBracket: />$/, pedanticHrefTitle: /^([^'"]*[^\s])\s+(['"])(.*)\2/, unicodeAlphaNumeric: /[\p{L}\p{N}]/u, escapeTest: /[&<>"']/, escapeReplace: /[&<>"']/g, escapeTestNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/, escapeReplaceNoEncode: /[<>"']|&(?!(#\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\w+);)/g, caret: /(^|[^\[])\^/g, percentDecode: /%25/g, findPipe: /\|/g, splitPipe: / \|/, slashPipe: /\\\|/g, carriageReturn: /\r\n|\r/g, spaceLine: /^ +$/gm, notSpaceStart: /^\S*/, endingNewline: /\n$/, listItemRegex: (u4) => new RegExp(`^( {0,3}${u4})((?:[	 ][^\\n]*)?(?:\\n|$))`), nextBulletRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:[*+-]|\\d{1,9}[.)])((?:[ 	][^\\n]*)?(?:\\n|$))`), hrRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}((?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$)`), fencesBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}(?:\`\`\`|~~~)`), headingBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}#`), htmlBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}<(?:[a-z].*>|!--)`, "i"), blockquoteBeginRegex: (u4) => new RegExp(`^ {0,${Math.min(3, u4 - 1)}}>`) }, Re = /^(?:[ \t]*(?:\n|$))+/, Te = /^((?: {4}| {0,3}\t)[^\n]+(?:\n(?:[ \t]*(?:\n|$))*)?)+/, Oe = /^ {0,3}(`{3,}(?=[^`\n]*(?:\n|$))|~{3,})([^\n]*)(?:\n|$)(?:|([\s\S]*?)(?:\n|$))(?: {0,3}\1[~`]* *(?=\n|$)|$)/, C2 = /^ {0,3}((?:-[\t ]*){3,}|(?:_[ \t]*){3,}|(?:\*[ \t]*){3,})(?:\n+|$)/, we = /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/, Q = / {0,3}(?:[*+-]|\d{1,9}[.)])/, se = /^(?!bull |blockCode|fences|blockquote|heading|html|table)((?:.|\n(?!\s*?\n|bull |blockCode|fences|blockquote|heading|html|table))+?)\n {0,3}(=+|-+) *(?:\n+|$)/, ie = k(se).replace(/bull/g, Q).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/\|table/g, "").getRegex(), ye = k(se).replace(/bull/g, Q).replace(/blockCode/g, /(?: {4}| {0,3}\t)/).replace(/fences/g, / {0,3}(?:`{3,}|~{3,})/).replace(/blockquote/g, / {0,3}>/).replace(/heading/g, / {0,3}#{1,6}/).replace(/html/g, / {0,3}<[^\n>]+>\n/).replace(/table/g, / {0,3}\|?(?:[:\- ]*\|)+[\:\- ]*\n/).getRegex(), j = /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html|table| +\n)[^\n]+)*)/, Pe = /^[^\n]+/, F = /(?!\s*\])(?:\\[\s\S]|[^\[\]\\])+/, Se = k(/^ {0,3}\[(label)\]: *(?:\n[ \t]*)?([^<\s][^\s]*|<.*?>)(?:(?: +(?:\n[ \t]*)?| *\n[ \t]*)(title))? *(?:\n+|$)/).replace("label", F).replace("title", /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/).getRegex(), $e = k(/^(bull)([ \t][^\n]+?)?(?:\n|$)/).replace(/bull/g, Q).getRegex(), v = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|search|section|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul", U3 = /<!--(?:-?>|[\s\S]*?(?:-->|$))/, _e = k("^ {0,3}(?:<(script|pre|style|textarea)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|<(?!script|pre|style|textarea)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$)|</(?!script|pre|style|textarea)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:(?:\\n[ 	]*)+\\n|$))", "i").replace("comment", U3).replace("tag", v).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex(), oe = k(j).replace("hr", C2).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("|table", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v).getRegex(), Le = k(/^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/).replace("paragraph", oe).getRegex(), K2 = { blockquote: Le, code: Te, def: Se, fences: Oe, heading: we, hr: C2, html: _e, lheading: ie, list: $e, newline: Re, paragraph: oe, table: _, text: Pe }, ne = k("^ *([^\\n ].*)\\n {0,3}((?:\\| *)?:?-+:? *(?:\\| *:?-+:? *)*(?:\\| *)?)(?:\\n((?:(?! *\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)").replace("hr", C2).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("blockquote", " {0,3}>").replace("code", "(?: {4}| {0,3}	)[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v).getRegex(), Me = { ...K2, lheading: ye, table: ne, paragraph: k(j).replace("hr", C2).replace("heading", " {0,3}#{1,6}(?:\\s|$)").replace("|lheading", "").replace("table", ne).replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)])[ \\t]").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|textarea|!--)").replace("tag", v).getRegex() }, ze = { ...K2, html: k(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", U3).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(), def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/, heading: /^(#{1,6})(.*)(?:\n+|$)/, fences: _, lheading: /^(.+?)\n {0,3}(=+|-+) *(?:\n+|$)/, paragraph: k(j).replace("hr", C2).replace("heading", ` *#{1,6} *[^
+]`).replace("lheading", ie).replace("|table", "").replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").replace("|tag", "").getRegex() }, Ee = /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/, Ie = /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/, ae = /^( {2,}|\\)\n(?!\s*$)/, Ae = /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/, z = /[\p{P}\p{S}]/u, H = /[\s\p{P}\p{S}]/u, W = /[^\s\p{P}\p{S}]/u, Ce = k(/^((?![*_])punctSpace)/, "u").replace(/punctSpace/g, H).getRegex(), le = /(?!~)[\p{P}\p{S}]/u, Be = /(?!~)[\s\p{P}\p{S}]/u, De = /(?:[^\s\p{P}\p{S}]|~)/u, qe = k(/link|precode-code|html/, "g").replace("link", /\[(?:[^\[\]`]|(?<a>`+)[^`]+\k<a>(?!`))*?\]\((?:\\[\s\S]|[^\\\(\)]|\((?:\\[\s\S]|[^\\\(\)])*\))*\)/).replace("precode-", be ? "(?<!`)()" : "(^^|[^`])").replace("code", /(?<b>`+)[^`]+\k<b>(?!`)/).replace("html", /<(?! )[^<>]*?>/).getRegex(), ue = /^(?:\*+(?:((?!\*)punct)|([^\s*]))?)|^_+(?:((?!_)punct)|([^\s_]))?/, ve = k(ue, "u").replace(/punct/g, z).getRegex(), He = k(ue, "u").replace(/punct/g, le).getRegex(), pe = "^[^_*]*?__[^_*]*?\\*[^_*]*?(?=__)|[^*]+(?=[^*])|(?!\\*)punct(\\*+)(?=[\\s]|$)|notPunctSpace(\\*+)(?!\\*)(?=punctSpace|$)|(?!\\*)punctSpace(\\*+)(?=notPunctSpace)|[\\s](\\*+)(?!\\*)(?=punct)|(?!\\*)punct(\\*+)(?!\\*)(?=punct)|notPunctSpace(\\*+)(?=notPunctSpace)", Ze = k(pe, "gu").replace(/notPunctSpace/g, W).replace(/punctSpace/g, H).replace(/punct/g, z).getRegex(), Ge = k(pe, "gu").replace(/notPunctSpace/g, De).replace(/punctSpace/g, Be).replace(/punct/g, le).getRegex(), Ne = k("^[^_*]*?\\*\\*[^_*]*?_[^_*]*?(?=\\*\\*)|[^_]+(?=[^_])|(?!_)punct(_+)(?=[\\s]|$)|notPunctSpace(_+)(?!_)(?=punctSpace|$)|(?!_)punctSpace(_+)(?=notPunctSpace)|[\\s](_+)(?!_)(?=punct)|(?!_)punct(_+)(?!_)(?=punct)", "gu").replace(/notPunctSpace/g, W).replace(/punctSpace/g, H).replace(/punct/g, z).getRegex(), Qe = k(/^~~?(?:((?!~)punct)|[^\s~])/, "u").replace(/punct/g, z).getRegex(), je = "^[^~]+(?=[^~])|(?!~)punct(~~?)(?=[\\s]|$)|notPunctSpace(~~?)(?!~)(?=punctSpace|$)|(?!~)punctSpace(~~?)(?=notPunctSpace)|[\\s](~~?)(?!~)(?=punct)|(?!~)punct(~~?)(?!~)(?=punct)|notPunctSpace(~~?)(?=notPunctSpace)", Fe = k(je, "gu").replace(/notPunctSpace/g, W).replace(/punctSpace/g, H).replace(/punct/g, z).getRegex(), Ue = k(/\\(punct)/, "gu").replace(/punct/g, z).getRegex(), Ke = k(/^<(scheme:[^\s\x00-\x1f<>]*|email)>/).replace("scheme", /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/).replace("email", /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/).getRegex(), We = k(U3).replace("(?:-->|$)", "-->").getRegex(), Xe = k("^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>").replace("comment", We).replace("attribute", /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/).getRegex(), q = /(?:\[(?:\\[\s\S]|[^\[\]\\])*\]|\\[\s\S]|`+(?!`)[^`]*?`+(?!`)|``+(?=\])|[^\[\]\\`])*?/, Je = k(/^!?\[(label)\]\(\s*(href)(?:(?:[ \t]+(?:\n[ \t]*)?|\n[ \t]*)(title))?\s*\)/).replace("label", q).replace("href", /<(?:\\.|[^\n<>\\])+>|[^ \t\n\x00-\x1f]*/).replace("title", /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/).getRegex(), ce = k(/^!?\[(label)\]\[(ref)\]/).replace("label", q).replace("ref", F).getRegex(), he = k(/^!?\[(ref)\](?:\[\])?/).replace("ref", F).getRegex(), Ve = k("reflink|nolink(?!\\()", "g").replace("reflink", ce).replace("nolink", he).getRegex(), re2 = /[hH][tT][tT][pP][sS]?|[fF][tT][pP]/, X5 = { _backpedal: _, anyPunctuation: Ue, autolink: Ke, blockSkip: qe, br: ae, code: Ie, del: _, delLDelim: _, delRDelim: _, emStrongLDelim: ve, emStrongRDelimAst: Ze, emStrongRDelimUnd: Ne, escape: Ee, link: Je, nolink: he, punctuation: Ce, reflink: ce, reflinkSearch: Ve, tag: Xe, text: Ae, url: _ }, Ye = { ...X5, link: k(/^!?\[(label)\]\((.*?)\)/).replace("label", q).getRegex(), reflink: k(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", q).getRegex() }, N = { ...X5, emStrongRDelimAst: Ge, emStrongLDelim: He, delLDelim: Qe, delRDelim: Fe, url: k(/^((?:protocol):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/).replace("protocol", re2).replace("email", /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/).getRegex(), _backpedal: /(?:[^?!.,:;*_'"~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_'"~)]+(?!$))+/, del: /^(~~?)(?=[^\s~])((?:\\[\s\S]|[^\\])*?(?:\\[\s\S]|[^\s~\\]))\1(?=[^~]|$)/, text: k(/^([`~]+|[^`~])(?:(?= {2,}\n)|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|protocol:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@)))/).replace("protocol", re2).getRegex() }, et = { ...N, br: k(ae).replace("{2,}", "*").getRegex(), text: k(N.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex() }, B2 = { normal: K2, gfm: Me, pedantic: ze }, E2 = { normal: X5, gfm: N, breaks: et, pedantic: Ye };
+      tt = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }, ke = (u4) => tt[u4];
       w = class {
         options;
         rules;
@@ -40237,14 +40223,14 @@ ${source}
           let t4 = this.rules.block.code.exec(e3);
           if (t4) {
             let n3 = t4[0].replace(this.rules.other.codeRemoveIndent, "");
-            return { type: "code", raw: t4[0], codeBlockStyle: "indented", text: this.options.pedantic ? n3 : E2(n3, `
+            return { type: "code", raw: t4[0], codeBlockStyle: "indented", text: this.options.pedantic ? n3 : I(n3, `
 `) };
           }
         }
         fences(e3) {
           let t4 = this.rules.block.fences.exec(e3);
           if (t4) {
-            let n3 = t4[0], r2 = it(n3, t4[3] || "", this.rules);
+            let n3 = t4[0], r2 = nt(n3, t4[3] || "", this.rules);
             return { type: "code", raw: n3, lang: t4[2] ? t4[2].trim().replace(this.rules.inline.anyPunctuation, "$1") : t4[2], text: r2 };
           }
         }
@@ -40253,7 +40239,7 @@ ${source}
           if (t4) {
             let n3 = t4[2].trim();
             if (this.rules.other.endingHash.test(n3)) {
-              let r2 = E2(n3, "#");
+              let r2 = I(n3, "#");
               (this.options.pedantic || !r2 || this.rules.other.endingSpaceChar.test(r2)) && (n3 = r2.trim());
             }
             return { type: "heading", raw: t4[0], depth: t4[1].length, text: n3, tokens: this.lexer.inline(n3) };
@@ -40261,13 +40247,13 @@ ${source}
         }
         hr(e3) {
           let t4 = this.rules.block.hr.exec(e3);
-          if (t4) return { type: "hr", raw: E2(t4[0], `
+          if (t4) return { type: "hr", raw: I(t4[0], `
 `) };
         }
         blockquote(e3) {
           let t4 = this.rules.block.blockquote.exec(e3);
           if (t4) {
-            let n3 = E2(t4[0], `
+            let n3 = I(t4[0], `
 `).split(`
 `), r2 = "", i3 = "", s2 = [];
             for (; n3.length > 0; ) {
@@ -40314,25 +40300,25 @@ ${c2}` : c2;
               let l2 = false, p2 = "", c2 = "";
               if (!(t4 = s2.exec(e3)) || this.rules.block.hr.test(e3)) break;
               p2 = t4[0], e3 = e3.substring(p2.length);
-              let d2 = fe(t4[2].split(`
+              let d2 = ge(t4[2].split(`
 `, 1)[0], t4[1].length), h2 = e3.split(`
 `, 1)[0], R2 = !d2.trim(), f2 = 0;
               if (this.options.pedantic ? (f2 = 2, c2 = d2.trimStart()) : R2 ? f2 = t4[1].length + 1 : (f2 = d2.search(this.rules.other.nonSpaceChar), f2 = f2 > 4 ? 1 : f2, c2 = d2.slice(f2), f2 += t4[1].length), R2 && this.rules.other.blankLine.test(h2) && (p2 += h2 + `
 `, e3 = e3.substring(h2.length + 1), l2 = true), !l2) {
-                let S3 = this.rules.other.nextBulletRegex(f2), V8 = this.rules.other.hrRegex(f2), Y4 = this.rules.other.fencesBeginRegex(f2), ee2 = this.rules.other.headingBeginRegex(f2), xe2 = this.rules.other.htmlBeginRegex(f2), be2 = this.rules.other.blockquoteBeginRegex(f2);
+                let S3 = this.rules.other.nextBulletRegex(f2), Y4 = this.rules.other.hrRegex(f2), ee2 = this.rules.other.fencesBeginRegex(f2), te2 = this.rules.other.headingBeginRegex(f2), me2 = this.rules.other.htmlBeginRegex(f2), xe2 = this.rules.other.blockquoteBeginRegex(f2);
                 for (; e3; ) {
-                  let H2 = e3.split(`
-`, 1)[0], I2;
-                  if (h2 = H2, this.options.pedantic ? (h2 = h2.replace(this.rules.other.listReplaceNesting, "  "), I2 = h2) : I2 = h2.replace(this.rules.other.tabCharGlobal, "    "), Y4.test(h2) || ee2.test(h2) || xe2.test(h2) || be2.test(h2) || S3.test(h2) || V8.test(h2)) break;
-                  if (I2.search(this.rules.other.nonSpaceChar) >= f2 || !h2.trim()) c2 += `
-` + I2.slice(f2);
+                  let Z4 = e3.split(`
+`, 1)[0], A8;
+                  if (h2 = Z4, this.options.pedantic ? (h2 = h2.replace(this.rules.other.listReplaceNesting, "  "), A8 = h2) : A8 = h2.replace(this.rules.other.tabCharGlobal, "    "), ee2.test(h2) || te2.test(h2) || me2.test(h2) || xe2.test(h2) || S3.test(h2) || Y4.test(h2)) break;
+                  if (A8.search(this.rules.other.nonSpaceChar) >= f2 || !h2.trim()) c2 += `
+` + A8.slice(f2);
                   else {
-                    if (R2 || d2.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || Y4.test(d2) || ee2.test(d2) || V8.test(d2)) break;
+                    if (R2 || d2.replace(this.rules.other.tabCharGlobal, "    ").search(this.rules.other.nonSpaceChar) >= 4 || ee2.test(d2) || te2.test(d2) || Y4.test(d2)) break;
                     c2 += `
 ` + h2;
                   }
-                  R2 = !h2.trim(), p2 += H2 + `
-`, e3 = e3.substring(H2.length + 1), d2 = I2.slice(f2);
+                  R2 = !h2.trim(), p2 += Z4 + `
+`, e3 = e3.substring(Z4.length + 1), d2 = A8.slice(f2);
                 }
               }
               i3.loose || (a2 ? i3.loose = true : this.rules.other.doubleBlankLine.test(p2) && (a2 = true)), i3.items.push({ type: "list_item", raw: p2, task: !!this.options.gfm && this.rules.other.listIsTask.test(c2), loose: false, text: c2, tokens: [] }), i3.raw += p2;
@@ -40382,18 +40368,21 @@ ${c2}` : c2;
         table(e3) {
           let t4 = this.rules.block.table.exec(e3);
           if (!t4 || !this.rules.other.tableDelimiter.test(t4[2])) return;
-          let n3 = J(t4[1]), r2 = t4[2].replace(this.rules.other.tableAlignChars, "").split("|"), i3 = t4[3]?.trim() ? t4[3].replace(this.rules.other.tableRowBlankLine, "").split(`
+          let n3 = V7(t4[1]), r2 = t4[2].replace(this.rules.other.tableAlignChars, "").split("|"), i3 = t4[3]?.trim() ? t4[3].replace(this.rules.other.tableRowBlankLine, "").split(`
 `) : [], s2 = { type: "table", raw: t4[0], header: [], align: [], rows: [] };
           if (n3.length === r2.length) {
             for (let a2 of r2) this.rules.other.tableAlignRight.test(a2) ? s2.align.push("right") : this.rules.other.tableAlignCenter.test(a2) ? s2.align.push("center") : this.rules.other.tableAlignLeft.test(a2) ? s2.align.push("left") : s2.align.push(null);
             for (let a2 = 0; a2 < n3.length; a2++) s2.header.push({ text: n3[a2], tokens: this.lexer.inline(n3[a2]), header: true, align: s2.align[a2] });
-            for (let a2 of i3) s2.rows.push(J(a2, s2.header.length).map((o2, l2) => ({ text: o2, tokens: this.lexer.inline(o2), header: false, align: s2.align[l2] })));
+            for (let a2 of i3) s2.rows.push(V7(a2, s2.header.length).map((o2, l2) => ({ text: o2, tokens: this.lexer.inline(o2), header: false, align: s2.align[l2] })));
             return s2;
           }
         }
         lheading(e3) {
           let t4 = this.rules.block.lheading.exec(e3);
-          if (t4) return { type: "heading", raw: t4[0], depth: t4[2].charAt(0) === "=" ? 1 : 2, text: t4[1], tokens: this.lexer.inline(t4[1]) };
+          if (t4) {
+            let n3 = t4[1].trim();
+            return { type: "heading", raw: t4[0], depth: t4[2].charAt(0) === "=" ? 1 : 2, text: n3, tokens: this.lexer.inline(n3) };
+          }
         }
         paragraph(e3) {
           let t4 = this.rules.block.paragraph.exec(e3);
@@ -40421,10 +40410,10 @@ ${c2}` : c2;
             let n3 = t4[2].trim();
             if (!this.options.pedantic && this.rules.other.startAngleBracket.test(n3)) {
               if (!this.rules.other.endAngleBracket.test(n3)) return;
-              let s2 = E2(n3.slice(0, -1), "\\");
+              let s2 = I(n3.slice(0, -1), "\\");
               if ((n3.length - s2.length) % 2 === 0) return;
             } else {
-              let s2 = ge(t4[2], "()");
+              let s2 = de(t4[2], "()");
               if (s2 === -2) return;
               if (s2 > -1) {
                 let o2 = (t4[0].indexOf("!") === 0 ? 5 : 4) + t4[1].length + s2;
@@ -40436,7 +40425,7 @@ ${c2}` : c2;
               let s2 = this.rules.other.pedanticHrefTitle.exec(r2);
               s2 && (r2 = s2[1], i3 = s2[3]);
             } else i3 = t4[3] ? t4[3].slice(1, -1) : "";
-            return r2 = r2.trim(), this.rules.other.startAngleBracket.test(r2) && (this.options.pedantic && !this.rules.other.endAngleBracket.test(n3) ? r2 = r2.slice(1) : r2 = r2.slice(1, -1)), me(t4, { href: r2 && r2.replace(this.rules.inline.anyPunctuation, "$1"), title: i3 && i3.replace(this.rules.inline.anyPunctuation, "$1") }, t4[0], this.lexer, this.rules);
+            return r2 = r2.trim(), this.rules.other.startAngleBracket.test(r2) && (this.options.pedantic && !this.rules.other.endAngleBracket.test(n3) ? r2 = r2.slice(1) : r2 = r2.slice(1, -1)), fe(t4, { href: r2 && r2.replace(this.rules.inline.anyPunctuation, "$1"), title: i3 && i3.replace(this.rules.inline.anyPunctuation, "$1") }, t4[0], this.lexer, this.rules);
           }
         }
         reflink(e3, t4) {
@@ -40447,13 +40436,13 @@ ${c2}` : c2;
               let s2 = n3[0].charAt(0);
               return { type: "text", raw: s2, text: s2 };
             }
-            return me(n3, i3, n3[0], this.lexer, this.rules);
+            return fe(n3, i3, n3[0], this.lexer, this.rules);
           }
         }
         emStrong(e3, t4, n3 = "") {
           let r2 = this.rules.inline.emStrongLDelim.exec(e3);
-          if (!r2 || r2[3] && n3.match(this.rules.other.unicodeAlphaNumeric)) return;
-          if (!(r2[1] || r2[2] || "") || !n3 || this.rules.inline.punctuation.exec(n3)) {
+          if (!r2 || !r2[1] && !r2[2] && !r2[3] && !r2[4] || r2[4] && n3.match(this.rules.other.unicodeAlphaNumeric)) return;
+          if (!(r2[1] || r2[3] || "") || !n3 || this.rules.inline.punctuation.exec(n3)) {
             let s2 = [...r2[0]].length - 1, a2, o2, l2 = s2, p2 = 0, c2 = r2[0][0] === "*" ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;
             for (c2.lastIndex = 0, t4 = t4.slice(-1 * e3.length + s2); (r2 = c2.exec(t4)) != null; ) {
               if (a2 = r2[1] || r2[2] || r2[3] || r2[4] || r2[5] || r2[6], !a2) continue;
@@ -40543,11 +40532,11 @@ ${c2}` : c2;
         tokenizer;
         constructor(e3) {
           this.tokens = [], this.tokens.links = /* @__PURE__ */ Object.create(null), this.options = e3 || T, this.options.tokenizer = this.options.tokenizer || new w(), this.tokenizer = this.options.tokenizer, this.tokenizer.options = this.options, this.tokenizer.lexer = this, this.inlineQueue = [], this.state = { inLink: false, inRawBlock: false, top: true };
-          let t4 = { other: m, block: C2.normal, inline: z.normal };
-          this.options.pedantic ? (t4.block = C2.pedantic, t4.inline = z.pedantic) : this.options.gfm && (t4.block = C2.gfm, this.options.breaks ? t4.inline = z.breaks : t4.inline = z.gfm), this.tokenizer.rules = t4;
+          let t4 = { other: m, block: B2.normal, inline: E2.normal };
+          this.options.pedantic ? (t4.block = B2.pedantic, t4.inline = E2.pedantic) : this.options.gfm && (t4.block = B2.gfm, this.options.breaks ? t4.inline = E2.breaks : t4.inline = E2.gfm), this.tokenizer.rules = t4;
         }
         static get rules() {
-          return { block: C2, inline: z };
+          return { block: B2, inline: E2 };
         }
         static lex(e3, t4) {
           return new u(t4).lex(e3);
@@ -40565,7 +40554,7 @@ ${c2}` : c2;
           return this.inlineQueue = [], this.tokens;
         }
         blockTokens(e3, t4 = [], n3 = false) {
-          for (this.options.pedantic && (e3 = e3.replace(m.tabCharGlobal, "    ").replace(m.spaceLine, "")); e3; ) {
+          for (this.tokenizer.lexer = this, this.options.pedantic && (e3 = e3.replace(m.tabCharGlobal, "    ").replace(m.spaceLine, "")); e3; ) {
             let r2;
             if (this.options.extensions?.block?.some((s2) => (r2 = s2.call({ lexer: this }, e3, t4)) ? (e3 = e3.substring(r2.raw.length), t4.push(r2), true) : false)) continue;
             if (r2 = this.tokenizer.space(e3)) {
@@ -40663,6 +40652,7 @@ ${c2}` : c2;
           return this.inlineQueue.push({ src: e3, tokens: t4 }), t4;
         }
         inlineTokens(e3, t4 = []) {
+          this.tokenizer.lexer = this;
           let n3 = e3, r2 = null;
           if (this.tokens.links) {
             let o2 = Object.keys(this.tokens.links);
@@ -40843,7 +40833,7 @@ ${e3}</tr>
           return `<del>${this.parser.parseInline(e3)}</del>`;
         }
         link({ href: e3, title: t4, tokens: n3 }) {
-          let r2 = this.parser.parseInline(n3), i3 = X5(e3);
+          let r2 = this.parser.parseInline(n3), i3 = J(e3);
           if (i3 === null) return r2;
           e3 = i3;
           let s2 = '<a href="' + e3 + '"';
@@ -40851,7 +40841,7 @@ ${e3}</tr>
         }
         image({ href: e3, title: t4, text: n3, tokens: r2 }) {
           r2 && (n3 = this.parser.parseInline(r2, this.parser.textRenderer));
-          let i3 = X5(e3);
+          let i3 = J(e3);
           if (i3 === null) return O(n3);
           e3 = i3;
           let s2 = `<img src="${e3}" alt="${O(n3)}"`;
@@ -40907,6 +40897,7 @@ ${e3}</tr>
           return new u2(t4).parseInline(e3);
         }
         parse(e3) {
+          this.renderer.parser = this;
           let t4 = "";
           for (let n3 = 0; n3 < e3.length; n3++) {
             let r2 = e3[n3];
@@ -40977,6 +40968,7 @@ ${e3}</tr>
           return t4;
         }
         parseInline(e3, t4 = this.renderer) {
+          this.renderer.parser = this;
           let n3 = "";
           for (let r2 = 0; r2 < e3.length; r2++) {
             let i3 = e3[r2];
@@ -41068,7 +41060,7 @@ ${e3}</tr>
           return this.block ? b.parse : b.parseInline;
         }
       }, __publicField(_a, "passThroughHooks", /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens", "emStrongMask"])), __publicField(_a, "passThroughHooksRespectAsync", /* @__PURE__ */ new Set(["preprocess", "postprocess", "processAllTokens"])), _a);
-      B2 = class {
+      D2 = class {
         defaults = M2();
         options = this.setOptions;
         parse = this.parseMarkdown(true);
@@ -41229,7 +41221,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           };
         }
       };
-      L = new B2();
+      L = new D2();
       g2.options = g2.setOptions = function(u4) {
         return L.setOptions(u4), g2.defaults = L.defaults, G(g2.defaults), g2;
       };
@@ -41251,7 +41243,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       g2.Tokenizer = w;
       g2.Hooks = P2;
       g2.parse = g2;
-      Ut = g2.options, Kt = g2.setOptions, Wt = g2.use, Xt = g2.walkTokens, Jt = g2.parseInline, Vt = g2, Yt = b.parse, en = x.lex;
+      Qt = g2.options, jt = g2.setOptions, Ft = g2.use, Ut = g2.walkTokens, Kt = g2.parseInline, Wt = g2, Xt = b.parse, Jt = x.lex;
     }
   });
 
@@ -42585,14 +42577,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             let url = `${_osmoseUrlRoot}/issues/${z3}/${x3}/${y3}.mvt?` + utilQsString(params);
             let controller = new AbortController();
             _cache.inflightTile[tile.id] = controller;
-            fetch(url, { signal: controller.signal }).then((data) => data.arrayBuffer()).then((data) => {
+            fetch(url, { signal: controller.signal }).then((data2) => data2.arrayBuffer()).then((data2) => {
               delete _cache.inflightTile[tile.id];
               _cache.loadedTile[tile.id] = true;
-              var vectorTile = new VectorTile(new Pbf(data));
-              data = vectorTile.layers.issues;
+              var vectorTile = new VectorTile(new Pbf(data2));
+              data2 = vectorTile.layers.issues;
               const features = [];
-              for (let i3 = 0; i3 < data.length; i3++) {
-                features.push(data.feature(i3).toGeoJSON(x3, y3, z3));
+              for (let i3 = 0; i3 < data2.length; i3++) {
+                features.push(data2.feature(i3).toGeoJSON(x3, y3, z3));
               }
               if (features.length > 0) {
                 features.forEach((issue) => {
@@ -42622,9 +42614,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return Promise.resolve(issue);
           }
           const url = `${_osmoseUrlRoot}/issue/${issue.id}?langs=${_mainLocalizer.localeCode()}`;
-          const cacheDetails = (data) => {
-            issue.elems = data.elems.map((e3) => e3.type.substring(0, 1) + e3.id);
-            issue.detail = data.subtitle ? g2(data.subtitle.auto) : "";
+          const cacheDetails = (data2) => {
+            issue.elems = data2.elems.map((e3) => e3.type.substring(0, 1) + e3.id);
+            issue.detail = data2.subtitle ? g2(data2.subtitle.auto) : "";
             this.replaceItem(issue);
           };
           return json_default(url).then(cacheDetails).then(() => issue);
@@ -42639,8 +42631,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           const allRequests = items.map((itemType) => {
             if (itemType in _cache.strings[locale3]) return null;
-            const cacheData = (data) => {
-              const [cat = { items: [] }] = data.categories;
+            const cacheData = (data2) => {
+              const [cat = { items: [] }] = data2.categories;
               const [item2 = { class: [] }] = cat.items;
               const [cl2 = null] = item2.class;
               if (!cl2) {
@@ -42785,11 +42777,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (!data) {
+    }).then(function(data2) {
+      if (!data2) {
         throw new Error("No Data");
       }
-      loadTileDataToCache(data, tile, which);
+      loadTileDataToCache(data2, tile, which);
       if (which === "images") {
         dispatch3.call("loadedImages");
       } else if (which === "signs") {
@@ -42802,8 +42794,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       delete cache.inflight[tileId];
     });
   }
-  function loadTileDataToCache(data, tile, which) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache(data2, tile, which) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     let features, cache, layer, i3, feature3, loc, d2;
     if (vectorTile.layers.hasOwnProperty("image")) {
       features = [];
@@ -43284,20 +43276,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           function showDetections(detections) {
             const tagComponent = _mlyViewer.getComponent("tag");
-            detections.forEach(function(data) {
-              const tag = makeTag(data);
+            detections.forEach(function(data2) {
+              const tag = makeTag(data2);
               if (tag) {
                 tagComponent.add([tag]);
               }
             });
           }
-          function makeTag(data) {
-            const valueParts = data.value.split("--");
+          function makeTag(data2) {
+            const valueParts = data2.value.split("--");
             if (!valueParts.length) return;
             let tag;
             let text;
             let color2 = 16777215;
-            if (_mlyHighlightedDetection === data.id) {
+            if (_mlyHighlightedDetection === data2.id) {
               color2 = 16776960;
               text = valueParts[1];
               if (text === "flat" || text === "discrete" || text === "sign") {
@@ -43307,7 +43299,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               text = text.charAt(0).toUpperCase() + text.slice(1);
               _mlyHighlightedDetection = null;
             }
-            var decodedGeometry = window.atob(data.geometry);
+            var decodedGeometry = window.atob(data2.geometry);
             var uintArray = new Uint8Array(decodedGeometry.length);
             for (var i3 = 0; i3 < decodedGeometry.length; i3++) {
               uintArray[i3] = decodedGeometry.charCodeAt(i3);
@@ -43317,7 +43309,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             const geometries = layer.feature(0).loadGeometry();
             const polygon2 = geometries.map((ring) => ring.map((point3) => [point3.x / layer.extent, point3.y / layer.extent]));
             tag = new mapillary.OutlineTag(
-              data.id,
+              data2.id,
               new mapillary.PolygonGeometry(polygon2[0]),
               {
                 text,
@@ -43781,15 +43773,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           return false;
         },
-        load: function(data) {
-          if (!(data && data.length)) return this;
-          if (data.length < this._minEntries) {
-            for (var i3 = 0, len = data.length; i3 < len; i3++) {
-              this.insert(data[i3]);
+        load: function(data2) {
+          if (!(data2 && data2.length)) return this;
+          if (data2.length < this._minEntries) {
+            for (var i3 = 0, len = data2.length; i3 < len; i3++) {
+              this.insert(data2[i3]);
             }
             return this;
           }
-          var node = this._build(data.slice(), 0, data.length - 1, 0);
+          var node = this._build(data2.slice(), 0, data2.length - 1, 0);
           if (!this.data.children.length) {
             this.data = node;
           } else if (this.data.height === node.height) {
@@ -43853,8 +43845,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         toJSON: function() {
           return this.data;
         },
-        fromJSON: function(data) {
-          this.data = data;
+        fromJSON: function(data2) {
+          this.data = data2;
           return this;
         },
         _all: function(node, result2) {
@@ -44190,10 +44182,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var rbush = require_rbush();
       var lineclip2 = require_lineclip();
       module.exports = whichPolygon5;
-      function whichPolygon5(data) {
+      function whichPolygon5(data2) {
         var bboxes = [];
-        for (var i3 = 0; i3 < data.features.length; i3++) {
-          var feature3 = data.features[i3];
+        for (var i3 = 0; i3 < data2.features.length; i3++) {
+          var feature3 = data2.features[i3];
           if (!feature3.geometry) continue;
           var coords = feature3.geometry.coordinates;
           if (feature3.geometry.type === "Polygon") {
@@ -44441,7 +44433,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             "shop/kiosk",
             "shop/ice_cream",
             "shop/pastry",
-            "shop/tea"
+            "shop/tea",
+            "shop/beverages"
           ],
           fuel: [
             "amenity/fuel",
@@ -44701,14 +44694,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           this.locationIndex = void 0;
           this.warnings = [];
         }
-        buildMatchIndex(data) {
+        buildMatchIndex(data2) {
           const that = this;
           if (that.matchIndex)
             return;
           that.matchIndex = /* @__PURE__ */ new Map();
           const seenTree = /* @__PURE__ */ new Map();
-          Object.keys(data).forEach((tkv) => {
-            const category = data[tkv];
+          Object.keys(data2).forEach((tkv) => {
+            const category = data2[tkv];
             const parts = tkv.split("/", 3);
             const t4 = parts[0];
             const k3 = parts[1];
@@ -44833,14 +44826,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return t4 === "flags" || t4 === "transit" || k3 === "landuse" || v3 === "atm" || v3 === "bicycle_parking" || v3 === "car_sharing" || v3 === "caravan_site" || v3 === "charging_station" || v3 === "dog_park" || v3 === "parking" || v3 === "phone" || v3 === "playground" || v3 === "post_box" || v3 === "public_bookcase" || v3 === "recycling" || v3 === "vending_machine";
           }
         }
-        buildLocationIndex(data, loco) {
+        buildLocationIndex(data2, loco) {
           const that = this;
           if (that.locationIndex)
             return;
           that.itemLocation = /* @__PURE__ */ new Map();
           that.locationSets = /* @__PURE__ */ new Map();
-          Object.keys(data).forEach((tkv) => {
-            const items = data[tkv].items;
+          Object.keys(data2).forEach((tkv) => {
+            const items = data2[tkv].items;
             if (!Array.isArray(items) || !items.length)
               return;
             items.forEach((item) => {
@@ -45585,13 +45578,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       body: params,
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     };
-    json_default(url, options).then(function(data) {
+    json_default(url, options).then(function(data2) {
       cache.loaded[id3] = true;
       delete cache.inflight[id3];
-      if (!data || !data.currentPageItems || !data.currentPageItems.length) {
+      if (!data2 || !data2.currentPageItems || !data2.currentPageItems.length) {
         throw new Error("No Data");
       }
-      var features = data.currentPageItems.map(function(item) {
+      var features = data2.currentPageItems.map(function(item) {
         var loc = [+item.lng, +item.lat];
         var d2;
         if (which === "images") {
@@ -45623,7 +45616,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         };
       });
       cache.rtree.load(features);
-      if (data.currentPageItems.length === maxResults) {
+      if (data2.currentPageItems.length === maxResults) {
         cache.nextPage[tile.id] = nextPage + 1;
         loadNextTilePage(which, currZoom, url, tile);
       } else {
@@ -46117,8 +46110,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           ids.push(id3);
         }
       }
-      for (const alias of feature3.properties.aliases || []) {
-        ids.push(alias);
+      for (const alias2 of feature3.properties.aliases || []) {
+        ids.push(alias2);
       }
       for (const id3 of ids) {
         const cid = canonicalID(id3);
@@ -46856,8 +46849,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       viewerContext.select("photo-frame.pannellum-frame").classed("hide", false);
       return module;
     };
-    module.selectPhoto = function(data, keepOrientation) {
-      const key = data.image_path;
+    module.selectPhoto = function(data2, keepOrientation) {
+      const key = data2.image_path;
       _activeSceneKey = key;
       if (!_currScenes.includes(key)) {
         let newSceneOptions = {
@@ -46866,9 +46859,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           compass: false,
           yaw: 0,
           type: "equirectangular",
-          preview: data.preview_path,
-          panorama: data.image_path,
-          northOffset: data.ca
+          preview: data2.preview_path,
+          panorama: data2.image_path,
+          northOffset: data2.ca
         };
         _currScenes.push(key);
         _pannellumViewer3.addScene(key, newSceneOptions);
@@ -46992,11 +46985,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       context2.select("photo-frame.plane-frame").classed("hide", false);
       return module;
     };
-    module.selectPhoto = function(data) {
+    module.selectPhoto = function(data2) {
       dispatch11.call("viewerChanged");
       loadImage2(_photo, "");
       _planeWrapper.classed("show-loader", true);
-      loadImage2(_photo, data.image_path).then((selection3) => {
+      loadImage2(_photo, data2.image_path).then((selection3) => {
         _planeWrapper.classed("show-loader", false);
         const { naturalWidth, naturalHeight } = selection3.node();
         _photoDimensions = [naturalWidth, naturalHeight];
@@ -47120,7 +47113,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       } = properties;
       const lane_number = parseInt((lane_code.match(/^[0-9]+/) || [])[0], 10);
       const direction = lane_number % 2 === 0 ? directionEnum.backward : directionEnum.forward;
-      const data = {
+      const data2 = {
         service: "photo",
         loc,
         key,
@@ -47134,13 +47127,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         captured_at: new Date(captured_at),
         is_sphere: image_type === "360"
       };
-      cache.points.set(key, data);
+      cache.points.set(key, data2);
       return {
         minX: loc[0],
         minY: loc[1],
         maxX: loc[0],
         maxY: loc[1],
-        data
+        data: data2
       };
     });
     _vegbilderCache.rtree.load(features);
@@ -47304,8 +47297,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           const bbox2 = geoExtent(projection2.invert(min5), projection2.invert(max5)).bbox();
           const seen = /* @__PURE__ */ new Set();
           const line_strings = [];
-          for (const { data } of _vegbilderCache.rtree.search(bbox2)) {
-            const sequence = _vegbilderCache.image2sequence_map.get(data.key);
+          for (const { data: data2 } of _vegbilderCache.rtree.search(bbox2)) {
+            const sequence = _vegbilderCache.image2sequence_map.get(data2.key);
             if (!sequence) continue;
             const { key, geometry: geometry2, images } = sequence;
             if (seen.has(key)) continue;
@@ -47721,7 +47714,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
       }
     };
-    oauth2.rawxhr = function(method2, url, access_token, data, headers, callback) {
+    oauth2.rawxhr = function(method2, url, access_token, data2, headers, callback) {
       headers = headers || { "Content-Type": "application/x-www-form-urlencoded" };
       if (access_token) {
         headers.Authorization = "Bearer " + access_token;
@@ -47742,7 +47735,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       xhr.open(method2, url, true);
       for (var h2 in headers)
         xhr.setRequestHeader(h2, headers[h2]);
-      xhr.send(data);
+      xhr.send(data2);
       return xhr;
     };
     oauth2.preauth = function(val) {
@@ -48336,8 +48329,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           } else {
             var url = apiUrlroot + path;
             var controller = new AbortController();
-            json_default(url, { signal: controller.signal }).then(function(data) {
-              done(null, data);
+            json_default(url, { signal: controller.signal }).then(function(data2) {
+              done(null, data2);
             }).catch(function(err) {
               if (err.name === "AbortError") return;
               var match = err.message.match(/^\d{3}/);
@@ -48606,8 +48599,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         status: function(callback) {
           const url = `${apiUrlroot}/api/capabilities.json`;
           var errback = wrapcb(this, done, _connectionID);
-          json_default(url).then(function(data) {
-            errback(null, data);
+          json_default(url).then(function(data2) {
+            errback(null, data2);
           }).catch(function(err) {
             errback(err.message);
           });
@@ -49250,12 +49243,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             return code.toLowerCase();
           });
           params.langCodes = langCodes;
-          this.getEntity(params, function(err, data) {
+          this.getEntity(params, function(err, data2) {
             if (err) {
               callback(err);
               return;
             }
-            var entity = data.rtype || data.tag || data.key;
+            var entity = data2.rtype || data2.tag || data2.key;
             if (!entity) {
               callback("No entity");
               return;
@@ -49294,9 +49287,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
                 });
               }
             }
-            var rtypeWiki = that.monolingualClaimToValueObj(data.rtype, "P31");
-            var tagWiki = that.monolingualClaimToValueObj(data.tag, "P31");
-            var keyWiki = that.monolingualClaimToValueObj(data.key, "P31");
+            var rtypeWiki = that.monolingualClaimToValueObj(data2.rtype, "P31");
+            var tagWiki = that.monolingualClaimToValueObj(data2.tag, "P31");
+            var keyWiki = that.monolingualClaimToValueObj(data2.key, "P31");
             var wikis = [rtypeWiki, tagWiki, keyWiki];
             for (i3 in wikis) {
               var wiki = wikis[i3];
@@ -49444,12 +49437,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     });
   }
   function loadCanvas(imageGroup) {
-    return Promise.all(imageGroup.map(loadImage)).then((data) => {
-      let canvas = document.getElementById("ideditor-canvas" + data[0].imgInfo.face);
+    return Promise.all(imageGroup.map(loadImage)).then((data2) => {
+      let canvas = document.getElementById("ideditor-canvas" + data2[0].imgInfo.face);
       const which = { "01": 0, "02": 1, "03": 2, "10": 3, "11": 4, "12": 5 };
-      let face = data[0].imgInfo.face;
+      let face = data2[0].imgInfo.face;
       _sceneOptions.cubeMap[which[face]] = canvas.toDataURL("image/jpeg", 1);
-      return { status: "loadCanvas for face " + data[0].imgInfo.face + "ok" };
+      return { status: "loadCanvas for face " + data2[0].imgInfo.face + "ok" };
     });
   }
   function loadFaces(faceGroup) {
@@ -50358,9 +50351,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             debounce: false,
             lang: _mainLocalizer.languageCode()
           };
-          this.keys(params, function(err, data) {
+          this.keys(params, function(err, data2) {
             if (err) return;
-            data.forEach(function(d2) {
+            data2.forEach(function(d2) {
               if (d2.value === "opening_hours") return;
               _popularKeys[d2.value] = true;
             });
@@ -51030,7 +51023,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   var require_fast_json_stable_stringify = __commonJS({
     "node_modules/fast-json-stable-stringify/index.js"(exports, module) {
       "use strict";
-      module.exports = function(data, opts) {
+      module.exports = function(data2, opts) {
         if (!opts) opts = {};
         if (typeof opts === "function") opts = { cmp: opts };
         var cycles = typeof opts.cycles === "boolean" ? opts.cycles : false;
@@ -51077,7 +51070,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           }
           seen.splice(seenIndex, 1);
           return "{" + out + "}";
-        })(data);
+        })(data2);
       };
     }
   });
@@ -51176,10 +51169,10 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         var Node = (
           /** @class */
           /* @__PURE__ */ (function() {
-            function Node2(key, data) {
+            function Node2(key, data2) {
               this.next = null;
               this.key = key;
-              this.data = data;
+              this.data = data2;
               this.left = null;
               this.right = null;
             }
@@ -51227,8 +51220,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           t4.right = N3.left;
           return t4;
         }
-        function insert(i3, data, t4, comparator) {
-          var node = new Node(i3, data);
+        function insert(i3, data2, t4, comparator) {
+          var node = new Node(i3, data2);
           if (t4 === null) {
             node.left = node.right = null;
             return node;
@@ -51296,12 +51289,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               this._size = 0;
               this._comparator = comparator;
             }
-            Tree2.prototype.insert = function(key, data) {
+            Tree2.prototype.insert = function(key, data2) {
               this._size++;
-              return this._root = insert(key, data, this._root, this._comparator);
+              return this._root = insert(key, data2, this._root, this._comparator);
             };
-            Tree2.prototype.add = function(key, data) {
-              var node = new Node(key, data);
+            Tree2.prototype.add = function(key, data2) {
+              var node = new Node(key, data2);
               if (this._root === null) {
                 node.left = node.right = null;
                 this._size++;
@@ -51439,8 +51432,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             Tree2.prototype.values = function() {
               var values3 = [];
               this.forEach(function(_a2) {
-                var data = _a2.data;
-                return values3.push(data);
+                var data2 = _a2.data;
+                return values3.push(data2);
               });
               return values3;
             };
@@ -51641,8 +51634,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           if (size2 > 0) {
             var middle = start2 + Math.floor(size2 / 2);
             var key = keys5[middle];
-            var data = values3[middle];
-            var node = new Node(key, data);
+            var data2 = values3[middle];
+            var node = new Node(key, data2);
             node.left = loadRecursive(keys5, values3, start2, middle);
             node.right = loadRecursive(keys5, values3, middle + 1, end);
             return node;
@@ -53155,8 +53148,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   function abortRequest5(controller) {
     controller.abort();
   }
-  function vtToGeoJSON(data, tile, mergeCache) {
-    var vectorTile = new VectorTile(new Pbf(data));
+  function vtToGeoJSON(data2, tile, mergeCache) {
+    var vectorTile = new VectorTile(new Pbf(data2));
     var layers = Object.keys(vectorTile.layers);
     if (!Array.isArray(layers)) {
       layers = [layers];
@@ -53227,15 +53220,15 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       source.loaded[tile.id] = [];
       delete source.inflight[tile.id];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (!data) {
+    }).then(function(data2) {
+      if (!data2) {
         throw new Error("No Data");
       }
       var z3 = tile.xyz[2];
       if (!source.canMerge[z3]) {
         source.canMerge[z3] = {};
       }
-      source.loaded[tile.id] = vtToGeoJSON(data, tile, source.canMerge[z3]);
+      source.loaded[tile.id] = vtToGeoJSON(data2, tile, source.canMerge[z3]);
       dispatch8.call("loadedData");
     }).catch(function() {
       source.loaded[tile.id] = [];
@@ -53625,11 +53618,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (data.byteLength === 0) {
+    }).then(function(data2) {
+      if (data2.byteLength === 0) {
         throw new Error("No Data");
       }
-      loadTileDataToCache2(data, tile, which);
+      loadTileDataToCache2(data2, tile, which);
       if (which === "images") {
         dispatch9.call("loadedImages");
       } else {
@@ -53643,8 +53636,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     });
   }
-  function loadTileDataToCache2(data, tile) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache2(data2, tile) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     if (vectorTile.layers.hasOwnProperty(pointLayer)) {
       const features = [];
       const cache = _cache2.images;
@@ -53705,9 +53698,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         throw new Error(response.status + " " + response.statusText);
       }
       return response.json();
-    }).then(function(data) {
-      let index2 = data.data.findIndex((feature3) => feature3.id === imageId);
-      const { filename, uploaded_hash } = data.data[index2];
+    }).then(function(data2) {
+      let index2 = data2.data.findIndex((feature3) => feature3.id === imageId);
+      const { filename, uploaded_hash } = data2.data[index2];
       _sceneOptions2.panorama = imageBaseUrl + "/" + uploaded_hash + "/" + filename + "/" + resolution;
     });
   }
@@ -53717,8 +53710,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         throw new Error(response.status + " " + response.statusText);
       }
       return response.json();
-    }).then(function(data) {
-      return data.data[0].username;
+    }).then(function(data2) {
+      return data2.data[0].username;
     });
   }
   var apiUrl2, imageBaseUrl, baseTileUrl2, pointLayer, lineLayer, tileStyle, minZoom2, dispatch9, imgZoom2, pannellumViewerCSS3, pannellumViewerJS3, resolution, _activeImage, _cache2, _loadViewerPromise5, _pannellumViewer2, _sceneOptions2, _currScene2, mapilio_default;
@@ -54056,11 +54049,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       cache.loaded[tileId] = true;
       delete cache.inflight[tileId];
       return response.arrayBuffer();
-    }).then(function(data) {
-      if (data.byteLength === 0) {
+    }).then(function(data2) {
+      if (data2.byteLength === 0) {
         throw new Error("No Data");
       }
-      loadTileDataToCache3(data, tile, zoom);
+      loadTileDataToCache3(data2, tile, zoom);
       if (which === "images") {
         dispatch10.call("loadedImages");
       } else {
@@ -54074,8 +54067,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
     });
   }
-  function loadTileDataToCache3(data, tile, zoom) {
-    const vectorTile = new VectorTile(new Pbf(data));
+  function loadTileDataToCache3(data2, tile, zoom) {
+    const vectorTile = new VectorTile(new Pbf(data2));
     let features, cache, layer, i3, feature3, loc, d2;
     if (vectorTile.layers.hasOwnProperty(pictureLayer)) {
       features = [];
@@ -54132,9 +54125,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     if (!response.ok) {
       throw new Error(response.status + " " + response.statusText);
     }
-    const data = await response.json();
-    cache[userId] = data;
-    return data.name;
+    const data2 = await response.json();
+    cache[userId] = data2;
+    return data2.name;
   }
   var apiUrl3, tileUrl2, imageDataUrl, sequenceDataUrl, userIdUrl, usernameURL, viewerUrl, highDefinition, standardDefinition, pictureLayer, sequenceLayer, minZoom3, imageMinZoom, lineMinZoom, dispatch10, _cache3, _loadViewerPromise6, _definition, _isHD, _planeFrame2, _pannellumFrame2, _currentFrame2, _currentScene, _activeImage2, _isViewerOpen2, panoramax_default;
   var init_panoramax = __esm({
@@ -54239,8 +54232,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             const response = responses.find((response2) => !response2.ok);
             throw new Error(response.status + " " + response.statusText);
           }
-          const data = await Promise.all(responses.map((response) => response.json()));
-          return data.flatMap((d2, i3) => d2.features.filter((f2) => f2.name === usernames[i3]).map((f2) => f2.id));
+          const data2 = await Promise.all(responses.map((response) => response.json()));
+          return data2.flatMap((d2, i3) => d2.features.filter((f2) => f2.name === usernames[i3]).map((f2) => f2.id));
         },
         /**
          * Get visible sequences from cache
@@ -54380,20 +54373,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           attribution.append("a").attr("class", "report-photo").attr("href", "mailto:signalement.ign@panoramax.fr").call(_t.append("panoramax.report"));
           attribution.append("span").text("|");
           attribution.append("a").attr("class", "image-link").attr("target", "_blank").attr("href", viewerLink).text("panoramax.xyz");
-          this.getImageData(d2.sequence_id, d2.id).then(function(data) {
+          this.getImageData(d2.sequence_id, d2.id).then(function(data2) {
             _currentScene = {
               currentImage: null,
               nextImage: null,
               prevImage: null
             };
-            _currentScene.currentImage = data.assets[_definition];
-            const nextIndex = data.links.findIndex((x3) => x3.rel === "next");
-            const prevIndex = data.links.findIndex((x3) => x3.rel === "prev");
+            _currentScene.currentImage = data2.assets[_definition];
+            const nextIndex = data2.links.findIndex((x3) => x3.rel === "next");
+            const prevIndex = data2.links.findIndex((x3) => x3.rel === "prev");
             if (nextIndex !== -1) {
-              _currentScene.nextImage = data.links[nextIndex];
+              _currentScene.nextImage = data2.links[nextIndex];
             }
             if (prevIndex !== -1) {
-              _currentScene.prevImage = data.links[prevIndex];
+              _currentScene.prevImage = data2.links[prevIndex];
             }
             d2.image_path = _currentScene.currentImage.href;
             wrap3.selectAll("button.back").classed("hide", _currentScene.prevImage === null);
@@ -54432,8 +54425,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
             if (!response.ok) {
               throw new Error(response.status + " " + response.statusText);
             }
-            const data = (await response.json()).features;
-            cache[collectionId] = data;
+            const data2 = (await response.json()).features;
+            cache[collectionId] = data2;
           }
           const result2 = cache[collectionId].find((d2) => d2.id === imageId);
           if (result2) return result2;
@@ -58467,7 +58460,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         enter.append("table").attr("class", "tagDiff-table").selectAll(".tagDiff-row").data(tagDiff).enter().append("tr").attr("class", "tagDiff-row").append("td").attr("class", function(d2) {
           var klass = d2.type === "+" ? "add" : "remove";
           return "tagDiff-cell tagDiff-cell-" + klass;
-        }).html(function(d2) {
+        }).text(function(d2) {
           return d2.display;
         });
       }
@@ -58541,7 +58534,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       if (!preset) return false;
       if (ignoredPresets.has(preset.id)) return false;
       name = name.toLowerCase();
-      return name === preset.name().toLowerCase() || preset.aliases().some((alias) => name === alias.toLowerCase());
+      return name === preset.name().toLowerCase() || preset.aliases().some((alias2) => name === alias2.toLowerCase());
     }
     function isGenericName(name, tags, preset) {
       name = name.toLowerCase();
@@ -61405,7 +61398,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         value.call(uiCombobox(context, "tag-value").minItems(1).fetcher(function(value2, callback) {
           var keyString = utilGetSetValue(key);
           if (!_tags[keyString]) return;
-          var data = _tags[keyString].map(function(tagValue) {
+          var data2 = _tags[keyString].map(function(tagValue) {
             if (!tagValue) {
               return {
                 value: " ",
@@ -61418,7 +61411,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
               title: tagValue
             };
           });
-          callback(data);
+          callback(data2);
         }));
         return;
       }
@@ -61428,9 +61421,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           debounce: true,
           geometry: geometry2,
           query: value2
-        }, function(err, data) {
+        }, function(err, data2) {
           if (!err) {
-            const filtered = data.filter((d2) => _tags[d2.value] === void 0).filter((d2) => !(d2.value in _discardTags)).filter((d2) => !/_\d$/.test(d2.value)).filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
+            const filtered = data2.filter((d2) => _tags[d2.value] === void 0).filter((d2) => !(d2.value in _discardTags)).filter((d2) => !/_\d$/.test(d2.value)).filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
             callback(sort2(value2, filtered));
           }
         });
@@ -61441,21 +61434,21 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           key: utilGetSetValue(key),
           geometry: geometry2,
           query: value2
-        }, function(err, data) {
+        }, function(err, data2) {
           if (!err) {
-            const filtered = data.filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
+            const filtered = data2.filter((d2) => d2.value.toLowerCase().includes(value2.toLowerCase()));
             callback(sort2(value2, filtered));
           }
         });
       }).caseSensitive(allowUpperCaseTagValues.test(utilGetSetValue(key))));
-      function sort2(value2, data) {
+      function sort2(value2, data2) {
         var sameletter = [];
         var other = [];
-        for (var i3 = 0; i3 < data.length; i3++) {
-          if (data[i3].value.substring(0, value2.length) === value2) {
-            sameletter.push(data[i3]);
+        for (var i3 = 0; i3 < data2.length; i3++) {
+          if (data2[i3].value.substring(0, value2.length) === value2) {
+            sameletter.push(data2[i3]);
           } else {
-            other.push(data[i3]);
+            other.push(data2[i3]);
           }
         }
         return sameletter.concat(other);
@@ -62555,8 +62548,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       } else if (_what instanceof osmNote) {
         url = context.connection().noteURL(_what);
       }
-      var data = !_what || _what.isNew() ? [] : [_what];
-      var link2 = selection2.selectAll(".view-on-osm").data(data, function(d2) {
+      var data2 = !_what || _what.isNew() ? [] : [_what];
+      var link2 = selection2.selectAll(".view-on-osm").data(data2, function(d2) {
         return d2.id;
       });
       link2.exit().remove();
@@ -63584,13 +63577,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var getPath = svgPath(projection2).geojson;
       var activeID = context.activeID();
       var base = context.history().base();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(way) {
         var features = svgSegmentWay(way, graph, activeID);
-        data.targets.push.apply(data.targets, features.passive);
-        data.nopes.push.apply(data.nopes, features.active);
+        data2.targets.push.apply(data2.targets, features.passive);
+        data2.nopes.push.apply(data2.nopes, features.active);
       });
-      var targetData = data.targets.filter(getPath);
+      var targetData = data2.targets.filter(getPath);
       var targets = selection2.selectAll(".area.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(targetData, function key(d2) {
@@ -63609,7 +63602,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       targets.enter().append("path").merge(targets).attr("d", getPath).attr("class", function(d2) {
         return "way area target target-allowed " + targetClass + d2.id;
       }).classed("segment-edited", segmentWasEdited);
-      var nopeData = data.nopes.filter(getPath);
+      var nopeData = data2.nopes.filter(getPath);
       var nopes = selection2.selectAll(".area.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(nopeData, function key(d2) {
@@ -63646,13 +63639,13 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var strokes = fills.filter(function(area) {
         return area.type === "way";
       });
-      var data = {
+      var data2 = {
         clip: fills,
         shadow: strokes,
         stroke: strokes,
         fill: fills
       };
-      var clipPaths = context.surface().selectAll("defs").selectAll(".clipPath-osm").filter(filter4).data(data.clip, osmEntity.key);
+      var clipPaths = context.surface().selectAll("defs").selectAll(".clipPath-osm").filter(filter4).data(data2.clip, osmEntity.key);
       clipPaths.exit().remove();
       var clipPathsEnter = clipPaths.enter().append("clipPath").attr("class", "clipPath-osm").attr("id", function(entity2) {
         return "ideditor-" + entity2.id + "-clippath";
@@ -63666,7 +63659,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         return "areagroup area-" + d2;
       }).merge(areagroup);
       var paths = areagroup.selectAll("path").filter(filter4).data(function(layer) {
-        return data[layer];
+        return data2[layer];
       }, osmEntity.key);
       paths.exit().remove();
       var fillpaths = selection2.selectAll(".area-fill path.area").nodes();
@@ -63693,7 +63686,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }).classed("retagged", function(d2) {
         return graph.entities[d2.id] && base.entities[d2.id] && !deepEqual(graph.entities[d2.id].tags, base.entities[d2.id].tags);
       }).call(svgTagClasses()).attr("d", path);
-      touchLayer.call(drawTargets, graph, data.stroke, filter4);
+      touchLayer.call(drawTargets, graph, data2.stroke, filter4);
     }
     return drawAreas;
   }
@@ -63993,7 +63986,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   }
   function getProperties(node, attributeNames) {
     const properties = [];
-    for (const [tag, alias] of attributeNames) {
+    for (const [tag, alias2] of attributeNames) {
       let elem = get1(node, tag);
       if (!elem) {
         const elements = node.getElementsByTagNameNS(EXTENSIONS_NS, tag);
@@ -64003,7 +63996,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
       const val = Number.parseFloat(nodeVal(elem));
       if (!Number.isNaN(val)) {
-        properties.push([alias, val]);
+        properties.push([alias2, val]);
       }
     }
     return properties;
@@ -64047,11 +64040,11 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         times2.push(time2);
       if (heartRate)
         heartRates.push(heartRate);
-      for (const [alias, value] of extensions) {
-        if (!extendedProperties[alias]) {
-          extendedProperties[alias] = Array(pts.length).fill(null);
+      for (const [alias2, value] of extensions) {
+        if (!extendedProperties[alias2]) {
+          extendedProperties[alias2] = Array(pts.length).fill(null);
         }
-        extendedProperties[alias][i3] = value;
+        extendedProperties[alias2][i3] = value;
       }
     }
     if (line.length < 2)
@@ -64332,8 +64325,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
   }
   function extractExtendedData(node, schema) {
     return get5(node, "ExtendedData", (extendedData, properties) => {
-      for (const data of $2(extendedData, "Data")) {
-        properties[data.getAttribute("name") || ""] = nodeVal(get1(data, "value"));
+      for (const data2 of $2(extendedData, "Data")) {
+        properties[data2.getAttribute("name") || ""] = nodeVal(get1(data2, "value"));
       }
       for (const simpleData of $2(extendedData, "SimpleData")) {
         const name = simpleData.getAttribute("name") || "";
@@ -65001,9 +64994,9 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         return datagroup === "fill" ? getAreaPath(d2) : getPath(d2);
       });
       layer.call(drawLabels, "label-halo", geoData).call(drawLabels, "label", geoData);
-      function drawLabels(selection3, textClass, data) {
+      function drawLabels(selection3, textClass, data2) {
         var labelPath = path_default(projection2);
-        var labelData = data.filter(function(d2) {
+        var labelData = data2.filter(function(d2) {
           return _showLabels && d2.properties && (d2.properties.desc || d2.properties.name);
         });
         var labels = selection3.selectAll("text." + textClass).data(labelData, featureKey);
@@ -65043,7 +65036,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
       }
     }
-    drawData.setFile = function(extension, data) {
+    drawData.setFile = function(extension, data2) {
       _template = null;
       _fileList = null;
       _geojson = null;
@@ -65051,14 +65044,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var gj;
       switch (extension) {
         case ".gpx":
-          gj = gpx(xmlToDom(data));
+          gj = gpx(xmlToDom(data2));
           break;
         case ".kml":
-          gj = kml(xmlToDom(data));
+          gj = kml(xmlToDom(data2));
           break;
         case ".geojson":
         case ".json":
-          gj = JSON.parse(data);
+          gj = JSON.parse(data2);
           if (gj.type === "FeatureCollection") {
             gj.features.forEach(stringifyGeojsonProperties);
           } else if (gj.type === "Feature") {
@@ -65154,8 +65147,8 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       var extension = getExtension(testUrl) || defaultExtension;
       if (extension) {
         _template = null;
-        text_default3(url).then(function(data) {
-          drawData.setFile(extension, data);
+        text_default3(url).then(function(data2) {
+          drawData.setFile(extension, data2);
         }).catch(function() {
         });
       } else {
@@ -66168,20 +66161,20 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     g3(`${e3} '${t4}' was not loaded, try using full build of exifr.`);
   }
   function D3(e3, n3) {
-    return "string" == typeof e3 ? O2(e3, n3) : t && !i2 && e3 instanceof HTMLImageElement ? O2(e3.src, n3) : e3 instanceof Uint8Array || e3 instanceof ArrayBuffer || e3 instanceof DataView ? new I(e3) : t && e3 instanceof Blob ? x2(e3, n3, "blob", R) : void g3("Invalid input argument");
+    return "string" == typeof e3 ? O2(e3, n3) : t && !i2 && e3 instanceof HTMLImageElement ? O2(e3.src, n3) : e3 instanceof Uint8Array || e3 instanceof ArrayBuffer || e3 instanceof DataView ? new I2(e3) : t && e3 instanceof Blob ? x2(e3, n3, "blob", R) : void g3("Invalid input argument");
   }
   function O2(e3, i3) {
     return (s2 = e3).startsWith("data:") || s2.length > 1e4 ? v2(e3, i3, "base64") : n2 && e3.includes("://") ? x2(e3, i3, "url", M3) : n2 ? v2(e3, i3, "fs") : t ? x2(e3, i3, "url", M3) : void g3("Invalid input argument");
     var s2;
   }
   async function x2(e3, t4, i3, n3) {
-    return A8.has(i3) ? v2(e3, t4, i3) : n3 ? (async function(e4, t5) {
+    return A7.has(i3) ? v2(e3, t4, i3) : n3 ? (async function(e4, t5) {
       let i4 = await t5(e4);
-      return new I(i4);
+      return new I2(i4);
     })(e3, n3) : void g3(`Parser ${i3} is not loaded`);
   }
   async function v2(e3, t4, i3) {
-    let n3 = new (A8.get(i3))(e3, t4);
+    let n3 = new (A7.get(i3))(e3, t4);
     return await n3.read(), n3;
   }
   function U4(e3, t4, i3) {
@@ -66203,14 +66196,14 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
     return a2;
   }
-  function Z4(e3, t4) {
+  function Z3(e3, t4) {
     return void 0 !== e3 ? e3 : void 0 !== t4 ? t4 : void 0;
   }
   function ee(e3, t4) {
     for (let i3 of t4) e3.add(i3);
   }
   async function ie2(e3, t4) {
-    let i3 = new te2(t4);
+    let i3 = new te(t4);
     return await i3.read(e3), i3.parse();
   }
   function ae2(e3) {
@@ -66227,7 +66220,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     return "S" !== n3 && "W" !== n3 || (s2 *= -1), s2;
   }
   async function Se2(e3) {
-    let t4 = new te2(me2);
+    let t4 = new te(me);
     await t4.read(e3);
     let i3 = await t4.parse();
     if (i3 && i3.gps) {
@@ -66236,12 +66229,12 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
   }
   async function ye2(e3) {
-    let t4 = new te2(Ce2);
+    let t4 = new te(Ce2);
     await t4.read(e3);
     let i3 = await t4.extractThumbnail();
     return i3 && a ? s.from(i3) : i3;
   }
-  async function be(e3) {
+  async function be2(e3) {
     let t4 = await this.thumbnail(e3);
     if (void 0 !== t4) {
       let e4 = new Blob([t4]);
@@ -66249,7 +66242,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     }
   }
   async function Pe2(e3) {
-    let t4 = new te2(Ie2);
+    let t4 = new te(Ie2);
     await t4.read(e3);
     let i3 = await t4.parse();
     if (i3 && i3.ifd0) return i3.ifd0[274];
@@ -66303,40 +66296,40 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
     let i3 = e3.toLowerCase();
     return "true" === i3 || "false" !== i3 && e3.trim();
   }
-  async function st2(e3, t4, i3) {
+  async function st(e3, t4, i3) {
     let n3 = new q2(t4);
     n3.chunked = false, void 0 === i3 && "string" == typeof e3 && (i3 = (function(e4) {
       let t5 = e4.toLowerCase().split(".").pop();
       if (/* @__PURE__ */ (function(e6) {
         return "exif" === e6 || "tiff" === e6 || "tif" === e6;
       })(t5)) return "tiff";
-      if (it2.includes(t5)) return t5;
+      if (it.includes(t5)) return t5;
     })(e3));
     let s2 = await D3(e3, n3);
     if (i3) {
-      if (it2.includes(i3)) return rt2(i3, s2, n3);
+      if (it.includes(i3)) return rt(i3, s2, n3);
       g3("Invalid segment type");
     } else {
       if ((function(e4) {
         let t5 = e4.getString(0, 50).trim();
         return t5.includes("<?xpacket") || t5.includes("<x:");
-      })(s2)) return rt2("xmp", s2, n3);
+      })(s2)) return rt("xmp", s2, n3);
       for (let [e4] of T2) {
-        if (!it2.includes(e4)) continue;
-        let t5 = await rt2(e4, s2, n3).catch(nt2);
+        if (!it.includes(e4)) continue;
+        let t5 = await rt(e4, s2, n3).catch(nt2);
         if (t5) return t5;
       }
       g3("Unknown file format");
     }
   }
-  async function rt2(e3, t4, i3) {
+  async function rt(e3, t4, i3) {
     let n3 = i3[e3];
     return n3.enabled = true, n3.parse = true, T2.get(e3).parse(t4, n3);
   }
   function mt(e3, t4) {
     return m2(e3.getString(t4, 4));
   }
-  var e, t, i2, n2, s, r, a, o, h, u3, f, d, C3, y2, I, k2, w2, T2, A8, M3, R, L2, E3, B3, N2, G2, V7, z2, H, j2, W2, K3, X6, _2, Y3, $3, J2, q2, te2, ne2, se2, re3, he2, ue2, ce2, fe2, pe2, ge2, me2, Ce2, Ie2, ke2, we2, Te2, De2, Oe2, ve2, Me2, Re2, Le2, Ue2, Fe2, Ee2, Be2, Ne2, We2, Ke2, Xe2, Ye2, $e2, Je2, Ze2, et2, tt2, it2, nt2, at2, ot, lt2, ht, ut, ct, ft, dt, pt, gt2, St, Ct, yt, full_esm_default;
+  var e, t, i2, n2, s, r, a, o, h, u3, f, d, C3, y2, I2, k2, w2, T2, A7, M3, R, L2, E3, B3, N2, G2, V8, z2, H2, j2, W2, K3, X6, _2, Y3, $3, J2, q2, te, ne2, se2, re3, he2, ue2, ce2, fe2, pe2, ge2, me, Ce2, Ie2, ke2, we2, Te2, De2, Oe2, ve2, Me2, Re2, Le2, Ue2, Fe2, Ee2, Be2, Ne2, We2, Ke2, Xe2, Ye2, $e2, Je2, Ze2, et2, tt2, it, nt2, at2, ot, lt2, ht, ut, ct, ft, dt, pt, gt2, St, Ct, yt, full_esm_default;
   var init_full_esm = __esm({
     "node_modules/exifr/dist/full.esm.mjs"() {
       e = "undefined" != typeof self ? self : global;
@@ -66364,7 +66357,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
       }
       f = (e3) => p(e3) ? void 0 : e3, d = (e3) => void 0 !== e3;
       C3 = (e3) => String.fromCharCode.apply(null, e3), y2 = "undefined" != typeof TextDecoder ? new TextDecoder("utf-8") : void 0;
-      I = class _I {
+      I2 = class _I {
         static from(e3, t4) {
           return e3 instanceof this && e3.le === t4 ? e3 : new _I(e3, void 0, void 0, t4);
         }
@@ -66492,7 +66485,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return Array.from(this.keys());
         }
       };
-      w2 = new k2("file parser"), T2 = new k2("segment parser"), A8 = new k2("file reader");
+      w2 = new k2("file parser"), T2 = new k2("segment parser"), A7 = new k2("file reader");
       M3 = (e3) => h(e3).then(((e4) => e4.arrayBuffer())), R = (e3) => new Promise(((t4, i3) => {
         let n3 = new FileReader();
         n3.onloadend = () => t4(n3.result || new ArrayBuffer()), n3.onerror = i3, n3.readAsArrayBuffer(e3);
@@ -66505,7 +66498,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return this.allValues || (this.allValues = Array.from(this.values())), this.allValues;
         }
       };
-      E3 = /* @__PURE__ */ new Map(), B3 = /* @__PURE__ */ new Map(), N2 = /* @__PURE__ */ new Map(), G2 = ["chunked", "firstChunkSize", "firstChunkSizeNode", "firstChunkSizeBrowser", "chunkSize", "chunkLimit"], V7 = ["jfif", "xmp", "icc", "iptc", "ihdr"], z2 = ["tiff", ...V7], H = ["ifd0", "ifd1", "exif", "gps", "interop"], j2 = [...z2, ...H], W2 = ["makerNote", "userComment"], K3 = ["translateKeys", "translateValues", "reviveValues", "multiSegment"], X6 = [...K3, "sanitize", "mergeOutput", "silentErrors"];
+      E3 = /* @__PURE__ */ new Map(), B3 = /* @__PURE__ */ new Map(), N2 = /* @__PURE__ */ new Map(), G2 = ["chunked", "firstChunkSize", "firstChunkSizeNode", "firstChunkSizeBrowser", "chunkSize", "chunkLimit"], V8 = ["jfif", "xmp", "icc", "iptc", "ihdr"], z2 = ["tiff", ...V8], H2 = ["ifd0", "ifd1", "exif", "gps", "interop"], j2 = [...z2, ...H2], W2 = ["makerNote", "userComment"], K3 = ["translateKeys", "translateValues", "reviveValues", "multiSegment"], X6 = [...K3, "sanitize", "mergeOutput", "silentErrors"];
       _2 = class {
         get translate() {
           return this.translateKeys || this.translateValues || this.reviveValues;
@@ -66516,7 +66509,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return this.enabled || this.deps.size > 0;
         }
         constructor(e3, t4, i3, n3) {
-          if (super(), c(this, "enabled", false), c(this, "skip", /* @__PURE__ */ new Set()), c(this, "pick", /* @__PURE__ */ new Set()), c(this, "deps", /* @__PURE__ */ new Set()), c(this, "translateKeys", false), c(this, "translateValues", false), c(this, "reviveValues", false), this.key = e3, this.enabled = t4, this.parse = this.enabled, this.applyInheritables(n3), this.canBeFiltered = H.includes(e3), this.canBeFiltered && (this.dict = E3.get(e3)), void 0 !== i3) if (Array.isArray(i3)) this.parse = this.enabled = true, this.canBeFiltered && i3.length > 0 && this.translateTagSet(i3, this.pick);
+          if (super(), c(this, "enabled", false), c(this, "skip", /* @__PURE__ */ new Set()), c(this, "pick", /* @__PURE__ */ new Set()), c(this, "deps", /* @__PURE__ */ new Set()), c(this, "translateKeys", false), c(this, "translateValues", false), c(this, "reviveValues", false), this.key = e3, this.enabled = t4, this.parse = this.enabled, this.applyInheritables(n3), this.canBeFiltered = H2.includes(e3), this.canBeFiltered && (this.dict = E3.get(e3)), void 0 !== i3) if (Array.isArray(i3)) this.parse = this.enabled = true, this.canBeFiltered && i3.length > 0 && this.translateTagSet(i3, this.pick);
           else if ("object" == typeof i3) {
             if (this.enabled = true, this.parse = false !== i3.parse, this.canBeFiltered) {
               let { pick: e4, skip: t5 } = i3;
@@ -66568,16 +66561,16 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           for (t4 of X6) this[t4] = $3[t4];
           for (t4 of W2) this[t4] = $3[t4];
           for (t4 of j2) this[t4] = new Y3(t4, false, void 0, this);
-          this.setupGlobalFilters(e3, void 0, H);
+          this.setupGlobalFilters(e3, void 0, H2);
         }
         setupFromObject(e3) {
           let t4;
-          for (t4 of (H.ifd0 = H.ifd0 || H.image, H.ifd1 = H.ifd1 || H.thumbnail, Object.assign(this, e3), G2)) this[t4] = Z4(e3[t4], $3[t4]);
-          for (t4 of X6) this[t4] = Z4(e3[t4], $3[t4]);
-          for (t4 of W2) this[t4] = Z4(e3[t4], $3[t4]);
+          for (t4 of (H2.ifd0 = H2.ifd0 || H2.image, H2.ifd1 = H2.ifd1 || H2.thumbnail, Object.assign(this, e3), G2)) this[t4] = Z3(e3[t4], $3[t4]);
+          for (t4 of X6) this[t4] = Z3(e3[t4], $3[t4]);
+          for (t4 of W2) this[t4] = Z3(e3[t4], $3[t4]);
           for (t4 of z2) this[t4] = new Y3(t4, $3[t4], e3[t4], this);
-          for (t4 of H) this[t4] = new Y3(t4, $3[t4], e3[t4], this.tiff);
-          this.setupGlobalFilters(e3.pick, e3.skip, H, j2), true === e3.tiff ? this.batchEnableWithBool(H, true) : false === e3.tiff ? this.batchEnableWithUserValue(H, e3) : Array.isArray(e3.tiff) ? this.setupGlobalFilters(e3.tiff, void 0, H) : "object" == typeof e3.tiff && this.setupGlobalFilters(e3.tiff.pick, e3.tiff.skip, H);
+          for (t4 of H2) this[t4] = new Y3(t4, $3[t4], e3[t4], this.tiff);
+          this.setupGlobalFilters(e3.pick, e3.skip, H2, j2), true === e3.tiff ? this.batchEnableWithBool(H2, true) : false === e3.tiff ? this.batchEnableWithUserValue(H2, e3) : Array.isArray(e3.tiff) ? this.setupGlobalFilters(e3.tiff, void 0, H2) : "object" == typeof e3.tiff && this.setupGlobalFilters(e3.tiff.pick, e3.tiff.skip, H2);
         }
         batchEnableWithBool(e3, t4) {
           for (let i3 of e3) this[i3].enabled = t4;
@@ -66604,18 +66597,18 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
         }
         traverseTiffDependencyTree() {
           let { ifd0: e3, exif: t4, gps: i3, interop: n3 } = this;
-          n3.needed && (t4.deps.add(40965), e3.deps.add(40965)), t4.needed && e3.deps.add(34665), i3.needed && e3.deps.add(34853), this.tiff.enabled = H.some(((e4) => true === this[e4].enabled)) || this.makerNote || this.userComment;
-          for (let e4 of H) this[e4].finalizeFilters();
+          n3.needed && (t4.deps.add(40965), e3.deps.add(40965)), t4.needed && e3.deps.add(34665), i3.needed && e3.deps.add(34853), this.tiff.enabled = H2.some(((e4) => true === this[e4].enabled)) || this.makerNote || this.userComment;
+          for (let e4 of H2) this[e4].finalizeFilters();
         }
         get onlyTiff() {
-          return !V7.map(((e3) => this[e3].enabled)).some(((e3) => true === e3)) && this.tiff.enabled;
+          return !V8.map(((e3) => this[e3].enabled)).some(((e3) => true === e3)) && this.tiff.enabled;
         }
         checkLoadedPlugins() {
           for (let e3 of z2) this[e3].enabled && !T2.has(e3) && P3("segment parser", e3);
         }
       };
       c(q2, "default", $3);
-      te2 = class {
+      te = class {
         constructor(e3) {
           c(this, "parsers", {}), c(this, "output", {}), c(this, "errors", []), c(this, "pushToErrors", ((e4) => this.errors.push(e4))), this.options = q2.useCached(e3);
         }
@@ -66650,7 +66643,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return t4.close && t4.close(), a2;
         }
       };
-      ne2 = Object.freeze({ __proto__: null, parse: ie2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2 });
+      ne2 = Object.freeze({ __proto__: null, parse: ie2, Exifr: te, fileParsers: w2, segmentParsers: T2, fileReaders: A7, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V8, segments: z2, tiffBlocks: H2, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2 });
       se2 = class {
         constructor(e3, t4, i3) {
           c(this, "errors", []), c(this, "ensureSegmentChunk", (async (e4) => {
@@ -66695,7 +66688,7 @@ Please report this to https://github.com/markedjs/marked.`, e3) {
           return new this(e3, new q2({ [this.type]: t4 }), e3).parse();
         }
         normalizeInput(e3) {
-          return e3 instanceof I ? e3 : new I(e3);
+          return e3 instanceof I2 ? e3 : new I2(e3);
         }
         constructor(e3, t4 = {}, i3) {
           c(this, "errors", []), c(this, "raw", /* @__PURE__ */ new Map()), c(this, "handleError", ((e4) => {
@@ -66949,7 +66942,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
         createOutput() {
           let e3, t4, i3, n3 = {};
-          for (t4 of H) if (e3 = this[t4], !p(e3)) if (i3 = this.canTranslate ? this.translateBlock(e3, t4) : Object.fromEntries(e3), this.options.mergeOutput) {
+          for (t4 of H2) if (e3 = this[t4], !p(e3)) if (i3 = this.canTranslate ? this.translateBlock(e3, t4) : Object.fromEntries(e3), this.options.mergeOutput) {
             if ("ifd1" === t4) continue;
             Object.assign(n3, i3);
           } else n3[t4] = i3;
@@ -66961,8 +66954,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         }
       };
       c(fe2, "type", "tiff"), c(fe2, "headerLength", 10), T2.set("tiff", fe2);
-      pe2 = Object.freeze({ __proto__: null, default: ne2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2 });
-      ge2 = { ifd0: false, ifd1: false, exif: false, gps: false, interop: false, sanitize: false, reviveValues: true, translateKeys: false, translateValues: false, mergeOutput: false }, me2 = Object.assign({}, ge2, { firstChunkSize: 4e4, gps: [1, 2, 3, 4] });
+      pe2 = Object.freeze({ __proto__: null, default: ne2, Exifr: te, fileParsers: w2, segmentParsers: T2, fileReaders: A7, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V8, segments: z2, tiffBlocks: H2, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2 });
+      ge2 = { ifd0: false, ifd1: false, exif: false, gps: false, interop: false, sanitize: false, reviveValues: true, translateKeys: false, translateValues: false, mergeOutput: false }, me = Object.assign({}, ge2, { firstChunkSize: 4e4, gps: [1, 2, 3, 4] });
       Ce2 = Object.assign({}, ge2, { tiff: false, ifd1: true, mergeOutput: false });
       Ie2 = Object.assign({}, ge2, { firstChunkSize: 4e4, ifd0: [274] });
       ke2 = Object.freeze({ 1: { dimensionSwapped: false, scaleX: 1, scaleY: 1, deg: 0, rad: 0 }, 2: { dimensionSwapped: false, scaleX: -1, scaleY: 1, deg: 0, rad: 0 }, 3: { dimensionSwapped: false, scaleX: 1, scaleY: 1, deg: 180, rad: 180 * Math.PI / 180 }, 4: { dimensionSwapped: false, scaleX: -1, scaleY: 1, deg: 180, rad: 180 * Math.PI / 180 }, 5: { dimensionSwapped: true, scaleX: 1, scaleY: -1, deg: 90, rad: 90 * Math.PI / 180 }, 6: { dimensionSwapped: true, scaleX: 1, scaleY: 1, deg: 90, rad: 90 * Math.PI / 180 }, 7: { dimensionSwapped: true, scaleX: 1, scaleY: -1, deg: 270, rad: 270 * Math.PI / 180 }, 8: { dimensionSwapped: true, scaleX: 1, scaleY: 1, deg: 270, rad: 270 * Math.PI / 180 } });
@@ -66987,7 +66980,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           we2 = Te2 = Number(t4) < 77;
         }
       }
-      De2 = class extends I {
+      De2 = class extends I2 {
         constructor(...e3) {
           super(...e3), c(this, "ranges", new Oe2()), 0 !== this.byteLength && this.ranges.add(0, this.byteLength);
         }
@@ -67080,7 +67073,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         close() {
         }
       };
-      A8.set("blob", class extends ve2 {
+      A7.set("blob", class extends ve2 {
         async readWhole() {
           this.chunked = false;
           let e3 = await R(this.input);
@@ -67094,12 +67087,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return this.set(s2, e3, true);
         }
       });
-      Me2 = Object.freeze({ __proto__: null, default: pe2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
+      Me2 = Object.freeze({ __proto__: null, default: pe2, Exifr: te, fileParsers: w2, segmentParsers: T2, fileReaders: A7, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V8, segments: z2, tiffBlocks: H2, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be2, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
         return we2;
       }, get rotateCss() {
         return Te2;
       }, rotation: Ae2 });
-      A8.set("url", class extends ve2 {
+      A7.set("url", class extends ve2 {
         async readWhole() {
           this.chunked = false;
           let e3 = await M3(this.input);
@@ -67112,7 +67105,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           if (416 !== s2.status) return a2 !== t4 && (this.size = e3 + a2), this.set(r2, e3, true);
         }
       });
-      I.prototype.getUint64 = function(e3) {
+      I2.prototype.getUint64 = function(e3) {
         let t4 = this.getUint32(e3), i3 = this.getUint32(e3 + 4);
         return t4 < 1048575 ? t4 << 32 | i3 : void 0 !== typeof r ? (console.warn("Using BigInt because of type 64uint but JS can only handle 53b numbers."), r(t4) << r(32) | r(i3)) : void g3("Trying to read 64b value but JS can only handle 53b numbers.");
       };
@@ -67233,7 +67226,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           return e3.map(((e4) => e4.chunk.getString())).join("");
         }
         normalizeInput(e3) {
-          return "string" == typeof e3 ? e3 : I.from(e3).getString();
+          return "string" == typeof e3 ? e3 : I2.from(e3).getString();
         }
         parse(e3 = this.chunk) {
           if (!this.localOptions.parse) return e3;
@@ -67331,15 +67324,15 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       };
       Ye2 = (e3) => e3.serialize(), $e2 = (e3) => 1 === e3.length ? e3[0] : e3, Je2 = (e3, t4) => t4[e3] ? t4[e3] : t4[e3] = {};
       Ze2 = ["rdf:li", "rdf:Seq", "rdf:Bag", "rdf:Alt", "rdf:Description"], et2 = new RegExp(`(<|\\/)(${Ze2.join("|")})`, "g");
-      tt2 = Object.freeze({ __proto__: null, default: Me2, Exifr: te2, fileParsers: w2, segmentParsers: T2, fileReaders: A8, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V7, segments: z2, tiffBlocks: H, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me2, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
+      tt2 = Object.freeze({ __proto__: null, default: Me2, Exifr: te, fileParsers: w2, segmentParsers: T2, fileReaders: A7, tagKeys: E3, tagValues: B3, tagRevivers: N2, createDictionary: U4, extendDictionary: F2, fetchUrlAsArrayBuffer: M3, readBlobAsArrayBuffer: R, chunkedProps: G2, otherSegments: V8, segments: z2, tiffBlocks: H2, segmentsAndBlocks: j2, tiffExtractables: W2, inheritables: K3, allFormatters: X6, Options: q2, parse: ie2, gpsOnlyOptions: me, gps: Se2, thumbnailOnlyOptions: Ce2, thumbnail: ye2, thumbnailUrl: be2, orientationOnlyOptions: Ie2, orientation: Pe2, rotations: ke2, get rotateCanvas() {
         return we2;
       }, get rotateCss() {
         return Te2;
       }, rotation: Ae2 });
-      it2 = ["xmp", "icc", "iptc", "tiff"], nt2 = () => {
+      it = ["xmp", "icc", "iptc", "tiff"], nt2 = () => {
       };
       at2 = l("fs", ((e3) => e3.promises));
-      A8.set("fs", class extends ve2 {
+      A7.set("fs", class extends ve2 {
         async readWhole() {
           this.chunked = false, this.fs = await at2;
           let e3 = await this.fs.readFile(this.input);
@@ -67363,7 +67356,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           }
         }
       });
-      A8.set("base64", class extends ve2 {
+      A7.set("base64", class extends ve2 {
         constructor(...e3) {
           super(...e3), this.input = this.input.replace(/^data:([^;]+);base64,/gim, ""), this.size = this.input.length / 4 * 3, this.input.endsWith("==") ? this.size -= 2 : this.input.endsWith("=") && (this.size -= 1);
         }
@@ -67505,7 +67498,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
               for (let t6 of e6) n3.set(t6, s2), s2 += t6.length;
               return n3;
             })(e4.map(((e6) => e6.chunk.toUint8())));
-            return new I(t4);
+            return new I2(t4);
           })(e3);
         }
         parse() {
@@ -67902,9 +67895,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!layerVisible || !_layerEnabled) return;
       const service = getService();
       const selectedID = context.selectedErrorID();
-      const data = service ? service.getItems(projection2) : [];
+      const data2 = service ? service.getItems(projection2) : [];
       const getTransform = svgPointTransform(projection2);
-      const markers = drawLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
+      const markers = drawLayer.selectAll(".qaItem.osmose").data(data2, (d2) => d2.id);
       markers.exit().remove();
       const markersEnter = markers.enter().append("g").attr("class", (d2) => `qaItem ${d2.service} itemId-${d2.id} itemType-${d2.itemType}`);
       markersEnter.append("polygon").call(markerPath, "shadow");
@@ -67914,7 +67907,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       markers.merge(markersEnter).sort(sortY).classed("selected", (d2) => d2.id === selectedID).attr("transform", getTransform);
       if (touchLayer.empty()) return;
       const fillClass = context.getDebug("target") ? "pink" : "nocolor";
-      const targets = touchLayer.selectAll(".qaItem.osmose").data(data, (d2) => d2.id);
+      const targets = touchLayer.selectAll(".qaItem.osmose").data(data2, (d2) => d2.id);
       targets.exit().remove();
       targets.enter().append("rect").attr("width", "20px").attr("height", "30px").attr("x", "-10px").attr("y", "-28px").merge(targets).sort(sortY).attr("class", (d2) => `qaItem ${d2.service} target ${fillClass} itemId-${d2.id}`).attr("transform", getTransform);
       function sortY(a2, b11) {
@@ -68827,10 +68820,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function update3() {
       const service = getService();
-      let data = service ? service.signs(projection2) : [];
-      data = filterData(data);
+      let data2 = service ? service.signs(projection2) : [];
+      data2 = filterData(data2);
       const transform3 = svgPointTransform(projection2);
-      const signs = layer.selectAll(".icon-sign").data(data, function(d2) {
+      const signs = layer.selectAll(".icon-sign").data(data2, function(d2) {
         return d2.id;
       });
       signs.exit().remove();
@@ -68970,10 +68963,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     }
     function update3() {
       const service = getService();
-      let data = service ? service.mapFeatures(projection2) : [];
-      data = filterData(data);
+      let data2 = service ? service.mapFeatures(projection2) : [];
+      data2 = filterData(data2);
       const transform3 = svgPointTransform(projection2);
-      const mapFeatures = layer.selectAll(".icon-map-feature").data(data, function(d2) {
+      const mapFeatures = layer.selectAll(".icon-map-feature").data(data2, function(d2) {
         return d2.id;
       });
       mapFeatures.exit().remove();
@@ -69837,9 +69830,9 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       if (!_notesVisible || !_notesEnabled) return;
       var service = getService();
       var selectedID = context.selectedNoteID();
-      var data = service ? service.notes(projection2) : [];
+      var data2 = service ? service.notes(projection2) : [];
       var getTransform = svgPointTransform(projection2);
-      var notes = drawLayer.selectAll(".note").data(data, function(d2) {
+      var notes = drawLayer.selectAll(".note").data(data2, function(d2) {
         return d2.status + d2.id;
       });
       notes.exit().remove();
@@ -69865,7 +69858,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).attr("transform", getTransform);
       if (touchLayer.empty()) return;
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
-      var targets = touchLayer.selectAll(".note").data(data, function(d2) {
+      var targets = touchLayer.selectAll(".note").data(data2, function(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -70130,13 +70123,13 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var getPath = svgPath(projection2).geojson;
       var activeID = context.activeID();
       var base = context.history().base();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(way) {
         var features = svgSegmentWay(way, graph, activeID);
-        data.targets.push.apply(data.targets, features.passive);
-        data.nopes.push.apply(data.nopes, features.active);
+        data2.targets.push.apply(data2.targets, features.passive);
+        data2.nopes.push.apply(data2.nopes, features.active);
       });
-      var targetData = data.targets.filter(getPath);
+      var targetData = data2.targets.filter(getPath);
       var targets = selection2.selectAll(".line.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(targetData, function key(d2) {
@@ -70155,7 +70148,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       targets.enter().append("path").merge(targets).attr("d", getPath).attr("class", function(d2) {
         return "way line target target-allowed " + targetClass + d2.id;
       }).classed("segment-edited", segmentWasEdited);
-      var nopeData = data.nopes.filter(getPath);
+      var nopeData = data2.nopes.filter(getPath);
       var nopes = selection2.selectAll(".line.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
       }).data(nopeData, function key(d2) {
@@ -70212,8 +70205,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       function getPathData(isSelected) {
         return function() {
           var layer = this.parentNode.__data__;
-          var data = pathdata[layer] || [];
-          return data.filter(function(d2) {
+          var data2 = pathdata[layer] || [];
+          return data2.filter(function(d2) {
             if (isSelected) {
               return context.selectedIDs().indexOf(d2.id) !== -1;
             } else {
@@ -70226,7 +70219,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var markergroup = layergroup.selectAll("g." + groupclass).data([pathclass]);
         markergroup = markergroup.enter().append("g").attr("class", groupclass).merge(markergroup);
         var markers = markergroup.selectAll("path").filter(filter4).data(
-          function data() {
+          function data2() {
             return groupdata[this.parentNode.__data__] || [];
           },
           function key(d2) {
@@ -70339,7 +70332,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
     function drawTargets(selection2, graph, entities, filter4) {
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
-      var data = entities.map(function(midpoint) {
+      var data2 = entities.map(function(midpoint) {
         return {
           type: "Feature",
           id: midpoint.id,
@@ -70355,7 +70348,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       var targets = selection2.selectAll(".midpoint.target").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data, function key(d2) {
+      }).data(data2, function key(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -70486,10 +70479,10 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var fillClass = context.getDebug("target") ? "pink " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
       var activeID = context.activeID();
-      var data = [];
+      var data2 = [];
       entities.forEach(function(node) {
         if (activeID === node.id) return;
-        data.push({
+        data2.push({
           type: "Feature",
           id: node.id,
           properties: {
@@ -70500,7 +70493,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
           geometry: node.asGeoJSON()
         });
       });
-      var targets = selection2.selectAll(".point.target").filter((d2) => filter4(d2.properties.entity)).data(data, (d2) => fastEntityKey(d2.properties.entity));
+      var targets = selection2.selectAll(".point.target").filter((d2) => filter4(d2.properties.entity)).data(data2, (d2) => fastEntityKey(d2.properties.entity));
       targets.exit().remove();
       targets.enter().append("rect").attr("x", (d2) => d2.properties.isAddr ? -addressShieldWidth(d2.properties.entity, selection2) / 2 : -10).attr("y", (d2) => d2.properties.isAddr ? -8 : -26).attr("width", (d2) => d2.properties.isAddr ? addressShieldWidth(d2.properties.entity, selection2) : 20).attr("height", (d2) => d2.properties.isAddr ? 16 : 30).attr("class", function(d2) {
         return "node point target " + fillClass + d2.id;
@@ -70733,7 +70726,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).classed("retagged", function(d2) {
         return base.entities[d2.id] && !deepEqual(graph.entities[d2.id].tags, base.entities[d2.id].tags);
       }).call(svgTagClasses()).call(updateAttributes);
-      var iconUse = groups2.selectAll(".icon").data(function data(d2) {
+      var iconUse = groups2.selectAll(".icon").data(function data2(d2) {
         return zoom >= 17 && getIcon(d2) ? [d2] : [];
       }, fastEntityKey);
       iconUse.exit().remove();
@@ -70741,7 +70734,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
         var picon = getIcon(d2);
         return picon ? "#" + picon : "";
       });
-      var dgroups = groups2.selectAll(".viewfieldgroup").data(function data(d2) {
+      var dgroups = groups2.selectAll(".viewfieldgroup").data(function data2(d2) {
         return zoom >= 18 && getDirections(d2) ? [d2] : [];
       }, fastEntityKey);
       dgroups.exit().remove();
@@ -70757,12 +70750,12 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var nopeClass = context.getDebug("target") ? "red " : "nocolor ";
       var getTransform = svgPointTransform(projection2).geojson;
       var activeID = context.activeID();
-      var data = { targets: [], nopes: [] };
+      var data2 = { targets: [], nopes: [] };
       entities.forEach(function(node) {
         if (activeID === node.id) return;
         var vertexType = svgPassiveVertex(node, graph, activeID);
         if (vertexType !== 0) {
-          data.targets.push({
+          data2.targets.push({
             type: "Feature",
             id: node.id,
             properties: {
@@ -70772,7 +70765,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
             geometry: node.asGeoJSON()
           });
         } else {
-          data.nopes.push({
+          data2.nopes.push({
             type: "Feature",
             id: node.id + "-nope",
             properties: {
@@ -70786,7 +70779,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       });
       var targets = selection2.selectAll(".vertex.target-allowed").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data.targets, function key(d2) {
+      }).data(data2.targets, function key(d2) {
         return d2.id;
       });
       targets.exit().remove();
@@ -70797,7 +70790,7 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       }).attr("transform", getTransform);
       var nopes = selection2.selectAll(".vertex.target-nope").filter(function(d2) {
         return filter4(d2.properties.entity);
-      }).data(data.nopes, function key(d2) {
+      }).data(data2.nopes, function key(d2) {
         return d2.id;
       });
       nopes.exit().remove();
@@ -71450,8 +71443,8 @@ this.ifd0Offset: ${this.ifd0Offset}, file.byteLength: ${e3.byteLength}`), e3.tif
       var conflictsHelpEnter = bodyEnter.append("div").attr("class", "conflicts-help").call(_t.append("save.conflict.help"));
       var changeset = new osmChangeset();
       delete changeset.id;
-      var data = JXON.stringify(changeset.osmChangeJXON(_origChanges));
-      var blob = new Blob([data], { type: "text/xml;charset=utf-8;" });
+      var data2 = JXON.stringify(changeset.osmChangeJXON(_origChanges));
+      var blob = new Blob([data2], { type: "text/xml;charset=utf-8;" });
       var fileName = "changes.osc";
       var linkEnter = conflictsHelpEnter.selectAll(".download-changes").append("a").attr("class", "download-changes");
       linkEnter.attr("href", window.URL.createObjectURL(blob)).attr("download", fileName);
@@ -76761,8 +76754,8 @@ ${currentIndent}`
         if (langName) return langName;
       }
       if (osmIsoCountryKeys.has(field.key) && tval) {
-        const data = buildCountry()[tval];
-        if (data) return data.name;
+        const data2 = buildCountry()[tval];
+        if (data2) return data2.name;
         return tval;
       }
       var stringsField = field.resolveReference("stringsCrossReference");
@@ -76782,8 +76775,8 @@ ${currentIndent}`
         if (langName) return (selection2) => selection2.text(langName);
       }
       if (osmIsoCountryKeys.has(field.key) && tval) {
-        const data = buildCountry()[tval];
-        if (data) return (selection2) => addFlagIcon(selection2, data.name, data.flag);
+        const data2 = buildCountry()[tval];
+        if (data2) return (selection2) => addFlagIcon(selection2, data2.name, data2.flag);
         return (selection2) => selection2.text(tval);
       }
       var stringsField = field.resolveReference("stringsCrossReference");
@@ -76922,10 +76915,10 @@ ${currentIndent}`
       if (_entityIDs.length) {
         params.geometry = context.graph().geometry(_entityIDs[0]);
       }
-      services.taginfo[fn](params, function(err, data) {
+      services.taginfo[fn](params, function(err, data2) {
         if (err) return;
-        data = data.filter((d2) => field.type !== "typeCombo" || d2.value !== "yes");
-        data = data.filter((d2) => {
+        data2 = data2.filter((d2) => field.type !== "typeCombo" || d2.value !== "yes");
+        data2 = data2.filter((d2) => {
           var value = d2.value;
           if (_isMulti) {
             value = value.slice(field.key.length);
@@ -76934,14 +76927,14 @@ ${currentIndent}`
         });
         var deprecatedValues = deprecatedTagValuesByKey(_dataDeprecated)[field.key];
         if (deprecatedValues) {
-          data = data.filter((d2) => !deprecatedValues.includes(d2.value));
+          data2 = data2.filter((d2) => !deprecatedValues.includes(d2.value));
         }
         if (hasCountryPrefix) {
-          data = data.filter((d2) => d2.value.toLowerCase().indexOf(_countryCode + ":") === 0);
+          data2 = data2.filter((d2) => d2.value.toLowerCase().indexOf(_countryCode + ":") === 0);
         }
-        const additionalOptions = (field.options || stringsField.options || []).filter((v3) => !data.some((dv) => dv.value === (_isMulti ? field.key + v3 : v3))).map((v3) => ({ value: v3 }));
-        _container.classed("empty-combobox", data.length === 0);
-        _comboData = data.concat(additionalOptions).map(function(d2) {
+        const additionalOptions = (field.options || stringsField.options || []).filter((v3) => !data2.some((dv) => dv.value === (_isMulti ? field.key + v3 : v3))).map((v3) => ({ value: v3 }));
+        _container.classed("empty-combobox", data2.length === 0);
+        _comboData = data2.concat(additionalOptions).map(function(d2) {
           var v3 = d2.value;
           if (_isMulti) v3 = v3.replace(field.key, "");
           const labelId = getLabelId(stringsField, v3);
@@ -77150,9 +77143,9 @@ ${currentIndent}`
       }
       container.selectAll(".tag-value-icon").remove();
       if (osmIsoCountryKeys.has(field.key) && value) {
-        const data = buildCountry()[value];
-        if (data && data.flag && showEmojiFlags) {
-          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").append("span").attr("class", "emoji").text(data.flag);
+        const data2 = buildCountry()[value];
+        if (data2 && data2.flag && showEmojiFlags) {
+          container.selectAll(".tag-value-icon").data([value]).enter().insert("div", "input").attr("class", "tag-value-icon").append("span").attr("class", "emoji").text(data2.flag);
           return;
         }
       }
@@ -77738,10 +77731,10 @@ ${currentIndent}`
   });
   function uiAttribution(context) {
     let _selection = select_default2(null);
-    function render(selection2, data, klass) {
+    function render(selection2, data2, klass) {
       let div = selection2.selectAll(`.${klass}`).data([0]);
       div = div.enter().append("div").attr("class", klass).merge(div);
-      let attributions = div.selectAll(".attribution").data(data, (d2) => d2.id);
+      let attributions = div.selectAll(".attribution").data(data2, (d2) => d2.id);
       attributions.exit().remove();
       attributions = attributions.enter().append("span").attr("class", "attribution").each((d2, i3, nodes) => {
         let attribution = select_default2(nodes[i3]);
@@ -82379,16 +82372,16 @@ ${currentIndent}`
     }
     return s2;
   }
-  function rendererBackgroundSource(data) {
-    var source = Object.assign({}, data);
+  function rendererBackgroundSource(data2) {
+    var source = Object.assign({}, data2);
     var _offset = [0, 0];
     var _name = source.name;
     var _description = source.description;
     var _best = !!source.best;
     var _template = source.encrypted ? utilAesDecrypt(source.template) : source.template;
-    source.tileSize = data.tileSize || 256;
-    source.zoomExtent = data.zoomExtent || [0, 22];
-    source.overzoom = data.overzoom !== false;
+    source.tileSize = data2.tileSize || 256;
+    source.zoomExtent = data2.zoomExtent || [0, 22];
+    source.overzoom = data2.overzoom !== false;
     source.offset = function(val) {
       if (!arguments.length) return _offset;
       _offset = val;
@@ -82420,8 +82413,8 @@ ${currentIndent}`
       return _best;
     };
     source.area = function() {
-      if (!data.polygon) return Number.MAX_VALUE;
-      var area = area_default2({ type: "MultiPolygon", coordinates: [data.polygon] });
+      if (!data2.polygon) return Number.MAX_VALUE;
+      var area = area_default2({ type: "MultiPolygon", coordinates: [data2.polygon] });
       return isNaN(area) ? 0 : area;
     };
     source.imageryUsed = function() {
@@ -82562,9 +82555,9 @@ ${currentIndent}`
     `).addListener(function() {
         isRetina = window.devicePixelRatio && window.devicePixelRatio >= 2;
       });
-      rendererBackgroundSource.Bing = function(data, dispatch11) {
-        data.template = "https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=1&pr=odbl&n=z";
-        var bing = rendererBackgroundSource(data);
+      rendererBackgroundSource.Bing = function(data2, dispatch11) {
+        data2.template = "https://ecn.t{switch:0,1,2,3}.tiles.virtualearth.net/tiles/a{u}.jpeg?g=1&pr=odbl&n=z";
+        var bing = rendererBackgroundSource(data2);
         var key = utilAesDecrypt("5c875730b09c6b422433e807e1ff060b6536c791dbfffcffc4c6b18a1bdba1f14593d151adb50e19e1be1ab19aef813bf135d0f103475e5c724dec94389e45d0");
         const strictParam = "n";
         var url = "https://dev.virtualearth.net/REST/v1/Imagery/Metadata/AerialOSM?include=ImageryProviders&uriScheme=https&key=" + key;
@@ -82649,11 +82642,11 @@ ${currentIndent}`
         bing.terms_url = "https://blog.openstreetmap.org/2010/11/30/microsoft-imagery-details";
         return bing;
       };
-      rendererBackgroundSource.Esri = function(data) {
-        if (data.template.match(/blankTile/) === null) {
-          data.template = data.template + "?blankTile=false";
+      rendererBackgroundSource.Esri = function(data2) {
+        if (data2.template.match(/blankTile/) === null) {
+          data2.template = data2.template + "?blankTile=false";
         }
-        var esri = rendererBackgroundSource(data);
+        var esri = rendererBackgroundSource(data2);
         var cache = {};
         var inflight = {};
         var _prevCenter;
@@ -85136,12 +85129,12 @@ ${currentIndent}`
             }
           }
         });
-        var data = Object.values(selectedAndParents);
+        var data2 = Object.values(selectedAndParents);
         var filter4 = function(d2) {
           return d2.id in selectedAndParents;
         };
-        data = context.features().filter(data, graph);
-        surface.call(drawVertices.drawSelected, graph, map4.extent()).call(drawLines, graph, data, filter4).call(drawAreas, graph, data, filter4).call(drawMidpoints, graph, data, filter4, map4.trimmedExtent());
+        data2 = context.features().filter(data2, graph);
+        surface.call(drawVertices.drawSelected, graph, map4.extent()).call(drawLines, graph, data2, filter4).call(drawAreas, graph, data2, filter4).call(drawMidpoints, graph, data2, filter4, map4.trimmedExtent());
         dispatch11.call("drawn", this, { full: false });
         scheduleRedraw();
       });
@@ -85175,54 +85168,54 @@ ${currentIndent}`
       var features = context.features();
       var all = context.history().intersects(map4.extent());
       var fullRedraw = false;
-      var data;
+      var data2;
       var set6;
       var filter4;
       var applyFeatureLayerFilters = true;
       if (map4.isInWideSelection()) {
-        data = [];
+        data2 = [];
         utilEntityAndDeepMemberIDs(mode2.selectedIDs(), context.graph()).forEach(function(id3) {
           var entity = context.hasEntity(id3);
-          if (entity) data.push(entity);
+          if (entity) data2.push(entity);
         });
         fullRedraw = true;
         filter4 = utilFunctor(true);
         applyFeatureLayerFilters = false;
       } else if (difference5) {
         var complete = difference5.complete(map4.extent());
-        data = Object.values(complete).filter(Boolean);
+        data2 = Object.values(complete).filter(Boolean);
         set6 = new Set(Object.keys(complete));
         filter4 = function(d2) {
           return set6.has(d2.id);
         };
-        features.clear(data);
+        features.clear(data2);
       } else {
         if (features.gatherStats(all, graph, _dimensions)) {
           extent2 = void 0;
         }
         if (extent2) {
-          data = context.history().intersects(map4.extent().intersection(extent2));
-          set6 = new Set(data.map(function(entity) {
+          data2 = context.history().intersects(map4.extent().intersection(extent2));
+          set6 = new Set(data2.map(function(entity) {
             return entity.id;
           }));
           filter4 = function(d2) {
             return set6.has(d2.id);
           };
         } else {
-          data = all;
+          data2 = all;
           fullRedraw = true;
           filter4 = utilFunctor(true);
         }
       }
       if (applyFeatureLayerFilters) {
-        data = features.filter(data, graph);
+        data2 = features.filter(data2, graph);
       } else {
         context.features().resetStats();
       }
       if (mode2 && mode2.id === "select") {
         surface.call(drawVertices.drawSelected, graph, map4.extent());
       }
-      surface.call(drawVertices, graph, data, filter4, map4.extent(), fullRedraw).call(drawLines, graph, data, filter4).call(drawAreas, graph, data, filter4).call(drawMidpoints, graph, data, filter4, map4.trimmedExtent()).call(drawPoints, graph, data, filter4).call(drawLabels, graph, data, filter4, _dimensions, fullRedraw);
+      surface.call(drawVertices, graph, data2, filter4, map4.extent(), fullRedraw).call(drawLines, graph, data2, filter4).call(drawAreas, graph, data2, filter4).call(drawMidpoints, graph, data2, filter4, map4.trimmedExtent()).call(drawPoints, graph, data2, filter4).call(drawLabels, graph, data2, filter4, _dimensions, fullRedraw);
       dispatch11.call("drawn", this, { full: true });
     }
     map4.init = function() {
@@ -86562,8 +86555,8 @@ ${currentIndent}`
       _modalSelection2.select(".modal").classed("modal-shortcuts", true);
       var content = _modalSelection2.select(".content");
       content.append("div").attr("class", "modal-section header").append("h2").call(_t.append("shortcuts.title"));
-      _mainFileFetcher.get("shortcuts").then(function(data) {
-        _dataShortcuts = data;
+      _mainFileFetcher.get("shortcuts").then(function(data2) {
+        _dataShortcuts = data2;
         content.call(render);
       }).catch(function() {
       });
@@ -88029,14 +88022,14 @@ ${currentIndent}`
         var row = select_default2(this);
         var role = row.selectAll("input.member-role");
         var origValue = role.property("value");
-        function sort2(value, data) {
+        function sort2(value, data2) {
           var sameletter = [];
           var other = [];
-          for (var i3 = 0; i3 < data.length; i3++) {
-            if (data[i3].value.substring(0, value.length) === value) {
-              sameletter.push(data[i3]);
+          for (var i3 = 0; i3 < data2.length; i3++) {
+            if (data2[i3].value.substring(0, value.length) === value) {
+              sameletter.push(data2[i3]);
             } else {
-              other.push(data[i3]);
+              other.push(data2[i3]);
             }
           }
           return sameletter.concat(other);
@@ -88059,8 +88052,8 @@ ${currentIndent}`
               rtype: rtype || "",
               geometry: geometry2,
               query: role2
-            }, function(err, data) {
-              if (!err) callback(sort2(role2, data));
+            }, function(err, data2) {
+              if (!err) callback(sort2(role2, data2));
             });
           }).on("cancel", function() {
             role.property("value", origValue);
@@ -88477,14 +88470,14 @@ ${currentIndent}`
         var row = select_default2(this);
         var role = row.selectAll("input.member-role");
         var origValue = role.property("value");
-        function sort2(value, data) {
+        function sort2(value, data2) {
           var sameletter = [];
           var other = [];
-          for (var i3 = 0; i3 < data.length; i3++) {
-            if (data[i3].value.substring(0, value.length) === value) {
-              sameletter.push(data[i3]);
+          for (var i3 = 0; i3 < data2.length; i3++) {
+            if (data2[i3].value.substring(0, value.length) === value) {
+              sameletter.push(data2[i3]);
             } else {
-              other.push(data[i3]);
+              other.push(data2[i3]);
             }
           }
           return sameletter.concat(other);
@@ -88497,8 +88490,8 @@ ${currentIndent}`
               rtype: rtype || "",
               geometry: context.graph().geometry(_entityIDs[0]),
               query: role2
-            }, function(err, data) {
-              if (!err) callback(sort2(role2, data));
+            }, function(err, data2) {
+              if (!err) callback(sort2(role2, data2));
             });
           }).on("cancel", function() {
             role.property("value", origValue);
@@ -89970,8 +89963,8 @@ ${currentIndent}`
       update3();
       function update3() {
         var showNotes = notesEnabled();
-        var data = showNotes ? [mode2] : [];
-        var buttons = selection2.selectAll("button.add-button").data(data, function(d2) {
+        var data2 = showNotes ? [mode2] : [];
+        var buttons = selection2.selectAll("button.add-button").data(data2, function(d2) {
           return d2.id;
         });
         buttons.exit().remove();
@@ -91625,11 +91618,11 @@ ${currentIndent}`
     function renderContent(selection2) {
       var container = selection2.selectAll(".issues-options-container").data([0]);
       container = container.enter().append("div").attr("class", "issues-options-container").merge(container);
-      var data = [
+      var data2 = [
         { key: "what", values: ["edited", "all"] },
         { key: "where", values: ["visible", "all"] }
       ];
-      var options = container.selectAll(".issues-option").data(data, function(d2) {
+      var options = container.selectAll(".issues-option").data(data2, function(d2) {
         return d2.key;
       });
       var optionsEnter = options.enter().append("div").attr("class", function(d2) {
@@ -91714,8 +91707,8 @@ ${currentIndent}`
       container = container.merge(containerEnter);
       container.selectAll(".issue-rules-list").call(drawListItems, _ruleKeys, "checkbox", "rule", toggleRule, isRuleEnabled);
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li");
       if (name === "rule") {
@@ -92283,8 +92276,8 @@ ${currentIndent}`
       container = container.merge(containerEnter);
       container.selectAll(".layer-feature-list").call(drawListItems, _features, "checkbox", "feature", clickFeature, showsFeature);
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li").call(
         uiTooltip().title(function(d2) {
@@ -92348,8 +92341,8 @@ ${currentIndent}`
         return context.surface().classed("highlight-edited");
       });
     }
-    function drawListItems(selection2, data, type2, name, change, active) {
-      var items = selection2.selectAll("li").data(data);
+    function drawListItems(selection2, data2, type2, name, change, active) {
+      var items = selection2.selectAll("li").data(data2);
       items.exit().remove();
       var enter = items.enter().append("li").call(
         uiTooltip().title(function(d2) {
@@ -92486,7 +92479,7 @@ ${currentIndent}`
       var photoLayers = layers.all().filter(function(obj) {
         return photoKeys.indexOf(obj.id) !== -1;
       });
-      var data = photoLayers.filter(function(obj) {
+      var data2 = photoLayers.filter(function(obj) {
         if (!obj.layer.supported()) return false;
         if (layerEnabled(obj)) return true;
         if (typeof obj.layer.validHere === "function") {
@@ -92505,7 +92498,7 @@ ${currentIndent}`
       }
       var ul = selection2.selectAll(".layer-list-photos").data([0]);
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photos").merge(ul);
-      var li = ul.selectAll(".list-item-photos").data(data, (d2) => d2.id);
+      var li = ul.selectAll(".list-item-photos").data(data2, (d2) => d2.id);
       li.exit().remove();
       var liEnter = li.enter().append("li").attr("class", function(d2) {
         var classes = "list-item-photos list-item-" + d2.id;
@@ -92541,14 +92534,14 @@ ${currentIndent}`
       li.merge(liEnter).classed("active", layerEnabled).selectAll("input").property("disabled", (d2) => !layerRendered(d2)).property("checked", layerEnabled);
     }
     function drawPhotoTypeItems(selection2) {
-      var data = context.photos().allPhotoTypes();
+      var data2 = context.photos().allPhotoTypes();
       function typeEnabled(d2) {
         return context.photos().showsPhotoType(d2);
       }
       var ul = selection2.selectAll(".layer-list-photo-types").data([0]);
       ul.exit().remove();
       ul = ul.enter().append("ul").attr("class", "layer-list layer-list-photo-types").merge(ul);
-      var li = ul.selectAll(".list-item-photo-types").data(context.photos().shouldFilterByPhotoType() ? data : []);
+      var li = ul.selectAll(".list-item-photo-types").data(context.photos().shouldFilterByPhotoType() ? data2 : []);
       li.exit().remove();
       var liEnter = li.enter().append("li").attr("class", function(d2) {
         return "list-item-photo-types list-item-" + d2;
@@ -93579,11 +93572,11 @@ ${currentIndent}`
     let _location;
     ensureOSMCommunityIndex();
     function ensureOSMCommunityIndex() {
-      const data = _mainFileFetcher;
+      const data2 = _mainFileFetcher;
       return Promise.all([
-        data.get("oci_features"),
-        data.get("oci_resources"),
-        data.get("oci_defaults")
+        data2.get("oci_features"),
+        data2.get("oci_resources"),
+        data2.get("oci_defaults")
       ]).then((vals) => {
         if (_oci) return _oci;
         if (vals[0] && Array.isArray(vals[0].features)) {
@@ -96767,12 +96760,12 @@ ${currentIndent}`
           }
         }
       }
-      wikidata.itemsForSearchQuery(q3, function(err, data) {
+      wikidata.itemsForSearchQuery(q3, function(err, data2) {
         if (err) {
           if (err !== "No query") console.error(err);
           return;
         }
-        var result2 = data.map(function(item) {
+        var result2 = data2.map(function(item) {
           return {
             id: item.id,
             value: item.display.label.value + " (" + item.id + ")",
@@ -96987,8 +96980,8 @@ ${currentIndent}`
         }
       }
       const searchfn = value.length > 7 ? wikipedia.search : wikipedia.suggestions;
-      searchfn(language()[2], value, (query, data) => {
-        callback(data.map((d2) => ({ value: d2 })));
+      searchfn(language()[2], value, (query, data2) => {
+        callback(data2.map((d2) => ({ value: d2 })));
       });
     });
     function wiki(selection2) {
@@ -97061,10 +97054,10 @@ ${currentIndent}`
       if (skipWikidata || !value || !language()[2]) return;
       const initGraph = context.graph();
       const initEntityIDs = _entityIDs;
-      wikidata.itemsByTitle(language()[2], value, (err, data) => {
-        if (err || !data || !Object.keys(data).length) return;
+      wikidata.itemsByTitle(language()[2], value, (err, data2) => {
+        if (err || !data2 || !Object.keys(data2).length) return;
         if (context.graph() !== initGraph) return;
-        const qids = Object.keys(data);
+        const qids = Object.keys(data2);
         const value2 = qids && qids.find((id3) => id3.match(/^Q\d+$/));
         let actions = initEntityIDs.map((entityID) => {
           let entity = context.entity(entityID).tags;
@@ -97800,8 +97793,8 @@ ${currentIndent}`
       var changeset = new osmChangeset().update({ id: void 0 });
       var changes = history.changes(actionDiscardTags(history.difference(), _discardTags));
       delete changeset.id;
-      var data = JXON.stringify(changeset.osmChangeJXON(changes));
-      var blob = new Blob([data], { type: "text/xml;charset=utf-8;" });
+      var data2 = JXON.stringify(changeset.osmChangeJXON(changes));
+      var blob = new Blob([data2], { type: "text/xml;charset=utf-8;" });
       var fileName = "changes.osc";
       var linkEnter = container.selectAll(".download-changes").data([0]).enter().append("a").attr("class", "download-changes");
       linkEnter.attr("href", window.URL.createObjectURL(blob)).attr("download", fileName);
@@ -98268,9 +98261,9 @@ ${currentIndent}`
       addErrors(selection2, errors);
       selection2.okButton();
     }
-    function addErrors(selection2, data) {
+    function addErrors(selection2, data2) {
       var message2 = selection2.select(".modal-section.message-text");
-      var items = message2.selectAll(".error-container").data(data);
+      var items = message2.selectAll(".error-container").data(data2);
       var enter = items.enter().append("div").attr("class", "error-container");
       enter.append("a").attr("class", "error-description").attr("href", "#").classed("hide-toggle", true).text(function(d2) {
         return d2.msg || _t("save.unknown_error_details");
@@ -100858,7 +100851,7 @@ ${currentIndent}`
         }
         lasso.p(context.map().mouse());
       }
-      function normalize2(a2, b11) {
+      function normalize3(a2, b11) {
         return [
           [Math.min(a2[0], b11[0]), Math.min(a2[1], b11[1])],
           [Math.max(a2[0], b11[0]), Math.max(a2[1], b11[1])]
@@ -100877,7 +100870,7 @@ ${currentIndent}`
           return [];
         }
         var bounds = lasso.extent().map(context.projection.invert);
-        var extent2 = geoExtent(normalize2(bounds[0], bounds[1]));
+        var extent2 = geoExtent(normalize3(bounds[0], bounds[1]));
         var intersects2 = context.history().intersects(extent2).filter(function(entity) {
           return entity.type === "node" && (!limitToNodes || limitToNodes.has(entity)) && geoPointInPolygon(context.projection(entity.loc), lasso.coordinates) && !context.features().isHidden(entity, graph, entity.geometry(graph));
         });
@@ -101452,7 +101445,7 @@ ${currentIndent}`
     };
     _this.searchAliases = () => {
       if (!_searchAliases) {
-        _searchAliases = _this.aliases().map((alias) => alias.toLowerCase());
+        _searchAliases = _this.aliases().map((alias2) => alias2.toLowerCase());
       }
       return _searchAliases;
     };
