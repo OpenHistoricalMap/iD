@@ -21,7 +21,7 @@ describe('iD.OsmAbstractEntity', function () {
 
         it('freezes node-specific properties such as loc', () => {
             expect(() => {
-                const node = iD.osmNode();
+                const node = new iD.osmNode();
                 node.loc[1] = 1;
             }).toThrow();
         });

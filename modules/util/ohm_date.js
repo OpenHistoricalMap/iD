@@ -52,6 +52,7 @@ export function utilDatesOverlap(tags1, tags2, touchIsOverlap) {
             (isAfter(end2, start1) && isBefore(end2, end1)));
 }
 
+/** @returns {{ date: Date; formatted: string; localeOptions: Intl.DateTimeFormatOptions }} */
 // Returns an object containing the given date string normalized as an ISO 8601 date string and parsed as a Date object.
 // Date components are padded for compatibility with tagging conventions.
 // Dates such as January 0, February 31, and Duodecember 1 are wrapped to make more sense.

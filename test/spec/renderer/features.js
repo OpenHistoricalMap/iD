@@ -600,10 +600,10 @@ describe('iD.rendererFeatures', function() {
         });
 
         it('hides entities outside the date range', function() {
-            var a = iD.osmNode({id: 'a', version: 1, tags: {end_date: '1970'}});
-            var b = iD.osmNode({id: 'b', version: 1, tags: {start_date: '1970', end_date: '2000'}});
-            var c = iD.osmNode({id: 'c', version: 1, tags: {start_date: '2000'}});
-            var graph = iD.coreGraph([a, b, c]);
+            var a = new iD.osmNode({id: 'a', version: 1, tags: {end_date: '1970'}});
+            var b = new iD.osmNode({id: 'b', version: 1, tags: {start_date: '1970', end_date: '2000'}});
+            var c = new iD.osmNode({id: 'c', version: 1, tags: {start_date: '2000'}});
+            var graph = new iD.coreGraph([a, b, c]);
             var ageo = a.geometry(graph);
             var bgeo = b.geometry(graph);
             var cgeo = c.geometry(graph);
@@ -612,9 +612,9 @@ describe('iD.rendererFeatures', function() {
             features.dateRange = ['1066', '1984'];
             features.gatherStats(all, graph, dimensions);
 
-            expect(features.isHidden(a, graph, ageo)).to.be.false;
-            expect(features.isHidden(b, graph, bgeo)).to.be.false;
-            expect(features.isHidden(c, graph, cgeo)).to.be.true;
+            expect(features.isHidden(a, graph, ageo)).toBe(false);
+            expect(features.isHidden(b, graph, bgeo)).toBe(false);
+            expect(features.isHidden(c, graph, cgeo)).toBe(true);
             expect(features.dateMatchCount()).to.eql(1);
             expect(features.filter([a, b, c], graph)).to.deep.equal([a, b]);
         });

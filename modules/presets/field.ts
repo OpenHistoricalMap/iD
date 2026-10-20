@@ -60,8 +60,10 @@ export function presetField(fieldID: string, field: Field) {
     localizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
 
   _this.title = () => {
+    // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
     if (field.index) {
       let baseLabel = _this.t('label', { 'default': fieldID });
+      // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
       let index = field.index.toLocaleString(localizer.localeCode());
       return _this.t('inspector.indexed_field_label', {
         'default': `${baseLabel} (${index})`,
@@ -72,8 +74,10 @@ export function presetField(fieldID: string, field: Field) {
     return _this.t('label', { 'default': fieldID });
   };
   _this.label = () => {
+    // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
     if (field.index) {
       let baseLabel = _this.t('label', { 'default': fieldID });
+      // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
       let index = field.index.toLocaleString(localizer.localeCode());
       return _this.t.append('inspector.indexed_field_label', {
         'default': `${baseLabel} (${index})`,

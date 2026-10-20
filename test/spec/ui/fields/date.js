@@ -1,9 +1,11 @@
+import { select as d3_select } from 'd3-selection';
+
 describe('iD.uiFieldDate', function() {
     let context, selection, field;
 
     beforeEach(function() {
         context = iD.coreContext().assetPath('../dist/').init();
-        selection = d3.select(document.createElement('div'));
+        selection = d3_select(document.createElement('div'));
         field = iD.presetField('name', { key: 'start_date', type: 'date' });
     });
 
@@ -11,7 +13,7 @@ describe('iD.uiFieldDate', function() {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
-            happen.click(selection.selectAll('.date-add').node());
+            selection.selectAll('.date-add').node().dispatchEvent(new MouseEvent('click'));
             expect(selection.selectAll('.date-value').nodes().length).to.equal(1);
             done();
         }, 20);
@@ -21,10 +23,10 @@ describe('iD.uiFieldDate', function() {
         var date = iD.uiFieldDate(field, context);
         window.setTimeout(function() {   // async, so data will be available
             selection.call(date);
-            happen.click(selection.selectAll('.date-add').node());
+            selection.selectAll('.date-add').node().dispatchEvent(new MouseEvent('click'));
 
             iD.utilGetSetValue(selection.selectAll('.date-value'), '1066-10-14T09:00');
-            happen.once(selection.selectAll('.date-value').node(), {type: 'change'});
+            selection.selectAll('.date-value').node().dispatchEvent(new Event('change'));
 
             date.on('change', function(tags) {
                 expect(tags).to.eql({'start_date:edtf': '1066-10-14T09:00'});
@@ -40,7 +42,7 @@ describe('iD.uiFieldDate', function() {
             selection.call(date);
             date.tags({'end_date:edtf': '1066-10-14T09:00'});
 
-            expect(selection.selectAll('.date-value').empty()).to.be.ok;
+            expect(selection.selectAll('.date-value').empty()).toBeTruthy();
             done();
         }, 20);
     }));
@@ -56,7 +58,7 @@ describe('iD.uiFieldDate', function() {
             });
 
             iD.utilGetSetValue(selection.selectAll('.date-value'), '');
-            happen.once(selection.selectAll('.date-value').node(), {type: 'change'});
+            selection.selectAll('.date-value').node().dispatchEvent(new Event('change'));
             done();
         }, 20);
     }));

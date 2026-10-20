@@ -71,7 +71,7 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should be no issues other than missing_start_date
         issues = validator.getIssues();
-        expect(issues).toHaveLength(1);
+        expect(issues).toHaveLength(2);
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['missing_start_date']);
         });
@@ -96,7 +96,7 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should be no issues other than missing_start_date
         let issues = validator.getIssues();
-        expect(issues).toHaveLength(1);
+        expect(issues).toHaveLength(2);
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['missing_start_date']);
         });
@@ -109,7 +109,7 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // Should produce disconnected way error
         issues = validator.getIssues();
-        expect(issues).toHaveLength(2);
+        expect(issues).toHaveLength(3);
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['disconnected_way', 'missing_start_date']);
         });
@@ -135,7 +135,7 @@ describe('iD.coreValidator', function() {
         await validator.validate();
         // There should be a validation error about the untagged way plus missing_start_date errors
         let issues = validator.getIssues();
-        expect(issues).toHaveLength(2);
+        expect(issues).toHaveLength(3);
         issues.forEach(issue => {
             expect(issue.type).toBeOneOf(['missing_tag', 'missing_start_date']);
         });

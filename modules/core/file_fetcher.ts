@@ -59,6 +59,8 @@ interface Definitions {
   nsi_trees: NsiTreesJSON;
   nsi_wikidata: NsiWikidataJSON;
 
+  wayback?: unknown;
+
   [scope: LocaleIndexKey]: LocalesJSON;
   [lng: LocaleDataKey]: { [locale: string]: Translations };
 };

@@ -255,7 +255,7 @@ export function utilDisplayName(entity: iD.OsmEntity, flags: {
     // https://github.com/OpenHistoricalMap/issues/issues/652
     // https://github.com/OpenHistoricalMap/issues/issues/470
     //return name && dateRange ? t('inspector.display_name.dated', {dateRange: dateRange, name: name}) : name;
-    const appendDateRange = (name, dateRange) => {
+    const appendDateRange = (name: string, dateRange?: string) => {
         return dateRange ? `${name} [${dateRange}]`.trim() : name;
     };
 
@@ -270,7 +270,7 @@ export function utilDisplayName(entity: iD.OsmEntity, flags: {
 
         if (start || end) {
             // Keep the date range suffix succinct by only including the year and era.
-            let options = {timeZone: 'UTC'};
+            let options: Intl.DateTimeFormatOptions = {timeZone: 'UTC'};
             if (end) {
                 options.year = end.localeOptions.year;
                 options.era = end.localeOptions.era;
