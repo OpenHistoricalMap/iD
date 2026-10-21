@@ -65,6 +65,7 @@ function addHistoricalFields(fields) {
       id: 'source_preset',
       type: 'source',
       usage: 'preset',
+      baseFieldID: 'source',
       keys: subkeys.map(sk => `source${sk}`)
     };
 
@@ -75,9 +76,8 @@ function addHistoricalFields(fields) {
         ...fields.source_preset,
         id,
         key,
+        baseFieldID: 'source',
         keys: subkeys.map(sk => `${key}${sk}`),
-        // stringsCrossReference and index will be used to create a localized label for this field
-        stringsCrossReference: '{source_preset}',
         index: i,
         prerequisiteTag: {
           keys: subkeys.map(sk => `source${((i-1) > 0 ? ':' + (i-1) : '')}${sk}`)

@@ -32,6 +32,8 @@ export function presetField(fieldID: string, field: Field) {
   const _this = <presetField>(<unknown>Object.assign({}, field));   // shallow copy
 
   _this.id = fieldID;
+  // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
+  const fieldIDForTranslations = field.baseFieldID || fieldID;
 
   // for use in classes, element ids, css selectors
   _this.safeid = utilSafeClassName(fieldID);
@@ -43,21 +45,21 @@ export function presetField(fieldID: string, field: Field) {
   };
 
   const _t: presetField['t'] = (scope, options) => t(localizer.coalesceStringIds([
-    `custom_presets.fields.${fieldID}.${scope}`,
-    `_tagging.presets.fields.${fieldID}.${scope}`
+    `custom_presets.fields.${fieldIDForTranslations}.${scope}`,
+    `_tagging.presets.fields.${fieldIDForTranslations}.${scope}`
   ]), options);
   _this.t_all = (scope, options) => localizer.t_all(localizer.coalesceStringIds([
-    `custom_presets.fields.${fieldID}.${scope}`,
-    `_tagging.presets.fields.${fieldID}.${scope}`
+    `custom_presets.fields.${fieldIDForTranslations}.${scope}`,
+    `_tagging.presets.fields.${fieldIDForTranslations}.${scope}`
   ]), options);
   _t.append = (scope, options) => t.append(localizer.coalesceStringIds([
-    `custom_presets.fields.${fieldID}.${scope}`,
-    `_tagging.presets.fields.${fieldID}.${scope}`
+    `custom_presets.fields.${fieldIDForTranslations}.${scope}`,
+    `_tagging.presets.fields.${fieldIDForTranslations}.${scope}`
   ]), options);
   _this.t = _t;
 
-  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`custom_presets.fields.${fieldID}.${scope}`) ||
-    localizer.hasTextForStringId(`_tagging.presets.fields.${fieldID}.${scope}`);
+  _this.hasTextForStringId = (scope) => localizer.hasTextForStringId(`custom_presets.fields.${fieldIDForTranslations}.${scope}`) ||
+    localizer.hasTextForStringId(`_tagging.presets.fields.${fieldIDForTranslations}.${scope}`);
 
   _this.title = () => {
     // @ts-expect-error -- blocked by OHM-specific id-tagging-schema
