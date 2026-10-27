@@ -1,17 +1,6 @@
 export { utilAesEncrypt } from './aes';
 export { utilAesDecrypt } from './aes';
-
-export { utilArrayChunk } from './array';
-export { utilArrayDifference } from './array';
-export { utilArrayFlatten } from './array';
-export { utilArrayGroupBy } from './array';
-export { utilArrayIdentical } from './array';
-export { utilArrayIntersection } from './array';
-export { utilArrayUnion } from './array';
-export { utilArrayUniq } from './array';
-export { utilArrayUniqBy } from './array';
-
-export { utilAsyncMap } from './util';
+export * from './array';
 export { utilCleanTags } from './clean_tags';
 export { utilCombinedTags } from './util';
 export { utilDatesOverlap } from './ohm_date';
@@ -34,8 +23,9 @@ export { utilGetSetValue } from './get_set_value';
 export { utilHashcode } from './util';
 export { utilHighlightEntities } from './util';
 export { utilKeybinding } from './keybinding';
-export { utilNormalizeDateString } from './ohm_date';
+export * from './localizer';
 export { utilNoAuto } from './util';
+export { utilNormalizeDateString } from './ohm_date';
 export { utilObjectOmit, utilCheckTagDictionary, stringifyProperties } from './object';
 export { utilCompareIDs } from './util';
 export { utilOldestID } from './util';

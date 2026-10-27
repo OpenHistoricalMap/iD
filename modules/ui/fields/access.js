@@ -4,6 +4,7 @@ import { select as d3_select } from 'd3-selection';
 import { uiCombobox } from '../combobox';
 import { utilGetSetValue, utilNoAuto, utilRebind } from '../../util';
 import { t } from '../../core/localizer';
+import { formatTag } from './tag_title';
 
 export function uiFieldAccess(field, context) {
     var dispatch = d3_dispatch('change');
@@ -56,7 +57,7 @@ export function uiFieldAccess(field, context) {
                 d3_select(this)
                     .call(uiCombobox(context, 'access-' + d)
                         .data(access.options(d))
-                    );
+                    , d3_select(this.parentNode.parentNode));
             });
 
 
@@ -101,17 +102,15 @@ export function uiFieldAccess(field, context) {
             options.splice(options.length - 4, 0, 'dismount');
         }
 
-        var stringsField = field.resolveReference('stringsCrossReference');
         return options.map(function(option) {
             return {
-                title: stringsField.t('options.' + option + '.description'),
-                description: stringsField.hasTextForStringId('options.' + option + '.description')
-                    ? stringsField.t('options.' + option + '.description') : undefined,
+                title: formatTag(type, option),
+                description: field.hasTextForStringId('options.' + option + '.description')
+                    ? field.t('options.' + option + '.description') : undefined,
                 value: option
             };
         });
     };
-
 
     const placeholdersByTag = {
         highway: {

@@ -868,7 +868,7 @@ en:
       description: Show Location Panel
       tooltip: Show coordinates and regional details.
     fix_misalignment: Imagery Offset
-    offset: "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values in meters."
+    offset: "Drag anywhere in the gray area below to adjust the imagery offset, or enter the offset values."
     offset_label: "Adjust Imagery Offset"
     nudge:
       top: "nudge top"
@@ -1015,6 +1015,9 @@ en:
       header: Custom Background Settings
       instructions:
         info: Enter a tile URL template below.
+        license_disclaimer: Make sure that the used background imagery is allowed to be used for mapping.
+        license_faq: Read more.
+        license_faq_url: "https://wiki.openstreetmap.org/wiki/FAQ#What_images_and_maps_may_I_use_to_make_maps_from?"
         wms:
           tokens_label: "Supported WMS tokens:"
           tokens:
@@ -1095,7 +1098,7 @@ en:
       format: "{place}{separator}{region}"
       separator: ", "
     help_html: Your changes should appear on OpenHistoricalMap within a few minutes. It may take longer for maps elsewhere to receive updates.
-    help_link_text: Details
+    help_link_text: Details on how to refresh the page to see your changes.
     help_link_url: "https://wiki.openstreetmap.org/wiki/OpenHistoricalMap/Contributing#Replication"
     view_on_osm: "View Changes on OHM"
     changeset_id: "Your changeset #: {changeset_id}"
@@ -1161,7 +1164,6 @@ en:
     tooltip: "Streetside photos from Microsoft"
     title: "Bing Streetside"
     report: Report a privacy concern with this image
-    view_on_bing: "View on Bing Maps"
     hires: "High resolution"
   vegbilder:
     title: "Vegbilder"
@@ -1302,8 +1304,8 @@ en:
       before_start: "You should be familiar with OpenHistoricalMap and this editor before you start editing. iD contains a walkthrough to teach you the basics of editing OpenHistoricalMap. Press the \"{start_the_walkthrough}\" button on this screen to start the tutorial—it takes only about 15 minutes."
       open_source_h: "Open Source"
       open_source: "The iD editor is a collaborative open source project, and you are using version {version} now. The source code is available [on GitHub](https://github.com/OpenHistoricalMap/iD)."
-      open_source_attribution: "This project includes icons from [Maki](https://github.com/mapbox/maki) (CC0), [temaki](https://github.com/ideditor/temaki) (CC0), [Fontawesome](https://github.com/FortAwesome/Font-Awesome) (CC BY 4.0) and [Röntgen](https://github.com/enzet/Roentgen) (CC BY 4.0)."
-      open_source_help: "You can help iD by [translating](https://github.com/OpenHistoricalMap/iD/blob/staging/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/OpenHistoricalMap/issues/issues)."
+      open_source_attribution: "This project includes icons from [Maki](https://github.com/mapbox/maki) (CC0), [temaki](https://github.com/ideditor/temaki) (CC0), [Fontawesome](https://github.com/FortAwesome/Font-Awesome) (CC BY 4.0), [Röntgen](https://github.com/enzet/Roentgen) (CC BY 4.0) and [Pinhead](https://pinhead.ink/) (CC0)."
+      open_source_help: "You can help iD by [translating](https://github.com/openstreetmap/iD/blob/develop/CONTRIBUTING.md#translating) or [reporting bugs](https://github.com/OpenHistoricalMap/issues/issues)."
     overview:
       title: Overview
       navigation_h: "Navigation"
@@ -1575,6 +1577,8 @@ en:
         reference: Highways that intersect and have overlapping date ranges should share a junction vertex.
     area_as_point:
       message: '{feature} should be an area, not a point'
+    area_as_line:
+      message: '{feature} should be a closed area, not a line'
     close_nodes:
       title: "Very Close Points"
       tip: "Find redundant and crowded points"
@@ -1659,14 +1663,6 @@ en:
     invalid_format:
       title: Invalid Formatting
       tip: Find tags with unexpected formats
-      email:
-        message: '{feature} has an invalid email address'
-        message_multi: '{feature} has multiple invalid email addresses'
-        reference: 'Email addresses must look like "user@example.com".'
-      website:
-        message: '{feature} has an invalid URL'
-        message_multi: '{feature} has multiple invalid URLs'
-        reference: 'URLs must start with "http://" or "https://".'
       date:
         message_start: '{feature} has an invalid start date'
         message_end: '{feature} has an invalid end date'
@@ -1675,6 +1671,19 @@ en:
         message_start: '{feature} has an invalid EDTF start date'
         message_end: '{feature} has an invalid EDTF end date'
         reference: 'There is an unexpected "{token}" at character {position}.'
+      email:
+        message: '{feature} has an invalid email address'
+        message_multi: '{feature} has multiple invalid email addresses'
+        reference: 'Email addresses must look like "user@example.com".'
+      website:
+        message: '{feature} has an invalid URL in {where}'
+        message_multi: '{feature} has multiple invalid URLs in {where}'
+        reference: 'URLs must start with "http://" or "https://".'
+      wikimedia_commons:
+        message: '{feature} has a suspicious Wikimedia Commons tag'
+        reference:
+          wrong_key: 'Wikimedia Commons links should preferably use the wikimedia_commons tag.'
+          wrong_value: 'Wikimedia Commons tags should only contain the file or category instead of the full URL.'
     line_as_area:
       message: '{feature} should be a line, not an area'
     line_as_point:
@@ -1837,6 +1846,8 @@ en:
         title: Continue drawing from end
       convert_to_line:
         title: Convert this to a line
+      convert_to_area:
+        title: Convert this to an area
         annotation: Converted an area to a line.
       delete_feature:
         title: Delete this feature
@@ -1844,6 +1855,8 @@ en:
         title: Extract this point
       ignore_issue:
         title: Ignore this issue
+      ignore_suggestion:
+        title: Ignore this suggestion
       merge_close_vertices:
         annotation: Merged very close points in a way.
       merge_points:
@@ -2253,7 +2266,7 @@ en:
         title: "Selecting features"
         select_one: "Select a single feature"
         select_multi: "Select multiple features"
-        lasso: "Draw a selection lasso around features"
+        lasso: "Draw a selection lasso to select points in an area"
         search: "Find features matching search text"
       with_selected:
         title: "With features selected"

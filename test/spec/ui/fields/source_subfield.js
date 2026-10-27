@@ -1,11 +1,13 @@
+import { select as d3_select } from 'd3-selection';
+
 describe('iD.uiSourceSubfield', function() {
   let entity, context, selection, field;
 
   beforeEach(function() {
-        entity = iD.osmNode({id: 'n12345'});
+        entity = new iD.osmNode({id: 'n12345'});
         context = iD.coreContext().assetPath('../dist/').init();
         context.history().merge([entity]);
-        selection = d3.select(document.createElement('div'));
+        selection = d3_select(document.createElement('div'));
         field = iD.presetField('name', { key: 'name', type: 'text' });
     });
 
@@ -13,7 +15,7 @@ describe('iD.uiSourceSubfield', function() {
         var uiField = iD.uiField(context, field, ['n12345'], {show: true, wrap: true});
         window.setTimeout(function() {   // async, so data will be available
             selection.call(uiField.render);
-            happen.click(selection.selectAll('.source-icon').node());
+            selection.selectAll('.source-icon').node().dispatchEvent(new MouseEvent('click'));
             expect(selection.selectAll('.field-source').nodes().length).to.equal(1);
             done();
         }, 20);
@@ -23,14 +25,14 @@ describe('iD.uiSourceSubfield', function() {
         var uiField = iD.uiField(context, field, ['n12345'], {show: true, wrap: true});
         window.setTimeout(function() {  // async, so data will be available
             selection.call(uiField.render);
-            happen.click(selection.selectAll('.source-icon').node());
+            selection.selectAll('.source-icon').node().dispatchEvent(new MouseEvent('click'));
 
             iD.utilGetSetValue(selection.selectAll('.field-source-value'), 'Book 1');
 
             uiField.on('change', function(tags) {
             expect(tags).to.eql({'name:source': 'Book 1'});
         });
-            happen.once(selection.selectAll('.field-source-value').node(), {type: 'change'});
+            selection.selectAll('.field-source-value').node().dispatchEvent(new Event('change'));
             done();
         }, 20);
     }));
@@ -40,7 +42,7 @@ describe('iD.uiSourceSubfield', function() {
         var uiField = iD.uiField(context, field, ['n12345'], {show: true, wrap: true});
         window.setTimeout(function() {   // async, so data will be available
             selection.call(uiField.render);
-            happen.click(selection.selectAll('.source-icon').node());
+            selection.selectAll('.source-icon').node().dispatchEvent(new MouseEvent('click'));
             iD.utilGetSetValue(selection.selectAll('.field-source-value'), 'abc');
 
             uiField.on('change', function(tags) {
@@ -48,7 +50,7 @@ describe('iD.uiSourceSubfield', function() {
             });
 
             iD.utilGetSetValue(selection.selectAll('.field-source-value'), '');
-            happen.once(selection.selectAll('.field-source-value').node(), {type: 'change'});
+            selection.selectAll('.field-source-value').node().dispatchEvent(new Event('change'));
             done();
         }, 20);
     }));

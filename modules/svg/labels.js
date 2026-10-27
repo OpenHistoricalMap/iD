@@ -1,4 +1,4 @@
-import { throttle } from 'es-toolkit/compat';
+import { throttle } from 'es-toolkit';
 
 import { geoPath as d3_geoPath } from 'd3-geo';
 import RBush from 'rbush';
@@ -9,9 +9,12 @@ import {
     geoScaleToZoom, geoVecInterp, geoVecLength
 } from '../geo';
 import { presetManager } from '../presets';
-import { osmEntity, osmIsInterestingTag } from '../osm';
+import { osmIdManager, osmIsInterestingTag } from '../osm';
 import { utilDetect } from '../util/detect';
-import { utilArrayDifference, utilArrayUniq, utilDisplayName, utilDisplayNameForPath, utilEntitySelector } from '../util';
+import {
+    utilArrayDifference, utilArrayUniq, utilDisplayName, utilDisplayNameForPath, utilEntitySelector,
+    utilUnicodeCharsCount, utilUnicodeCharsTruncated
+} from '../util';
 
 
 
@@ -26,6 +29,7 @@ export function svgLabels(projection, context) {
 
     // Listed from highest to lowest priority
     const labelStack = [
+        // geometry, key, value, font size
         ['line', 'aeroway', '*', 12],
         ['line', 'highway', 'motorway', 12],
         ['line', 'highway', 'trunk', 12],
@@ -46,6 +50,7 @@ export function svgLabels(projection, context) {
         ['area', 'craft', '*', 12],
         ['area', 'tourism', '*', 12],
         ['area', 'camp_site', '*', 12],
+        ['area', 'animal', 'horse_walker', 12],
         ['point', 'aeroway', '*', 10],
         ['point', 'amenity', '*', 10],
         ['point', 'building', '*', 10],
@@ -88,7 +93,7 @@ export function svgLabels(projection, context) {
     function drawLinePaths(selection, labels, filter, classes) {
         var paths = selection.selectAll('path:not(.debug)')
             .filter(d => filter(d.entity))
-            .data(labels, d => osmEntity.key(d.entity));
+            .data(labels, d => osmIdManager.key(d.entity));
 
         // exit
         paths.exit()
@@ -108,7 +113,7 @@ export function svgLabels(projection, context) {
     function drawLineLabels(selection, labels, filter, classes) {
         var texts = selection.selectAll('text.' + classes)
             .filter(d => filter(d.entity))
-            .data(labels, d => osmEntity.key(d.entity));
+            .data(labels, d => osmIdManager.key(d.entity));
 
         // exit
         texts.exit()
@@ -125,7 +130,7 @@ export function svgLabels(projection, context) {
         // update
         selection.selectAll('text.' + classes).selectAll('.textpath')
             .filter(d => filter(d.entity))
-            .data(labels, d => osmEntity.key(d.entity))
+            .data(labels, d => osmIdManager.key(d.entity))
             .attr('startOffset', '50%')
             .attr('xlink:href', function(d) { return '#ideditor-labelpath-' + d.entity.id; })
             .text(d => d.name);
@@ -138,7 +143,7 @@ export function svgLabels(projection, context) {
         }
         var texts = selection.selectAll('text.' + classes)
             .filter(d => filter(d.entity))
-            .data(labels, d => osmEntity.key(d.entity));
+            .data(labels, d => osmIdManager.key(d.entity));
 
         // exit
         texts.exit()
@@ -169,7 +174,7 @@ export function svgLabels(projection, context) {
     function drawAreaIcons(selection, labels, filter, classes) {
         var icons = selection.selectAll('use.' + classes)
             .filter(d => filter(d.entity))
-            .data(labels, d => osmEntity.key(d.entity));
+            .data(labels, d => osmIdManager.key(d.entity));
 
         // exit
         icons.exit()
@@ -341,8 +346,9 @@ export function svgLabels(projection, context) {
                     if (wireframe) continue;
                     var renderAs = renderNodeAs[entity.id];
                     if (renderAs.geometry === 'vertex' && zoom < 17) continue;
+                    let charsRemaining = utilUnicodeCharsCount(name) - 1;
                     while (renderAs.isAddr && width > 36) {
-                        name = `${name.substring(0, name.replace(/…$/, '').length - 1)}…`;
+                        name = `${utilUnicodeCharsTruncated(name.replace(/…$/, ''), charsRemaining--)}…`;
                         width = textWidth(name, fontSize, selection.select('g.layer-osm.labels').node());
                     }
 
@@ -812,8 +818,9 @@ const nonPrimaryKeys = new Set([
     'fixme',
     'layer',
     'level',
-    'level:ref',
-    'note'
+    'note',
+    'start_date',
+    'ele'
 ]);
 const nonPrimaryKeysRegex = /^(ref|survey|note|([^:]+:|old_|alt_)addr):/;
 export function isAddressPoint(tags) {

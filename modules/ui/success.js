@@ -6,7 +6,7 @@ import { resolveStrings } from 'osm-community-index';
 import { showDonationMessage } from '../../config/id.js';
 
 import { fileFetcher } from '../core/file_fetcher';
-import { locationManager } from '../core/LocationManager';
+import { locationManager } from '../core/location_manager.js';
 import { t, localizer } from '../core/localizer';
 
 import { svgIcon } from '../svg/icon';
@@ -36,7 +36,7 @@ export function uiSuccess(context) {
 
         // Merge Custom Features
         if (vals[0] && Array.isArray(vals[0].features)) {
-          locationManager.mergeCustomGeoJSON(vals[0]);
+          locationManager.addFeatures(vals[0]);
         }
 
         // Delete or OHMify OSM-specific resources.
@@ -72,14 +72,12 @@ export function uiSuccess(context) {
           });
 
           // Resolve all locationSet features.
-          return locationManager.mergeLocationSets(ociResources)
-            .then(() => {
-              _oci = {
-                resources: ociResources,
-                defaults: vals[2].defaults
-              };
-              return _oci;
-            });
+          locationManager.registerLocationSets(ociResources);
+          _oci = {
+            resources: ociResources,
+            defaults: vals[2].defaults
+          };
+          return _oci;
         } else {
           _oci = {
             resources: [],  // no resources?
@@ -250,7 +248,7 @@ export function uiSuccess(context) {
         // Gather the communities
         let communities = [];
         oci.resources.forEach(resource => {
-          let area = validHere[resource.locationSetID];
+          let area = validHere.get(resource.locationSetID);
           if (!area) return;
 
           // It's a small world, after all.
@@ -259,8 +257,8 @@ export function uiSuccess(context) {
           }
 
           // Resolve strings
-          const ociLocalizer = (stringID) => t.html(localizer.coalesceStringIds([`custom_community.${stringID}`, `community.${stringID}`]));
-          resource.resolved = resolveStrings(resource, oci.defaults, ociLocalizer);
+          const _localizer = (stringID) => localizer.t_html(localizer.coalesceStringIds([`custom_community.${stringID}`, `community.${stringID}`]));
+          resource.resolved = resolveStrings(resource, oci.defaults, _localizer);
 
           communities.push({
             area: area,
