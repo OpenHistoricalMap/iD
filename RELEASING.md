@@ -50,7 +50,7 @@ git commit -m 'Check in build'
 git tag "v$ID_VERSION" -m "v$ID_VERSION" --sign
 git push origin -f release "v$ID_VERSION"
 ```
-- Open https://github.com/openstreetmap/iD/tags
+- Open https://github.com/OpenHistoricalMap/iD/tags
 - Click `•••` –> `Create Release`, paste version(vA.B.C) to `Release title` and copy/paste the relevant [`changelog`](https://github.com/OpenHistoricalMap/iD/blob/release/CHANGELOG.md) entries into the description of the release.
 
 #### Push release to npm
