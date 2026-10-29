@@ -17,10 +17,10 @@ on the iD project, and then create this file with contents like
 
 ### Update `iD`
 
-#### Update `develop` branch
+#### Update `staging` branch
 
 ```bash
-git checkout develop
+git checkout staging
 npm install --save-dev @openstreetmap/editor-layer-index --omit=dev
 npm clean-install
 npm run imagery
@@ -36,14 +36,14 @@ git add . && git commit -m 'npm run translations'
 ID_VERSION=A.B.C
 npm version --no-git-tag-version $ID_VERSION
 git add . && git commit -m "v$ID_VERSION"
-git push origin develop
+git push origin staging
 ```
 
 #### Update and tag `release` branch
 
 ```bash
 git checkout release
-git reset --hard develop
+git reset --hard staging
 npm run all
 git add -f dist
 git commit -m 'Check in build'
@@ -60,10 +60,10 @@ npm login
 npm publish
 ```
 
-#### Prepare `develop` branch for further development
+#### Prepare `staging` branch for further development
 
 ```bash
-git checkout develop
+git checkout staging
 ```
 
 Add section in `CHANGELOG.md` for new version number (e.g. `# Unreleased (AA.BB.0-dev)`).
@@ -71,7 +71,7 @@ Add section in `CHANGELOG.md` for new version number (e.g. `# Unreleased (AA.BB.
 ```bash
 npm version --no-git-tag-version vAA.BB.0-dev
 git add . && git commit -m 'Set development version number'
-git push origin develop
+git push origin staging
 ```
 
 ### Update `ohm-website`
@@ -81,7 +81,7 @@ git push origin develop
 bundle install
 bundle exec bin/yarn add "@openhistoricalmap/id@$ID_VERSION"
 ```
-- If there have been any changes to iD's [URL parameters](https://github.com/OpenHistoricalMap/iD/blob/develop/API.md#url-parameters), make sure they're reflected in [app/assets/javascripts/edit/id.js.erb](https://github.com/OpenHistoricalMap/ohm-website/blob/staging/app/assets/javascripts/edit/id.js.erb).
+- If there have been any changes to iD's [URL parameters](https://github.com/OpenHistoricalMap/iD/blob/staging/API.md#url-parameters), make sure they're reflected in [app/assets/javascripts/edit/id.js.erb](https://github.com/OpenHistoricalMap/ohm-website/blob/staging/app/assets/javascripts/edit/id.js.erb).
 - Test the new version locally:
 ```bash
 bundle exec rails assets:precompile
