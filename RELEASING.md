@@ -2,7 +2,7 @@
 
 ### Prerelease (several days prior)
 - [Notify translators](https://app.transifex.com/openstreetmap/communication/?q=project%3Aid-editor) of the impending release
-- Notify TomH
+- Notify @Rub21
 
 ### Prep
 - If you don't have a `transifex.auth` file in the root of your iD checkout,
@@ -51,7 +51,7 @@ git tag "v$ID_VERSION" -m "v$ID_VERSION" --sign
 git push origin -f release "v$ID_VERSION"
 ```
 - Open https://github.com/openstreetmap/iD/tags
-- Click `•••` –> `Create Release`, paste version(vA.B.C) to `Release title` and copy/paste the relevant [`changelog`](https://github.com/openstreetmap/iD/blob/release/CHANGELOG.md) entries into the description of the release.
+- Click `•••` –> `Create Release`, paste version(vA.B.C) to `Release title` and copy/paste the relevant [`changelog`](https://github.com/OpenHistoricalMap/iD/blob/release/CHANGELOG.md) entries into the description of the release.
 
 #### Push release to npm
 
@@ -74,14 +74,14 @@ git add . && git commit -m 'Set development version number'
 git push origin develop
 ```
 
-### Update `openstreetmap-website`
+### Update `ohm-website`
 
-- Create a PR branch that updates the version number of iD (`@openstreetmap/id`) in the [`package.json`](https://github.com/openstreetmap/openstreetmap-website/blob/master/package.json) file of the OpenStreetMap Website repository.
+- Create a PR branch that updates the version number of iD (`@openhistoricalmap/id`) in the [`package.json`](https://github.com/OpenHistoricalMap/ohm-website/blob/staging/package.json) file of the OpenHistoricalMap Website repository.
 ```bash
 bundle install
-bundle exec bin/yarn add "@openstreetmap/id@$ID_VERSION"
+bundle exec bin/yarn add "@openhistoricalmap/id@$ID_VERSION"
 ```
-- If there have been any changes to iD's [URL parameters](https://github.com/openstreetmap/iD/blob/develop/API.md#url-parameters), make sure they're reflected in [app/assets/javascripts/edit/id.js.erb](https://github.com/openstreetmap/openstreetmap-website/blob/master/app/assets/javascripts/edit/id.js.erb).
+- If there have been any changes to iD's [URL parameters](https://github.com/OpenHistoricalMap/iD/blob/develop/API.md#url-parameters), make sure they're reflected in [app/assets/javascripts/edit/id.js.erb](https://github.com/OpenHistoricalMap/ohm-website/blob/staging/app/assets/javascripts/edit/id.js.erb).
 - Test the new version locally:
 ```bash
 bundle exec rails assets:precompile
