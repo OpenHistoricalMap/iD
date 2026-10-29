@@ -57,7 +57,7 @@ git push origin -f release "v$ID_VERSION"
 
 ```bash
 npm login
-npm publish
+npm publish --tag latest
 ```
 
 #### Prepare `staging` branch for further development
